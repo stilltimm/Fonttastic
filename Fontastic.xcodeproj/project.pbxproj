@@ -21,6 +21,15 @@
 		2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254726FCC6C900DFF767 /* NewFontNavigationController.swift */; };
 		2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254926FCC6D200DFF767 /* NewFontViewController.swift */; };
 		2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254B26FCC84D00DFF767 /* Colors.swift */; };
+		2DD4254E26FCDD9400DFF767 /* FontsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254D26FCDD9400DFF767 /* FontsService.swift */; };
+		2DD4255226FCDDC500DFF767 /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255126FCDDC500DFF767 /* FontModel.swift */; };
+		2DD4255426FCE0A300DFF767 /* FontsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255326FCE0A300DFF767 /* FontsRepository.swift */; };
+		2DD4255626FCE4BB00DFF767 /* FontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255526FCE4BB00DFF767 /* FontType.swift */; };
+		2DD4255826FCE4D000DFF767 /* FontFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255726FCE4D000DFF767 /* FontFactory.swift */; };
+		2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255A26FD487A00DFF767 /* FontListFontTableViewCell.swift */; };
+		2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */; };
+		40B62EF0036A699991ED53BF /* Pods_Fontastic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF490FB9B2E099E1D179E6F /* Pods_Fontastic.framework */; };
+		FB44775420FE2C944FC90073 /* Pods_FontasticTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D0AA821222AF4FD954FBB47 /* Pods_FontasticTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B30087303AA60468929EEED /* Pods-Fontastic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fontastic.release.xcconfig"; path = "Target Support Files/Pods-Fontastic/Pods-Fontastic.release.xcconfig"; sourceTree = "<group>"; };
+		1BF490FB9B2E099E1D179E6F /* Pods_Fontastic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fontastic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		28FBFFFF36B1C235B4532EAD /* Pods-Fontastic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fontastic.debug.xcconfig"; path = "Target Support Files/Pods-Fontastic/Pods-Fontastic.debug.xcconfig"; sourceTree = "<group>"; };
 		2D060EAD26FCC10900047D89 /* Fontastic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fontastic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D060EB026FCC10900047D89 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D060EB426FCC10900047D89 /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
@@ -54,6 +66,16 @@
 		2DD4254726FCC6C900DFF767 /* NewFontNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFontNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254926FCC6D200DFF767 /* NewFontViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFontViewController.swift; sourceTree = "<group>"; };
 		2DD4254B26FCC84D00DFF767 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		2DD4254D26FCDD9400DFF767 /* FontsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsService.swift; sourceTree = "<group>"; };
+		2DD4255126FCDDC500DFF767 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
+		2DD4255326FCE0A300DFF767 /* FontsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsRepository.swift; sourceTree = "<group>"; };
+		2DD4255526FCE4BB00DFF767 /* FontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontType.swift; sourceTree = "<group>"; };
+		2DD4255726FCE4D000DFF767 /* FontFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontFactory.swift; sourceTree = "<group>"; };
+		2DD4255A26FD487A00DFF767 /* FontListFontTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListFontTableViewCell.swift; sourceTree = "<group>"; };
+		2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
+		31098092D9022F486DA5F07E /* Pods-FontasticTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontasticTests.release.xcconfig"; path = "Target Support Files/Pods-FontasticTests/Pods-FontasticTests.release.xcconfig"; sourceTree = "<group>"; };
+		4D0AA821222AF4FD954FBB47 /* Pods_FontasticTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FontasticTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF5522CC1F18926CEDEDC49F /* Pods-FontasticTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontasticTests.debug.xcconfig"; path = "Target Support Files/Pods-FontasticTests/Pods-FontasticTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40B62EF0036A699991ED53BF /* Pods_Fontastic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,12 +91,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB44775420FE2C944FC90073 /* Pods_FontasticTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1CA0D7502AEC0418169E4B96 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1BF490FB9B2E099E1D179E6F /* Pods_Fontastic.framework */,
+				4D0AA821222AF4FD954FBB47 /* Pods_FontasticTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2D060EA426FCC10900047D89 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +114,8 @@
 				2D060EC626FCC10A00047D89 /* FontasticTests */,
 				2D060ED126FCC10A00047D89 /* FontasticUITests */,
 				2D060EAE26FCC10900047D89 /* Products */,
+				FE6806F4BDE3E70CD46EFAD7 /* Pods */,
+				1CA0D7502AEC0418169E4B96 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +134,8 @@
 				2D060EB026FCC10900047D89 /* AppDelegate.swift */,
 				2D060EE026FCC12E00047D89 /* Support Files */,
 				2D060EE126FCC13500047D89 /* Resources */,
+				2DD4255C26FD4C0900DFF767 /* Tools */,
+				2DD4255026FCDDBB00DFF767 /* Models */,
 				2D060EE326FCC14D00047D89 /* Services */,
 				2DD4254026FCC4D000DFF767 /* Components */,
 				2D060EE526FCC15F00047D89 /* Modules */,
@@ -145,6 +182,9 @@
 		2D060EE326FCC14D00047D89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				2DD4254D26FCDD9400DFF767 /* FontsService.swift */,
+				2DD4255326FCE0A300DFF767 /* FontsRepository.swift */,
+				2DD4255726FCE4D000DFF767 /* FontFactory.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -172,6 +212,7 @@
 		2DD4253926FCC44800DFF767 /* FontList */ = {
 			isa = PBXGroup;
 			children = (
+				2DD4255926FD486500DFF767 /* Cells */,
 				2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */,
 				2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */,
 			);
@@ -204,6 +245,43 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		2DD4255026FCDDBB00DFF767 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2DD4255126FCDDC500DFF767 /* FontModel.swift */,
+				2DD4255526FCE4BB00DFF767 /* FontType.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2DD4255926FD486500DFF767 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2DD4255A26FD487A00DFF767 /* FontListFontTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		2DD4255C26FD4C0900DFF767 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		FE6806F4BDE3E70CD46EFAD7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				28FBFFFF36B1C235B4532EAD /* Pods-Fontastic.debug.xcconfig */,
+				0B30087303AA60468929EEED /* Pods-Fontastic.release.xcconfig */,
+				CF5522CC1F18926CEDEDC49F /* Pods-FontasticTests.debug.xcconfig */,
+				31098092D9022F486DA5F07E /* Pods-FontasticTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -211,9 +289,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D060ED726FCC10A00047D89 /* Build configuration list for PBXNativeTarget "Fontastic" */;
 			buildPhases = (
+				D752D22DE7A0E904FA9AA3E3 /* [CP] Check Pods Manifest.lock */,
 				2D060EA926FCC10900047D89 /* Sources */,
 				2D060EAA26FCC10900047D89 /* Frameworks */,
 				2D060EAB26FCC10900047D89 /* Resources */,
+				0DFC48058F470274ACC8B854 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -228,6 +308,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D060EDA26FCC10A00047D89 /* Build configuration list for PBXNativeTarget "FontasticTests" */;
 			buildPhases = (
+				2B9A7C52BA1EBE5F48B1D2A2 /* [CP] Check Pods Manifest.lock */,
 				2D060EBF26FCC10A00047D89 /* Sources */,
 				2D060EC026FCC10A00047D89 /* Frameworks */,
 				2D060EC126FCC10A00047D89 /* Resources */,
@@ -298,21 +379,92 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0DFC48058F470274ACC8B854 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fontastic/Pods-Fontastic-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Fontastic/Pods-Fontastic-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Fontastic/Pods-Fontastic-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2B9A7C52BA1EBE5F48B1D2A2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FontasticTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D752D22DE7A0E904FA9AA3E3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Fontastic-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2D060EA926FCC10900047D89 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
+				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
 				2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */,
+				2DD4255226FCDDC500DFF767 /* FontModel.swift in Sources */,
+				2DD4255626FCE4BB00DFF767 /* FontType.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
 				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
 				2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
+				2DD4254E26FCDD9400DFF767 /* FontsService.swift in Sources */,
+				2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */,
+				2DD4255826FCE4D000DFF767 /* FontFactory.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
+				2DD4255426FCE0A300DFF767 /* FontsRepository.swift in Sources */,
 				2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,6 +617,7 @@
 		};
 		2D060ED826FCC10A00047D89 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28FBFFFF36B1C235B4532EAD /* Pods-Fontastic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -486,6 +639,7 @@
 		};
 		2D060ED926FCC10A00047D89 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B30087303AA60468929EEED /* Pods-Fontastic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -507,6 +661,7 @@
 		};
 		2D060EDB26FCC10A00047D89 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF5522CC1F18926CEDEDC49F /* Pods-FontasticTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -529,6 +684,7 @@
 		};
 		2D060EDC26FCC10A00047D89 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31098092D9022F486DA5F07E /* Pods-FontasticTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

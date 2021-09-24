@@ -27,7 +27,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Colors.backgroundMain
+        view.backgroundColor = Colors.backgroundMinor
         navigationItem.title = Constants.title
 
         setupLayout()

@@ -20,6 +20,6 @@ class BaseNavigationController: UINavigationController {
             .foregroundColor: Colors.textMajor
         ]
 
-        view.backgroundColor = Colors.backgroundMain
+        view.backgroundColor = Colors.backgroundMinor
     }
 }

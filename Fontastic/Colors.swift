@@ -12,8 +12,13 @@ final class Colors {
     // MARK: - Public Type Properties
 
     static let backgroundMain: UIColor = makeDynamicColor(light: .white, dark: .black)
+    static let backgroundMinor: UIColor = makeDynamicColor(
+        light: UIColor(white: 0.95, alpha: 1.0),
+        dark: UIColor(white: 0.05, alpha: 1.0)
+    )
 
     static let textMajor: UIColor = makeDynamicColor(light: .black, dark: .white)
+    static let textMinor: UIColor = makeDynamicColor(light: .darkGray, dark: .lightGray)
 
     // MARK: - Private Type Methods
 
