@@ -62,7 +62,7 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
             return UICollectionViewCell()
         }
 
-        fontCell.apply(viewModel: .init(fontName: fontModel.name, exampleText: exampleText))
+        fontCell.apply(viewModel: .init(withModel: fontModel, exampleText: exampleText))
 
         return fontCell
     }

@@ -10,5 +10,13 @@ import Foundation
 struct FontModel {
     
     let name: String
-    let type: FontType
+    let resourceType: FontResourceType
+    let state: FontState
+}
+
+extension FontModel {
+
+    var sourceModel: FontSourceModel {
+        .init(name: name, resourceType: resourceType)
+    }
 }

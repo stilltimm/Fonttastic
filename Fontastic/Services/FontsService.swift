@@ -80,7 +80,7 @@ class DefaultFontsService: FontsService {
         }
 
         let fontName = String(cfFontName)
-        let fontModel = FontModel(name: fontName, type: .userCreated)
+        let fontModel = FontModel(name: fontName, resourceType: .userCreated, state: .ready)
 
         #warning("TODO: Save to repository")
 

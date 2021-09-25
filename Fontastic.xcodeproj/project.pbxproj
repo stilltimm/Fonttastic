@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,11 @@
 		2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */; };
 		2D060EC826FCC10A00047D89 /* FontasticTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EC726FCC10A00047D89 /* FontasticTests.swift */; };
 		2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */; };
+		2D2A0C7626FF80DD0006E27B /* akzidenzgroteskpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7526FF80CB0006E27B /* akzidenzgroteskpro-bold.ttf */; };
+		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
+		2D2A0C7B26FF83370006E27B /* FontState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7A26FF83370006E27B /* FontState.swift */; };
+		2D2A0C7D26FF86D20006E27B /* FontModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */; };
+		2D2A0C7F26FF92170006E27B /* FontSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
 		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
@@ -24,8 +29,8 @@
 		2DD4254E26FCDD9400DFF767 /* FontsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254D26FCDD9400DFF767 /* FontsService.swift */; };
 		2DD4255226FCDDC500DFF767 /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255126FCDDC500DFF767 /* FontModel.swift */; };
 		2DD4255426FCE0A300DFF767 /* FontsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255326FCE0A300DFF767 /* FontsRepository.swift */; };
-		2DD4255626FCE4BB00DFF767 /* FontType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255526FCE4BB00DFF767 /* FontType.swift */; };
-		2DD4255826FCE4D000DFF767 /* FontFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255726FCE4D000DFF767 /* FontFactory.swift */; };
+		2DD4255626FCE4BB00DFF767 /* FontResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255526FCE4BB00DFF767 /* FontResourceType.swift */; };
+		2DD4255826FCE4D000DFF767 /* UIFontFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255726FCE4D000DFF767 /* UIFontFactory.swift */; };
 		2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255A26FD487A00DFF767 /* FontListFontTableViewCell.swift */; };
 		2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */; };
 		40B62EF0036A699991ED53BF /* Pods_Fontastic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF490FB9B2E099E1D179E6F /* Pods_Fontastic.framework */; };
@@ -58,6 +63,11 @@
 		2D060ED226FCC10A00047D89 /* FontasticUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontasticUITests.swift; sourceTree = "<group>"; };
 		2D060ED426FCC10A00047D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		2D2A0C7526FF80CB0006E27B /* akzidenzgroteskpro-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "akzidenzgroteskpro-bold.ttf"; sourceTree = "<group>"; };
+		2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontDetailsViewController.swift; sourceTree = "<group>"; };
+		2D2A0C7A26FF83370006E27B /* FontState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontState.swift; sourceTree = "<group>"; };
+		2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModelFactory.swift; sourceTree = "<group>"; };
+		2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSourceModel.swift; sourceTree = "<group>"; };
 		2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -69,8 +79,8 @@
 		2DD4254D26FCDD9400DFF767 /* FontsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsService.swift; sourceTree = "<group>"; };
 		2DD4255126FCDDC500DFF767 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
 		2DD4255326FCE0A300DFF767 /* FontsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsRepository.swift; sourceTree = "<group>"; };
-		2DD4255526FCE4BB00DFF767 /* FontType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontType.swift; sourceTree = "<group>"; };
-		2DD4255726FCE4D000DFF767 /* FontFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontFactory.swift; sourceTree = "<group>"; };
+		2DD4255526FCE4BB00DFF767 /* FontResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontResourceType.swift; sourceTree = "<group>"; };
+		2DD4255726FCE4D000DFF767 /* UIFontFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontFactory.swift; sourceTree = "<group>"; };
 		2DD4255A26FD487A00DFF767 /* FontListFontTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListFontTableViewCell.swift; sourceTree = "<group>"; };
 		2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		31098092D9022F486DA5F07E /* Pods-FontasticTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FontasticTests.release.xcconfig"; path = "Target Support Files/Pods-FontasticTests/Pods-FontasticTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,8 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				2D060EB026FCC10900047D89 /* AppDelegate.swift */,
+				2D2A0C7326FF80A40006E27B /* Resources */,
 				2D060EE026FCC12E00047D89 /* Support Files */,
-				2D060EE126FCC13500047D89 /* Resources */,
 				2DD4255C26FD4C0900DFF767 /* Tools */,
 				2DD4255026FCDDBB00DFF767 /* Models */,
 				2D060EE326FCC14D00047D89 /* Services */,
@@ -170,21 +180,13 @@
 			name = "Support Files";
 			sourceTree = "<group>";
 		};
-		2D060EE126FCC13500047D89 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				2D060EB926FCC10A00047D89 /* Assets.xcassets */,
-				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		2D060EE326FCC14D00047D89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				2DD4254D26FCDD9400DFF767 /* FontsService.swift */,
 				2DD4255326FCE0A300DFF767 /* FontsRepository.swift */,
-				2DD4255726FCE4D000DFF767 /* FontFactory.swift */,
+				2DD4255726FCE4D000DFF767 /* UIFontFactory.swift */,
+				2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -194,6 +196,7 @@
 			children = (
 				2D060EE626FCC20000047D89 /* RootNavigation */,
 				2DD4253926FCC44800DFF767 /* FontList */,
+				2D2A0C7726FF81C00006E27B /* FontDetails */,
 				2DD4253A26FCC45A00DFF767 /* NewFont */,
 				2DD4253B26FCC46800DFF767 /* Settings */,
 			);
@@ -207,6 +210,32 @@
 				2D060EB426FCC10900047D89 /* RootTabBarController.swift */,
 			);
 			path = RootNavigation;
+			sourceTree = "<group>";
+		};
+		2D2A0C7326FF80A40006E27B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2D060EB926FCC10A00047D89 /* Assets.xcassets */,
+				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
+				2D2A0C7426FF80B10006E27B /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2D2A0C7426FF80B10006E27B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A0C7526FF80CB0006E27B /* akzidenzgroteskpro-bold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2D2A0C7726FF81C00006E27B /* FontDetails */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */,
+			);
+			path = FontDetails;
 			sourceTree = "<group>";
 		};
 		2DD4253926FCC44800DFF767 /* FontList */ = {
@@ -249,7 +278,9 @@
 			isa = PBXGroup;
 			children = (
 				2DD4255126FCDDC500DFF767 /* FontModel.swift */,
-				2DD4255526FCE4BB00DFF767 /* FontType.swift */,
+				2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */,
+				2DD4255526FCE4BB00DFF767 /* FontResourceType.swift */,
+				2D2A0C7A26FF83370006E27B /* FontState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,7 +309,6 @@
 				CF5522CC1F18926CEDEDC49F /* Pods-FontasticTests.debug.xcconfig */,
 				31098092D9022F486DA5F07E /* Pods-FontasticTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -365,6 +395,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D2A0C7626FF80DD0006E27B /* akzidenzgroteskpro-bold.ttf in Resources */,
 				2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */,
 				2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */,
 			);
@@ -451,20 +482,24 @@
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
 				2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */,
+				2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */,
 				2DD4255226FCDDC500DFF767 /* FontModel.swift in Sources */,
-				2DD4255626FCE4BB00DFF767 /* FontType.swift in Sources */,
+				2DD4255626FCE4BB00DFF767 /* FontResourceType.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
+				2D2A0C7F26FF92170006E27B /* FontSourceModel.swift in Sources */,
 				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
+				2D2A0C7D26FF86D20006E27B /* FontModelFactory.swift in Sources */,
 				2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
 				2DD4254E26FCDD9400DFF767 /* FontsService.swift in Sources */,
 				2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */,
-				2DD4255826FCE4D000DFF767 /* FontFactory.swift in Sources */,
+				2DD4255826FCE4D000DFF767 /* UIFontFactory.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
 				2DD4255426FCE0A300DFF767 /* FontsRepository.swift in Sources */,
+				2D2A0C7B26FF83370006E27B /* FontState.swift in Sources */,
 				2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
