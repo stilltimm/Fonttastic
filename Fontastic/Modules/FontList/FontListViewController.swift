@@ -67,8 +67,24 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
         return fontCell
     }
 
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
         collectionView.deselectItem(at: indexPath, animated: true)
+
+        guard
+            let fontCell = collectionView.cellForItem(at: indexPath) as? FontListFontTableViewCell,
+            let cellViewModel = fontCell.viewModel
+        else { return }
+
+        switch cellViewModel.action {
+        case .installFont:
+            print("TODO: Impelement installing font")
+
+        case let .openDetails(fontModel):
+            openFontDetails(fontModel)
+        }
     }
 
     func collectionView(
@@ -91,6 +107,11 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
 
     private func reloadData() {
         collectionView.reloadData()
+    }
+
+    private func openFontDetails(_ fontModel: FontModel) {
+        let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)
+        navigationController?.pushViewController(fontDetailsViewController, animated: true)
     }
 }
 
