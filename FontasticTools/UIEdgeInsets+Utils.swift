@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIEdgeInsets {
+public extension UIEdgeInsets {
 
     var horizontalSum: CGFloat { left + right }
     var verticalSum: CGFloat { top + bottom }

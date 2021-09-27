@@ -7,23 +7,23 @@
 
 import Foundation
 
-protocol Disposable {
+public protocol Disposable {
 
     func dispose()
 }
 
-class Event<T> {
+public class Event<T> {
 
     // MARK: - Nested Types
 
-    typealias EventHandler = (T) -> Void
+    public typealias EventHandler = (T) -> Void
 
-    fileprivate class EventSubscription: Disposable {
-        let object: WeakBox<AnyObject>
+    public class EventSubscription: Disposable {
+        fileprivate let object: WeakBox<AnyObject>
         private weak var event: Event<T>?
         private let handler: EventHandler
 
-        init(
+        fileprivate init(
             object: AnyObject,
             event: Event<T>,
             handler: @escaping EventHandler
@@ -32,7 +32,7 @@ class Event<T> {
             self.handler = handler
         }
 
-        func onNext(_ data: T) {
+        fileprivate func onNext(_ data: T) {
             guard object.value != nil else {
                 dispose()
                 return
@@ -40,7 +40,7 @@ class Event<T> {
             self.handler(data)
         }
 
-        func dispose() {
+        public func dispose() {
             event?.removeSubscription(self)
         }
     }
@@ -51,19 +51,19 @@ class Event<T> {
 
     // MARK: - Initializers
 
-    init() {}
+    public init() {}
 
     // MARK: - Instance Methods
 
     @discardableResult
-    final func subscribe(
+    final public func subscribe(
         _ object: AnyObject,
         handler: @escaping EventHandler
     ) -> Disposable {
         return _subscribe(object, handler: handler) as Disposable
     }
 
-    func onNext(_ data: T) {
+    public func onNext(_ data: T) {
         subscriptions.forEach { $0.onNext(data) }
     }
 
@@ -92,7 +92,7 @@ class Event<T> {
     }
 }
 
-class HotEvent<T>: Event<T> {
+public class HotEvent<T>: Event<T> {
 
     // MARK: - Private Instance Properties
 
@@ -100,7 +100,7 @@ class HotEvent<T>: Event<T> {
 
     // MARK: - Initializers
 
-    init(value: T) {
+    public init(value: T) {
         self.value = value
         super.init()
     }
@@ -116,7 +116,7 @@ class HotEvent<T>: Event<T> {
         return subscription
     }
 
-    override func onNext(_ data: T) {
+    override public func onNext(_ data: T) {
         super.onNext(data)
     }
 }

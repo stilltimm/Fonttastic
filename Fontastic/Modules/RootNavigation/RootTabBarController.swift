@@ -12,6 +12,7 @@ class RootTabBarController: UITabBarController {
     // MARK: - Private Properties
 
     let fontListNavigationController = FontListNavigationController()
+    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
 //    let newFontNavigationController = NewFontNavigationController()
 //    let settingsNavigationController = SettingsNavigationController()
 
@@ -33,8 +34,7 @@ class RootTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tabBar.isHidden = true
-//        setupTabBarItems()
+        setupTabBarItems()
     }
 
     // MARK: - Private Methods
@@ -42,6 +42,7 @@ class RootTabBarController: UITabBarController {
     private func setupRootControllers() {
         let rootViewControllers: [UIViewController] = [
             fontListNavigationController,
+            keyboardTestNavigationController
 //            newFontNavigationController,
 //            settingsNavigationController
         ]
@@ -54,6 +55,12 @@ class RootTabBarController: UITabBarController {
             image: UIImage(systemName: Constants.fontListTabBarItemIconName),
             selectedImage: UIImage(systemName: Constants.fontListTabBarItemSelectedIconName)
         )
+        keyboardTestNavigationController.tabBarItem = UITabBarItem(
+            title: Constants.keyboardTabBarItemTitle,
+            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
+            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
+        )
+        
 //        newFontNavigationController.tabBarItem = UITabBarItem(
 //            title: Constants.newFontTabBarItemTitle,
 //            image: UIImage(systemName: Constants.newFontTabBarItemIconName),
@@ -72,6 +79,10 @@ private enum Constants {
     static let fontListTabBarItemTitle = "Шрифты"
     static let fontListTabBarItemIconName = "folder"
     static let fontListTabBarItemSelectedIconName = "folder.fill"
+
+    static let keyboardTabBarItemTitle = "Клавиатура"
+    static let keyboardTabBarItemIconName = "keyboard"
+    static let keyboardTabBarItemSelectedIconName = "keyboard.fill"
 
     static let newFontTabBarItemTitle = "Добавить"
     static let newFontTabBarItemIconName = "plus.circle"
