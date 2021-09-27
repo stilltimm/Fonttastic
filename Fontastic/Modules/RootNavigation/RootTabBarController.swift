@@ -12,8 +12,8 @@ class RootTabBarController: UITabBarController {
     // MARK: - Private Properties
 
     let fontListNavigationController = FontListNavigationController()
-    let newFontNavigationController = NewFontNavigationController()
-    let settingsNavigationController = SettingsNavigationController()
+//    let newFontNavigationController = NewFontNavigationController()
+//    let settingsNavigationController = SettingsNavigationController()
 
     // MARK: - Initializers
 
@@ -33,7 +33,8 @@ class RootTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTabBarItems()
+        tabBar.isHidden = true
+//        setupTabBarItems()
     }
 
     // MARK: - Private Methods
@@ -41,8 +42,8 @@ class RootTabBarController: UITabBarController {
     private func setupRootControllers() {
         let rootViewControllers: [UIViewController] = [
             fontListNavigationController,
-            newFontNavigationController,
-            settingsNavigationController
+//            newFontNavigationController,
+//            settingsNavigationController
         ]
         self.setViewControllers(rootViewControllers, animated: false)
     }
@@ -53,16 +54,16 @@ class RootTabBarController: UITabBarController {
             image: UIImage(systemName: Constants.fontListTabBarItemIconName),
             selectedImage: UIImage(systemName: Constants.fontListTabBarItemSelectedIconName)
         )
-        newFontNavigationController.tabBarItem = UITabBarItem(
-            title: Constants.newFontTabBarItemTitle,
-            image: UIImage(systemName: Constants.newFontTabBarItemIconName),
-            selectedImage: UIImage(systemName: Constants.newFontTabBarItemSelectedIconName)
-        )
-        settingsNavigationController.tabBarItem = UITabBarItem(
-            title: Constants.settingsTabBarItemTitle,
-            image: UIImage(systemName: Constants.settingsTabBarItemIconName),
-            selectedImage: UIImage(systemName: Constants.settingsTabBarItemSelectedIconName)
-        )
+//        newFontNavigationController.tabBarItem = UITabBarItem(
+//            title: Constants.newFontTabBarItemTitle,
+//            image: UIImage(systemName: Constants.newFontTabBarItemIconName),
+//            selectedImage: UIImage(systemName: Constants.newFontTabBarItemSelectedIconName)
+//        )
+//        settingsNavigationController.tabBarItem = UITabBarItem(
+//            title: Constants.settingsTabBarItemTitle,
+//            image: UIImage(systemName: Constants.settingsTabBarItemIconName),
+//            selectedImage: UIImage(systemName: Constants.settingsTabBarItemSelectedIconName)
+//        )
     }
 }
 
