@@ -7,13 +7,13 @@
 
 import Foundation
 
-enum FontResourceType: Equatable {
+public enum FontResourceType: Equatable {
 
     case system
     case bundled(fileName: String)
     case userCreated
 
-    var isAvailableForReinstall: Bool {
+    public var isAvailableForReinstall: Bool {
         switch self {
         case .system:
             return false

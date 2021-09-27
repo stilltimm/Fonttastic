@@ -8,13 +8,13 @@
 import Foundation
 import UIKit
 
-class UIFontFactory {
+public class UIFontFactory {
 
-    static func makeFont(from fontModel: FontModel, withSize size: CGFloat) -> UIFont? {
+    public static func makeFont(from fontModel: FontModel, withSize size: CGFloat) -> UIFont? {
         return UIFont(name: fontModel.name, size: size)
     }
 
-    static func makeFont(withName name: String, withSize size: CGFloat) -> UIFont? {
+    public static func makeFont(withName name: String, withSize size: CGFloat) -> UIFont? {
         return UIFont(name: name, size: size)
     }
 }

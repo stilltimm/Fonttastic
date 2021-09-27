@@ -12,7 +12,7 @@ import UIKit
 
 // MARK: - Supporting Types
 
-enum FontInstallationError: Error {
+public enum FontInstallationError: Error {
     case notPresentInSystem
     case failedToGetFilePath(resourceName: String)
     case failedToLoadFontFile(path: String, error: Error)
@@ -22,12 +22,12 @@ enum FontInstallationError: Error {
     case missingFontName
     case networkError
 }
-typealias FontInstallationResult = Result<FontModel, FontInstallationError>
-typealias FontInstallationCompletion = (FontInstallationResult) -> Void
+public typealias FontInstallationResult = Result<FontModel, FontInstallationError>
+public typealias FontInstallationCompletion = (FontInstallationResult) -> Void
 
 // MARK: - FontsService
 
-protocol FontsService {
+public protocol FontsService {
 
     func installFont(
         from fontSourceModel: FontSourceModel,
@@ -35,11 +35,11 @@ protocol FontsService {
     )
 }
 
-class DefaultFontsService: FontsService {
+public class DefaultFontsService: FontsService {
 
     // MARK: - Public Type Properties
 
-    static let shared = DefaultFontsService()
+    public static let shared = DefaultFontsService()
 
     // MARK: - Private Instance Properties
 
@@ -51,7 +51,7 @@ class DefaultFontsService: FontsService {
 
     // MARK: - Public Instance Methods
 
-    func installFont(
+    public func installFont(
         from fontSourceModel: FontSourceModel,
         completion: @escaping FontInstallationCompletion
     ) {

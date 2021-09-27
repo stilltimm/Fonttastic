@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-final class FontModelFactory {
+public final class FontModelFactory {
 
     // MARK: - Nested Types
 
-    enum FontValidationError: Error {
+    public enum FontValidationError: Error {
         case notPresentInSystem
         case unregistered
     }
 
     // MARK: - Instance Methods
 
-    func makeFontModels(from fontSourceModels: [FontSourceModel]) -> [FontModel] {
+    public func makeFontModels(from fontSourceModels: [FontSourceModel]) -> [FontModel] {
         return fontSourceModels.map { fontSourceModel -> FontModel in
             let fontState = makeFontState(fontSourceModel)
             return FontModel(

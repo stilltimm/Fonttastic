@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FontStatus {
+public enum FontStatus {
 
     case uninstalled
     case invalid(Error)

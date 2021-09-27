@@ -9,7 +9,7 @@ import Foundation
 import CoreText
 import UIKit
 
-protocol FontsRepository {
+public protocol FontsRepository {
 
     var fonts: [FontModel] { get }
     var didUpdateFontsEvent: Event<Void> { get }
@@ -17,16 +17,16 @@ protocol FontsRepository {
     func addFont(_ fontModel: FontModel)
 }
 
-class DefaultFontsRepository: FontsRepository {
+public class DefaultFontsRepository: FontsRepository {
 
     // MARK: - Public Type Properties
 
-    static let shared = DefaultFontsRepository()
+    public static let shared = DefaultFontsRepository()
 
     // MARK: - Public Instance Properties
 
-    private(set) var fonts: [FontModel]
-    var didUpdateFontsEvent = Event<Void>()
+    public private(set) var fonts: [FontModel]
+    public var didUpdateFontsEvent = Event<Void>()
 
     // MARK: - Private Instance Properties
 
@@ -38,7 +38,7 @@ class DefaultFontsRepository: FontsRepository {
         let systemFonts = UIFont.familyNames.map { fontName -> FontSourceModel in
             FontSourceModel(name: fontName, resourceType: .system)
         }
-        var allPreinstalledFonts = Constants.preinstalledFontModels
+        var allPreinstalledFonts: [FontSourceModel] = [.akzidenzGroteskProBold]
         allPreinstalledFonts.append(contentsOf: systemFonts)
         let preinstalledFonts = fontModelFactory.makeFontModels(from: allPreinstalledFonts)
 
@@ -56,7 +56,7 @@ class DefaultFontsRepository: FontsRepository {
 
     // MARK: - Instance Methods
 
-    func addFont(_ fontModel: FontModel) {
+    public func addFont(_ fontModel: FontModel) {
         if let index = fonts.firstIndex(where: { $0.displayName == fontModel.displayName }) {
             fonts.remove(at: index)
         }
@@ -71,13 +71,4 @@ class DefaultFontsRepository: FontsRepository {
 private enum Constants {
 
     static let defaultFontSize: CGFloat = 20.0
-
-    // MARK: - Test data
-
-    static let preinstalledFontModels: [FontSourceModel] = [
-        .init(
-            name: "Akzindenz Grotesk Pro Bold",
-            resourceType: .bundled(fileName: "akzidenzgroteskpro-bold")
-        )
-    ]
 }
