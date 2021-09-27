@@ -8,50 +8,120 @@
 import Foundation
 import CoreFoundation
 import CoreText
+import UIKit
 
 // MARK: - Supporting Types
 
-enum FontDownloadError: Error {
-    case networkError
-}
-enum FontCreationError: Error {
+enum FontInstallationError: Error {
+    case notPresentInSystem
+    case failedToGetFilePath(resourceName: String)
+    case failedToLoadFontFile(path: String, error: Error)
     case failedToCreateCGDataProvider
     case failedToCreateCGFont
     case failedToRegisterFont(String?)
     case missingFontName
     case networkError
 }
-
-typealias FontFetchResult = Result<FontModel, FontDownloadError>
-typealias FontCreationResult = Result<FontModel, FontCreationError>
-
-typealias FontFetchCompletion = (FontFetchResult) -> Void
-typealias FontCreationCompletion = (FontCreationResult) -> Void
+typealias FontInstallationResult = Result<FontModel, FontInstallationError>
+typealias FontInstallationCompletion = (FontInstallationResult) -> Void
 
 // MARK: - FontsService
 
 protocol FontsService {
 
-    func fetchFont(withName name: String, completion: @escaping FontFetchCompletion)
-    func saveCustomFont(withName name: String, data: Data, completion: @escaping FontCreationCompletion)
+    func installFont(
+        from fontSourceModel: FontSourceModel,
+        completion: @escaping FontInstallationCompletion
+    )
 }
 
 class DefaultFontsService: FontsService {
 
+    // MARK: - Public Type Properties
+
+    static let shared = DefaultFontsService()
+
+    // MARK: - Private Instance Properties
+
+    private let fontsRepository: FontsRepository = DefaultFontsRepository.shared
+
     // MARK: - Initializers
 
-    init() {
+    private init() {}
 
+    // MARK: - Public Instance Methods
+
+    func installFont(
+        from fontSourceModel: FontSourceModel,
+        completion: @escaping FontInstallationCompletion
+    ) {
+        switch fontSourceModel.resourceType {
+        case .system:
+            installSystemFont(with: fontSourceModel.name, completion: completion)
+
+        case let .bundled(fileName):
+            installBundledFont(with: fontSourceModel.name, fromFile: fileName, completion: completion)
+
+        case .userCreated:
+            fatalError("Unimplemented")
+        }
     }
 
-    // MARK: - Public Methods
+    // MARK: - Private Methods
 
-    func fetchFont(withName name: String, completion: @escaping FontFetchCompletion) {
-        #warning("TODO: implement")
+    private func installSystemFont(
+        with name: String,
+        completion: @escaping FontInstallationCompletion
+    ) {
+        guard UIFont.familyNames.contains(name) else {
+            completion(.failure(.notPresentInSystem))
+            return
+        }
+
+        let fontModel = FontModel(name: name, displayName: name, resourceType: .system, status: .ready)
+        fontsRepository.addFont(fontModel)
+
+        completion(.success(fontModel))
     }
 
-    func saveCustomFont(withName name: String, data: Data, completion: @escaping FontCreationCompletion) {
-        func complete(with result: FontCreationResult) {
+    private func installBundledFont(
+        with name: String,
+        fromFile fileName: String,
+        completion: @escaping FontInstallationCompletion
+    ) {
+
+        guard let fileUrlPath = Bundle.main.path(
+                forResource: fileName,
+                ofType: Constants.defaultFontExtension)
+        else {
+            let resourceName = "\(fileName).\(Constants.defaultFontExtension)"
+            completion(.failure(.failedToGetFilePath(resourceName: resourceName)))
+            return
+        }
+
+        let fontData: Data
+        do {
+            fontData = try Data(contentsOf: URL(fileURLWithPath: fileUrlPath))
+        } catch {
+            completion(.failure(.failedToLoadFontFile(path: fileUrlPath, error: error)))
+            return
+        }
+
+        saveCustomFont(
+            withName: name,
+            resourceType: .bundled(fileName: fileName),
+            data: fontData,
+            completion: completion
+        )
+    }
+
+    private func saveCustomFont(
+        withName displayName: String,
+        resourceType: FontResourceType,
+        data: Data,
+        completion: @escaping FontInstallationCompletion
+    ) {
+        func complete(with result: FontInstallationResult) {
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -80,10 +150,20 @@ class DefaultFontsService: FontsService {
         }
 
         let fontName = String(cfFontName)
-        let fontModel = FontModel(name: fontName, resourceType: .userCreated, state: .ready)
+        let fontModel = FontModel(
+            name: fontName,
+            displayName: displayName,
+            resourceType: resourceType,
+            status: .ready
+        )
 
-        #warning("TODO: Save to repository")
+        fontsRepository.addFont(fontModel)
 
         complete(with: .success(fontModel))
     }
+}
+
+private enum Constants {
+
+    static let defaultFontExtension: String = "ttf"
 }

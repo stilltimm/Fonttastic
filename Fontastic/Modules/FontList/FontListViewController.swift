@@ -11,14 +11,19 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
 
     // MARK: - Private Properties
 
-    private let fontsRepository: FontsRepository = DefaultFontsRepository()
+    private let fontsService: FontsService = DefaultFontsService.shared
+    private let fontsRepository: FontsRepository = DefaultFontsRepository.shared
+    private var fontViewModels: [FontListFontViewModel] = []
     private let fontCellIdentifier: String = "FontCell"
-    private var exampleText: String = "Quick brown fox jumps over the lazy dog"
+
+    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
 
     // MARK: - Initializers
 
     init() {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
         super.init(collectionViewLayout: layout)
     }
 
@@ -37,6 +42,10 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
 
         setupLayout()
         reloadData()
+
+        fontsRepository.didUpdateFontsEvent.subscribe(self) { [weak self] in
+            self?.reloadData()
+        }
     }
 
     // MARK: -
@@ -45,15 +54,18 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
         return 1
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fontsRepository.fonts.count
+    override func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return fontViewModels.count
     }
 
     override func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let fontModel = fontsRepository.fonts[safe: indexPath.row] else {
+        guard let fontViewModel = fontViewModels[safe: indexPath.row] else {
             return UICollectionViewCell()
         }
 
@@ -62,7 +74,7 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
             return UICollectionViewCell()
         }
 
-        fontCell.apply(viewModel: .init(withModel: fontModel, exampleText: exampleText))
+        fontCell.apply(viewModel: fontViewModel)
 
         return fontCell
     }
@@ -73,14 +85,12 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
     ) {
         collectionView.deselectItem(at: indexPath, animated: true)
 
-        guard
-            let fontCell = collectionView.cellForItem(at: indexPath) as? FontListFontTableViewCell,
-            let cellViewModel = fontCell.viewModel
-        else { return }
+        guard let cellViewModel = fontViewModels[safe: indexPath.item] else { return }
 
+        impactFeedbackGenerator.impactOccurred()
         switch cellViewModel.action {
-        case .installFont:
-            print("TODO: Impelement installing font")
+        case let .installFont(source):
+            installFont(from: source)
 
         case let .openDetails(fontModel):
             openFontDetails(fontModel)
@@ -92,20 +102,31 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: Constants.rowHeight)
+        guard let viewModel = fontViewModels[safe: indexPath.item] else { return .zero }
+        let cellWidth = collectionView.bounds.width
+        let cellHeight = FontListFontTableViewCell.height(
+            for: viewModel,
+            boundingWidth: cellWidth
+        )
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 
     // MARK: - Private Methods
 
     private func setupLayout() {
         collectionView.backgroundColor = .clear
-        collectionView.register(FontListFontTableViewCell.self, forCellWithReuseIdentifier: fontCellIdentifier)
+        collectionView.register(
+            FontListFontTableViewCell.self,
+            forCellWithReuseIdentifier: fontCellIdentifier
+        )
         collectionView.contentInset.bottom = 16
         collectionView.isMultipleTouchEnabled = false
-        collectionView.delegate = self
+        collectionView.alwaysBounceVertical = true
+        collectionView.alwaysBounceHorizontal = false
     }
 
     private func reloadData() {
+        fontViewModels = fontsRepository.fonts.map { FontListFontViewModel(withModel: $0) }
         collectionView.reloadData()
     }
 
@@ -113,11 +134,21 @@ class FontListViewController: UICollectionViewController, UICollectionViewDelega
         let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)
         navigationController?.pushViewController(fontDetailsViewController, animated: true)
     }
+
+    private func installFont(from fontSourceModel: FontSourceModel) {
+        fontsService.installFont(from: fontSourceModel) { result in
+            switch result {
+            case let .success(fontModel):
+                print("Successfully installed font \(fontModel)")
+
+            case let .failure(error):
+                print("Failed to installed font from source \(fontSourceModel) with error \(error)")
+            }
+        }
+    }
 }
 
 private enum Constants {
 
     static let title = "Мои шрифты"
-
-    static let rowHeight: CGFloat = 82
 }

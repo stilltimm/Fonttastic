@@ -12,32 +12,55 @@ import UIKit
 protocol FontsRepository {
 
     var fonts: [FontModel] { get }
+    var didUpdateFontsEvent: Event<Void> { get }
+
+    func addFont(_ fontModel: FontModel)
 }
 
 class DefaultFontsRepository: FontsRepository {
 
-    let fonts: [FontModel]
+    // MARK: - Public Type Properties
 
-    // MARK: - Private Properties
+    static let shared = DefaultFontsRepository()
+
+    // MARK: - Public Instance Properties
+
+    private(set) var fonts: [FontModel]
+    var didUpdateFontsEvent = Event<Void>()
+
+    // MARK: - Private Instance Properties
 
     private let fontModelFactory = FontModelFactory()
 
-    init() {
+    // MARK: - Initializers
+
+    private init() {
         let preinstalledFonts = fontModelFactory.makeFontModels(from: Constants.preinstalledFontModels)
 
         self.fonts = preinstalledFonts.filter { fontModel -> Bool in
-            switch fontModel.state {
+            switch fontModel.status {
             case let .invalid(error):
-                print("DefaultFontsRepository: At startup font \(fontModel) got invalid state with error \(error)")
+                print("DefaultFontsRepository: At startup font \(fontModel) got invalid status with error \(error)")
                 return fontModel.resourceType.isAvailableForReinstall
 
             default:
                 return true
             }
-        }
+        }.sorted { $0.name < $1.name }
     }
 
-    // MARK: - Font Validation
+    // MARK: - Instance Methods
+
+    func addFont(_ fontModel: FontModel) {
+        if let index = fonts.firstIndex(where: { $0.displayName == fontModel.displayName }) {
+            fonts.remove(at: index)
+        }
+
+        fonts.append(fontModel)
+        fonts.sort { $0.name < $1.name }
+
+        didUpdateFontsEvent.onNext(())
+    }
 }
 
 private enum Constants {

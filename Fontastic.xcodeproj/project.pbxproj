@@ -18,6 +18,9 @@
 		2D2A0C7B26FF83370006E27B /* FontState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7A26FF83370006E27B /* FontState.swift */; };
 		2D2A0C7D26FF86D20006E27B /* FontModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */; };
 		2D2A0C7F26FF92170006E27B /* FontSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */; };
+		2D2A0C8127009CF80006E27B /* UIEdgeInsets+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */; };
+		2D2A0C832700B7CA0006E27B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C822700B7CA0006E27B /* Event.swift */; };
+		2D2A0C852700B8D80006E27B /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C842700B8D80006E27B /* WeakBox.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
 		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
@@ -68,6 +71,9 @@
 		2D2A0C7A26FF83370006E27B /* FontState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontState.swift; sourceTree = "<group>"; };
 		2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModelFactory.swift; sourceTree = "<group>"; };
 		2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSourceModel.swift; sourceTree = "<group>"; };
+		2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Utils.swift"; sourceTree = "<group>"; };
+		2D2A0C822700B7CA0006E27B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		2D2A0C842700B8D80006E27B /* WeakBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakBox.swift; sourceTree = "<group>"; };
 		2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -297,6 +303,9 @@
 			isa = PBXGroup;
 			children = (
 				2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */,
+				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
+				2D2A0C822700B7CA0006E27B /* Event.swift */,
+				2D2A0C842700B8D80006E27B /* WeakBox.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -494,7 +503,10 @@
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
 				2DD4254E26FCDD9400DFF767 /* FontsService.swift in Sources */,
+				2D2A0C852700B8D80006E27B /* WeakBox.swift in Sources */,
 				2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */,
+				2D2A0C832700B7CA0006E27B /* Event.swift in Sources */,
+				2D2A0C8127009CF80006E27B /* UIEdgeInsets+Utils.swift in Sources */,
 				2DD4255826FCE4D000DFF767 /* UIFontFactory.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,

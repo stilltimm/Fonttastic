@@ -24,15 +24,16 @@ final class FontModelFactory {
             let fontState = makeFontState(fontSourceModel)
             return FontModel(
                 name: fontSourceModel.name,
+                displayName: fontSourceModel.name,
                 resourceType: fontSourceModel.resourceType,
-                state: fontState
+                status: fontState
             )
         }
     }
 
     // MARK: - Private Methods
 
-    private func makeFontState(_ fontSourceModel: FontSourceModel) -> FontState {
+    private func makeFontState(_ fontSourceModel: FontSourceModel) -> FontStatus {
         switch fontSourceModel.resourceType {
         case .system:
             return validateSystemFont(fontSourceModel)
@@ -43,15 +44,15 @@ final class FontModelFactory {
         }
     }
 
-    private func validateSystemFont(_ fontSourceModel: FontSourceModel) -> FontState {
-        guard UIFont(name: fontSourceModel.name, size: Constants.defaultFontSize) != nil else {
+    private func validateSystemFont(_ fontSourceModel: FontSourceModel) -> FontStatus {
+        guard UIFont.familyNames.contains(fontSourceModel.name) else {
             return .invalid(FontValidationError.notPresentInSystem)
         }
 
         return .ready
     }
 
-    private func validateBundledFont(_ fontSourceModel: FontSourceModel) -> FontState {
+    private func validateBundledFont(_ fontSourceModel: FontSourceModel) -> FontStatus {
         let isPresentInRegisterFontsList: Bool = false
         if !isPresentInRegisterFontsList {
             return .uninstalled
@@ -63,7 +64,7 @@ final class FontModelFactory {
         return .ready
     }
 
-    private func validateUserCreatedFont(_ fontSourceModel: FontSourceModel) -> FontState {
+    private func validateUserCreatedFont(_ fontSourceModel: FontSourceModel) -> FontStatus {
         let isPresentInRegisterFontsList: Bool = false
         if !isPresentInRegisterFontsList {
             return .uninstalled

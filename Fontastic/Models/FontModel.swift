@@ -10,8 +10,9 @@ import Foundation
 struct FontModel {
     
     let name: String
+    let displayName: String
     let resourceType: FontResourceType
-    let state: FontState
+    let status: FontStatus
 }
 
 extension FontModel {
