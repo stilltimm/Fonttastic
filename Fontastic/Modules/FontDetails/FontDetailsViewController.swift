@@ -17,14 +17,24 @@ class FontDetailsViewController: UIViewController {
         scrollView.alwaysBounceVertical = true
         scrollView.alwaysBounceHorizontal = false
         scrollView.backgroundColor = .clear
+        scrollView.canCancelContentTouches = true
+        scrollView.keyboardDismissMode = .onDrag
         return scrollView
     }()
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.backgroundMain
+        view.backgroundColor = .clear
         return view
     }()
-    private let previewTextView: UITextView = {
+    private let textContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Colors.backgroundMain
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = Constants.containerCornerRadius
+        view.layer.cornerCurve = .continuous
+        return view
+    }()
+    private let textView: UITextView = {
         let textView = UITextView()
         textView.isScrollEnabled = false
         return textView
@@ -57,13 +67,15 @@ class FontDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = fontModel.name
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = fontModel.displayName
+        navigationItem.backButtonTitle = "Мои Шрифты"
         view.backgroundColor = Colors.backgroundMinor
 
         setupLayout()
         updateTextViewStyle()
 
-        previewTextView.text = text
+        textView.text = text
     }
 
     // MARK: - Private Methods
@@ -71,60 +83,38 @@ class FontDetailsViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
-        containerView.addSubview(previewTextView)
+        containerView.addSubview(textContainerView)
+        textContainerView.addSubview(textView)
 
         constrain(
-            view, scrollView, containerView, previewTextView
-        ) { (view, scrollView, container, textView) in
+            view, scrollView, containerView, textContainerView, textView
+        ) { (view, scrollView, container, textContainer, textView) in
             scrollView.edges == view.edges
 
-            textView.left == container.left + Constants.contentInsets.left
-            textView.right == container.right - Constants.contentInsets.right
-            textView.centerY == container.centerY
-            textView.height == Constants.textViewMinimumHeight
+            textView.edges == textContainer.edges.inseted(by: Constants.textInsets)
+            let heightConstraint = (textView.height >= Constants.textViewMinimumHeight)
+            heightConstraint.priority = .required
 
-            container.width == view.width - 2 * Constants.containerHorziontalMargins
-            container.top == textView.top - Constants.contentInsets.top
-            container.bottom == textView.bottom + Constants.contentInsets.top
+            textContainer.edges == container.edges.inseted(by: Constants.contentInsets)
+
+            container.width == view.width
         }
     }
 
     private func updateTextViewStyle() {
-        previewTextView.textAlignment = textAlignment
-        previewTextView.font = UIFontFactory.makeFont(from: fontModel, withSize: textSize)
-    }
-}
-
-extension FontDetailsViewController: UITextViewDelegate {
-
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
-    ) -> Bool {
-        guard textView === previewTextView else { return true }
-
-        updateTextViewHeight(with: textView.contentSize.height)
-        return true
-    }
-
-    private func updateTextViewHeight(with contentHeight: CGFloat) {
-        guard
-            let heightConstraint = textViewHeightConstraint,
-            contentHeight != heightConstraint.constant
-        else { return }
-
-        heightConstraint.constant = contentHeight
-        containerView.setNeedsLayout()
-        view.layoutSubviews()
+        textView.textAlignment = textAlignment
+        textView.font = UIFontFactory.makeFont(from: fontModel, withSize: textSize)
     }
 }
 
 private enum Constants {
 
     static let containerHorziontalMargins: CGFloat = 16
-    static let contentInsets: UIEdgeInsets = .init(top: 24, left: 16, bottom: 24, right: 16)
+    static let contentInsets: UIEdgeInsets = .init(vertical: 24, horizontal: 16)
+    static let textInsets: UIEdgeInsets = .init(vertical: 12, horizontal: 16)
     static let textViewMinimumHeight: CGFloat = 44.0
+
+    static let containerCornerRadius: CGFloat = 32.0
 
     static let initialText: String = "Quick brown fox jumps over the lazy dog"
     static let initialFontSize: CGFloat = 36.0

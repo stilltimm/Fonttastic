@@ -16,7 +16,7 @@ class BaseNavigationController: UINavigationController {
         navigationItem.largeTitleDisplayMode = .always
 
         navigationBar.largeTitleTextAttributes = [
-            .font: UIFont.systemFont(ofSize: 36.0, weight: .bold),
+            .font: UIFont.systemFont(ofSize: 30.0, weight: .bold),
             .foregroundColor: Colors.textMajor
         ]
 
