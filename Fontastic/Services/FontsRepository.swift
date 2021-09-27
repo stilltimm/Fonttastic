@@ -35,7 +35,12 @@ class DefaultFontsRepository: FontsRepository {
     // MARK: - Initializers
 
     private init() {
-        let preinstalledFonts = fontModelFactory.makeFontModels(from: Constants.preinstalledFontModels)
+        let systemFonts = UIFont.familyNames.map { fontName -> FontSourceModel in
+            FontSourceModel(name: fontName, resourceType: .system)
+        }
+        var allPreinstalledFonts = Constants.preinstalledFontModels
+        allPreinstalledFonts.append(contentsOf: systemFonts)
+        let preinstalledFonts = fontModelFactory.makeFontModels(from: allPreinstalledFonts)
 
         self.fonts = preinstalledFonts.filter { fontModel -> Bool in
             switch fontModel.status {
@@ -73,9 +78,6 @@ private enum Constants {
         .init(
             name: "Akzindenz Grotesk Pro Bold",
             resourceType: .bundled(fileName: "akzidenzgroteskpro-bold")
-        ),
-        .init(name: "Helvetica Neue", resourceType: .system),
-        .init(name: "Avenir Next", resourceType: .system),
-        .init(name: "Times New Roman", resourceType: .system),
+        )
     ]
 }
