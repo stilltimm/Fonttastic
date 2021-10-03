@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import FontasticTools
 
 class FontDetailsViewController: UIViewController {
 
@@ -76,6 +77,16 @@ class FontDetailsViewController: UIViewController {
         updateTextViewStyle()
 
         textView.text = text
+
+        navigationItem.setRightBarButton(
+            UIBarButtonItem(
+                image: UIImage(systemName: Constants.exportImageName),
+                style: .plain,
+                target: self,
+                action: #selector(handleExportTap)
+            ),
+            animated: false
+        )
     }
 
     // MARK: - Private Methods
@@ -105,6 +116,28 @@ class FontDetailsViewController: UIViewController {
         textView.textAlignment = textAlignment
         textView.font = UIFontFactory.makeFont(from: fontModel, withSize: textSize)
     }
+
+    @objc private func handleExportTap() {
+        textView.resignFirstResponder()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            let cornerRadius = self.textContainerView.layer.cornerRadius
+            self.textContainerView.layer.cornerRadius = 0
+            guard let image = self.textContainerView.takeScreenshot() else {
+                return
+            }
+            self.textContainerView.layer.cornerRadius = cornerRadius
+
+            let activityViewController = UIActivityViewController(
+                activityItems: [image],
+                applicationActivities: nil
+            )
+            activityViewController.popoverPresentationController?.sourceView = self.view
+
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+    }
 }
 
 private enum Constants {
@@ -119,4 +152,6 @@ private enum Constants {
     static let initialText: String = "Quick brown fox jumps over the lazy dog"
     static let initialFontSize: CGFloat = 36.0
     static let initialFontAlignment: NSTextAlignment = .center
+
+    static let exportImageName: String = "square.and.arrow.up"
 }

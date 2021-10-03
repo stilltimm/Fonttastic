@@ -11,55 +11,30 @@ import FontasticTools
 
 class KeyboardViewController: UIInputViewController {
 
-    private var latinAlphabetKeyboardView: KeyboardView?
+    private let latinAlphabetKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
+    private lazy var latinAlphabetKeyboardView: KeyboardView = .init(viewModel: latinAlphabetKeyboardViewModel)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let fontSourceModel = FontSourceModel.akzidenzGroteskProBold
-        DefaultFontsService.shared.installFont(
-            from: fontSourceModel
-        ) { [weak self] result in
-            switch result {
-            case let .failure(error):
-                print("Failed to install font \(fontSourceModel)", error)
+        setupKeyboardView()
+    }
 
-            case let .success(fontModel):
-                print("Succesffully installed font \(fontModel)")
-                let font: UIFont = UIFontFactory.makeFont(from: fontModel, withSize: 24)
-                    ?? UIFont.systemFont(ofSize: 24, weight: .light)
-                let keyboardView = KeyboardView(
-                    viewModel: LatinAlphabetQwertyKeyboardViewModel(
-                        design: .init(
-                            letterSpacing: 4,
-                            rowSpacing: 6,
-                            edgeInsets: .init(vertical: 4, horizontal: 4),
-                            symbolDesign: .init(
-                                backgroundColor: UIColor(white: 0.9, alpha: 1.0),
-                                foregroundColor: .white,
-                                highlightedColor: UIColor(white: 0.96, alpha: 1.0),
-                                shadowSize: 2.0,
-                                cornerRadius: 4.0,
-                                labelFont: font
-                            )
-                        )
-                    )
-                )
-                self?.latinAlphabetKeyboardView = keyboardView
-                self?.setupKeyboardView(keyboardView)
-            }
-        }
+    private func setupKeyboardView() {
+        setupKeyboardView(latinAlphabetKeyboardView)
     }
 
     private func setupKeyboardView(_ keyboardView: KeyboardView) {
         view.addSubview(keyboardView)
         constrain(view, keyboardView) { view, keyboard in
             keyboard.edges == view.edges
-            view.height == 200
         }
 
-        keyboardView.didSubmitSymbolEvent.subscribe(self) { [weak self] symbol in
+        latinAlphabetKeyboardViewModel.didSubmitSymbolEvent.subscribe(self) { [weak self] symbol in
             self?.textDocumentProxy.insertText(symbol)
+        }
+        latinAlphabetKeyboardViewModel.shouldDeleteSymbolEvent.subscribe(self) { [weak self] in
+            self?.textDocumentProxy.deleteBackward()
         }
     }
     

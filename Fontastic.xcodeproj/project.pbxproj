@@ -17,18 +17,18 @@
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C8D270210A70006E27B /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FontasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FontasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		2D2A0C9E27021CDB0006E27B /* KeyboardLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C9D27021CDA0006E27B /* KeyboardLabelButton.swift */; };
+		2D2A0C9E27021CDB0006E27B /* KeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C9D27021CDA0006E27B /* KeyboardButton.swift */; };
 		2D2A0CA427022BF80006E27B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0CA327022BF80006E27B /* KeyboardView.swift */; };
 		2D2A0CB227022D390006E27B /* libFontasticTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D2A0CAB27022D2D0006E27B /* libFontasticTools.a */; };
 		2D2A0CB527022D3F0006E27B /* libFontasticTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D2A0CAB27022D2D0006E27B /* libFontasticTools.a */; };
 		2D2A0CB827022D4B0006E27B /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C842700B8D80006E27B /* WeakBox.swift */; };
 		2D2A0CB927022D4B0006E27B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C822700B7CA0006E27B /* Event.swift */; };
-		2D5239DC2702351E0039C112 /* KeyboardLabelButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DB2702351E0039C112 /* KeyboardLabelButtonViewModel.swift */; };
+		2D5239DC2702351E0039C112 /* KeyboardButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */; };
 		2D5239DE270236CA0039C112 /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
 		2D5239E0270239D10039C112 /* UIEdgeInsets+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */; };
 		2D5239E12702429C0039C112 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0CA327022BF80006E27B /* KeyboardView.swift */; };
-		2D5239E2270242A20039C112 /* KeyboardLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C9D27021CDA0006E27B /* KeyboardLabelButton.swift */; };
-		2D5239E3270242A20039C112 /* KeyboardLabelButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DB2702351E0039C112 /* KeyboardLabelButtonViewModel.swift */; };
+		2D5239E2270242A20039C112 /* KeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C9D27021CDA0006E27B /* KeyboardButton.swift */; };
+		2D5239E3270242A20039C112 /* KeyboardButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */; };
 		2D5239E4270242A20039C112 /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
@@ -41,6 +41,14 @@
 		2D5239F927024F210039C112 /* UIFontFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255726FCE4D000DFF767 /* UIFontFactory.swift */; };
 		2D5239FA27024F210039C112 /* FontModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */; };
 		2D5239FC2702503C0039C112 /* akzidenzgroteskpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */; };
+		2D5239FF2703C3650039C112 /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */; };
+		2D9AC6B32708F7D100A27841 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */; };
+		2D9AC6B52708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */; };
+		2D9AC6B62708FDE700A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */; };
+		2D9AC6B82709008700A27841 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */; };
+		2DBB1E402709E8A900E33DA9 /* KeyboardButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */; };
+		2DBB1E442709EB7F00E33DA9 /* KeyboardButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */; };
+		2DBB1E452709EE6800E33DA9 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254B26FCC84D00DFF767 /* Colors.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
 		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
@@ -136,14 +144,18 @@
 		2D2A0C8A270210A70006E27B /* FontasticKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FontasticKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		2D2A0C8E270210A70006E27B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2D2A0C9D27021CDA0006E27B /* KeyboardLabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLabelButton.swift; sourceTree = "<group>"; };
+		2D2A0C9D27021CDA0006E27B /* KeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButton.swift; sourceTree = "<group>"; };
 		2D2A0CA327022BF80006E27B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		2D2A0CAB27022D2D0006E27B /* libFontasticTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFontasticTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D5239DB2702351E0039C112 /* KeyboardLabelButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLabelButtonViewModel.swift; sourceTree = "<group>"; };
+		2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonViewModel.swift; sourceTree = "<group>"; };
 		2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
 		2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestNavigationController.swift; sourceTree = "<group>"; };
 		2D5239E8270243650039C112 /* KeyboardViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestController.swift; sourceTree = "<group>"; };
 		2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "akzidenzgroteskpro-bold.ttf"; sourceTree = "<group>"; };
+		2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
+		2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
+		2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardViewModel+LatinDefault.swift"; sourceTree = "<group>"; };
+		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
 		2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -341,9 +353,8 @@
 		2D2A0C9627021A980006E27B /* KeyboardView */ = {
 			isa = PBXGroup;
 			children = (
-				2D5239DA270235130039C112 /* ViewModels */,
-				2D5239D9270234630039C112 /* Views */,
-				2D2A0CA327022BF80006E27B /* KeyboardView.swift */,
+				2DC80F5A2709DBEF00A81F45 /* KeyboardButton */,
+				2DC80F592709DBE700A81F45 /* KeyboardView */,
 			);
 			path = KeyboardView;
 			sourceTree = "<group>";
@@ -351,30 +362,13 @@
 		2D2A0CAC27022D2D0006E27B /* FontasticTools */ = {
 			isa = PBXGroup;
 			children = (
+				2D5239FD2703C3530039C112 /* Extensions */,
 				2DD4255026FCDDBB00DFF767 /* Models */,
 				2D060EE326FCC14D00047D89 /* Services */,
 				2D2A0C822700B7CA0006E27B /* Event.swift */,
 				2D2A0C842700B8D80006E27B /* WeakBox.swift */,
-				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
 			);
 			path = FontasticTools;
-			sourceTree = "<group>";
-		};
-		2D5239D9270234630039C112 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				2D2A0C9D27021CDA0006E27B /* KeyboardLabelButton.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2D5239DA270235130039C112 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				2D5239DB2702351E0039C112 /* KeyboardLabelButtonViewModel.swift */,
-				2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2D5239E52702431C0039C112 /* KeyboardViewTest */ = {
@@ -384,6 +378,36 @@
 				2D5239E8270243650039C112 /* KeyboardViewTestController.swift */,
 			);
 			path = KeyboardViewTest;
+			sourceTree = "<group>";
+		};
+		2D5239FD2703C3530039C112 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
+				2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */,
+				2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2DC80F592709DBE700A81F45 /* KeyboardView */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A0CA327022BF80006E27B /* KeyboardView.swift */,
+				2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */,
+				2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */,
+			);
+			path = KeyboardView;
+			sourceTree = "<group>";
+		};
+		2DC80F5A2709DBEF00A81F45 /* KeyboardButton */ = {
+			isa = PBXGroup;
+			children = (
+				2D2A0C9D27021CDA0006E27B /* KeyboardButton.swift */,
+				2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */,
+				2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */,
+			);
+			path = KeyboardButton;
 			sourceTree = "<group>";
 		};
 		2DD4253926FCC44800DFF767 /* FontList */ = {
@@ -708,9 +732,12 @@
 			files = (
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
+				2D9AC6B52708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */,
 				2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */,
 				2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */,
 				2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */,
+				2D9AC6B82709008700A27841 /* KeyboardViewController.swift in Sources */,
+				2DBB1E402709E8A900E33DA9 /* KeyboardButtonDesign.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
 				2D5239E12702429C0039C112 /* KeyboardView.swift in Sources */,
 				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
@@ -718,9 +745,9 @@
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
-				2D5239E3270242A20039C112 /* KeyboardLabelButtonViewModel.swift in Sources */,
+				2D5239E3270242A20039C112 /* KeyboardButtonViewModel.swift in Sources */,
 				2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */,
-				2D5239E2270242A20039C112 /* KeyboardLabelButton.swift in Sources */,
+				2D5239E2270242A20039C112 /* KeyboardButton.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */,
 				2D5239E4270242A20039C112 /* KeyboardViewModel.swift in Sources */,
@@ -741,11 +768,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DBB1E442709EB7F00E33DA9 /* KeyboardButtonDesign.swift in Sources */,
+				2DBB1E452709EE6800E33DA9 /* Colors.swift in Sources */,
 				2D2A0CA427022BF80006E27B /* KeyboardView.swift in Sources */,
 				2D5239DE270236CA0039C112 /* KeyboardViewModel.swift in Sources */,
 				2D2A0C8D270210A70006E27B /* KeyboardViewController.swift in Sources */,
-				2D5239DC2702351E0039C112 /* KeyboardLabelButtonViewModel.swift in Sources */,
-				2D2A0C9E27021CDB0006E27B /* KeyboardLabelButton.swift in Sources */,
+				2D9AC6B62708FDE700A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */,
+				2D5239DC2702351E0039C112 /* KeyboardButtonViewModel.swift in Sources */,
+				2D2A0C9E27021CDB0006E27B /* KeyboardButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +783,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D5239FF2703C3650039C112 /* UIView+Screenshot.swift in Sources */,
 				2D5239E0270239D10039C112 /* UIEdgeInsets+Utils.swift in Sources */,
 				2D5239F927024F210039C112 /* UIFontFactory.swift in Sources */,
 				2D2A0CB927022D4B0006E27B /* Event.swift in Sources */,
@@ -760,6 +791,7 @@
 				2D5239F727024F210039C112 /* FontStatus.swift in Sources */,
 				2D5239F627024F210039C112 /* FontResourceType.swift in Sources */,
 				2D5239F327024F210039C112 /* FontModel.swift in Sources */,
+				2D9AC6B32708F7D100A27841 /* CALayer+Shadow.swift in Sources */,
 				2D2A0CB827022D4B0006E27B /* WeakBox.swift in Sources */,
 				2D5239F527024F210039C112 /* FontsRepository.swift in Sources */,
 				2D5239FA27024F210039C112 /* FontModelFactory.swift in Sources */,
@@ -927,6 +959,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = Fontastic/Info.plist;
@@ -950,6 +983,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = Fontastic/Info.plist;

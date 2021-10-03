@@ -11,9 +11,7 @@ class KeyboardViewTestNavigationController: BaseNavigationController {
 
     // MARK: - Private Properties
 
-    private let keyboardTestViewController = KeyboardViewTestViewController(
-        fontModel: .init(name: "Helvetica Neue", displayName: "Helvetica Neue", resourceType: .system, status: .ready)
-    )
+    private let keyboardTestViewController = KeyboardViewTestViewController()
 
     // MARK: - Initializers
 

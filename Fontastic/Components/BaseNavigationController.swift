@@ -15,11 +15,16 @@ class BaseNavigationController: UINavigationController {
         navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
 
+        navigationBar.titleTextAttributes = [
+            .font: UIFont(name: "Georgia-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
+            .foregroundColor: Colors.textMajor
+        ]
         navigationBar.largeTitleTextAttributes = [
-            .font: UIFont.systemFont(ofSize: 30.0, weight: .bold),
+            .font: UIFont(name: "Georgia-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold),
             .foregroundColor: Colors.textMajor
         ]
 
-        view.backgroundColor = Colors.backgroundMinor
+        navigationBar.shadowImage = UIImage()
+        view.backgroundColor = Colors.backgroundMain
     }
 }

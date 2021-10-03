@@ -18,8 +18,6 @@ class KeyboardView: UIView {
     private let viewModel: ViewModel
     var design: ViewModel.Design { viewModel.design }
 
-    let didSubmitSymbolEvent = Event<String>()
-
     // MARK: - Initializers
 
     init(viewModel: ViewModel) {
@@ -28,6 +26,7 @@ class KeyboardView: UIView {
         super.init(frame: .zero)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("Unimplemented")
     }
@@ -38,10 +37,6 @@ class KeyboardView: UIView {
         super.didMoveToSuperview()
 
         setupLayout()
-
-        didSubmitSymbolEvent.subscribe(self) { symbol in
-            print(symbol)
-        }
     }
 
     private func setupLayout() {
@@ -88,11 +83,11 @@ class KeyboardView: UIView {
         case let .nestedRow(row):
             return makeRowView(row)
 
-        case let .symbolButton(symbolViewModel):
-            symbolViewModel.didTapEvent.subscribe(self) { [weak self] symbol in
-                self?.didSubmitSymbolEvent.onNext(symbol)
-            }
-            return SymbolButton(viewModel: symbolViewModel, design: design.symbolDesign)
+        case let .button(viewModel, design):
+            return KeyboardButton(viewModel: viewModel, design: design)
+
+        case let .caseChangeButton(viewModel, design):
+            return CaseChangeKeyboardButton(caseChangeViewModel: viewModel, design: design)
         }
     }
 }

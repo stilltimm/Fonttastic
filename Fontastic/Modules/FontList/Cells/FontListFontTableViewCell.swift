@@ -47,14 +47,14 @@ struct FontListFontViewModel {
 extension FontListFontViewModel {
 
     init(withModel fontModel: FontModel) {
-        fontNameText = fontModel.displayName
+        fontNameText = "Aa"
+        detailsText = fontModel.displayName
 
         switch fontModel.status {
         case .invalid:
             status = .invalid
             fontNameLabelFont = Constants.fontNameLabelDefaultFont
             action = .openDetails(fontModel)
-            detailsText = Constants.invalidFontDetailsText
 
         case .ready:
             if let font = UIFontFactory.makeFont(
@@ -64,19 +64,16 @@ extension FontListFontViewModel {
                 status = .valid
                 fontNameLabelFont = font
                 action = .openDetails(fontModel)
-                detailsText = nil
             } else {
                 status = .invalid
                 fontNameLabelFont = Constants.fontNameLabelDefaultFont
                 action = .openDetails(fontModel)
-                detailsText = Constants.invalidFontDetailsText
             }
 
         case .uninstalled:
             status = .uninstalled
             fontNameLabelFont = Constants.fontNameLabelDefaultFont
             action = .installFont(fontModel.sourceModel)
-            detailsText = Constants.uninstalledFontDetailsText
         }
     }
 }
@@ -90,7 +87,6 @@ class FontListFontTableViewCell: UICollectionViewCell {
         boundingWidth: CGFloat
     ) -> CGFloat {
         let contentBoundingWidth = boundingWidth
-            - Constants.edgeInsets.horizontalSum
             - Constants.contentInsets.horizontalSum
 
         let textBoundingWidth = contentBoundingWidth
@@ -133,7 +129,6 @@ class FontListFontTableViewCell: UICollectionViewCell {
         }
 
         return contentHeight
-            + Constants.edgeInsets.verticalSum
             + Constants.contentInsets.verticalSum
     }
 
@@ -210,13 +205,6 @@ class FontListFontTableViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - UITableViewCell Methods
-
-    override func layoutMarginsDidChange() {
-        super.layoutMarginsDidChange()
-        self.layoutMargins = Constants.edgeInsets
-    }
-
     // MARK: - Public Methods
 
     func apply(viewModel: FontListFontViewModel) {
@@ -258,7 +246,7 @@ class FontListFontTableViewCell: UICollectionViewCell {
         containerView.addSubview(detailsTextLabel)
 
         constrain(contentView, containerView) { contentView, containerView in
-            containerView.edges == contentView.edges.inseted(by: Constants.edgeInsets)
+            containerView.edges == contentView.edges
         }
 
         constrain(
@@ -284,11 +272,10 @@ class FontListFontTableViewCell: UICollectionViewCell {
 
 private enum Constants {
 
-    static let edgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 0, right: 16)
     static let contentInsets = UIEdgeInsets(top: 14, left: 16, bottom: 16, right: 16)
     static let containerCornerRadius: CGFloat = 16.0
 
-    static let fontNameLabelTextSize: CGFloat = 24.0
+    static let fontNameLabelTextSize: CGFloat = 48.0
     static let detailsLabelTextSize: CGFloat = 16.0
     static let fontNameToDetailsSpacing: CGFloat = 2.0
 
