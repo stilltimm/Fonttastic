@@ -44,9 +44,11 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("n", "N"),
         ("m", "M"),
     ]
-    fileprivate static func lettersWidth(horizontalInsetsSum: CGFloat, letterSpacing: CGFloat) -> CGFloat {
-        let boundingWidth = UIScreen.main.bounds.width - horizontalInsetsSum
-        let widthWithoutSpacing = boundingWidth - CGFloat(firstRowLetters.count - 1) * letterSpacing
+    fileprivate static func containerWidth(horizontalInsetsSum: CGFloat) -> CGFloat {
+        return UIScreen.main.bounds.width - horizontalInsetsSum
+    }
+    fileprivate static func lettersWidth(containerWidth: CGFloat, letterSpacing: CGFloat) -> CGFloat {
+        let widthWithoutSpacing = containerWidth - CGFloat(firstRowLetters.count - 1) * letterSpacing
         return floor(floor(widthWithoutSpacing) / CGFloat(firstRowLetters.count))
     }
 
@@ -95,9 +97,9 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
                         return KeyboardViewModel.RowItem.button(symbolViewModel, design.defaultButtonDesign)
                     }
             }
-        let firstRowItems = lettersRowItems[0]
-        let secondRowItems = lettersRowItems[1]
-        var thirdRowItems = lettersRowItems[2]
+        let firstRowLetterItems = lettersRowItems[0]
+        let secondRowLetterItems = lettersRowItems[1]
+        let thirdRowLetterItems = lettersRowItems[2]
 
         // Functional buttons setup
 
@@ -110,25 +112,65 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
 
         let buttonDesignBuilder = KeyboardButtonDesignBuilder(design.defaultButtonDesign)
         let functionalButtonDesign = buttonDesignBuilder
-            .withLayoutWidth(.intrinsic(spacing: 6))
+            .withLayoutWidth(.fixed(width: design.defaultFunctionalButtonWidth))
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
             .build()
-        
-        thirdRowItems.insert(.caseChangeButton(caseChangeButtonViewModel, functionalButtonDesign), at: 0)
+
+        var thirdRowItems: [RowItem] = []
+        thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, functionalButtonDesign))
+        thirdRowItems.append(
+            .nestedRow(
+                .init(
+                    items: thirdRowLetterItems,
+                    style: .fill(spacing: design.letterSpacing)
+                )
+            )
+        )
         thirdRowItems.append(.button(backspaceViewModel, functionalButtonDesign))
 
-//        var fourthRowItems: [KeyboardViewModel.RowItem] = []
-//        let spaceButtonViewModel = LatinSpaceKeyboardButtonViewModel()
-//        let
-//        fourthRowItems.append(.button(<#T##KeyboardButtonViewModelProtocol#>, <#T##KeyboardButtonDesign#>))
+        var fourthRowItems: [KeyboardViewModel.RowItem] = []
+        let spaceButtonViewModel = LatinSpaceKeyboardButtonViewModel()
+        let spaceButtonDesign = buttonDesignBuilder
+            .withLabelFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
+            .withLayoutWidth(.fixed(width: floor(design.containerWidth - design.letterSpacing) * 3 / 4))
+            .withForegroungColor(Colors.keyboardButtonMain)
+            .withHighlightedForegroundColor(Colors.keyboardButtonMinor)
+            .build()
+        fourthRowItems.append(.button(spaceButtonViewModel, spaceButtonDesign))
+        let returnButtonViewModel = LatinReturnKeyboardButtonViewModel()
+        let returnButtonDesign = buttonDesignBuilder
+            .withLayoutWidth(.fixed(width: floor(design.containerWidth - design.letterSpacing) * 1 / 4))
+            .withForegroungColor(Colors.keyboardButtonMinor)
+            .withHighlightedForegroundColor(Colors.keyboardButtonMain)
+            .build()
+        fourthRowItems.append(.button(returnButtonViewModel, returnButtonDesign))
 
+        let additionalSymbolViewModels: [KeyboardButtonViewModelProtocol] = [
+            spaceButtonViewModel,
+            returnButtonViewModel
+        ]
+        additionalSymbolViewModels.forEach { viewModel in
+            viewModel.didTapEvent.subscribe(symbolSumbitEvent) { [weak symbolSumbitEvent] content in
+                switch content {
+                case let .text(text, _):
+                    symbolSumbitEvent?.onNext(text)
+
+                default: break
+                }
+            }
+        }
+
+        let thirdRowEmptySpace: CGFloat = design.containerWidth
+            - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
+            - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
+            - (2.0 * design.defaultFunctionalButtonWidth)
         super.init(
             rows: [
-                .init(items: firstRowItems, style: .fullWidth(spacing: design.letterSpacing)),
-                .init(items: secondRowItems, style: .fullWidth(spacing: design.letterSpacing)),
-                .init(items: thirdRowItems, style: .fullWidth(spacing: design.letterSpacing)),
-//                .init(items: fourthRowItems, style: .equallySpaced)
+                .init(items: firstRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
+                .init(items: secondRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
+                .init(items: thirdRowItems, style: .fill(spacing: floor(thirdRowEmptySpace / 2))),
+                .init(items: fourthRowItems, style: .fill(spacing: design.letterSpacing))
             ],
             design: design
         )
@@ -140,29 +182,29 @@ extension LatinAlphabetQwertyKeyboardViewModel {
     public static func `default`() -> LatinAlphabetQwertyKeyboardViewModel {
         let letterSpacing: CGFloat = 6
         let edgeInsets: UIEdgeInsets = .init(
-            vertical: 3 / UIScreen.main.scale,
-            horizontal: 3 / UIScreen.main.scale
+            top: 10,
+            left: 3,
+            bottom: 3,
+            right: 3
+        )
+        let containerWidth: CGFloat = LatinAlphabetQwertyKeyboardViewModel.containerWidth(
+            horizontalInsetsSum: edgeInsets.horizontalSum
         )
         let letterWidth: CGFloat = LatinAlphabetQwertyKeyboardViewModel.lettersWidth(
-            horizontalInsetsSum: edgeInsets.horizontalSum,
+            containerWidth: containerWidth,
             letterSpacing: letterSpacing
         )
+        let rowSpacing: CGFloat = 11
+        let touchOutset = UIEdgeInsets(vertical: rowSpacing / 2, horizontal: letterSpacing / 2)
         return LatinAlphabetQwertyKeyboardViewModel(
             design: .init(
+                containerWidth: containerWidth,
+                defaultFunctionalButtonWidth: 44,
+                letterWidth: letterWidth,
                 letterSpacing: letterSpacing,
-                rowSpacing: 11,
+                rowSpacing: rowSpacing,
                 edgeInsets: edgeInsets,
-                defaultButtonDesign: .init(
-                    layoutWidth: .fixed(width: letterWidth),
-                    layoutHeight: 44,
-                    backgroundColor: Colors.keyboardButtonShadow,
-                    foregroundColor: .white,
-                    highlightedForegroundColor: Colors.keyboardButtonMainHighlighted,
-                    shadowSize: 2.0 / UIScreen.main.scale,
-                    cornerRadius: 5.0,
-                    labelFont: UIFont.systemFont(ofSize: 25, weight: .light),
-                    iconSize: .init(width: 24.0, height: 24.0)
-                )
+                defaultButtonDesign: .default(fixedWidth: letterWidth, touchOutset: touchOutset)
             )
         )
     }

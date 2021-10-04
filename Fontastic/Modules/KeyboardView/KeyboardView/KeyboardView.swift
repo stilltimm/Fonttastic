@@ -62,11 +62,12 @@ class KeyboardView: UIView {
         rowStackView.axis = .horizontal
         rowStackView.alignment = .fill
         switch row.style {
-        case .equallySpaced:
-            rowStackView.distribution = .equalSpacing
-
-        case let .fullWidth(spacing):
+        case let .fill(spacing):
             rowStackView.distribution = .fill
+            rowStackView.spacing = spacing
+
+        case let .fillEqually(spacing):
+            rowStackView.distribution = .fillEqually
             rowStackView.spacing = spacing
         }
 

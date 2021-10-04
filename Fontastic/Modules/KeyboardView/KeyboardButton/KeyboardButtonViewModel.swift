@@ -23,42 +23,6 @@ protocol KeyboardButtonViewModelProtocol {
     var shouldUpdateContentEvent: Event<Void> { get }
 }
 
-//enum KeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
-//
-//    case `default`(DefaultKeyboardButtonViewModel)
-//    case capitalizable(CapitalizableKeyboardButtonViewModel)
-//
-//    var content: KeyboardButtonContent {
-//        switch self {
-//        case let .default(viewModel):
-//            return viewModel.content
-//
-//        case let .capitalizable(viewModel):
-//            return viewModel.content
-//        }
-//    }
-//
-//    var didTapEvent: Event<KeyboardButtonContent> {
-//        switch self {
-//        case let .default(viewModel):
-//            return viewModel.didTapEvent
-//
-//        case let .capitalizable(viewModel):
-//            return viewModel.didTapEvent
-//        }
-//    }
-//
-//    var shouldUpdateContentEvent: Event<Void> {
-//        switch self {
-//        case let .default(viewModel):
-//            return viewModel.shouldUpdateContentEvent
-//
-//        case let .capitalizable(viewModel):
-//            return viewModel.shouldUpdateContentEvent
-//        }
-//    }
-//}
-
 // MARK: - Implementations
 
 class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
@@ -79,7 +43,7 @@ class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
         self.content = .text(contentString: symbol, displayString: displayString)
     }
 
-    init(normalIconName: String, highlightedIconName: String) {
+    init(normalIconName: String, highlightedIconName: String?) {
         self.content = .systemIcon(normalIconName: normalIconName, highilightedIconName: highlightedIconName)
     }
 }
@@ -180,16 +144,18 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
     let didTapEvent = Event<KeyboardButtonContent>()
     let shouldUpdateContentEvent = Event<Void>()
+    let isCapitalizedEvent = HotEvent<Bool>(value: false)
 
     var state: State = .lowercase {
         didSet {
+            print("CaseChangeKeyboardState: \(state)")
             isCapitalizedEvent.onNext(state.isCapitalized)
+            shouldUpdateContentEvent.onNext(())
         }
     }
 
     // MARK: - Private Instance Properties
 
-    private let isCapitalizedEvent = HotEvent<Bool>(value: false)
     private var shouldTurnIntoLockedStateWorkItem: DispatchWorkItem?
     private var shouldTurnIntoLockedState: Bool = false
 
@@ -249,10 +215,83 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
                 self.shouldTurnIntoLockedState = false
             }
             self.state = targetState
-            print("CaseChangeKeyboardState: \(targetState)")
         }
     }
 }
+
+class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    var content: KeyboardButtonContent {
+        switch self.textAlignment {
+        case .left:
+            return leftAlignmentContent
+
+        case .center:
+            return centerAlignmentContent
+
+        case .right:
+            return rightAlignmentContent
+
+        default:
+            return leftAlignmentContent
+        }
+    }
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    lazy var didChangeTextAligmentEvent = HotEvent<NSTextAlignment>(value: textAlignment)
+
+    var textAlignment: NSTextAlignment = .center {
+        didSet {
+            shouldUpdateContentEvent.onNext(())
+            didChangeTextAligmentEvent.onNext(textAlignment)
+        }
+    }
+
+    // MARK: - Private Instance Properties
+
+    private var shouldTurnIntoLockedStateWorkItem: DispatchWorkItem?
+    private var shouldTurnIntoLockedState: Bool = false
+
+    private let leftAlignmentContent: KeyboardButtonContent = .systemIcon(
+        normalIconName: "text.alignleft",
+        highilightedIconName: nil
+    )
+    private let centerAlignmentContent: KeyboardButtonContent = .systemIcon(
+        normalIconName: "text.aligncenter",
+        highilightedIconName: nil
+    )
+    private let rightAlignmentContent: KeyboardButtonContent = .systemIcon(
+        normalIconName: "text.alignright",
+        highilightedIconName: nil
+    )
+
+    // MARK: - Initializers
+
+    init() {
+        didTapEvent.subscribe(self) { [weak self] _ in
+            guard let self = self else { return }
+
+            let targetTextAlignment: NSTextAlignment
+            switch self.textAlignment {
+            case .left:
+                targetTextAlignment = .center
+
+            case .center:
+                targetTextAlignment = .right
+
+            case .right:
+                targetTextAlignment = .left
+
+            default:
+                targetTextAlignment = .left
+            }
+            self.textAlignment = targetTextAlignment
+        }
+    }
+}
+
 
 private enum Constants {
 

@@ -11,31 +11,27 @@ import FontasticTools
 
 class KeyboardViewController: UIInputViewController {
 
-    private let latinAlphabetKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
-    private lazy var latinAlphabetKeyboardView: KeyboardView = .init(viewModel: latinAlphabetKeyboardViewModel)
+    private let fontasticKeyboardView = FontasticKeyboardView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupKeyboardView()
+        setupLayout()
     }
 
-    private func setupKeyboardView() {
-        setupKeyboardView(latinAlphabetKeyboardView)
-    }
-
-    private func setupKeyboardView(_ keyboardView: KeyboardView) {
-        view.addSubview(keyboardView)
-        constrain(view, keyboardView) { view, keyboard in
+    private func setupLayout() {
+        view.addSubview(fontasticKeyboardView)
+        constrain(view, fontasticKeyboardView) { view, keyboard in
             keyboard.edges == view.edges
         }
 
-        latinAlphabetKeyboardViewModel.didSubmitSymbolEvent.subscribe(self) { [weak self] symbol in
-            self?.textDocumentProxy.insertText(symbol)
-        }
-        latinAlphabetKeyboardViewModel.shouldDeleteSymbolEvent.subscribe(self) { [weak self] in
-            self?.textDocumentProxy.deleteBackward()
-        }
+
+//        latinAlphabetKeyboardViewModel.didSubmitSymbolEvent.subscribe(self) { [weak self] symbol in
+//            self?.textDocumentProxy.insertText(symbol)
+//        }
+//        latinAlphabetKeyboardViewModel.shouldDeleteSymbolEvent.subscribe(self) { [weak self] in
+//            self?.textDocumentProxy.deleteBackward()
+//        }
     }
     
     override func viewWillLayoutSubviews() {

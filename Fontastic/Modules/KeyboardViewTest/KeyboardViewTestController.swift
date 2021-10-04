@@ -27,8 +27,7 @@ class KeyboardViewTestViewController: UIViewController {
         view.backgroundColor = .clear
         return view
     }()
-    private let keyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
-    private lazy var keyboardView = KeyboardView(viewModel: keyboardViewModel)
+    private let fontasticKeyboardView = FontasticKeyboardView()
 
     // MARK: - Initializers
 
@@ -56,15 +55,15 @@ class KeyboardViewTestViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
-        containerView.backgroundColor = Colors.backgroundMinor
+        containerView.backgroundColor = Colors.backgroundMain
 
-        containerView.addSubview(keyboardView)
+        containerView.addSubview(fontasticKeyboardView)
         constrain(
-            view, scrollView, containerView, keyboardView
+            view, scrollView, containerView, fontasticKeyboardView
         ) { (view, scrollView, container, keyboard) in
             scrollView.edges == view.edges
 
-            container.width == view.width
+            (container.width == view.width).priority = .required
             container.height == UIScreen.main.bounds.height
 
             keyboard.center == container.center

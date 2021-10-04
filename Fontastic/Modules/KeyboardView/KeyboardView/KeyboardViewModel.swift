@@ -19,8 +19,8 @@ class KeyboardViewModel {
     }
 
     enum RowStyle {
-        case equallySpaced
-        case fullWidth(spacing: CGFloat)
+        case fill(spacing: CGFloat)
+        case fillEqually(spacing: CGFloat)
     }
 
     class Row {
@@ -34,6 +34,9 @@ class KeyboardViewModel {
     }
 
     struct Design {
+        let containerWidth: CGFloat
+        let defaultFunctionalButtonWidth: CGFloat
+        let letterWidth: CGFloat
         let letterSpacing: CGFloat
         let rowSpacing: CGFloat
         let edgeInsets: UIEdgeInsets

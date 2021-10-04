@@ -19,10 +19,8 @@ class KeyboardButton: UIControl {
     // MARK: - Public Instance Properties
 
     override var isHighlighted: Bool {
-        didSet {
-            guard updatesHighlightedStateFromNativeControl else { return }
-            handleIsHighlightedChanged(isHighlighted)
-        }
+        get { return false }
+        set {}
     }
 
     override var intrinsicContentSize: CGSize {
@@ -49,15 +47,17 @@ class KeyboardButton: UIControl {
 
     // MARK: - Subviews
 
-    private lazy var contentView: UIView = {
+    fileprivate lazy var contentView: UIView = {
         let view = UIView()
         view.isUserInteractionEnabled = false
         view.backgroundColor = design.foregroundColor
         view.layer.masksToBounds = true
         view.layer.cornerRadius = design.cornerRadius
+        view.layer.cornerCurve = .continuous
+//        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         return view
     }()
-    private lazy var titleLabel: UILabel = {
+    fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.isUserInteractionEnabled = false
         label.textColor = .black
@@ -66,9 +66,9 @@ class KeyboardButton: UIControl {
         label.isHidden = true
         return label
     }()
-    private let iconImageView: UIImageView = {
+    fileprivate let iconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = false
         imageView.isHidden = true
         imageView.tintColor = .black
@@ -77,9 +77,11 @@ class KeyboardButton: UIControl {
 
     // MARK: - Private Instance Properties
 
-    private let viewModel: ViewModel
-    private let design: Design
+    fileprivate let viewModel: ViewModel
+    fileprivate let design: Design
     fileprivate var updatesHighlightedStateFromNativeControl: Bool { return true }
+
+    private let layerShadow = CALayer.Shadow(color: .black, alpha: 0.75, x: 0, y: 4, blur: 16, spread: -4)
 
     // MARK: - Initializers
 
@@ -98,11 +100,25 @@ class KeyboardButton: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public Instance Methods
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let outsideFrame = CGRect(
+            x: bounds.origin.x - design.touchOutset.left,
+            y: bounds.origin.y - design.touchOutset.top,
+            width: bounds.width + design.touchOutset.left + design.touchOutset.right,
+            height: bounds.height + design.touchOutset.top + design.touchOutset.bottom
+        )
+
+        return outsideFrame.contains(point)
+    }
+
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
         backgroundColor = design.backgroundColor
         layer.masksToBounds = true
+        layer.cornerCurve = .continuous
         layer.cornerRadius = design.cornerRadius
 
         addSubview(contentView)
@@ -126,8 +142,10 @@ class KeyboardButton: UIControl {
     }
 
     private func setupBusinessLogic() {
-        self.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-        self.addTarget(self, action: #selector(playClickSound), for: .touchDown)
+        self.addTarget(self, action: #selector(handleTouchUpInside), for: .touchUpInside)
+        self.addTarget(self, action: #selector(handleTouchDown), for: .touchDown)
+        self.addTarget(self, action: #selector(handleDragExit), for: .touchDragExit)
+        self.addTarget(self, action: #selector(handleDragEnter), for: .touchDragEnter)
 
         viewModel.shouldUpdateContentEvent.subscribe(self) { [weak self] in
             self?.applyViewModelContent()
@@ -153,15 +171,47 @@ class KeyboardButton: UIControl {
         }
     }
 
-    @objc private func handleTap() {
+    @objc private func handleTouchUpInside() {
         viewModel.didTapEvent.onNext(viewModel.content)
+
+        guard updatesHighlightedStateFromNativeControl else { return }
+        handleIsHighlightedChanged(false)
     }
 
-    @objc private func playClickSound() {
+    @objc private func handleTouchDown() {
         UIDevice.current.playInputClick()
+
+        guard updatesHighlightedStateFromNativeControl else { return }
+        handleIsHighlightedChanged(true)
+    }
+
+    @objc private func handleDragEnter() {
+        guard updatesHighlightedStateFromNativeControl else { return }
+        handleIsHighlightedChanged(true)
+    }
+
+    @objc private func handleDragExit() {
+        guard updatesHighlightedStateFromNativeControl else { return }
+        handleIsHighlightedChanged(false)
     }
 
     fileprivate func handleIsHighlightedChanged(_ value: Bool) {
+        switch viewModel.content {
+        case .text:
+            if let superview = self.superview {
+                if value {
+                    superview.bringSubviewToFront(self)
+                    transform = .init(translationX: 0, y: -44)
+                    layer.applyShadow(layerShadow)
+                } else {
+                    transform = .identity
+                    layer.applyShadow(.none)
+                }
+            }
+        default:
+            break
+        }
+
         contentView.backgroundColor = value ?
             design.highlightedForegroundColor :
             design.foregroundColor
@@ -180,10 +230,14 @@ class CaseChangeKeyboardButton: KeyboardButton {
         self.caseChangeViewModel = caseChangeViewModel
         super.init(viewModel: caseChangeViewModel, design: design)
 
-        caseChangeViewModel.didTapEvent.subscribe(self) { [weak self] _ in
-            guard let self = self else { return }
-            let highlighted = self.caseChangeViewModel.state.isCapitalized
-            self.handleIsHighlightedChanged(highlighted)
+        caseChangeViewModel.isCapitalizedEvent.subscribe(self) { isCapitalized in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+
+                self.contentView.backgroundColor = isCapitalized ?
+                    design.highlightedForegroundColor :
+                    design.foregroundColor
+            }
         }
     }
 

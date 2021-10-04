@@ -57,10 +57,10 @@ final class Colors {
         dark: UIColor(hex: 0x707CAA)
     )
 
-    static let keyboardButtonShadow: UIColor = UIColor(white: 0.5, alpha: 1.0)
+    static let keyboardButtonShadow: UIColor = UIColor(white: 0.6, alpha: 1.0)
     static let keyboardButtonMain: UIColor = .white
     static let keyboardButtonMainHighlighted: UIColor = UIColor(white: 0.98, alpha: 1.0)
-    static let keyboardButtonMinor: UIColor = UIColor(white: 0.75, alpha: 1.0)
+    static let keyboardButtonMinor: UIColor = UIColor(hex: 0xB3B6C0)
 
     // MARK: - Private Type Methods
 

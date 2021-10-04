@@ -18,6 +18,22 @@ extension CALayer {
         let y: CGFloat
         let blur: CGFloat
         let spread: CGFloat
+
+        public init(
+            color: UIColor,
+            alpha: Float,
+            x: CGFloat,
+            y: CGFloat,
+            blur: CGFloat,
+            spread: CGFloat
+        ) {
+            self.color = color
+            self.alpha = alpha
+            self.x = x
+            self.y = y
+            self.blur = blur
+            self.spread = spread
+        }
     }
 
     // MARK: - Public Instance Methods
@@ -28,8 +44,8 @@ extension CALayer {
         x: CGFloat,
         y: CGFloat,
         blur: CGFloat,
-        spread: CGFloat)
-    {
+        spread: CGFloat
+    ) {
         masksToBounds = false
         shadowColor = color.cgColor
         shadowOpacity = alpha
@@ -54,4 +70,9 @@ extension CALayer {
             spread: shadow.spread
         )
     }
+}
+
+extension CALayer.Shadow {
+
+    public static let none = CALayer.Shadow(color: .clear, alpha: 0.0, x: 0, y: 0, blur: 0, spread: 0)
 }

@@ -35,8 +35,9 @@ public class DefaultFontsRepository: FontsRepository {
     // MARK: - Initializers
 
     private init() {
-        let systemFonts = UIFont.familyNames.map { fontName -> FontSourceModel in
-            FontSourceModel(name: fontName, resourceType: .system)
+        let systemFonts = UIFont.familyNames.compactMap { fontName -> FontSourceModel? in
+            guard !fontName.lowercased().contains("system") else { return nil }
+            return FontSourceModel(name: fontName, resourceType: .system)
         }
         var allPreinstalledFonts: [FontSourceModel] = [.akzidenzGroteskProBold]
         allPreinstalledFonts.append(contentsOf: systemFonts)

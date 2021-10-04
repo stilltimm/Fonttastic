@@ -11,10 +11,11 @@ import UIKit
 public class UIFontFactory {
 
     public static func makeFont(from fontModel: FontModel, withSize size: CGFloat) -> UIFont? {
-        return UIFont(name: fontModel.name, size: size)
+        return makeFont(withName: fontModel.name, withSize: size)
     }
 
     public static func makeFont(withName name: String, withSize size: CGFloat) -> UIFont? {
-        return UIFont(name: name, size: size)
+        let descriptor = UIFontDescriptor(name: name, size: size)
+        return UIFont(descriptor: descriptor, size: size)
     }
 }

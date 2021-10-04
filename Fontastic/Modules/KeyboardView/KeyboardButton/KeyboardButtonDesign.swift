@@ -27,6 +27,7 @@ struct KeyboardButtonDesign {
     let cornerRadius: CGFloat
     let labelFont: UIFont
     let iconSize: CGSize
+    let touchOutset: UIEdgeInsets
 }
 
 class KeyboardButtonDesignBuilder {
@@ -39,6 +40,7 @@ class KeyboardButtonDesignBuilder {
     private var backgroundColor: UIColor
     private var foregroundColor: UIColor
     private var highlightedForegroundColor: UIColor
+    private var labelFont: UIFont
 
     // MARK: - Initializers
 
@@ -48,6 +50,7 @@ class KeyboardButtonDesignBuilder {
         self.backgroundColor = base.backgroundColor
         self.foregroundColor = base.foregroundColor
         self.highlightedForegroundColor = base.highlightedForegroundColor
+        self.labelFont = base.labelFont
     }
 
     // MARK: - Public Instance Methods
@@ -68,6 +71,10 @@ class KeyboardButtonDesignBuilder {
         self.highlightedForegroundColor = value
         return self
     }
+    func withLabelFont(_ value: UIFont) -> Self {
+        self.labelFont = value
+        return self
+    }
     func build() -> KeyboardButtonDesign {
         return KeyboardButtonDesign(
             layoutWidth: layoutWidth,
@@ -77,8 +84,27 @@ class KeyboardButtonDesignBuilder {
             highlightedForegroundColor: highlightedForegroundColor,
             shadowSize: base.shadowSize,
             cornerRadius: base.cornerRadius,
-            labelFont: base.labelFont,
-            iconSize: base.iconSize
+            labelFont: labelFont,
+            iconSize: base.iconSize,
+            touchOutset: base.touchOutset
+        )
+    }
+}
+
+extension KeyboardButtonDesign {
+
+    static func `default`(fixedWidth: CGFloat, touchOutset: UIEdgeInsets) -> KeyboardButtonDesign {
+        KeyboardButtonDesign(
+            layoutWidth: .fixed(width: fixedWidth),
+            layoutHeight: 43,
+            backgroundColor: Colors.keyboardButtonShadow,
+            foregroundColor: .white,
+            highlightedForegroundColor: Colors.keyboardButtonMainHighlighted,
+            shadowSize: 1,
+            cornerRadius: 5.0,
+            labelFont: UIFont.systemFont(ofSize: 24, weight: .regular),
+            iconSize: .init(width: 24.0, height: 24.0),
+            touchOutset: touchOutset
         )
     }
 }

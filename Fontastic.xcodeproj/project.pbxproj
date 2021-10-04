@@ -49,6 +49,12 @@
 		2DBB1E402709E8A900E33DA9 /* KeyboardButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */; };
 		2DBB1E442709EB7F00E33DA9 /* KeyboardButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */; };
 		2DBB1E452709EE6800E33DA9 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254B26FCC84D00DFF767 /* Colors.swift */; };
+		2DC34894270B264D00420C63 /* CanvasWithSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */; };
+		2DC34896270B265F00420C63 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34895270B265F00420C63 /* CanvasView.swift */; };
+		2DC34899270B269100420C63 /* FontasticKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34898270B269100420C63 /* FontasticKeyboardView.swift */; };
+		2DC3489A270B2B2600420C63 /* CanvasWithSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */; };
+		2DC3489B270B2B2800420C63 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34895270B265F00420C63 /* CanvasView.swift */; };
+		2DC3489C270B2B2A00420C63 /* FontasticKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34898270B269100420C63 /* FontasticKeyboardView.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
 		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
@@ -156,6 +162,9 @@
 		2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardViewModel+LatinDefault.swift"; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
+		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
+		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		2DC34898270B269100420C63 /* FontasticKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontasticKeyboardView.swift; sourceTree = "<group>"; };
 		2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
@@ -353,6 +362,8 @@
 		2D2A0C9627021A980006E27B /* KeyboardView */ = {
 			isa = PBXGroup;
 			children = (
+				2DC34897270B267E00420C63 /* FontasticKeyboardView */,
+				2DC34892270B263200420C63 /* CanvasWithSettingsView */,
 				2DC80F5A2709DBEF00A81F45 /* KeyboardButton */,
 				2DC80F592709DBE700A81F45 /* KeyboardView */,
 			);
@@ -388,6 +399,23 @@
 				2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2DC34892270B263200420C63 /* CanvasWithSettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */,
+				2DC34895270B265F00420C63 /* CanvasView.swift */,
+			);
+			path = CanvasWithSettingsView;
+			sourceTree = "<group>";
+		};
+		2DC34897270B267E00420C63 /* FontasticKeyboardView */ = {
+			isa = PBXGroup;
+			children = (
+				2DC34898270B269100420C63 /* FontasticKeyboardView.swift */,
+			);
+			path = FontasticKeyboardView;
 			sourceTree = "<group>";
 		};
 		2DC80F592709DBE700A81F45 /* KeyboardView */ = {
@@ -732,6 +760,7 @@
 			files = (
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
+				2DC34896270B265F00420C63 /* CanvasView.swift in Sources */,
 				2D9AC6B52708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */,
 				2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */,
 				2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */,
@@ -742,6 +771,7 @@
 				2D5239E12702429C0039C112 /* KeyboardView.swift in Sources */,
 				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
 				2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */,
+				2DC34899270B269100420C63 /* FontasticKeyboardView.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
@@ -749,6 +779,7 @@
 				2DD4255B26FD487A00DFF767 /* FontListFontTableViewCell.swift in Sources */,
 				2D5239E2270242A20039C112 /* KeyboardButton.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
+				2DC34894270B264D00420C63 /* CanvasWithSettingsView.swift in Sources */,
 				2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */,
 				2D5239E4270242A20039C112 /* KeyboardViewModel.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
@@ -770,11 +801,14 @@
 			files = (
 				2DBB1E442709EB7F00E33DA9 /* KeyboardButtonDesign.swift in Sources */,
 				2DBB1E452709EE6800E33DA9 /* Colors.swift in Sources */,
+				2DC3489B270B2B2800420C63 /* CanvasView.swift in Sources */,
 				2D2A0CA427022BF80006E27B /* KeyboardView.swift in Sources */,
 				2D5239DE270236CA0039C112 /* KeyboardViewModel.swift in Sources */,
 				2D2A0C8D270210A70006E27B /* KeyboardViewController.swift in Sources */,
+				2DC3489C270B2B2A00420C63 /* FontasticKeyboardView.swift in Sources */,
 				2D9AC6B62708FDE700A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */,
 				2D5239DC2702351E0039C112 /* KeyboardButtonViewModel.swift in Sources */,
+				2DC3489A270B2B2600420C63 /* CanvasWithSettingsView.swift in Sources */,
 				2D2A0C9E27021CDB0006E27B /* KeyboardButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -963,7 +997,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = Fontastic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -987,7 +1021,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = Fontastic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1053,7 +1087,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = FontasticKeyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1075,7 +1109,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = FontasticKeyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
