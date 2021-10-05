@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 enum KeyboardButtonLayoutStyle {
 
@@ -28,6 +29,9 @@ struct KeyboardButtonDesign {
     let labelFont: UIFont
     let iconSize: CGSize
     let touchOutset: UIEdgeInsets
+    let isMagnificationEnabled: Bool
+
+    let pressSoundID: SystemSoundID?
 }
 
 class KeyboardButtonDesignBuilder {
@@ -41,6 +45,10 @@ class KeyboardButtonDesignBuilder {
     private var foregroundColor: UIColor
     private var highlightedForegroundColor: UIColor
     private var labelFont: UIFont
+    private var iconSize: CGSize
+    private var touchOutset: UIEdgeInsets
+    private var isMagnificationEnabled: Bool
+    private var pressSoundID: SystemSoundID?
 
     // MARK: - Initializers
 
@@ -51,6 +59,10 @@ class KeyboardButtonDesignBuilder {
         self.foregroundColor = base.foregroundColor
         self.highlightedForegroundColor = base.highlightedForegroundColor
         self.labelFont = base.labelFont
+        self.iconSize = base.iconSize
+        self.touchOutset = base.touchOutset
+        self.isMagnificationEnabled = base.isMagnificationEnabled
+        self.pressSoundID = base.pressSoundID
     }
 
     // MARK: - Public Instance Methods
@@ -75,6 +87,22 @@ class KeyboardButtonDesignBuilder {
         self.labelFont = value
         return self
     }
+    func withIconSize(_ value: UIFont) -> Self {
+        self.labelFont = value
+        return self
+    }
+    func withTouchOutset(_ value: UIFont) -> Self {
+        self.labelFont = value
+        return self
+    }
+    func withIsMagnificationEnabled(_ value: Bool) -> Self {
+        self.isMagnificationEnabled = value
+        return self
+    }
+    func withPressSoundID(_ value: SystemSoundID?) -> Self {
+        self.pressSoundID = value
+        return self
+    }
     func build() -> KeyboardButtonDesign {
         return KeyboardButtonDesign(
             layoutWidth: layoutWidth,
@@ -85,8 +113,10 @@ class KeyboardButtonDesignBuilder {
             shadowSize: base.shadowSize,
             cornerRadius: base.cornerRadius,
             labelFont: labelFont,
-            iconSize: base.iconSize,
-            touchOutset: base.touchOutset
+            iconSize: iconSize,
+            touchOutset: touchOutset,
+            isMagnificationEnabled: isMagnificationEnabled,
+            pressSoundID: pressSoundID
         )
     }
 }
@@ -98,13 +128,15 @@ extension KeyboardButtonDesign {
             layoutWidth: .fixed(width: fixedWidth),
             layoutHeight: 43,
             backgroundColor: Colors.keyboardButtonShadow,
-            foregroundColor: .white,
+            foregroundColor: Colors.keyboardButtonMain,
             highlightedForegroundColor: Colors.keyboardButtonMainHighlighted,
             shadowSize: 1,
             cornerRadius: 5.0,
             labelFont: UIFont.systemFont(ofSize: 24, weight: .regular),
             iconSize: .init(width: 24.0, height: 24.0),
-            touchOutset: touchOutset
+            touchOutset: touchOutset,
+            isMagnificationEnabled: true,
+            pressSoundID: Sounds.defaultKeyPress
         )
     }
 }

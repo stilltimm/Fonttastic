@@ -107,27 +107,31 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             capitalizationSource: isCapitalizedSourceEvent,
             textInsertedSource: symbolSumbitEvent
         )
-
         let backspaceViewModel = BackspaceKeyboardButtonViewModel(shouldDeleteSymbolEvent: shouldDeleteSymbolEvent)
 
         let buttonDesignBuilder = KeyboardButtonDesignBuilder(design.defaultButtonDesign)
-        let functionalButtonDesign = buttonDesignBuilder
+        let caseChangeButtonDesign = buttonDesignBuilder
             .withLayoutWidth(.fixed(width: design.defaultFunctionalButtonWidth))
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
+            .withIsMagnificationEnabled(false)
+            .withPressSoundID(Sounds.caseChangeKeyPress)
+            .build()
+        let backspaceButtonDesign = buttonDesignBuilder
+            .withPressSoundID(Sounds.deleteKeyPress)
             .build()
 
         var thirdRowItems: [RowItem] = []
-        thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, functionalButtonDesign))
+        thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, caseChangeButtonDesign))
         thirdRowItems.append(
             .nestedRow(
                 .init(
                     items: thirdRowLetterItems,
-                    style: .fill(spacing: design.letterSpacing)
+                    style: .fillEqually(spacing: design.letterSpacing)
                 )
             )
         )
-        thirdRowItems.append(.button(backspaceViewModel, functionalButtonDesign))
+        thirdRowItems.append(.button(backspaceViewModel, backspaceButtonDesign))
 
         var fourthRowItems: [KeyboardViewModel.RowItem] = []
         let spaceButtonViewModel = LatinSpaceKeyboardButtonViewModel()
@@ -136,6 +140,8 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             .withLayoutWidth(.fixed(width: floor(design.containerWidth - design.letterSpacing) * 3 / 4))
             .withForegroungColor(Colors.keyboardButtonMain)
             .withHighlightedForegroundColor(Colors.keyboardButtonMinor)
+            .withIsMagnificationEnabled(false)
+            .withPressSoundID(Sounds.defaultKeyPress)
             .build()
         fourthRowItems.append(.button(spaceButtonViewModel, spaceButtonDesign))
         let returnButtonViewModel = LatinReturnKeyboardButtonViewModel()

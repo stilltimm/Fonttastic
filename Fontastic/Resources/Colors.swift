@@ -57,10 +57,26 @@ final class Colors {
         dark: UIColor(hex: 0x707CAA)
     )
 
-    static let keyboardButtonShadow: UIColor = UIColor(white: 0.6, alpha: 1.0)
-    static let keyboardButtonMain: UIColor = .white
-    static let keyboardButtonMainHighlighted: UIColor = UIColor(white: 0.98, alpha: 1.0)
-    static let keyboardButtonMinor: UIColor = UIColor(hex: 0xB3B6C0)
+    static let blackAndWhite: UIColor = makeDynamicColor(light: .black, dark: .white)
+    static let whiteAndBlack: UIColor = makeDynamicColor(light: .white, dark: .black)
+
+    static let keyboardButtonContent: UIColor = blackAndWhite
+    static let keyboardButtonShadow: UIColor = makeDynamicColor(
+        light: UIColor(white: 0.6, alpha: 1.0),
+        dark: UIColor(white: 0.11, alpha: 1.0)
+    )
+    static let keyboardButtonMain: UIColor = makeDynamicColor(
+        light: .white,
+        dark: UIColor(white: 0.44, alpha: 1.0)
+    )
+    static let keyboardButtonMainHighlighted: UIColor = makeDynamicColor(
+        light: UIColor(white: 0.98, alpha: 1.0),
+        dark: UIColor(white: 0.49, alpha: 1.0)
+    )
+    static let keyboardButtonMinor: UIColor = makeDynamicColor(
+        light: UIColor(hex: 0xB3B6C0),
+        dark: UIColor(white: 0.28, alpha: 1.0)
+    )
 
     // MARK: - Private Type Methods
 

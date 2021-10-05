@@ -225,24 +225,24 @@ class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol {
 
     var content: KeyboardButtonContent {
         switch self.textAlignment {
-        case .left:
-            return leftAlignmentContent
-
         case .center:
             return centerAlignmentContent
+
+        case .left:
+            return leftAlignmentContent
 
         case .right:
             return rightAlignmentContent
 
         default:
-            return leftAlignmentContent
+            return centerAlignmentContent
         }
     }
     let didTapEvent = Event<KeyboardButtonContent>()
     let shouldUpdateContentEvent = Event<Void>()
     lazy var didChangeTextAligmentEvent = HotEvent<NSTextAlignment>(value: textAlignment)
 
-    var textAlignment: NSTextAlignment = .center {
+    var textAlignment: NSTextAlignment = Constants.defaultTextAlignment {
         didSet {
             shouldUpdateContentEvent.onNext(())
             didChangeTextAligmentEvent.onNext(textAlignment)
@@ -275,17 +275,17 @@ class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol {
 
             let targetTextAlignment: NSTextAlignment
             switch self.textAlignment {
-            case .left:
-                targetTextAlignment = .center
-
             case .center:
+                targetTextAlignment = .left
+
+            case .left:
                 targetTextAlignment = .right
 
             case .right:
-                targetTextAlignment = .left
+                targetTextAlignment = .center
 
             default:
-                targetTextAlignment = .left
+                targetTextAlignment = Constants.defaultTextAlignment
             }
             self.textAlignment = targetTextAlignment
         }
@@ -295,5 +295,6 @@ class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol {
 
 private enum Constants {
 
-    static let uppercaseLockTimeout: TimeInterval = 0.5
+    static let defaultTextAlignment: NSTextAlignment = .center
+    static let uppercaseLockTimeout: TimeInterval = 0.3
 }

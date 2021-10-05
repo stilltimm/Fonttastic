@@ -3,11 +3,17 @@ import Cartography
 
 class FontasticKeyboardView: UIView {
 
-    let canvasWithSettingsView = CanvasWithSettingsView()
+    // MARK: - Subviews
 
-    let latinKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
+    let canvasWithSettingsView = CanvasWithSettingsView()
     lazy var latinKeyboardView = KeyboardView(viewModel: latinKeyboardViewModel)
 
+    // MARK: - Public Instance Properties
+
+    let latinKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
+
+    // MARK: - Initializers
+    
     init() {
         super.init(frame: .zero)
 
@@ -18,6 +24,8 @@ class FontasticKeyboardView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Private Instance Methods
 
     private func setupLayout() {
         addSubview(canvasWithSettingsView)

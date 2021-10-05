@@ -8,6 +8,7 @@
 import UIKit
 import Cartography
 import FontasticTools
+import AudioToolbox
 
 class KeyboardButton: UIControl {
 
@@ -52,15 +53,14 @@ class KeyboardButton: UIControl {
         view.isUserInteractionEnabled = false
         view.backgroundColor = design.foregroundColor
         view.layer.masksToBounds = true
-        view.layer.cornerRadius = design.cornerRadius
+        view.layer.cornerRadius = design.cornerRadius - 1 
         view.layer.cornerCurve = .continuous
-//        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         return view
     }()
     fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.isUserInteractionEnabled = false
-        label.textColor = .black
+        label.textColor = Colors.keyboardButtonContent
         label.font = design.labelFont
         label.textAlignment = .center
         label.isHidden = true
@@ -71,7 +71,7 @@ class KeyboardButton: UIControl {
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = false
         imageView.isHidden = true
-        imageView.tintColor = .black
+        imageView.tintColor = Colors.keyboardButtonContent
         return imageView
     }()
 
@@ -179,7 +179,9 @@ class KeyboardButton: UIControl {
     }
 
     @objc private func handleTouchDown() {
-        UIDevice.current.playInputClick()
+        if let soundID = design.pressSoundID {
+            AudioServicesPlaySystemSound(soundID)
+        }
 
         guard updatesHighlightedStateFromNativeControl else { return }
         handleIsHighlightedChanged(true)
@@ -196,12 +198,13 @@ class KeyboardButton: UIControl {
     }
 
     fileprivate func handleIsHighlightedChanged(_ value: Bool) {
-        switch viewModel.content {
-        case .text:
+        switch (design.isMagnificationEnabled, viewModel.content) {
+        case (true, .text):
             if let superview = self.superview {
                 if value {
                     superview.bringSubviewToFront(self)
-                    transform = .init(translationX: 0, y: -44)
+                    transform = .init(translationX: 0, y: -intrinsicContentSize.height)
+                        .concatenating(.init(scaleX: 1.5, y: 1.5))
                     layer.applyShadow(layerShadow)
                 } else {
                     transform = .identity

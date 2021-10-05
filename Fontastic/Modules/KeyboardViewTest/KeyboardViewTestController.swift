@@ -48,6 +48,7 @@ class KeyboardViewTestViewController: UIViewController {
         navigationItem.title = "Keyboard View"
 
         setupLayout()
+        setupBusinessLogic()
     }
 
     // MARK: - Private Methods
@@ -68,5 +69,22 @@ class KeyboardViewTestViewController: UIViewController {
 
             keyboard.center == container.center
         }
+    }
+
+    private func setupBusinessLogic() {
+        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
+            .subscribe(self) { [weak self] in
+                print("Should present UIFontPickerViewController")
+            }
+
+        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
+            .subscribe(self) { [weak self] in
+                print("Should present UIColorPickerViewController for backgroundColor")
+            }
+
+        fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
+            .subscribe(self) { [weak self] in
+                print("Should present UIColorPickerViewController for textColor")
+            }
     }
 }
