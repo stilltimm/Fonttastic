@@ -17,6 +17,28 @@ class CanvasWithSettingsView: UIView {
     let shouldPresentTextColorPickerEvent = Event<Void>()
     let shouldPresentBackgroundColorPickerEvent = Event<Void>()
 
+    var canvasLabelFont: UIFont {
+        get { canvasViewDesign.font }
+        set {
+            canvasViewDesign.font = newValue
+            updateCanvasViewDesign()
+        }
+    }
+    var canvasBackgroundColor: UIColor {
+        get { canvasViewDesign.backgroundColor }
+        set {
+            canvasViewDesign.backgroundColor = newValue
+            updateCanvasViewDesign()
+        }
+    }
+    var canvasTextColor: UIColor {
+        get { canvasViewDesign.textColor }
+        set {
+            canvasViewDesign.textColor = newValue
+            updateCanvasViewDesign()
+        }
+    }
+
     // MARK: - Subviews
 
     private let canvasContainerButton: UIButton = {
@@ -24,7 +46,7 @@ class CanvasWithSettingsView: UIView {
         button.backgroundColor = .clear
         return button
     }()
-    private let canvasView: CanvasView
+    private let canvasView = CanvasView()
 
     private let copiedStatusLabel: UILabel = {
         let label = UILabel()
@@ -39,7 +61,7 @@ class CanvasWithSettingsView: UIView {
         let view = UIView()
         view.backgroundColor = Colors.blackAndWhite
         view.isUserInteractionEnabled = false
-        view.layer.cornerRadius = 32.0
+        view.layer.cornerRadius = 16.0
         view.layer.cornerCurve = .continuous
         return view
     }()
@@ -90,15 +112,18 @@ class CanvasWithSettingsView: UIView {
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
             .build()
-        canvasView = CanvasView(design: canvasViewDesign)
 
         fontChangeButton = KeyboardButton(
             viewModel: fontChangeViewModel,
             design: functionalButtonDesign
         )
+
+        let backgroundChangeButtonDesign = keyboardButtonDesignBuilder
+            .withIconSize(CGSize(width: 36, height: 36))
+            .build()
         backgroundColorChangeButton = KeyboardButton(
             viewModel: backgroundColorChangeViewModel,
-            design: functionalButtonDesign
+            design: backgroundChangeButtonDesign
         )
 
         textAlignmentChangeButton = KeyboardButton(
@@ -181,6 +206,7 @@ class CanvasWithSettingsView: UIView {
         }
 
         canvasView.isUserInteractionEnabled = false
+        updateCanvasViewDesign()
     }
 
     private func setupBusinessLogic() {
@@ -213,6 +239,9 @@ class CanvasWithSettingsView: UIView {
 
     private func updateCanvasViewDesign() {
         canvasView.applyDesign(canvasViewDesign)
+        backgroundColorChangeButton.iconImageView.tintColor = canvasViewDesign.backgroundColor
+        textColorChangeButton.iconImageView.tintColor = canvasViewDesign.textColor
+
         setCopiedStatusLabel(isHidden: true, animated: false)
     }
 

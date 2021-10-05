@@ -87,12 +87,12 @@ class KeyboardButtonDesignBuilder {
         self.labelFont = value
         return self
     }
-    func withIconSize(_ value: UIFont) -> Self {
-        self.labelFont = value
+    func withIconSize(_ value: CGSize) -> Self {
+        self.iconSize = value
         return self
     }
-    func withTouchOutset(_ value: UIFont) -> Self {
-        self.labelFont = value
+    func withTouchOutset(_ value: UIEdgeInsets) -> Self {
+        self.touchOutset = value
         return self
     }
     func withIsMagnificationEnabled(_ value: Bool) -> Self {

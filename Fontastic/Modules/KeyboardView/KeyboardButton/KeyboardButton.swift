@@ -66,7 +66,7 @@ class KeyboardButton: UIControl {
         label.isHidden = true
         return label
     }()
-    fileprivate let iconImageView: UIImageView = {
+    let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = false

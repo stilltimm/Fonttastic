@@ -46,8 +46,6 @@ class CanvasView: UIView {
 
     // MARK: -
 
-    private var design: Design
-
     private let layerShadow: CALayer.Shadow = .init(
         color: .black,
         alpha: 0.5,
@@ -59,9 +57,7 @@ class CanvasView: UIView {
 
     // MARK: - Initializers
 
-    init(design: Design) {
-        self.design = design
-
+    init() {
         super.init(frame: .zero)
 
         setupLayout()
@@ -87,8 +83,6 @@ class CanvasView: UIView {
     }
 
     func applyDesign(_ design: Design) {
-        self.design = design
-
         backgroundColor = design.backgroundColor
         textView.font = design.font
         textView.textColor = design.textColor
