@@ -11,7 +11,7 @@ extension CALayer {
 
     // MARK: - Nested Types
 
-    public struct Shadow {
+    public struct Shadow: Equatable {
         let color: UIColor
         let alpha: Float
         let x: CGFloat
@@ -50,12 +50,17 @@ extension CALayer {
         shadowColor = color.cgColor
         shadowOpacity = alpha
         shadowOffset = CGSize(width: x, height: y)
-        shadowRadius = blur / 2.0
+        shadowRadius = blur / Constants.blurMultiplier
         if spread == 0 {
             shadowPath = nil
         } else {
-            let dx = -spread
-            let rect = bounds.insetBy(dx: dx, dy: dx)
+            let rect = CGRect(
+                origin: CGPoint(x: -spread, y: -spread),
+                size: CGSize(
+                    width: max(bounds.width + 2 * spread, 1),
+                    height: max(bounds.height + 2 * spread, 1)
+                )
+            )
             shadowPath = UIBezierPath(rect: rect).cgPath
         }
     }
@@ -70,9 +75,36 @@ extension CALayer {
             spread: shadow.spread
         )
     }
+
+    public var shadow: Shadow {
+        get {
+            let spread: CGFloat
+            if let shadowPath = self.shadowPath, !shadowPath.isEmpty {
+                spread = -shadowPath.boundingBox.origin.x
+            } else {
+                spread = 0
+            }
+            return .init(
+                color: UIColor(cgColor: shadowColor ?? UIColor.clear.cgColor),
+                alpha: shadowOpacity,
+                x: shadowOffset.width,
+                y: shadowOffset.height,
+                blur: shadowRadius * Constants.blurMultiplier,
+                spread: spread
+            )
+        }
+        set {
+            applyShadow(newValue)
+        }
+    }
 }
 
 extension CALayer.Shadow {
 
     public static let none = CALayer.Shadow(color: .clear, alpha: 0.0, x: 0, y: 0, blur: 0, spread: 0)
+}
+
+private enum Constants {
+
+    static let blurMultiplier: CGFloat = 2.0
 }

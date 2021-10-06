@@ -11,6 +11,8 @@ class SettingsViewController: UIViewController {
 
     // MARK: - Private Properties
 
+    // TODO: Add image export settings
+
     // MARK: - Initializers
 
     init() {

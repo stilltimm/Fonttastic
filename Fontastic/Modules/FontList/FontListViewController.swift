@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import FontasticTools
 
 class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 
@@ -23,18 +24,25 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     // MARK: - Private Properties
 
-    private let fontsService: FontsService = DefaultFontsService.shared
-    private let fontsRepository: FontsRepository = DefaultFontsRepository.shared
-    private var fontViewModels: [FontListFontViewModel] = []
-    private let fontCellIdentifier: String = "FontCell"
+    private var viewModel: FontListViewModel
+    private let columnsCount: Int = {
+        let screenWidth = UIScreen.main.bounds.width
+        if screenWidth >= 375.0 {
+            return 3
+        }
+
+        return 2
+    }()
+    private var cachedCollectionViewBoundingWidth: CGFloat?
+    private var cachedFontCellBoundingWidth: CGFloat?
+    private var cachedFontCellRowHeights: [Int: CGFloat] = [:]
 
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
 
-    private let columnsCount: Int = 2
-
     // MARK: - Initializers
 
-    init() {
+    init(viewModel: FontListViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -52,11 +60,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         navigationItem.title = Constants.title
 
         setupLayout()
+        setupBusinessLogic()
         reloadData()
-
-        fontsRepository.didUpdateFontsEvent.subscribe(self) { [weak self] in
-            self?.reloadData()
-        }
     }
 
     // MARK: - Private Methods
@@ -68,18 +73,30 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
 
         collectionView.backgroundColor = .clear
-        collectionView.register(
-            FontListFontTableViewCell.self,
-            forCellWithReuseIdentifier: fontCellIdentifier
-        )
         collectionView.contentInset.bottom = 16
         collectionView.isMultipleTouchEnabled = false
         collectionView.alwaysBounceVertical = true
         collectionView.alwaysBounceHorizontal = false
+
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+
+    private func setupBusinessLogic() {
+        viewModel.shouldReloadDataEvent.subscribe(self) { [weak self] in
+            self?.reloadData()
+        }
+
+        viewModel.didTapKeyboardInstallBanner.subscribe(self) { [weak self] in
+            self?.openKeyboardSettings()
+        }
     }
 
     private func reloadData() {
-        fontViewModels = fontsRepository.fonts.map { FontListFontViewModel(withModel: $0) }
+        cachedCollectionViewBoundingWidth = nil
+        cachedFontCellBoundingWidth = nil
+        cachedFontCellRowHeights = [:]
+
         collectionView.reloadData()
     }
 
@@ -88,48 +105,64 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         navigationController?.pushViewController(fontDetailsViewController, animated: true)
     }
 
-    private func installFont(from fontSourceModel: FontSourceModel) {
-        fontsService.installFont(from: fontSourceModel) { result in
-            switch result {
-            case let .success(fontModel):
-                print("Successfully installed font \(fontModel)")
-
-            case let .failure(error):
-                print("Failed to installed font from source \(fontSourceModel) with error \(error)")
-            }
-        }
+    private func openKeyboardSettings() {
+        print("Should open Keyboard settings")
     }
 }
 
 extension FontListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return viewModel.sections.count
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return fontViewModels.count
+        guard let section = viewModel.sections[safe: section] else { return 0 }
+        switch section {
+        case .title, .banner:
+            return 1
+
+        case let .fontList(sectionModel):
+            return sectionModel.fontViewModels.count
+        }
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let fontViewModel = fontViewModels[safe: indexPath.row] else {
-            return UICollectionViewCell()
+        guard let section = viewModel.sections[safe: indexPath.section] else { return UICollectionViewCell() }
+        switch section {
+        case let .banner(sectionModel):
+            return bannerCell(
+                collectionView: collectionView,
+                indexPath: indexPath,
+                viewModel: sectionModel.bannerViewModel,
+                design: sectionModel.bannerDesign
+            )
+
+        case let .title(sectionModel):
+            return titleCell(
+                collectionView: collectionView,
+                indexPath: indexPath,
+                viewModel: sectionModel.titleViewModel,
+                design: sectionModel.titleDesign
+            )
+
+        case let .fontList(sectionModel):
+            guard
+                let fontViewModel = sectionModel.fontViewModels[safe: indexPath.item]
+            else { return UICollectionViewCell() }
+
+            return fontCell(
+                collectionView: collectionView,
+                indexPath: indexPath,
+                viewModel: fontViewModel
+            )
         }
-
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: fontCellIdentifier, for: indexPath)
-        guard let fontCell = cell as? FontListFontTableViewCell else {
-            return UICollectionViewCell()
-        }
-
-        fontCell.apply(viewModel: fontViewModel)
-
-        return fontCell
     }
 
     func collectionView(
@@ -138,15 +171,28 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
     ) {
         collectionView.deselectItem(at: indexPath, animated: true)
 
-        guard let cellViewModel = fontViewModels[safe: indexPath.item] else { return }
+        guard let section = viewModel.sections[safe: indexPath.section] else { return }
+        switch section {
+        case let .banner(sectionModel):
+            impactFeedbackGenerator.impactOccurred()
+            sectionModel.bannerViewModel.didTapEvent.onNext(())
 
-        impactFeedbackGenerator.impactOccurred()
-        switch cellViewModel.action {
-        case let .installFont(source):
-            installFont(from: source)
+        case .title:
+            break
 
-        case let .openDetails(fontModel):
-            openFontDetails(fontModel)
+        case let .fontList(sectionModel):
+            guard
+                let fontViewModel = sectionModel.fontViewModels[safe: indexPath.item]
+            else { return }
+
+            impactFeedbackGenerator.impactOccurred()
+            switch fontViewModel.action {
+            case let .installFont(source):
+                viewModel.installFont(from: source)
+
+            case let .openDetails(fontModel):
+                openFontDetails(fontModel)
+            }
         }
     }
 
@@ -155,18 +201,123 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let viewModel = fontViewModels[safe: indexPath.item] else { return .zero }
+        guard let section = viewModel.sections[safe: indexPath.section] else { return .zero }
 
-        let columnsSpacing = CGFloat(self.columnsCount - 1) * self.collectionViewLayout.minimumInteritemSpacing
-        let estimatedWidth = collectionView.bounds.width
-            - self.collectionViewLayout.sectionInset.horizontalSum
-            - columnsSpacing
-        let cellWidth = floor(estimatedWidth)
-        let cellHeight = FontListFontTableViewCell.height(
-            for: viewModel,
-            boundingWidth: cellWidth
-        )
-        return CGSize(width: cellWidth, height: cellHeight)
+        let boundingWidth: CGFloat
+        if let cachedBoundingWidth = self.cachedCollectionViewBoundingWidth {
+            boundingWidth = cachedBoundingWidth
+        } else {
+            boundingWidth = collectionView.bounds.width - self.collectionViewLayout.sectionInset.horizontalSum
+        }
+        switch section {
+        case let .banner(sectionModel):
+            let height = FontListBannerCell.height(
+                boundingWidth: boundingWidth,
+                viewModel: sectionModel.bannerViewModel,
+                design: sectionModel.bannerDesign
+            )
+            return CGSize(width: boundingWidth, height: height)
+
+        case let .title(sectionModel):
+            let height = FontListTitleCell.height(
+                boundingWidth: boundingWidth,
+                viewModel: sectionModel.titleViewModel,
+                design: sectionModel.titleDesign
+            )
+            return CGSize(width: boundingWidth, height: height)
+
+        case let .fontList(sectionModel):
+            guard indexPath.item < sectionModel.fontViewModels.count else { return .zero }
+
+            let fontCellBoundingWidth: CGFloat
+            if let cachedFontCellBoundingWidth = self.cachedFontCellBoundingWidth {
+                fontCellBoundingWidth = cachedFontCellBoundingWidth
+            } else {
+                let columnsSpacing = CGFloat(self.columnsCount - 1) * self.collectionViewLayout.minimumInteritemSpacing
+                fontCellBoundingWidth = floor((boundingWidth - columnsSpacing) / CGFloat(self.columnsCount))
+                cachedFontCellBoundingWidth = fontCellBoundingWidth
+            }
+            let rowHeight = fontCellRowHeight(
+                index: indexPath.item,
+                fontCellViewModels: sectionModel.fontViewModels,
+                boundingWidth: fontCellBoundingWidth
+            )
+            return CGSize(width: fontCellBoundingWidth, height: rowHeight)
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+
+        if let fontCell = cell as? FontListFontCell {
+            fontCell.applyShadowIfNeeded()
+        } else if let bannerCell = cell as? FontListBannerCell {
+            bannerCell.applyShadowIfNeeded()
+        }
+    }
+
+    // MARK: -
+
+    private func fontCellRowHeight(
+        index: Int,
+        fontCellViewModels: [FontListFontViewModel],
+        boundingWidth: CGFloat
+    ) -> CGFloat {
+        let rowIndex = index / columnsCount
+        if let cachedRowHeight = cachedFontCellRowHeights[rowIndex] {
+            return cachedRowHeight
+        }
+
+        let startIndex = rowIndex * columnsCount
+        let endIndex = startIndex + columnsCount - 1
+        let rowViewModels = fontCellViewModels[safeRange: startIndex..<endIndex]
+
+        var maxCellHeight: CGFloat = 0
+        rowViewModels.forEach { viewModel in
+            let cellHeight = FontListFontCell.height(for: viewModel, boundingWidth: boundingWidth)
+            if cellHeight > maxCellHeight {
+                maxCellHeight = cellHeight
+            }
+        }
+
+        cachedFontCellRowHeights[rowIndex] = maxCellHeight
+        return maxCellHeight
+    }
+
+    private func bannerCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath,
+        viewModel: FontListBannerCell.ViewModel,
+        design: FontListBannerCell.Design
+    ) -> UICollectionViewCell {
+        let cell: FontListBannerCell = collectionView.registerAndDequeueReusableCell(for: indexPath)
+        cell.apply(viewModel: viewModel, design: design)
+        return cell
+    }
+
+    private func titleCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath,
+        viewModel: FontListTitleCell.ViewModel,
+        design: FontListTitleCell.Design
+    ) -> UICollectionViewCell {
+        let cell: FontListTitleCell = collectionView.registerAndDequeueReusableCell(for: indexPath)
+        cell.apply(viewModel: viewModel, design: design)
+        return cell
+    }
+
+    private func fontCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath,
+        viewModel: FontListFontViewModel
+    ) -> UICollectionViewCell {
+        let cell: FontListFontCell = collectionView.registerAndDequeueReusableCell(for: indexPath)
+        cell.apply(viewModel: viewModel)
+        return cell
     }
 }
 

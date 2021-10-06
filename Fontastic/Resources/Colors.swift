@@ -50,6 +50,7 @@ final class Colors {
         dark: UIColor(hex: 0x141D44)
     )
 
+    static let titleMajor: UIColor = brandMain
     static let textMajor: UIColor = brandMain
     static let textMajorInverted: UIColor = brandMainInverted
     static let textMinor: UIColor = makeDynamicColor(

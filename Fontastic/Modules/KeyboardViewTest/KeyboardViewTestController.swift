@@ -73,17 +73,17 @@ class KeyboardViewTestViewController: UIViewController {
 
     private func setupBusinessLogic() {
         fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
-            .subscribe(self) { [weak self] in
+            .subscribe(self) {
                 print("Should present UIFontPickerViewController")
             }
 
         fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
-            .subscribe(self) { [weak self] in
+            .subscribe(self) {
                 print("Should present UIColorPickerViewController for backgroundColor")
             }
 
         fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
-            .subscribe(self) { [weak self] in
+            .subscribe(self) {
                 print("Should present UIColorPickerViewController for textColor")
             }
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-@_exported import FontasticTools
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

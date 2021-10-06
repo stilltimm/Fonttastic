@@ -11,6 +11,10 @@ class NewFontViewController: UIViewController {
 
     // MARK: - Private Properties
 
+    // TODO: implement adding font from alphabet image
+
+    // TODO: implement adding font drawn sybmbols
+
     // MARK: - Initializers
 
     init() {

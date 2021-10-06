@@ -35,6 +35,8 @@ class RootTabBarController: UITabBarController {
         super.viewDidLoad()
 
         setupTabBarItems()
+
+        tabBar.isHidden = true
     }
 
     // MARK: - Private Methods
@@ -42,7 +44,7 @@ class RootTabBarController: UITabBarController {
     private func setupRootControllers() {
         let rootViewControllers: [UIViewController] = [
             fontListNavigationController,
-            keyboardTestNavigationController
+//            keyboardTestNavigationController,
 //            newFontNavigationController,
 //            settingsNavigationController
         ]
@@ -55,11 +57,11 @@ class RootTabBarController: UITabBarController {
             image: UIImage(systemName: Constants.fontListTabBarItemIconName),
             selectedImage: UIImage(systemName: Constants.fontListTabBarItemSelectedIconName)
         )
-        keyboardTestNavigationController.tabBarItem = UITabBarItem(
-            title: Constants.keyboardTabBarItemTitle,
-            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
-            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
-        )
+//        keyboardTestNavigationController.tabBarItem = UITabBarItem(
+//            title: Constants.keyboardTabBarItemTitle,
+//            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
+//            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
+//        )
         
 //        newFontNavigationController.tabBarItem = UITabBarItem(
 //            title: Constants.newFontTabBarItemTitle,
