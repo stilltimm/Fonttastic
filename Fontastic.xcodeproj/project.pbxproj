@@ -31,6 +31,7 @@
 		2D43F3D7270DC0C80096772B /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D6270DC0C80096772B /* Reusable.swift */; };
 		2D43F3D9270DC0D80096772B /* UICollectionView+DequeReusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D8270DC0D80096772B /* UICollectionView+DequeReusable.swift */; };
 		2D43F3DB270DDEE90096772B /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3DA270DDEE90096772B /* Array+Utils.swift */; };
+		2D43F3DD270DE9870096772B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D43F3DC270DE9870096772B /* Settings.bundle */; };
 		2D5239DC2702351E0039C112 /* KeyboardButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */; };
 		2D5239DE270236CA0039C112 /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
 		2D5239E0270239D10039C112 /* UIEdgeInsets+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */; };
@@ -168,6 +169,7 @@
 		2D43F3D6270DC0C80096772B /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		2D43F3D8270DC0D80096772B /* UICollectionView+DequeReusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+DequeReusable.swift"; sourceTree = "<group>"; };
 		2D43F3DA270DDEE90096772B /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
+		2D43F3DC270DE9870096772B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonViewModel.swift; sourceTree = "<group>"; };
 		2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
 		2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestNavigationController.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			isa = PBXGroup;
 			children = (
 				2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */,
+				2D43F3DC270DE9870096772B /* Settings.bundle */,
 				2D060EBE26FCC10A00047D89 /* Info.plist */,
 			);
 			name = "Support Files";
@@ -666,6 +669,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D43F3DD270DE9870096772B /* Settings.bundle in Resources */,
 				2D2A0C7626FF80DD0006E27B /* akzidenzgroteskpro-bold.ttf in Resources */,
 				2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */,
 				2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */,

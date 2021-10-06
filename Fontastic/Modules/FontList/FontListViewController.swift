@@ -106,7 +106,11 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
 
     private func openKeyboardSettings() {
-        print("Should open Keyboard settings")
+        guard let appSettingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+
+        if UIApplication.shared.canOpenURL(appSettingsUrl) {
+            UIApplication.shared.open(appSettingsUrl, options: [:], completionHandler: nil)
+        }
     }
 }
 

@@ -138,7 +138,7 @@ private extension FontListBannerCell.Design {
 private extension FontListTitleCell.Design {
 
     static let fontListTitle: FontListTitleCell.Design = .init(
-        font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
+        font: UIFont(name: "AvenirNext-Medium", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium),
         textColor: Colors.textMinor
     )
 }
@@ -146,6 +146,9 @@ private extension FontListTitleCell.Design {
 private enum Constants {
 
     static let installBannerText = """
-    😎\n👉   Tap here to add   👈\nFontastic Keyboard to iOS
+    Welcome 😎
+    Tap here to add our Keyboard ⌨️
+    Go to "Keyboards" > "Fontastic"
+    Also, please enable "Full Access"
     """
 }
