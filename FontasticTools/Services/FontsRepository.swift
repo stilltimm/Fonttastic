@@ -39,7 +39,7 @@ public class DefaultFontsRepository: FontsRepository {
             guard !fontName.lowercased().contains("system") else { return nil }
             return FontSourceModel(name: fontName, resourceType: .system)
         }
-        var allPreinstalledFonts: [FontSourceModel] = [.akzidenzGroteskProBold]
+        var allPreinstalledFonts: [FontSourceModel] = []
         allPreinstalledFonts.append(contentsOf: systemFonts)
         let preinstalledFonts = fontModelFactory.makeFontModels(from: allPreinstalledFonts)
 

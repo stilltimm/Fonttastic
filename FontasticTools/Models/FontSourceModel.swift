@@ -20,11 +20,3 @@ public struct FontSourceModel {
         self.resourceType = resourceType
     }
 }
-
-extension FontSourceModel {
-
-    public static let akzidenzGroteskProBold = FontSourceModel(
-        name: "Akzindenz Grotesk Pro Bold",
-        resourceType: .bundled(fileName: "akzidenzgroteskpro-bold")
-    )
-}
