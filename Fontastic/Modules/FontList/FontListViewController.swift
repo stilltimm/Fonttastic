@@ -102,7 +102,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     private func openFontDetails(_ fontModel: FontModel) {
         let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)
-        navigationController?.pushViewController(fontDetailsViewController, animated: true)
+        let nav = BaseNavigationController(rootViewController: fontDetailsViewController)
+        navigationController?.present(nav, animated: true)
     }
 
     private func openKeyboardSettings() {

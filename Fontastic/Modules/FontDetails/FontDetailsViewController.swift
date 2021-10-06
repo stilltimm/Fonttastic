@@ -29,14 +29,14 @@ class FontDetailsViewController: UIViewController {
     }()
     private let textContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.backgroundMain
-        view.layer.masksToBounds = true
+        view.backgroundColor = Colors.backgroundMinor
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
         return view
     }()
     private let textView: UITextView = {
         let textView = UITextView()
+        textView.backgroundColor = Colors.backgroundMinor
         textView.isScrollEnabled = false
         return textView
     }()
@@ -70,23 +70,23 @@ class FontDetailsViewController: UIViewController {
 
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = fontModel.displayName
-        navigationItem.backButtonTitle = "Мои Шрифты"
-        view.backgroundColor = Colors.backgroundMinor
+
+        navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
+            name: "AvenirNext-Medium",
+            size: 24
+        )
+        view.backgroundColor = Colors.backgroundMain
 
         setupLayout()
         updateTextViewStyle()
 
         textView.text = text
+    }
 
-        navigationItem.setRightBarButton(
-            UIBarButtonItem(
-                image: UIImage(systemName: Constants.exportImageName),
-                style: .plain,
-                target: self,
-                action: #selector(handleExportTap)
-            ),
-            animated: false
-        )
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        textView.becomeFirstResponder()
     }
 
     // MARK: - Private Methods
@@ -147,7 +147,7 @@ private enum Constants {
     static let textInsets: UIEdgeInsets = .init(vertical: 12, horizontal: 16)
     static let textViewMinimumHeight: CGFloat = 44.0
 
-    static let containerCornerRadius: CGFloat = 32.0
+    static let containerCornerRadius: CGFloat = 16.0
 
     static let initialText: String = "Quick brown fox jumps over the lazy dog"
     static let initialFontSize: CGFloat = 36.0
