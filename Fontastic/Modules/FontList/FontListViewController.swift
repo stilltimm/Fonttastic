@@ -329,5 +329,5 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
 private enum Constants {
 
     static let spacing: CGFloat = 16.0
-    static let title = "Fontastic"
+    static let title = "Fonttastic"
 }

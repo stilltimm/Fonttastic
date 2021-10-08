@@ -148,7 +148,7 @@ private enum Constants {
     static let installBannerText = """
     Welcome 😎
     Tap here to add our Keyboard ⌨️
-    Go to "Keyboards" > "Fontastic"
+    Go to "Keyboards" > "Fonttastic"
     Also, please enable "Full Access"
     """
 }
