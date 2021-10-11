@@ -110,7 +110,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.brandMainInverted
+        view.backgroundColor = Colors.backgroundFocused
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
         return view
@@ -118,7 +118,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     private let fontDisplayLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.clipsToBounds = false
         return label
     }()
     private let detailsTextLabel: UILabel = {
@@ -194,7 +193,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
             string: viewModel.fontDisplayText,
             attributes: [
                 .font: viewModel.fontDisplayLabelFont,
-                .foregroundColor: Colors.brandMain,
+                .foregroundColor: Colors.blackAndWhite,
                 .paragraphStyle: paragraphStyle,
                 .baselineOffset: baselineOffset
             ]

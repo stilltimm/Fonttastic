@@ -138,8 +138,8 @@ private extension FontListBannerCell.Design {
 private extension FontListTitleCell.Design {
 
     static let fontListTitle: FontListTitleCell.Design = .init(
-        font: UIFont(name: "AvenirNext-Medium", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium),
-        textColor: Colors.textMinor
+        font: UIFont(name: "AvenirNext-Demibold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
+        textColor: Colors.titleMinor
     )
 }
 

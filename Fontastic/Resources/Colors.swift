@@ -31,7 +31,6 @@ final class Colors {
     // MARK: - Public Type Properties
 
     static let brandMainLight: UIColor = UIColor(hex: 0x0032FC)
-
     static let brandMain: UIColor = makeDynamicColor(
         light: brandMainLight,
         dark: .white
@@ -49,12 +48,18 @@ final class Colors {
         light: UIColor(hex: 0xDFE5FF),
         dark: UIColor(hex: 0x141D44)
     )
+    static let backgroundFocused: UIColor = makeDynamicColor(
+        light: .white,
+        dark: UIColor(hex: 0x18265D)
+    )
 
     static let titleMajor: UIColor = brandMain
+    static let titleMinor: UIColor = blackAndWhite
+
     static let textMajor: UIColor = brandMain
     static let textMajorInverted: UIColor = brandMainInverted
     static let textMinor: UIColor = makeDynamicColor(
-        light: UIColor(hex: 0x8099FF),
+        light: UIColor(hex: 0xA6A6A6),
         dark: UIColor(hex: 0x707CAA)
     )
 
