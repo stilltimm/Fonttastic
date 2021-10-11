@@ -50,6 +50,7 @@
 		2D5239FA27024F210039C112 /* FontModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */; };
 		2D5239FC2702503C0039C112 /* akzidenzgroteskpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */; };
 		2D5239FF2703C3650039C112 /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */; };
+		2D67EC14271101F300ADE22A /* Potrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D67EC13271101F300ADE22A /* Potrace.swift */; };
 		2D9AC6B32708F7D100A27841 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */; };
 		2D9AC6B52708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */; };
 		2D9AC6B62708FDE700A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */; };
@@ -174,6 +175,7 @@
 		2D5239E8270243650039C112 /* KeyboardViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestController.swift; sourceTree = "<group>"; };
 		2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "akzidenzgroteskpro-bold.ttf"; sourceTree = "<group>"; };
 		2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
+		2D67EC13271101F300ADE22A /* Potrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Potrace.swift; sourceTree = "<group>"; };
 		2D9AC6B22708F7D100A27841 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
 		2D9AC6B42708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardViewModel+LatinDefault.swift"; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				2D060EE326FCC14D00047D89 /* Services */,
 				2D2A0C822700B7CA0006E27B /* Event.swift */,
 				2D2A0C842700B8D80006E27B /* WeakBox.swift */,
+				2D67EC13271101F300ADE22A /* Potrace.swift */,
 			);
 			path = FontasticTools;
 			sourceTree = "<group>";
@@ -843,6 +846,7 @@
 				2D2A0CB927022D4B0006E27B /* Event.swift in Sources */,
 				2D5239F827024F210039C112 /* FontSourceModel.swift in Sources */,
 				2D5239F727024F210039C112 /* FontStatus.swift in Sources */,
+				2D67EC14271101F300ADE22A /* Potrace.swift in Sources */,
 				2D43F3DB270DDEE90096772B /* Array+Utils.swift in Sources */,
 				2D5239F627024F210039C112 /* FontResourceType.swift in Sources */,
 				2D5239F327024F210039C112 /* FontModel.swift in Sources */,
