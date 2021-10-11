@@ -278,7 +278,7 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
         }
 
         let startIndex = rowIndex * columnsCount
-        let endIndex = startIndex + columnsCount - 1
+        let endIndex = startIndex + columnsCount
         let rowViewModels = fontCellViewModels[safeRange: startIndex..<endIndex]
 
         var maxCellHeight: CGFloat = 0
