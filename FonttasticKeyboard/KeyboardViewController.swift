@@ -19,7 +19,7 @@ class KeyboardViewController: UIInputViewController {
     private weak var colorPickerViewController: UIColorPickerViewController?
 
     // MARK: - Public Instance Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

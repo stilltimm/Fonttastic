@@ -53,7 +53,7 @@ class KeyboardButton: UIControl {
         view.isUserInteractionEnabled = false
         view.backgroundColor = design.foregroundColor
         view.layer.masksToBounds = true
-        view.layer.cornerRadius = design.cornerRadius - 1 
+        view.layer.cornerRadius = design.cornerRadius - 1
         view.layer.cornerCurve = .continuous
         return view
     }()

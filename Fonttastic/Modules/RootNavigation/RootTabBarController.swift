@@ -43,7 +43,7 @@ class RootTabBarController: UITabBarController {
 
     private func setupRootControllers() {
         let rootViewControllers: [UIViewController] = [
-            fontListNavigationController,
+            fontListNavigationController
 //            keyboardTestNavigationController,
 //            newFontNavigationController,
 //            settingsNavigationController
@@ -62,7 +62,6 @@ class RootTabBarController: UITabBarController {
 //            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
 //            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
 //        )
-        
 //        newFontNavigationController.tabBarItem = UITabBarItem(
 //            title: Constants.newFontTabBarItemTitle,
 //            image: UIImage(systemName: Constants.newFontTabBarItemIconName),

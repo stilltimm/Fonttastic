@@ -22,7 +22,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("u", "U"),
         ("i", "I"),
         ("o", "O"),
-        ("p", "P"),
+        ("p", "P")
     ]
     fileprivate static let secondRowLetters: [(String, String)] = [
         ("a", "A"),
@@ -33,7 +33,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("h", "H"),
         ("j", "J"),
         ("k", "K"),
-        ("l", "L"),
+        ("l", "L")
     ]
     fileprivate static let thirdRowLetters: [(String, String)] = [
         ("z", "Z"),
@@ -42,7 +42,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("v", "V"),
         ("b", "B"),
         ("n", "N"),
-        ("m", "M"),
+        ("m", "M")
     ]
     fileprivate static func containerWidth(horizontalInsetsSum: CGFloat) -> CGFloat {
         return UIScreen.main.bounds.width - horizontalInsetsSum
@@ -61,8 +61,8 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
 
     private let isCapitalizedSourceEvent: HotEvent<Bool>
 
+    // swiftlint:disable:next function_body_length
     init(design: Design) {
-
         // Events setup
 
         let symbolSumbitEvent = Event<String>()

@@ -292,7 +292,6 @@ class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-
 private enum Constants {
 
     static let defaultTextAlignment: NSTextAlignment = .center

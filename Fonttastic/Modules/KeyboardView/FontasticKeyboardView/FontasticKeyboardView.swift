@@ -13,7 +13,7 @@ class FontasticKeyboardView: UIView {
     let latinKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
 
     // MARK: - Initializers
-    
+
     init() {
         super.init(frame: .zero)
 

@@ -228,7 +228,11 @@ class CanvasWithSettingsView: UIView {
             self?.shouldPresentTextColorPickerEvent.onNext(())
         }
 
-        canvasContainerButton.addTarget(self, action: #selector(self.copyCanvasContainerScreenshot), for: .touchUpInside)
+        canvasContainerButton.addTarget(
+            self,
+            action: #selector(self.copyCanvasContainerScreenshot),
+            for: .touchUpInside
+        )
     }
 
     private func updateCanvasViewText() {

@@ -14,16 +14,16 @@ extension CALayer {
     public struct Shadow: Equatable {
         let color: UIColor
         let alpha: Float
-        let x: CGFloat
-        let y: CGFloat
+        let x: CGFloat // swiftlint:disable:this identifier_name
+        let y: CGFloat // swiftlint:disable:this identifier_name
         let blur: CGFloat
         let spread: CGFloat
 
         public init(
             color: UIColor,
             alpha: Float,
-            x: CGFloat,
-            y: CGFloat,
+            x: CGFloat, // swiftlint:disable:this identifier_name
+            y: CGFloat, // swiftlint:disable:this identifier_name
             blur: CGFloat,
             spread: CGFloat
         ) {
@@ -41,8 +41,8 @@ extension CALayer {
     public func applyShadow(
         color: UIColor,
         alpha: Float,
-        x: CGFloat,
-        y: CGFloat,
+        x: CGFloat, // swiftlint:disable:this identifier_name
+        y: CGFloat, // swiftlint:disable:this identifier_name
         blur: CGFloat,
         spread: CGFloat
     ) {

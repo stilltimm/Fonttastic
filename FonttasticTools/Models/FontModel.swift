@@ -8,7 +8,7 @@
 import Foundation
 
 public struct FontModel {
-    
+
     public let name: String
     public let displayName: String
     public let resourceType: FontResourceType

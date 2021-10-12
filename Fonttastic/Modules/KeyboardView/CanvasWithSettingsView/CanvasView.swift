@@ -135,8 +135,7 @@ extension CanvasView: UITextViewDelegate {
                 expectedFont = expectedFont.withSize(expectedFont.pointSize - 1)
                 textView.font = expectedFont
             }
-        }
-        else {
+        } else {
             while textView.sizeThatFits(boundingSize).height < textViewSize.height {
                 expectedFont = expectedFont.withSize(textView.font!.pointSize + 1)
                 textView.font = expectedFont

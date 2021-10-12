@@ -1,0 +1,9 @@
+disabled_rules:
+- unused_setter_value
+
+excluded:
+- Pods
+
+function_parameter_count:
+- 9
+- 12

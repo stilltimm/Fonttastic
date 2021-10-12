@@ -16,6 +16,7 @@ extension UICollectionView {
     }
 
     public func dequeueReusableCell<T>(for indexPath: IndexPath) -> T where T: UICollectionViewCell & Reusable {
+        // swiftlint:disable:next force_cast
         return dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 
@@ -23,7 +24,7 @@ extension UICollectionView {
         for indexPath: IndexPath
     ) -> T where T: UICollectionViewCell & Reusable {
         register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
-
+        // swiftlint:disable:next force_cast
         return dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as! T
     }
 
@@ -42,6 +43,6 @@ extension UICollectionView {
             ofKind: kind,
             withReuseIdentifier: T.reuseIdentifier,
             for: indexPath
-        ) as! T
+        ) as! T // swiftlint:disable:this force_cast
     }
 }
