@@ -12,7 +12,7 @@ class RootTabBarController: UITabBarController {
     // MARK: - Private Properties
 
     let fontListNavigationController = FontListNavigationController()
-    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
+//    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
 //    let newFontNavigationController = NewFontNavigationController()
 //    let settingsNavigationController = SettingsNavigationController()
 
