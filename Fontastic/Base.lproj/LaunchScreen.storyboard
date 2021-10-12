@@ -18,10 +18,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="W7U-pa-VyQ">
-                                <rect key="frame" x="84" y="425.5" width="230" height="55"/>
+                                <rect key="frame" x="74.5" y="425.5" width="249" height="55"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fontastic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOu-0W-4Oe">
-                                        <rect key="frame" x="0.0" y="0.0" width="230" height="55"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fonttastic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOu-0W-4Oe">
+                                        <rect key="frame" x="0.0" y="0.0" width="249" height="55"/>
                                         <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="48"/>
                                         <color key="textColor" name="AccentColor"/>
                                         <nil key="highlightedColor"/>
