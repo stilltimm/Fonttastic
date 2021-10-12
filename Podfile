@@ -1,17 +1,19 @@
 platform :ios, '13.6'
 use_frameworks!
 
-target 'Fontastic' do
+target 'Fonttastic' do
 
   pod 'Cartography'
+  pod 'SwiftLint'
 
-  target 'FontasticKeyboard' do 
+  target 'FonttasticKeyboard' do 
     inherit! :search_paths
 
     pod 'Cartography'
+    pod 'SwiftLint'
   end
 
-  target 'FontasticTests' do
+  target 'FonttasticTests' do
     inherit! :search_paths
   end
 
