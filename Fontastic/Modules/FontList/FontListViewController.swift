@@ -278,7 +278,7 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
         }
 
         let startIndex = rowIndex * columnsCount
-        let endIndex = startIndex + columnsCount
+        let endIndex = startIndex + columnsCount - 1
         let rowViewModels = fontCellViewModels[safeRange: startIndex..<endIndex]
 
         var maxCellHeight: CGFloat = 0
@@ -329,5 +329,5 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
 private enum Constants {
 
     static let spacing: CGFloat = 16.0
-    static let title = "Fonttastic"
+    static let title = "Fontastic"
 }
