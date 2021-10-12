@@ -9,7 +9,7 @@ import Foundation
 
 extension Array {
 
-    public subscript (safeRange range: Range<Index>) -> Array<Element> {
+    public subscript (safeRange range: Range<Index>) -> [Element] {
         let safeLowerBound = Swift.max(range.lowerBound, self.startIndex)
         let safeUpperBound = Swift.min(range.upperBound, self.endIndex)
         return Array(self[safeLowerBound..<safeUpperBound])
