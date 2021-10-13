@@ -1,5 +1,6 @@
 import UIKit
 import Cartography
+import FonttasticTools
 
 class FontasticKeyboardView: UIView {
 
@@ -11,6 +12,8 @@ class FontasticKeyboardView: UIView {
     // MARK: - Public Instance Properties
 
     let latinKeyboardViewModel: LatinAlphabetQwertyKeyboardViewModel = .default()
+    private var portraitOrientationConstraints: [NSLayoutConstraint] = []
+    private var landscapeOrientationConstraints: [NSLayoutConstraint] = []
 
     // MARK: - Initializers
 
@@ -25,22 +28,61 @@ class FontasticKeyboardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public Instance Methods
+
+    func adaptToOrientationChange(isPortrait: Bool) {
+        if isPortrait {
+            NSLayoutConstraint.deactivate(landscapeOrientationConstraints)
+            NSLayoutConstraint.activate(portraitOrientationConstraints)
+        } else {
+            NSLayoutConstraint.deactivate(portraitOrientationConstraints)
+            NSLayoutConstraint.activate(landscapeOrientationConstraints)
+        }
+
+        canvasWithSettingsView.handleOrientationChange()
+    }
+
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
         addSubview(canvasWithSettingsView)
         addSubview(latinKeyboardView)
 
-        constrain(self, canvasWithSettingsView, latinKeyboardView) { view, canvasWithSettings, latinKeyboard in
-            canvasWithSettings.top == view.top
-            canvasWithSettings.left == view.left
-            canvasWithSettings.right == view.right
-            canvasWithSettings.bottom == latinKeyboard.top
+        canvasWithSettingsView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        canvasWithSettingsView.setContentHuggingPriority(.defaultLow, for: .vertical)
+        canvasWithSettingsView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        canvasWithSettingsView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
+        latinKeyboardView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        latinKeyboardView.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        latinKeyboardView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        latinKeyboardView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        let realWidth = UIScreen.main.isPortrait ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
+        constrain(self, canvasWithSettingsView, latinKeyboardView) { view, canvasWithSettings, latinKeyboard in
+            // static constraints
+            canvasWithSettings.top == view.top
+            canvasWithSettings.right == view.right
             latinKeyboard.left == view.left
-            latinKeyboard.right == view.right
             latinKeyboard.bottom == view.bottom
+            (latinKeyboard.width == realWidth).priority = .required
+
+            // portrait orientation
+            portraitOrientationConstraints.append(contentsOf: [
+                canvasWithSettings.left == view.left,
+                latinKeyboard.right == view.right,
+                canvasWithSettings.bottom == latinKeyboard.top
+            ])
+
+            // landscape orientation
+            landscapeOrientationConstraints.append(contentsOf: [
+                canvasWithSettings.bottom == view.bottom,
+                latinKeyboard.top == view.top,
+                latinKeyboard.right == canvasWithSettings.left
+            ])
         }
+
+        adaptToOrientationChange(isPortrait: UIScreen.main.isPortrait)
     }
 
     private func setupBusinessLogic() {

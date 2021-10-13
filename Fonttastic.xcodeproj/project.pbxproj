@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C8E6841EA5621409D36BB37 /* Pods_FonttasticKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 832688524C4FACA0D6F493D0 /* Pods_FonttasticKeyboard.framework */; };
 		2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EB026FCC10900047D89 /* AppDelegate.swift */; };
 		2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EB426FCC10900047D89 /* RootTabBarController.swift */; };
 		2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EB926FCC10A00047D89 /* Assets.xcassets */; };
@@ -74,6 +73,8 @@
 		2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254B26FCC84D00DFF767 /* Colors.swift */; };
 		2DD4255B26FD487A00DFF767 /* FontListFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255A26FD487A00DFF767 /* FontListFontCell.swift */; };
 		2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */; };
+		2DEFFF0B2716449200E141D0 /* UIScreen+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */; };
+		4770DDB292E0DF435B3AA7CD /* Pods_FonttasticKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0B10E21D65331F125ADF64 /* Pods_FonttasticKeyboard.framework */; };
 		CA3E74B433A208E38BCA14C5 /* Pods_Fonttastic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B536BB0C1ABADF6FAD7BC16A /* Pods_Fonttastic.framework */; };
 		FE8E4CAC5082F154DCBEE198 /* Pods_FonttasticTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D5422A8AF0776FA99F5BD88 /* Pods_FonttasticTests.framework */; };
 /* End PBXBuildFile section */
@@ -158,6 +159,7 @@
 		2D2A0CA327022BF80006E27B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		2D2A0CAB27022D2D0006E27B /* libFonttasticTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFonttasticTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D2E46F9270CA37A00728CC2 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
+		2D392A81B8D9BC41C525CF8D /* Pods-Fonttastic-FonttasticKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fonttastic-FonttasticKeyboard.release.xcconfig"; path = "Target Support Files/Pods-Fonttastic-FonttasticKeyboard/Pods-Fonttastic-FonttasticKeyboard.release.xcconfig"; sourceTree = "<group>"; };
 		2D43F3D0270DA4980096772B /* FontListTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListTitleCell.swift; sourceTree = "<group>"; };
 		2D43F3D2270DA4EB0096772B /* FontListBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListBannerCell.swift; sourceTree = "<group>"; };
 		2D43F3D4270DB8D40096772B /* FontListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewModel.swift; sourceTree = "<group>"; };
@@ -192,14 +194,16 @@
 		2DD4255726FCE4D000DFF767 /* UIFontFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontFactory.swift; sourceTree = "<group>"; };
 		2DD4255A26FD487A00DFF767 /* FontListFontCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListFontCell.swift; sourceTree = "<group>"; };
 		2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
+		2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Orientation.swift"; sourceTree = "<group>"; };
+		3D393FE25F430EF74082D396 /* Pods-Fonttastic-FonttasticKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fonttastic-FonttasticKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-Fonttastic-FonttasticKeyboard/Pods-Fonttastic-FonttasticKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		59557A2BDB35D367BC639F89 /* Pods-FonttasticTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticTests.debug.xcconfig"; path = "Target Support Files/Pods-FonttasticTests/Pods-FonttasticTests.debug.xcconfig"; sourceTree = "<group>"; };
 		64905BC2016ECCFF6C09FC08 /* Pods-FonttasticKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticKeyboard.release.xcconfig"; path = "Target Support Files/Pods-FonttasticKeyboard/Pods-FonttasticKeyboard.release.xcconfig"; sourceTree = "<group>"; };
 		682A1865E81302F0C4D6720C /* Pods-Fonttastic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fonttastic.release.xcconfig"; path = "Target Support Files/Pods-Fonttastic/Pods-Fonttastic.release.xcconfig"; sourceTree = "<group>"; };
-		832688524C4FACA0D6F493D0 /* Pods_FonttasticKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FonttasticKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		840A6731BE0F1202B625BA66 /* Pods-FonttasticKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-FonttasticKeyboard/Pods-FonttasticKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		87CD0A5E7BBF0284C8E40226 /* Pods-Fonttastic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fonttastic.debug.xcconfig"; path = "Target Support Files/Pods-Fonttastic/Pods-Fonttastic.debug.xcconfig"; sourceTree = "<group>"; };
 		9D5422A8AF0776FA99F5BD88 /* Pods_FonttasticTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FonttasticTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B536BB0C1ABADF6FAD7BC16A /* Pods_Fonttastic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fonttastic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA0B10E21D65331F125ADF64 /* Pods_FonttasticKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FonttasticKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,7 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D2A0CB227022D390006E27B /* libFonttasticTools.a in Frameworks */,
-				0C8E6841EA5621409D36BB37 /* Pods_FonttasticKeyboard.framework in Frameworks */,
+				4770DDB292E0DF435B3AA7CD /* Pods_FonttasticKeyboard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +402,7 @@
 				2D43F3D8270DC0D80096772B /* UICollectionView+DequeReusable.swift */,
 				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
 				2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */,
+				2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -509,8 +514,8 @@
 			isa = PBXGroup;
 			children = (
 				B536BB0C1ABADF6FAD7BC16A /* Pods_Fonttastic.framework */,
-				832688524C4FACA0D6F493D0 /* Pods_FonttasticKeyboard.framework */,
 				9D5422A8AF0776FA99F5BD88 /* Pods_FonttasticTests.framework */,
+				FA0B10E21D65331F125ADF64 /* Pods_FonttasticKeyboard.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -524,6 +529,8 @@
 				64905BC2016ECCFF6C09FC08 /* Pods-FonttasticKeyboard.release.xcconfig */,
 				59557A2BDB35D367BC639F89 /* Pods-FonttasticTests.debug.xcconfig */,
 				15A4D9FF2A70EAE5CF5DB1C4 /* Pods-FonttasticTests.release.xcconfig */,
+				3D393FE25F430EF74082D396 /* Pods-Fonttastic-FonttasticKeyboard.debug.xcconfig */,
+				2D392A81B8D9BC41C525CF8D /* Pods-Fonttastic-FonttasticKeyboard.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -862,6 +869,7 @@
 				2D2A0CB927022D4B0006E27B /* Event.swift in Sources */,
 				2D5239F827024F210039C112 /* FontSourceModel.swift in Sources */,
 				2D5239F727024F210039C112 /* FontStatus.swift in Sources */,
+				2DEFFF0B2716449200E141D0 /* UIScreen+Orientation.swift in Sources */,
 				2D43F3DB270DDEE90096772B /* Array+Utils.swift in Sources */,
 				2D5239F627024F210039C112 /* FontResourceType.swift in Sources */,
 				2D5239F327024F210039C112 /* FontModel.swift in Sources */,

@@ -1,20 +1,33 @@
-platform :ios, '13.6'
+platform :ios, '14.0'
+
 use_frameworks!
+inhibit_all_warnings!
+
+def default_pods
+
+  # UI
+
+  pod 'Cartography'
+
+  # Dev Tools
+
+  pod 'SwiftLint', :configurations => ['Debug']
+  pod 'Reveal-SDK', :configurations => ['Debug']
+
+end
 
 target 'Fonttastic' do
 
-  pod 'Cartography'
-  pod 'SwiftLint'
-
-  target 'FonttasticKeyboard' do 
-    inherit! :search_paths
-
-    pod 'Cartography'
-    pod 'SwiftLint'
-  end
+  default_pods
 
   target 'FonttasticTests' do
     inherit! :search_paths
   end
+
+end
+
+target 'FonttasticKeyboard' do
+
+  default_pods
 
 end

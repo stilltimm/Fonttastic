@@ -158,6 +158,10 @@ class CanvasWithSettingsView: UIView {
         updateCanvasViewText()
     }
 
+    func handleOrientationChange() {
+        canvasView.textView.sizeToFit()
+    }
+
     // MARK: - Private Instance Methods
 
     private func setupSubviews() {

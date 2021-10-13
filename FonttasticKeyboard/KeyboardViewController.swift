@@ -27,8 +27,14 @@ class KeyboardViewController: UIInputViewController {
         setupBusinessLogic()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
+        let isPortrait: Bool = UIScreen.main.isPortrait
+        coordinator.animate { [weak self] _ in
+            self?.fontasticKeyboardView.adaptToOrientationChange(isPortrait: isPortrait)
+        }
     }
 
     // MARK: - Private Instance Methods
