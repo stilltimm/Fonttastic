@@ -124,10 +124,10 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         var thirdRowItems: [RowItem] = []
         thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, caseChangeButtonDesign))
         thirdRowItems.append(
-            .nestedRow(
+            .nestedSelfSizingRow(
                 .init(
                     items: thirdRowLetterItems,
-                    style: .fillEqually(spacing: design.letterSpacing)
+                    spacing: design.letterSpacing
                 )
             )
         )
@@ -167,16 +167,17 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             }
         }
 
-        let thirdRowEmptySpace: CGFloat = design.containerWidth
-            - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
-            - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
-            - (2.0 * design.defaultFunctionalButtonWidth)
+//        let thirdRowEmptySpace: CGFloat = design.containerWidth
+//            - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
+//            - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
+//            - (2.0 * design.defaultFunctionalButtonWidth)
+//        let thirdRowSpacing: CGFloat = floor(thirdRowEmptySpace / 2)
         super.init(
             rows: [
-                .init(items: firstRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
-                .init(items: secondRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
-                .init(items: thirdRowItems, style: .fill(spacing: floor(thirdRowEmptySpace / 2))),
-                .init(items: fourthRowItems, style: .fill(spacing: design.letterSpacing))
+                .init(items: firstRowLetterItems, style: .selfSizingItems(spacing: design.letterSpacing)),
+                .init(items: secondRowLetterItems, style: .selfSizingItems(spacing: design.letterSpacing)),
+                .init(items: thirdRowItems, style: .fillWithEqualSpacing),
+                .init(items: fourthRowItems, style: .fillWithEqualSpacing)
             ],
             design: design
         )

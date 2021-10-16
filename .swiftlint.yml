@@ -1,5 +1,6 @@
 disabled_rules:
 - unused_setter_value
+- identifier_name
 
 excluded:
 - Pods
