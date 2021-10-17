@@ -177,10 +177,10 @@ public final class Potrace {
         public var opttolerance: Double
 
         public init(turnPolicy: String = "minority",
-             turdSize: Int = 2,
-             optCurve: Bool = true,
-             alphaMax: Double = 1.0,
-             optTolerance: Double = 0.2) {
+                    turdSize: Int = 2,
+                    optCurve: Bool = true,
+                    alphaMax: Double = 1.0,
+                    optTolerance: Double = 0.2) {
 
             self.turnpolicy = turnPolicy
             self.turdsize = turdSize
@@ -219,7 +219,7 @@ public final class Potrace {
 
     public func bmToPathList() {
         var bm1 = bm.copy()
-        var currentPoint = Point(x: 0, y: 0)
+        let currentPoint = Point(x: 0, y: 0)
         var path: Path
 
         func findNext(point: PointI) -> PointI? {
