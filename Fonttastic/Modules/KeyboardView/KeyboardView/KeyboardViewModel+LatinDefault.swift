@@ -45,7 +45,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("m", "M")
     ]
     fileprivate static func containerWidth(horizontalInsetsSum: CGFloat) -> CGFloat {
-        return UIScreen.main.bounds.width - horizontalInsetsSum
+        return UIScreen.main.portraitWidth - horizontalInsetsSum
     }
     fileprivate static func lettersWidth(containerWidth: CGFloat, letterSpacing: CGFloat) -> CGFloat {
         let widthWithoutSpacing = containerWidth - CGFloat(firstRowLetters.count - 1) * letterSpacing
@@ -127,7 +127,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             .nestedRow(
                 .init(
                     items: thirdRowLetterItems,
-                    style: .fillEqually(spacing: design.letterSpacing)
+                    spacing: design.letterSpacing
                 )
             )
         )
@@ -171,12 +171,14 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
             - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
             - (2.0 * design.defaultFunctionalButtonWidth)
+        let thirdRowSpacing: CGFloat = floor(thirdRowEmptySpace / 2)
+
         super.init(
             rows: [
-                .init(items: firstRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
-                .init(items: secondRowLetterItems, style: .fillEqually(spacing: design.letterSpacing)),
-                .init(items: thirdRowItems, style: .fill(spacing: floor(thirdRowEmptySpace / 2))),
-                .init(items: fourthRowItems, style: .fill(spacing: design.letterSpacing))
+                .init(items: firstRowLetterItems, spacing: design.letterSpacing),
+                .init(items: secondRowLetterItems, spacing: design.letterSpacing),
+                .init(items: thirdRowItems, spacing: thirdRowSpacing),
+                .init(items: fourthRowItems, spacing: design.letterSpacing)
             ],
             design: design
         )

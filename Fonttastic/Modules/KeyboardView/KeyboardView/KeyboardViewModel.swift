@@ -18,18 +18,13 @@ class KeyboardViewModel {
         case nestedRow(Row)
     }
 
-    enum RowStyle {
-        case fill(spacing: CGFloat)
-        case fillEqually(spacing: CGFloat)
-    }
-
     class Row {
         let items: [RowItem]
-        let style: RowStyle
+        let spacing: CGFloat
 
-        init(items: [RowItem], style: RowStyle) {
+        init(items: [RowItem], spacing: CGFloat) {
             self.items = items
-            self.style = style
+            self.spacing = spacing
         }
     }
 

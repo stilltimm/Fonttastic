@@ -1,20 +1,24 @@
 PODS:
   - Cartography (4.0.0)
+  - Reveal-SDK (31)
   - SwiftLint (0.44.0)
 
 DEPENDENCIES:
   - Cartography
+  - Reveal-SDK
   - SwiftLint
 
 SPEC REPOS:
   trunk:
     - Cartography
+    - Reveal-SDK
     - SwiftLint
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
+  Reveal-SDK: 62ae124d57732c4fe7e88635274ca24054dd2d29
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: 1bedcadbfd7333bab145ce0748885b97757aab0a
+PODFILE CHECKSUM: a88ac70f52d021c0c83249ab69d44afb8b23ae79
 
 COCOAPODS: 1.11.0

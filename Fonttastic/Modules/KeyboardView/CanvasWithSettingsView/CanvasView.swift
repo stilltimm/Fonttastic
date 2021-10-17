@@ -43,9 +43,11 @@ class CanvasView: UIView {
     // MARK: - Public Instance Properties
 
     let didTapCanvasViewEvent = Event<Void>()
+    let textViewHeightChangedEvent = Event<Void>()
 
     // MARK: -
 
+    private var lastTextViewHeight: CGFloat = 0
     private let layerShadow: CALayer.Shadow = .init(
         color: .black,
         alpha: 0.5,
@@ -73,17 +75,27 @@ class CanvasView: UIView {
         super.layoutSubviews()
 
         layer.applyShadow(layerShadow)
+
+        DispatchQueue.main.async { [weak self] in
+            guard
+                let self = self,
+                self.frame.height != self.lastTextViewHeight
+            else { return }
+
+            self.lastTextViewHeight = self.frame.height
+            self.textViewHeightChangedEvent.onNext(())
+        }
     }
 
     func setText(_ text: String) {
         textView.text = text
         textView.sizeToFit()
-
         textView.becomeFirstResponder()
     }
 
     func applyDesign(_ design: Design) {
         backgroundColor = design.backgroundColor
+
         textView.font = design.font
         textView.textColor = design.textColor
         textView.textAlignment = design.textAlignment
@@ -98,51 +110,11 @@ class CanvasView: UIView {
         addSubview(textView)
         constrain(self, textView) { view, textView in
             textView.center == view.center
-            textView.left == view.left + 12
-            textView.right == view.right - 12
+            textView.left >= view.left + 12
+            textView.right <= view.right - 12
             textView.top >= view.top + 12
             textView.bottom <= view.bottom - 12
-            (textView.height <= Constants.maxHeight).priority = .required
         }
-    }
-}
-
-extension CanvasView: UITextViewDelegate {
-
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
-    ) -> Bool {
-//        updateTextFont()
-        return true
-    }
-
-    private func updateTextFont() {
-        guard
-            !textView.text.isEmpty,
-            textView.bounds.width > 0,
-            let font = textView.font
-        else { return }
-
-        let textViewSize = textView.frame.size
-        let boundingSize: CGSize = .init(width: textViewSize.width, height: .greatestFiniteMagnitude)
-        let textContentSize = textView.sizeThatFits(boundingSize)
-
-        var expectedFont: UIFont = font
-        if textContentSize.height > textViewSize.height {
-            while textView.sizeThatFits(boundingSize).height > textViewSize.height {
-                expectedFont = expectedFont.withSize(expectedFont.pointSize - 1)
-                textView.font = expectedFont
-            }
-        } else {
-            while textView.sizeThatFits(boundingSize).height < textViewSize.height {
-                expectedFont = expectedFont.withSize(textView.font!.pointSize + 1)
-                textView.font = expectedFont
-            }
-        }
-
-        textView.font = expectedFont
     }
 }
 
