@@ -10,4 +10,5 @@ import UIKit
 extension UIScreen {
 
     public var isPortrait: Bool { bounds.width < bounds.height }
+    public var portraitWidth: CGFloat { isPortrait ? bounds.width : bounds.height }
 }

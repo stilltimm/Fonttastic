@@ -15,31 +15,16 @@ class KeyboardViewModel {
     enum RowItem {
         case caseChangeButton(CaseChangeKeyboardButtonViewModel, KeyboardButtonDesign)
         case button(KeyboardButtonViewModelProtocol, KeyboardButtonDesign)
-        case nestedSelfSizingRow(SelfSizingRow)
-    }
-
-    enum RowWidthStyle {
-        /// Does not positions itself horizontally, because this row width stretches to fill all items with their widths + spacing
-        case selfSizingItems(spacing: CGFloat)
-
-        /// Stretches to full width of container and fills the gaps between items with equal spacing
-        case fillWithEqualSpacing
+        case nestedRow(Row)
     }
 
     class Row {
         let items: [RowItem]
-        let style: RowWidthStyle
-
-        init(items: [RowItem], style: RowWidthStyle) {
-            self.items = items
-            self.style = style
-        }
-    }
-
-    class SelfSizingRow: Row {
+        let spacing: CGFloat
 
         init(items: [RowItem], spacing: CGFloat) {
-            super.init(items: items, style: .selfSizingItems(spacing: spacing))
+            self.items = items
+            self.spacing = spacing
         }
     }
 

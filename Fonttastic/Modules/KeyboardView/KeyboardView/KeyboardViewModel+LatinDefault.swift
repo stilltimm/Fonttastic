@@ -45,7 +45,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         ("m", "M")
     ]
     fileprivate static func containerWidth(horizontalInsetsSum: CGFloat) -> CGFloat {
-        return UIScreen.main.bounds.width - horizontalInsetsSum
+        return UIScreen.main.portraitWidth - horizontalInsetsSum
     }
     fileprivate static func lettersWidth(containerWidth: CGFloat, letterSpacing: CGFloat) -> CGFloat {
         let widthWithoutSpacing = containerWidth - CGFloat(firstRowLetters.count - 1) * letterSpacing
@@ -124,7 +124,7 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
         var thirdRowItems: [RowItem] = []
         thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, caseChangeButtonDesign))
         thirdRowItems.append(
-            .nestedSelfSizingRow(
+            .nestedRow(
                 .init(
                     items: thirdRowLetterItems,
                     spacing: design.letterSpacing
@@ -167,17 +167,18 @@ class LatinAlphabetQwertyKeyboardViewModel: KeyboardViewModel {
             }
         }
 
-//        let thirdRowEmptySpace: CGFloat = design.containerWidth
-//            - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
-//            - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
-//            - (2.0 * design.defaultFunctionalButtonWidth)
-//        let thirdRowSpacing: CGFloat = floor(thirdRowEmptySpace / 2)
+        let thirdRowEmptySpace: CGFloat = design.containerWidth
+            - (CGFloat(thirdRowLetterItems.count) * design.letterWidth)
+            - (CGFloat(thirdRowLetterItems.count - 1) * design.letterSpacing)
+            - (2.0 * design.defaultFunctionalButtonWidth)
+        let thirdRowSpacing: CGFloat = floor(thirdRowEmptySpace / 2)
+
         super.init(
             rows: [
-                .init(items: firstRowLetterItems, style: .selfSizingItems(spacing: design.letterSpacing)),
-                .init(items: secondRowLetterItems, style: .selfSizingItems(spacing: design.letterSpacing)),
-                .init(items: thirdRowItems, style: .fillWithEqualSpacing),
-                .init(items: fourthRowItems, style: .fillWithEqualSpacing)
+                .init(items: firstRowLetterItems, spacing: design.letterSpacing),
+                .init(items: secondRowLetterItems, spacing: design.letterSpacing),
+                .init(items: thirdRowItems, spacing: thirdRowSpacing),
+                .init(items: fourthRowItems, spacing: design.letterSpacing)
             ],
             design: design
         )

@@ -58,14 +58,13 @@ class FontasticKeyboardView: UIView {
         latinKeyboardView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         latinKeyboardView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-        let realWidth = UIScreen.main.isPortrait ? UIScreen.main.bounds.width : UIScreen.main.bounds.height
+        let screenPortraitWidth = UIScreen.main.portraitWidth
         constrain(self, canvasWithSettingsView, latinKeyboardView) { view, canvasWithSettings, latinKeyboard in
             // static constraints
             canvasWithSettings.top == view.top
             canvasWithSettings.right == view.right
             latinKeyboard.left == view.left
             latinKeyboard.bottom == view.bottom
-            (latinKeyboard.width == realWidth).priority = .required
 
             // portrait orientation
             portraitOrientationConstraints.append(contentsOf: [
@@ -78,7 +77,8 @@ class FontasticKeyboardView: UIView {
             landscapeOrientationConstraints.append(contentsOf: [
                 canvasWithSettings.bottom == view.bottom,
                 latinKeyboard.top == view.top,
-                latinKeyboard.right == canvasWithSettings.left
+                latinKeyboard.right == canvasWithSettings.left,
+                latinKeyboard.width == screenPortraitWidth
             ])
         }
 

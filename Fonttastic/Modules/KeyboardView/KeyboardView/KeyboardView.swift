@@ -50,10 +50,10 @@ class KeyboardView: UIView {
             containerView.centerY == view.centerY
         }
 
-        let rowsWithRowViews = viewModel.rows.map { (rowModel: $0, rowView: makeRowView($0)) }
-        rowsWithRowViews.forEach { rowsContainerView.addSubview($0.rowView) }
+        let rowViews = viewModel.rows.map { makeRowView($0) }
+        rowViews.forEach { rowsContainerView.addSubview($0) }
 
-        for (i, (rowModel, rowView)) in rowsWithRowViews.enumerated() {
+        for (i, rowView) in rowViews.enumerated() {
 
             // MARK: - Vertical Cosntraints
 
@@ -65,7 +65,7 @@ class KeyboardView: UIView {
             }
 
             // NOTE: pin row to to prevRow bottom and make height equal
-            if let prevRowView = rowsWithRowViews[safe: i - 1]?.rowView {
+            if let prevRowView = rowViews[safe: i - 1] {
                 constrain(rowView, prevRowView) { rowView, prevRowView in
                     rowView.top == prevRowView.bottom + design.rowSpacing
                     rowView.height == prevRowView.height
@@ -73,7 +73,7 @@ class KeyboardView: UIView {
             }
 
             // NOTE: pin last row to container bottom
-            if i == rowsWithRowViews.count - 1 {
+            if i == rowViews.count - 1 {
                 constrain(rowsContainerView, rowView) { containerView, rowView in
                     rowView.bottom == containerView.bottom
                 }
@@ -81,17 +81,8 @@ class KeyboardView: UIView {
 
             // MARK: - Horizontal Constraints
 
-            switch rowModel.style {
-            case .fillWithEqualSpacing:
-                constrain(rowView, rowsContainerView) { rowView, rowContainer in
-                    rowView.left == rowContainer.left
-                    rowView.right == rowContainer.right
-                }
-
-            case .selfSizingItems:
-                constrain(rowView, rowsContainerView) { rowView, rowContainer in
-                    rowView.centerX == rowContainer.centerX
-                }
+            constrain(rowView, rowsContainerView) { rowView, rowContainer in
+                rowView.centerX == rowContainer.centerX
             }
         }
     }
@@ -99,11 +90,13 @@ class KeyboardView: UIView {
     private func makeRowView(_ row: ViewModel.Row) -> UIView {
         let rowView = UIView()
 
-        let rowItemsAndViews = row.items.map { (rowItem: $0, rowItemView: makeRowItemView($0)) }
-        rowItemsAndViews.forEach { rowView.addSubview($0.rowItemView) }
+        let rowItemViews = row.items.map { makeRowItemView($0) }
+        rowItemViews.forEach { rowView.addSubview($0) }
 
-        var fakeEqualSpacingViews = [UIView]()
-        for (i, (rowItem, rowItemView)) in rowItemsAndViews.enumerated() {
+        for (i, rowItemView) in rowItemViews.enumerated() {
+
+            // MARK: - Horizontal Constraints
+
             // NOTE: pin first row item to row left
             if i == 0 {
                 constrain(rowItemView, rowView) { rowItemView, rowView in
@@ -111,48 +104,25 @@ class KeyboardView: UIView {
                 }
             }
 
-            if let prevRowItemView = rowItemsAndViews[safe: i - 1]?.rowItemView {
-                switch row.style {
-                case let .selfSizingItems(spacing):
-                    // NOTE: row item left to previous row item right + spacing
-                    constrain(rowItemView, prevRowItemView) { rowItemView, prevRowItemView in
-                        rowItemView.left == prevRowItemView.right + spacing
-                    }
-
-                case .fillWithEqualSpacing:
-                    // NOTE: pin row item left to fakeView right and prev row item right to fakeView left
-                    let fakeEqualSpacingView = UIView()
-                    fakeEqualSpacingView.isUserInteractionEnabled = false
-                    fakeEqualSpacingViews.append(fakeEqualSpacingView)
-                    rowView.addSubview(fakeEqualSpacingView)
-                    constrain(
-                        rowItemView, prevRowItemView, fakeEqualSpacingView
-                    ) { rowItemView, prevRowItemView, fakeEqualSpacingView in
-                        rowItemView.left == fakeEqualSpacingView.right
-                        prevRowItemView.right == fakeEqualSpacingView.left
-                    }
+            // NOTE: row item left to previous row item right + spacing
+            if let prevRowItemView = rowItemViews[safe: i - 1] {
+                constrain(rowItemView, prevRowItemView) { rowItemView, prevRowItemView in
+                    rowItemView.left == prevRowItemView.right + row.spacing
                 }
             }
 
             // NOTE: pin last row item to row right
-            if i == rowItemsAndViews.count - 1 {
+            if i == rowItemViews.count - 1 {
                 constrain(rowItemView, rowView) { rowItemView, rowView in
                     rowItemView.right == rowView.right
                 }
             }
 
+            // MARK: - Vertical Cosntraints
+
             constrain(rowItemView, rowView) { rowItemView, rowView in
                 rowView.height >= rowItemView.height
                 rowItemView.centerY == rowView.centerY
-            }
-        }
-
-        if !fakeEqualSpacingViews.isEmpty {
-            for (i, fakeEqualSpacingView) in fakeEqualSpacingViews.enumerated() {
-                guard let prevFakeEqualSpacingView = fakeEqualSpacingViews[safe: i - 1] else { continue }
-                constrain(fakeEqualSpacingView, prevFakeEqualSpacingView) { fakeView, prevFakeView in
-                    fakeView.width == prevFakeView.width
-                }
             }
         }
 
@@ -161,7 +131,7 @@ class KeyboardView: UIView {
 
     private func makeRowItemView(_ rowItem: ViewModel.RowItem) -> UIView {
         switch rowItem {
-        case let .nestedSelfSizingRow(row):
+        case let .nestedRow(row):
             return makeRowView(row)
 
         case let .button(viewModel, design):
