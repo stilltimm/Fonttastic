@@ -20,6 +20,10 @@ target 'Fonttastic' do
 
   default_pods
 
+  # UI Dependencies
+
+  pod 'SVGKit'
+
   target 'FonttasticTests' do
     inherit! :search_paths
   end

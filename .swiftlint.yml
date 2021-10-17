@@ -5,7 +5,12 @@ disabled_rules:
 
 excluded:
 - Pods
+- FonttasticTools/Potrace.swift
 
 function_parameter_count:
 - 9
 - 12
+
+file_length:
+- 700
+- 1000

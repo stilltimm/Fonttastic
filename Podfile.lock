@@ -1,24 +1,34 @@
 PODS:
   - Cartography (4.0.0)
+  - CocoaLumberjack (3.7.2):
+    - CocoaLumberjack/Core (= 3.7.2)
+  - CocoaLumberjack/Core (3.7.2)
   - Reveal-SDK (31)
+  - SVGKit (3.0.0):
+    - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.44.0)
 
 DEPENDENCIES:
   - Cartography
   - Reveal-SDK
+  - SVGKit
   - SwiftLint
 
 SPEC REPOS:
   trunk:
     - Cartography
+    - CocoaLumberjack
     - Reveal-SDK
+    - SVGKit
     - SwiftLint
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
+  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   Reveal-SDK: 62ae124d57732c4fe7e88635274ca24054dd2d29
+  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: a88ac70f52d021c0c83249ab69d44afb8b23ae79
+PODFILE CHECKSUM: 37384acade3d79c26f6c480fe923eb9987e1c0ae
 
 COCOAPODS: 1.11.0

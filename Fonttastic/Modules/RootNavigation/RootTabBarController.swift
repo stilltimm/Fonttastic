@@ -13,7 +13,7 @@ class RootTabBarController: UITabBarController {
 
     let fontListNavigationController = FontListNavigationController()
 //    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
-//    let newFontNavigationController = NewFontNavigationController()
+//    let newFontNavigationController = AddFontNavigationController()
 //    let settingsNavigationController = SettingsNavigationController()
 
     // MARK: - Initializers

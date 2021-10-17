@@ -28,7 +28,5 @@ class KeyboardViewTestNavigationController: BaseNavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // TODO: Setup Coordination logic
     }
 }
