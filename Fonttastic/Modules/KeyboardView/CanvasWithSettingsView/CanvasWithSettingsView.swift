@@ -41,6 +41,18 @@ class CanvasWithSettingsView: UIView {
 
     // MARK: - Subviews
 
+    private let canvasContainerScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .clear
+        scrollView.canCancelContentTouches = true
+        scrollView.showsVerticalScrollIndicator = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.alwaysBounceVertical = true
+        scrollView.alwaysBounceHorizontal = false
+        scrollView.maximumZoomScale = 1.0
+        scrollView.minimumZoomScale = 1.0
+        return scrollView
+    }()
     private let canvasContainerButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -164,33 +176,61 @@ class CanvasWithSettingsView: UIView {
 
     // MARK: - Private Instance Methods
 
+    // swiftlint:disable:next function_body_length
     private func setupSubviews() {
-        let buttonsStackView = UIStackView()
-        buttonsStackView.axis = .vertical
-        buttonsStackView.distribution = .fill
-        buttonsStackView.alignment = .fill
-        buttonsStackView.spacing = Constants.buttonsSpacing
+        let buttonsContainerView = UIView()
+        let buttonViews = [
+            fontChangeButton,
+            textAlignmentChangeButton,
+            backgroundColorChangeButton,
+            textColorChangeButton
+        ]
+        buttonViews.forEach { buttonsContainerView.addSubview($0) }
+        for (i, buttonView) in buttonViews.enumerated() {
+            if i == 0 {
+                constrain(buttonsContainerView, buttonView) { container, button in
+                    button.top == container.top
+                    container.width == button.width
+                }
+            }
 
-        buttonsStackView.addArrangedSubview(fontChangeButton)
-        buttonsStackView.addArrangedSubview(textAlignmentChangeButton)
-        buttonsStackView.addArrangedSubview(backgroundColorChangeButton)
-        buttonsStackView.addArrangedSubview(textColorChangeButton)
-        addSubview(buttonsStackView)
-        addSubview(canvasContainerButton)
+            if let prevButton = buttonViews[safe: i - 1] {
+                constrain(prevButton, buttonView) { prevButton, button in
+                    button.top == prevButton.bottom + Constants.buttonsSpacing
+                }
+            }
+
+            if i == buttonViews.count - 1 {
+                constrain(buttonsContainerView, buttonView) { container, button in
+                    button.bottom == container.bottom
+                }
+            }
+
+            constrain(buttonsContainerView, buttonView) { container, button in
+                button.centerX == container.centerX
+            }
+        }
+
+        addSubview(buttonsContainerView)
+        addSubview(canvasContainerScrollView)
+        canvasContainerScrollView.addSubview(canvasContainerButton)
         canvasContainerButton.addSubview(canvasView)
 
         constrain(
-            self, buttonsStackView, canvasContainerButton, canvasView
-        ) { view, buttonsStack, canvasContainer, canvas in
-            canvasContainer.top == view.top
-            canvasContainer.left == view.left
-            canvasContainer.bottom == view.bottom
+            self, buttonsContainerView, canvasContainerScrollView, canvasContainerButton, canvasView
+        ) { view, buttonsContainer, scrollView, canvasContainer, canvas in
+            scrollView.top == view.top
+            scrollView.left == view.left
+            scrollView.bottom == view.bottom
 
-            buttonsStack.centerY == canvasContainer.centerY
-            buttonsStack.right == view.right - Constants.edgeInsets.right
-            buttonsStack.left == canvasContainer.right + Constants.buttonsToCanvasSpacing
-            buttonsStack.bottom <= view.bottom - Constants.edgeInsets.bottom
-            buttonsStack.top >= view.top + Constants.edgeInsets.top
+            buttonsContainer.centerY == scrollView.centerY
+            buttonsContainer.right == view.right - Constants.edgeInsets.right
+            buttonsContainer.left == scrollView.right + Constants.buttonsToCanvasSpacing
+            buttonsContainer.bottom <= view.bottom - Constants.edgeInsets.bottom
+            buttonsContainer.top >= view.top + Constants.edgeInsets.top
+
+            canvasContainer.width == scrollView.width
+            canvasContainer.height >= scrollView.height
 
             canvas.top == canvasContainer.top + Constants.edgeInsets.top
             canvas.left == canvasContainer.left + Constants.edgeInsets.left
@@ -202,7 +242,7 @@ class CanvasWithSettingsView: UIView {
         copiedStatusContainerView.addSubview(copiedStatusLabel)
 
         constrain(
-            canvasContainerButton, copiedStatusContainerView, copiedStatusLabel
+            canvasContainerScrollView, copiedStatusContainerView, copiedStatusLabel
         ) { canvasContainer, statusContainer, statusLabel in
             statusContainer.center == canvasContainer.center
 
@@ -210,6 +250,7 @@ class CanvasWithSettingsView: UIView {
         }
 
         canvasView.isUserInteractionEnabled = false
+        canvasContainerButton.frame.origin = .zero
         updateCanvasViewDesign()
     }
 
@@ -237,6 +278,10 @@ class CanvasWithSettingsView: UIView {
             action: #selector(self.copyCanvasContainerScreenshot),
             for: .touchUpInside
         )
+
+        canvasView.textViewHeightChangedEvent.subscribe(self) { [weak self] in
+            self?.updateScrollViewContent()
+        }
     }
 
     private func updateCanvasViewText() {
@@ -251,6 +296,14 @@ class CanvasWithSettingsView: UIView {
         textColorChangeButton.iconImageView.tintColor = canvasViewDesign.textColor
 
         setCopiedStatusLabel(isHidden: true, animated: false)
+    }
+
+    private func updateScrollViewContent() {
+        let contentSize = canvasContainerButton.frame.size
+        canvasContainerScrollView.contentSize = contentSize
+
+        let bottomPointRect = CGRect(origin: CGPoint(x: 0, y: contentSize.height), size: .zero)
+        canvasContainerScrollView.scrollRectToVisible(bottomPointRect, animated: false)
     }
 
     @objc private func copyCanvasContainerScreenshot() {

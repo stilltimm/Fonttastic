@@ -67,6 +67,7 @@ class KeyboardViewTestViewController: UIViewController {
             container.height == UIScreen.main.bounds.height
 
             keyboard.center == container.center
+            keyboard.width == container.width
         }
     }
 
