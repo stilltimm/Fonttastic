@@ -14,6 +14,7 @@
 		2D060EC826FCC10A00047D89 /* FontasticTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EC726FCC10A00047D89 /* FontasticTests.swift */; };
 		2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */; };
 		2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C469271C999A00BB5C17 /* AddFontButton.swift */; };
+		2D24C46D271C9BE400BB5C17 /* PhotosAccessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */; };
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C8D270210A70006E27B /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -65,13 +66,20 @@
 		2DC3489A270B2B2600420C63 /* CanvasWithSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */; };
 		2DC3489B270B2B2800420C63 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34895270B265F00420C63 /* CanvasView.swift */; };
 		2DC3489C270B2B2A00420C63 /* FontasticKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34898270B269100420C63 /* FontasticKeyboardView.swift */; };
+		2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */; };
+		2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C092271CB9AB00213DEF /* AlphabetType.swift */; };
+		2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */; };
+		2DC3C097271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C096271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift */; };
+		2DC3C099271CC73D00213DEF /* SVGLetterSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C098271CC73D00213DEF /* SVGLetterSourceModel.swift */; };
+		2DC3C09B271CC75500213DEF /* LetterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C09A271CC75500213DEF /* LetterType.swift */; };
+		2DC3C09D271CC79A00213DEF /* SVGAlphabetSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C09C271CC79A00213DEF /* SVGAlphabetSourceModel.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
 		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
 		2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254326FCC6B800DFF767 /* SettingsNavigationController.swift */; };
 		2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254526FCC6BF00DFF767 /* SettingsViewController.swift */; };
-		2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254726FCC6C900DFF767 /* NewFontNavigationController.swift */; };
-		2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254926FCC6D200DFF767 /* NewFontViewController.swift */; };
+		2DD4254826FCC6C900DFF767 /* AddFontNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */; };
+		2DD4254A26FCC6D200DFF767 /* AddFontFromImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254926FCC6D200DFF767 /* AddFontFromImageViewController.swift */; };
 		2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254B26FCC84D00DFF767 /* Colors.swift */; };
 		2DD4255B26FD487A00DFF767 /* FontListFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255A26FD487A00DFF767 /* FontListFontCell.swift */; };
 		2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */; };
@@ -148,6 +156,7 @@
 		2D060EC926FCC10A00047D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		2D24C469271C999A00BB5C17 /* AddFontButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontButton.swift; sourceTree = "<group>"; };
+		2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccessService.swift; sourceTree = "<group>"; };
 		2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontDetailsViewController.swift; sourceTree = "<group>"; };
 		2D2A0C7A26FF83370006E27B /* FontStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStatus.swift; sourceTree = "<group>"; };
 		2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModelFactory.swift; sourceTree = "<group>"; };
@@ -183,13 +192,20 @@
 		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
 		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		2DC34898270B269100420C63 /* FontasticKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontasticKeyboardView.swift; sourceTree = "<group>"; };
+		2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessingService.swift; sourceTree = "<group>"; };
+		2DC3C092271CB9AB00213DEF /* AlphabetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphabetType.swift; sourceTree = "<group>"; };
+		2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmapLetterSourceModel.swift; sourceTree = "<group>"; };
+		2DC3C096271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmapAlphabetSourceModel.swift; sourceTree = "<group>"; };
+		2DC3C098271CC73D00213DEF /* SVGLetterSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGLetterSourceModel.swift; sourceTree = "<group>"; };
+		2DC3C09A271CC75500213DEF /* LetterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterType.swift; sourceTree = "<group>"; };
+		2DC3C09C271CC79A00213DEF /* SVGAlphabetSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGAlphabetSourceModel.swift; sourceTree = "<group>"; };
 		2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListViewController.swift; sourceTree = "<group>"; };
 		2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254326FCC6B800DFF767 /* SettingsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		2DD4254526FCC6BF00DFF767 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		2DD4254726FCC6C900DFF767 /* NewFontNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFontNavigationController.swift; sourceTree = "<group>"; };
-		2DD4254926FCC6D200DFF767 /* NewFontViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFontViewController.swift; sourceTree = "<group>"; };
+		2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontNavigationController.swift; sourceTree = "<group>"; };
+		2DD4254926FCC6D200DFF767 /* AddFontFromImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontFromImageViewController.swift; sourceTree = "<group>"; };
 		2DD4254B26FCC84D00DFF767 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		2DD4254D26FCDD9400DFF767 /* FontsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsService.swift; sourceTree = "<group>"; };
 		2DD4255126FCDDC500DFF767 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
@@ -279,6 +295,7 @@
 				2D060EE026FCC12E00047D89 /* Support Files */,
 				2DD4255C26FD4C0900DFF767 /* Tools */,
 				2DD4254026FCC4D000DFF767 /* Components */,
+				2D24C46B271C9BD200BB5C17 /* Services */,
 				2D060EE526FCC15F00047D89 /* Modules */,
 			);
 			path = Fonttastic;
@@ -335,6 +352,15 @@
 				2D060EB426FCC10900047D89 /* RootTabBarController.swift */,
 			);
 			path = RootNavigation;
+			sourceTree = "<group>";
+		};
+		2D24C46B271C9BD200BB5C17 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2DC3C090271CB98C00213DEF /* ImageProcessingService */,
+				2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		2D2A0C7326FF80A40006E27B /* Resources */ = {
@@ -429,6 +455,28 @@
 			path = FontasticKeyboardView;
 			sourceTree = "<group>";
 		};
+		2DC3C090271CB98C00213DEF /* ImageProcessingService */ = {
+			isa = PBXGroup;
+			children = (
+				2DC3C091271CB99D00213DEF /* Models */,
+				2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */,
+			);
+			path = ImageProcessingService;
+			sourceTree = "<group>";
+		};
+		2DC3C091271CB99D00213DEF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2DC3C092271CB9AB00213DEF /* AlphabetType.swift */,
+				2DC3C096271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift */,
+				2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */,
+				2DC3C09A271CC75500213DEF /* LetterType.swift */,
+				2DC3C098271CC73D00213DEF /* SVGLetterSourceModel.swift */,
+				2DC3C09C271CC79A00213DEF /* SVGAlphabetSourceModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		2DC80F592709DBE700A81F45 /* KeyboardView */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,8 +511,8 @@
 		2DD4253A26FCC45A00DFF767 /* NewFont */ = {
 			isa = PBXGroup;
 			children = (
-				2DD4254726FCC6C900DFF767 /* NewFontNavigationController.swift */,
-				2DD4254926FCC6D200DFF767 /* NewFontViewController.swift */,
+				2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */,
+				2DD4254926FCC6D200DFF767 /* AddFontFromImageViewController.swift */,
 			);
 			path = NewFont;
 			sourceTree = "<group>";
@@ -808,6 +856,8 @@
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
 				2DC34896270B265F00420C63 /* CanvasView.swift in Sources */,
+				2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */,
+				2DC3C099271CC73D00213DEF /* SVGLetterSourceModel.swift in Sources */,
 				2D9AC6B52708FCDF00A27841 /* KeyboardViewModel+LatinDefault.swift in Sources */,
 				2DD4254C26FCC84D00DFF767 /* Colors.swift in Sources */,
 				2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */,
@@ -817,13 +867,19 @@
 				2DBB1E402709E8A900E33DA9 /* KeyboardButtonDesign.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
 				2D5239E12702429C0039C112 /* KeyboardView.swift in Sources */,
+				2DC3C09D271CC79A00213DEF /* SVGAlphabetSourceModel.swift in Sources */,
 				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
-				2DD4254826FCC6C900DFF767 /* NewFontNavigationController.swift in Sources */,
+				2DD4254826FCC6C900DFF767 /* AddFontNavigationController.swift in Sources */,
 				2DC34899270B269100420C63 /* FontasticKeyboardView.swift in Sources */,
+				2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
+				2DC3C097271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
-				2DD4254A26FCC6D200DFF767 /* NewFontViewController.swift in Sources */,
+				2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */,
+				2DC3C09B271CC75500213DEF /* LetterType.swift in Sources */,
+				2DD4254A26FCC6D200DFF767 /* AddFontFromImageViewController.swift in Sources */,
 				2D5239E3270242A20039C112 /* KeyboardButtonViewModel.swift in Sources */,
+				2D24C46D271C9BE400BB5C17 /* PhotosAccessService.swift in Sources */,
 				2DD4255B26FD487A00DFF767 /* FontListFontCell.swift in Sources */,
 				2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */,
 				2D43F3D1270DA4980096772B /* FontListTitleCell.swift in Sources */,

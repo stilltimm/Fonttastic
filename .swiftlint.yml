@@ -10,3 +10,7 @@ excluded:
 function_parameter_count:
 - 9
 - 12
+
+file_length:
+- 700
+- 1000

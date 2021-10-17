@@ -195,7 +195,6 @@ public final class Potrace {
     fileprivate var pathlist = [Path]()
 
     public init(data: UnsafeMutableRawPointer, width: Int, height: Int) {
-
         let pixelData = data.assumingMemoryBound(to: UInt8.self)
 
         bm = Bitmap(width: width, height: height)

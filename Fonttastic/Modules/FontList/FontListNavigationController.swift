@@ -28,7 +28,5 @@ class FontListNavigationController: BaseNavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // TODO: Setup Coordination logic
     }
 }

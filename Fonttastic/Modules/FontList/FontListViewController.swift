@@ -9,7 +9,29 @@ import UIKit
 import Cartography
 import FonttasticTools
 
+enum FontListError: Error {
+
+    case failedToGrantPhotoLibraryAccess
+    case noImageWasSelected
+
+    var localizedDescription: String {
+        switch self {
+        case .failedToGrantPhotoLibraryAccess:
+            return "Failed to access Photo Library"
+
+        case .noImageWasSelected:
+            return "No image was selected"
+        }
+    }
+}
+
 class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+
+    // MARK: - Nested Types
+
+    enum AddFontSourceType {
+        case parseFromImage
+    }
 
     // MARK: - Subviews
 
@@ -109,7 +131,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
 
         viewModel.didTapKeyboardInstallBanner.subscribe(self) { [weak self] in
-            self?.openKeyboardSettings()
+            self?.openAppSettings()
         }
 
         addFontButton.addTarget(
@@ -133,7 +155,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         navigationController?.present(nav, animated: true)
     }
 
-    private func openKeyboardSettings() {
+    private func openAppSettings() {
         guard let appSettingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
 
         if UIApplication.shared.canOpenURL(appSettingsUrl) {
@@ -148,7 +170,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             preferredStyle: .actionSheet
         )
         let parseFromImageAlertActionHandler: (UIAlertAction) -> Void = { [weak self] _ in
-            self?.presentAddFontFlow()
+            self?.tryToPresentAddFontFlow(sourceType: .parseFromImage)
         }
         alertController.addAction(
             UIAlertAction(
@@ -168,8 +190,65 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         navigationController?.present(alertController, animated: true)
     }
 
-    private func presentAddFontFlow() {
-        print("TODO: present add font flow")
+    private func tryToPresentAddFontFlow(sourceType: AddFontSourceType) {
+        switch sourceType {
+        case .parseFromImage:
+            PhotosAccessService.shared.grantPhotosAccess { [weak self] isGranted in
+                if isGranted {
+                    self?.presentPhotosPickerController()
+                } else {
+                    self?.presentErrorAlert(.failedToGrantPhotoLibraryAccess)
+                }
+            }
+        }
+    }
+
+    private func presentPhotosPickerController() {
+        let imagePickerViewController = UIImagePickerController()
+        imagePickerViewController.sourceType = .photoLibrary
+        imagePickerViewController.delegate = self
+
+        navigationController?.present(imagePickerViewController, animated: true)
+    }
+
+    private func presentAddFontFlow(with context: AddFontNavigationController.Context) {
+        let addFontNavigationController = AddFontNavigationController(context: context)
+        navigationController?.present(addFontNavigationController, animated: true)
+    }
+
+    // MARK: - Errors Handling
+
+    private func presentErrorAlert(_ error: FontListError) {
+        let alertController = UIAlertController(
+            title: "Ooops.. Error occured :(",
+            message: error.localizedDescription,
+            preferredStyle: .actionSheet
+        )
+        switch error {
+        case .failedToGrantPhotoLibraryAccess:
+            let openSettingsAlertActionHandler: (UIAlertAction) -> Void = { [weak self] _ in
+                self?.openAppSettings()
+            }
+            alertController.addAction(
+                UIAlertAction(
+                    title: "Go to app settings",
+                    style: .default,
+                    handler: openSettingsAlertActionHandler
+                )
+            )
+
+        default:
+            break
+        }
+        alertController.addAction(
+            UIAlertAction(
+                title: "Close",
+                style: .cancel,
+                handler: nil
+            )
+        )
+
+        navigationController?.present(alertController, animated: true)
     }
 }
 
@@ -381,6 +460,31 @@ extension FontListViewController: UICollectionViewDelegate, UICollectionViewData
         let cell: FontListFontCell = collectionView.registerAndDequeueReusableCell(for: indexPath)
         cell.apply(viewModel: viewModel)
         return cell
+    }
+}
+
+extension FontListViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
+        print("Finished picking media type with info \(info)")
+
+        guard let image = info[.originalImage] as? UIImage else {
+            self.dismiss(animated: true) { [weak self] in
+                self?.presentErrorAlert(.noImageWasSelected)
+            }
+            return
+        }
+
+        self.dismiss(animated: true) { [weak self] in
+            self?.presentAddFontFlow(with: .init(sourceType: .parseFromImage(image)))
+        }
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true)
     }
 }
 
