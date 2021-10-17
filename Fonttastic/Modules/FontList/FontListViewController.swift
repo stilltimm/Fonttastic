@@ -22,6 +22,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
 
+    private let addFontButton = AddFontButton()
+
     // MARK: - Private Properties
 
     private var viewModel: FontListViewModel
@@ -64,12 +66,31 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         reloadData()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        addFontButton.layer.applyShadow(
+            color: Colors.brandMainLight,
+            alpha: 1.0,
+            x: 0,
+            y: 8,
+            blur: 16,
+            spread: -8
+        )
+    }
+
     // MARK: - Private Methods
 
     private func setupLayout() {
         view.addSubview(collectionView)
-        constrain(view, collectionView) { view, collection in
+        view.addSubview(addFontButton)
+        constrain(view, collectionView, addFontButton) { view, collection, addFontButton in
             collection.edges == view.edges
+
+            addFontButton.width == Constants.fontButtonSize.width
+            addFontButton.height == Constants.fontButtonSize.height
+            addFontButton.right == view.safeAreaLayoutGuide.right - Constants.fontButtonEdgeInsets.right
+            addFontButton.bottom == view.safeAreaLayoutGuide.bottom - Constants.fontButtonEdgeInsets.bottom
         }
 
         collectionView.backgroundColor = .clear
@@ -90,6 +111,12 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         viewModel.didTapKeyboardInstallBanner.subscribe(self) { [weak self] in
             self?.openKeyboardSettings()
         }
+
+        addFontButton.addTarget(
+            self,
+            action: #selector(handleAddFontButtonDidTap),
+            for: .touchUpInside
+        )
     }
 
     private func reloadData() {
@@ -112,6 +139,37 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if UIApplication.shared.canOpenURL(appSettingsUrl) {
             UIApplication.shared.open(appSettingsUrl, options: [:], completionHandler: nil)
         }
+    }
+
+    @objc private func handleAddFontButtonDidTap() {
+        let alertController = UIAlertController(
+            title: "Add New Font",
+            message: "Please, select how would you like to add a font",
+            preferredStyle: .actionSheet
+        )
+        let parseFromImageAlertActionHandler: (UIAlertAction) -> Void = { [weak self] _ in
+            self?.presentAddFontFlow()
+        }
+        alertController.addAction(
+            UIAlertAction(
+                title: "Parse from image",
+                style: .default,
+                handler: parseFromImageAlertActionHandler
+            )
+        )
+        alertController.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: nil
+            )
+        )
+
+        navigationController?.present(alertController, animated: true)
+    }
+
+    private func presentAddFontFlow() {
+        print("TODO: present add font flow")
     }
 }
 
@@ -330,4 +388,7 @@ private enum Constants {
 
     static let spacing: CGFloat = 16.0
     static let title = "Fonttastic"
+
+    static let fontButtonSize: CGSize = .init(width: 64, height: 64)
+    static let fontButtonEdgeInsets: UIEdgeInsets = .init(vertical: 16.0, horizontal: 16.0)
 }

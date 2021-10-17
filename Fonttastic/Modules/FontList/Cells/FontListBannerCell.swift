@@ -79,11 +79,9 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
     override var isHighlighted: Bool {
         didSet {
             UIView.animate(
-                withDuration: 0.2,
+                withDuration: 0.1,
                 delay: 0.0,
-                usingSpringWithDamping: 0.8,
-                initialSpringVelocity: 0.0,
-                options: .curveLinear,
+                options: isHighlighted ? .curveEaseOut : .curveEaseIn,
                 animations: {
                     self.alpha = self.isHighlighted ? 0.5 : 1.0
                     self.transform = self.isHighlighted ?
