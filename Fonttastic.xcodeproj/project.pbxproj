@@ -1109,7 +1109,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Development: Timofey Surkov (EAYXVUZYU4)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = Fonttastic/Info.plist;
@@ -1118,7 +1118,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timofeysurkov.Fontastic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticDevelopment;
@@ -1137,7 +1137,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Timofey Surkov (PL6N9LRHKL)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = Fonttastic/Info.plist;
@@ -1146,7 +1146,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timofeysurkov.Fontastic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticAppStore;
@@ -1207,7 +1207,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Development: Timofey Surkov (EAYXVUZYU4)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = FonttasticKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1216,7 +1216,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timofeysurkov.Fontastic.FontasticKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticWildcardDevelopment;
@@ -1232,7 +1232,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Apple Distribution: Timofey Surkov (PL6N9LRHKL)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = PL6N9LRHKL;
 				INFOPLIST_FILE = FonttasticKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -1241,7 +1241,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timofeysurkov.Fontastic.FontasticKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticWildcardAppStore;
