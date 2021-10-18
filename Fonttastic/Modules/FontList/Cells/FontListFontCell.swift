@@ -110,14 +110,17 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.backgroundFocused
+        view.backgroundColor = Colors.brandMainInverted
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
         return view
     }()
     private let fontDisplayLabel: UILabel = {
         let label = UILabel()
+        label.font = Constants.fontDisplayLabelDefaultFont
+        label.textColor = Colors.brandMain
         label.numberOfLines = 1
+        label.textAlignment = .center
         return label
     }()
     private let detailsTextLabel: UILabel = {
@@ -179,24 +182,8 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     func apply(viewModel: FontListFontViewModel) {
         self.viewModel = viewModel
 
-        let adjustedLineHeight = viewModel.fontDisplayLabelFont.capHeight + Constants.fontDisplayLabelSafeSpacing
-        let baselineOffset = viewModel.fontDisplayLabelFont.descender + Constants.fontDisplayLabelSafeSpacing / 2
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        paragraphStyle.minimumLineHeight = adjustedLineHeight
-        paragraphStyle.maximumLineHeight = adjustedLineHeight
-
-        let attributedString = NSAttributedString(
-            string: viewModel.fontDisplayText,
-            attributes: [
-                .font: viewModel.fontDisplayLabelFont,
-                .foregroundColor: Colors.blackAndWhite,
-                .paragraphStyle: paragraphStyle,
-                .baselineOffset: baselineOffset
-            ]
-        )
-        fontDisplayLabel.attributedText = attributedString
+        fontDisplayLabel.text = viewModel.fontDisplayText
+        fontDisplayLabel.font = viewModel.fontDisplayLabelFont
 
         detailsTextLabel.text = viewModel.detailsText
     }
@@ -221,11 +208,11 @@ class FontListFontCell: UICollectionViewCell, Reusable {
             container.top == contentView.top
             container.left == contentView.left
             container.right == contentView.right
-            (container.height == Constants.containerHeight).priority = .required
+            container.height == Constants.containerHeight
 
             fontDisplay.left == container.left
             fontDisplay.right == container.right
-            fontDisplay.centerY == container.centerY + Constants.fontDisplayLabelCenterYOffset
+            fontDisplay.centerY == container.centerY
 
             detailsLabel.left == contentView.left
             detailsLabel.right == contentView.right
@@ -250,9 +237,7 @@ private enum Constants {
         spread: -8
     )
 
-    static let fontDisplayLabelCenterYOffset: CGFloat = -floor(containerHeight / 20)
     static let fontDisplayLabelTextSize: CGFloat = 48.0
-    static let fontDisplayLabelSafeSpacing: CGFloat = 10.0
     static let detailsLabelTextSize: CGFloat = 16.0
 
     static let containerToDetailsSpacing: CGFloat = 8.0
