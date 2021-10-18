@@ -1,0 +1,16 @@
+disabled_rules:
+- unused_setter_value
+- identifier_name
+- type_body_length
+
+excluded:
+- Pods
+- FonttasticTools/Potrace.swift
+
+function_parameter_count:
+- 9
+- 12
+
+file_length:
+- 700
+- 1000
