@@ -84,9 +84,15 @@ public final class Potrace {
         }
     }
 
+    enum CurveTag: UInt8 {
+        case undefined
+        case curve
+        case corner
+    }
+
     class Curve {
         var n: Int
-        var tag: [String]
+        var tag: [CurveTag]
         var c: BoxedArray<PointF>
         var alphacurve: Int
         var vertex: BoxedArray<PointF>
@@ -96,7 +102,7 @@ public final class Potrace {
 
         init(n: Int) {
             self.n = n
-            self.tag = [String](repeating: "", count: n)
+            self.tag = [CurveTag](repeating: .undefined, count: n)
             self.c = BoxedArray(repeating: Point(x: 0.0, y: 0.0), count: n * 3)
             self.alphacurve = 0
             self.vertex = BoxedArray(repeating: Point(x: 0.0, y: 0.0), count: n)
@@ -1036,7 +1042,7 @@ public final class Potrace {
                 curve.alpha0[j] = alpha
 
                 if alpha >= info.alphamax {
-                    curve.tag[j] = "CORNER"
+                    curve.tag[j] = .corner
                     curve.c[3 * j + 1] = curve.vertex[j]
                     curve.c[3 * j + 2] = p4
                 } else {
@@ -1047,7 +1053,7 @@ public final class Potrace {
                     }
                     p2 = interval(lambda: 0.5+0.5*alpha, a: curve.vertex[i], b: curve.vertex[j])
                     p3 = interval(lambda: 0.5+0.5*alpha, a: curve.vertex[k], b: curve.vertex[j])
-                    curve.tag[j] = "CURVE"
+                    curve.tag[j] = .curve
                     curve.c[3 * j + 0] = p2
                     curve.c[3 * j + 1] = p3
                     curve.c[3 * j + 2] = p4
@@ -1230,7 +1236,7 @@ public final class Potrace {
                 areac = Array<Double>(repeating: 0, count: m+1)
 
             for i in 0..<m {
-                if (curve.tag[i] == "CURVE") {
+                if (curve.tag[i] == .curve) {
                     let val = dpara(p0: vert[mod(a: i-1,n: m)], p1: vert[i], p2: vert[mod(a: i+1,n: m)])
                     convc[i] = sign(i: Int(val))
                 } else {
@@ -1243,7 +1249,7 @@ public final class Potrace {
             p0 = curve.vertex[0]
             for i in 0..<m {
                 i1 = mod(a: i+1, n: m)
-                if (curve.tag[i1] == "CURVE") {
+                if (curve.tag[i1] == .curve) {
                     alpha = curve.alpha[i1]
                     area += 0.3 * alpha * (4-alpha) *
                     dpara(p0: curve.c[i * 3 + 2], p1: vert[i1], p2: curve.c[i1 * 3 + 2])/2
@@ -1299,7 +1305,7 @@ public final class Potrace {
                     s[i] = 1.0
                     t[i] = 1.0
                 } else {
-                    ocurve.tag[i] = "CURVE"
+                    ocurve.tag[i] = .curve
                     ocurve.c[i * 3 + 0] = opt[j].c[0]
                     ocurve.c[i * 3 + 1] = opt[j].c[1]
                     ocurve.c[i * 3 + 2] = curve.c[mod(a: j,n: m) * 3 + 2]
@@ -1362,10 +1368,15 @@ public final class Potrace {
             bezierPath.move(to: CGPoint(x: x, y: y))
 
             for i in 0..<n {
-                if (curve.tag[i] == "CURVE") {
+                switch curve.tag[i] {
+                case .curve:
                     bezier(i: i)
-                } else if (curve.tag[i] == "CORNER") {
+
+                case .corner:
                     segment(i: i)
+
+                case .undefined:
+                    break
                 }
             }
         }
@@ -1386,49 +1397,59 @@ public final class Potrace {
 
     public func getSVG(scale size: Double = 1.0, opt_type: String? = nil) -> String {
 
-        func path(curve: Curve) -> String {
+        func path(curve: Curve, integral: Bool) -> String {
+
+            let format = integral ? "%d" : "%f"
+            let numFormat: (Double) -> CVarArg = { number in
+                if integral {
+                    return number.toInt()
+                } else {
+                    return number.toFixed(3)
+                }
+            }
 
             func bezier(i: Int) -> String {
-                var b = "C " + String(format: "%f", (curve.c[i * 3 + 0].x * size).toFixed(3)) + " " +
-                String(format: "%f",(curve.c[i * 3 + 0].y * size).toFixed(3)) + ","
-                b += String(format: "%f", (curve.c[i * 3 + 1].x * size).toFixed(3)) + " " +
-                String(format: "%f", (curve.c[i * 3 + 1].y * size).toFixed(3)) + ","
-                b += String(format: "%f", (curve.c[i * 3 + 2].x * size).toFixed(3)) + " " +
-                String(format: "%f", (curve.c[i * 3 + 2].y * size).toFixed(3)) + " "
+                var b = "\n    C " + String(format: format, numFormat(curve.c[i * 3 + 0].x * size)) + "," +
+                String(format: format, numFormat(curve.c[i * 3 + 0].y * size)) + " "
+                b += String(format: format, numFormat(curve.c[i * 3 + 1].x * size)) + "," +
+                String(format: format, numFormat(curve.c[i * 3 + 1].y * size)) + " "
+                b += String(format: format, numFormat(curve.c[i * 3 + 2].x * size)) + "," +
+                String(format: format, numFormat(curve.c[i * 3 + 2].y * size))
                 return b
             }
 
             func segment(i: Int) -> String {
-                var s = "L " + String(format: "%f", (curve.c[i * 3 + 1].x * size).toFixed(3)) + " " +
-                String(format: "%f", (curve.c[i * 3 + 1].y * size).toFixed(3)) + " "
-                s += String(format: "%f", (curve.c[i * 3 + 2].x * size).toFixed(3)) + " " +
-                String(format: "%f", (curve.c[i * 3 + 2].y * size).toFixed(3)) + " "
+                var s = "\n    L " + String(format: format, numFormat(curve.c[i * 3 + 1].x * size)) + "," +
+                String(format: format, numFormat(curve.c[i * 3 + 1].y * size)) + " "
+                s += String(format: format, numFormat(curve.c[i * 3 + 2].x * size)) + "," +
+                String(format: format, numFormat(curve.c[i * 3 + 2].y * size)) + " "
                 return s
             }
 
             let n = curve.n
-            var p = "M" + String(format: "%f", (curve.c[(n - 1) * 3 + 2].x * size).toFixed(3)) +
-            " " + String(format: "%f", (curve.c[(n - 1) * 3 + 2].y * size).toFixed(3)) + " "
+            var p = "\n  M " + String(format: format, numFormat(curve.c[(n - 1) * 3 + 2].x * size)) +
+            "," + String(format: format, numFormat(curve.c[(n - 1) * 3 + 2].y * size)) + " "
             for i in 0..<n {
-                if (curve.tag[i] == "CURVE") {
+                switch curve.tag[i] {
+                case .curve:
                     p += bezier(i: i)
-                } else if (curve.tag[i] == "CORNER") {
+
+                case .corner:
                     p += segment(i: i)
+
+                case .undefined:
+                    break
                 }
             }
 
+            p += "\n  z"
             return p
         }
 
         var w = Double(bm.w) * size, h = Double(bm.h) * size,
             len = pathlist.count, c: Curve, strokec: String, fillc: String, fillrule: String
 
-        var svg = "<svg id=\"svg\" version=\"1.1\" width=\"\(w)\" height=\"\(h)\" xmlns=\"http://www.w3.org/2000/svg\">"
-        svg += "<path d=\""
-        for i in 0 ..< len {
-            c = pathlist[i].curve
-            svg += path(curve: c)
-        }
+        var svg = "<svg id=\"svg\" version=\"1.1\" width=\"\(w)\" height=\"\(h)\" xmlns=\"http://www.w3.org/2000/svg\">\n"
         if (opt_type == "curve") {
             strokec = "black"
             fillc = "none"
@@ -1438,15 +1459,25 @@ public final class Potrace {
             fillc = "black"
             fillrule = " fill-rule=\"evenodd\""
         }
-        svg += "\" stroke=\"\(strokec)\" fill=\"\(fillc)\" \(fillrule)/></svg>"
+        svg += "<path stroke=\"\(strokec)\" fill=\"\(fillc)\"\(fillrule) d=\""
+        for i in 0 ..< len {
+            c = pathlist[i].curve
+            svg += path(curve: c, integral: true)
+        }
+        svg += "\"\n/>\n</svg>"
         return svg
     }
 }
 
 extension Double {
+
     func toFixed(_ places: Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
+    }
+
+    func toInt() -> Int {
+        Int(self)
     }
 }
 
