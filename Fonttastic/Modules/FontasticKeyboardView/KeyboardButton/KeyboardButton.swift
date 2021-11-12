@@ -38,9 +38,6 @@ class KeyboardButton: UIControl {
 
         case let .fixed(width):
             resultWidth = width
-
-        case let .flexible(flexBasis):
-            resultWidth = flexBasis
         }
 
         return CGSize(width: resultWidth, height: design.layoutHeight)

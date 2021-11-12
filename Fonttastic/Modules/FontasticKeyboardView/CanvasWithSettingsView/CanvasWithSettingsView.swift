@@ -333,9 +333,9 @@ class CanvasWithSettingsView: UIView {
 
         if animated {
             UIView.animate(
-                withDuration: 0.35,
+                withDuration: 0.2,
                 delay: 0,
-                options: .curveEaseInOut,
+                options: .curveEaseOut,
                 animations: changes,
                 completion: nil
             )

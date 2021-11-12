@@ -52,9 +52,9 @@ class CanvasView: UIView {
         color: .black,
         alpha: 0.5,
         x: 0,
-        y: 8,
-        blur: 16,
-        spread: -8
+        y: 4,
+        blur: 8,
+        spread: -4
     )
 
     // MARK: - Initializers

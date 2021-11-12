@@ -12,7 +12,7 @@ import FonttasticTools
 
 enum KeyboardButtonContent {
 
-    case text(contentString: String, displayString: String)
+    case text(contentString: String?, displayString: String)
     case systemIcon(normalIconName: String, highilightedIconName: String?)
 }
 
@@ -215,6 +215,96 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
                 self.shouldTurnIntoLockedState = false
             }
             self.state = targetState
+        }
+    }
+}
+
+class PunctuationSetToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    let content: KeyboardButtonContent
+
+    // MARK: - Initializers
+
+    init(punctuationSet: KeyboardType.PunctuationSet, punctuationSetToggleEvent: Event<Void>) {
+        switch punctuationSet {
+        case .default:
+            self.content = .text(contentString: nil, displayString: "#+=")
+
+        case .alternative:
+            self.content = .systemIcon(normalIconName: "textformat.123", highilightedIconName: nil)
+        }
+
+        didTapEvent.subscribe(punctuationSetToggleEvent) { [weak punctuationSetToggleEvent] _ in
+            punctuationSetToggleEvent?.onNext(())
+        }
+    }
+}
+
+class LanguageToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    var content: KeyboardButtonContent {
+        switch lastUsedLanguage {
+        case .latin:
+            return latinLanguageContent
+
+        case .cyrillic:
+            return cyrillicLanguageContent
+        }
+    }
+
+    // MARK: - Private Instance Properties
+
+    private let latinLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "EN")
+    private let cyrillicLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "RU")
+    private var lastUsedLanguage: KeyboardType.Language = .latin
+
+    // MARK: - Initializers
+
+    init(
+        lastUsedLanguageSource: Event<KeyboardType.Language>,
+        languageToggleEvent: Event<Void>
+    ) {
+        didTapEvent.subscribe(languageToggleEvent) { [weak languageToggleEvent] _ in
+            languageToggleEvent?.onNext(())
+        }
+
+        lastUsedLanguageSource.subscribe(self) { [weak self] language in
+            guard let self = self else { return }
+            self.lastUsedLanguage = language
+            self.shouldUpdateContentEvent.onNext(())
+        }
+    }
+}
+
+class LanguagePunctuationToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    let content: KeyboardButtonContent
+
+    // MARK: - Initializers
+
+    init(keyboardType: KeyboardType, languagePunctuationToggleEvent: Event<Void>) {
+        switch keyboardType {
+        case .language:
+            self.content = .systemIcon(normalIconName: "textformat.123", highilightedIconName: nil)
+
+        case .punctuation:
+            self.content = .systemIcon(normalIconName: "abc", highilightedIconName: nil)
+        }
+
+        didTapEvent.subscribe(languagePunctuationToggleEvent) { [weak languagePunctuationToggleEvent] _ in
+            languagePunctuationToggleEvent?.onNext(())
         }
     }
 }
