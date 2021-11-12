@@ -148,7 +148,6 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
 
     var state: State = .lowercase {
         didSet {
-            print("CaseChangeKeyboardState: \(state)")
             isCapitalizedEvent.onNext(state.isCapitalized)
             shouldUpdateContentEvent.onNext(())
         }
