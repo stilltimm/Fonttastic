@@ -309,7 +309,7 @@ class CanvasWithSettingsView: UIView {
     @objc private func copyCanvasContainerScreenshot() {
         let generalPasteboard = UIPasteboard.general
         canvasView.textView.resignFirstResponder()
-        generalPasteboard.image = canvasContainerButton.takeScreenshot(backgroundColor: .white)
+        generalPasteboard.image = canvasContainerButton.takeScreenshot()
 
         setCopiedStatusLabel(isHidden: false, animated: true)
         let workItem = DispatchWorkItem { [weak self] in
