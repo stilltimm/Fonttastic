@@ -186,11 +186,21 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let parseFromImageAlertActionHandler: (UIAlertAction) -> Void = { [weak self] _ in
             self?.tryToPresentAddFontFlow(sourceType: .parseFromImage)
         }
+        let customScriptTestHandler: (UIAlertAction) -> Void = { [weak self] _ in
+            self?.runCustomJavascriptCode()
+        }
         alertController.addAction(
             UIAlertAction(
                 title: "Parse from image",
                 style: .default,
                 handler: parseFromImageAlertActionHandler
+            )
+        )
+        alertController.addAction(
+            UIAlertAction(
+                title: "Custom Script Test",
+                style: .default,
+                handler: customScriptTestHandler
             )
         )
         alertController.addAction(
@@ -228,6 +238,11 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private func presentAddFontFlow(with context: AddFontNavigationController.Context) {
         let addFontNavigationController = AddFontNavigationController(context: context)
         navigationController?.present(addFontNavigationController, animated: true)
+    }
+
+    private func runCustomJavascriptCode() {
+        let svg2ttfJavaScriptRunner = SVG2TTFJavaScriptRunner()
+        svg2ttfJavaScriptRunner.run(inputs: ["A", "B", "C"])
     }
 
     // MARK: - Errors Handling

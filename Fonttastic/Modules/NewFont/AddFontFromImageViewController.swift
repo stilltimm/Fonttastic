@@ -291,14 +291,22 @@ class AddFontFromImageViewController: UIViewController {
     private func processSVGAlphabetSource(_ svgAlphabetSourceModel: SVGAlphabetSourceModel) {
         self.svgAlphabetModel = svgAlphabetSourceModel
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else { return }
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
+        self.letterWidthSlider.isHidden = false
+        self.setupSVGLetterImageViewsLayout(from: svgAlphabetSourceModel)
+        self.tryToPresentShareSheet(with: svgAlphabetSourceModel)
+    }
 
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.letterWidthSlider.isHidden = false
-            self.setupSVGLetterImageViewsLayout(from: svgAlphabetSourceModel)
+    private func tryToPresentShareSheet(with svgAlphabetSourceModel: SVGAlphabetSourceModel) {
+        guard let fileURL = imageProcessingService.tryCreateSVGsArchive(from: svgAlphabetSourceModel) else {
+            return
         }
+
+        let shareItems: [Any] = [fileURL as Any]
+
+        let shareController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+        navigationController?.present(shareController, animated: true, completion: nil)
     }
 
     // MARK: - Utils

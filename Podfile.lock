@@ -7,12 +7,14 @@ PODS:
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.44.0)
+  - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
   - Cartography
   - Reveal-SDK
   - SVGKit
   - SwiftLint
+  - ZIPFoundation (~> 0.9)
 
 SPEC REPOS:
   trunk:
@@ -21,6 +23,7 @@ SPEC REPOS:
     - Reveal-SDK
     - SVGKit
     - SwiftLint
+    - ZIPFoundation
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
@@ -28,7 +31,8 @@ SPEC CHECKSUMS:
   Reveal-SDK: 62ae124d57732c4fe7e88635274ca24054dd2d29
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
+  ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: 37384acade3d79c26f6c480fe923eb9987e1c0ae
+PODFILE CHECKSUM: b7141f89023676eca7f4ac8a1d9dc607380d13cf
 
 COCOAPODS: 1.11.2

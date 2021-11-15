@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import FonttasticTools
+import ZIPFoundation
 
 // MARK: - Supporting Types
 
@@ -93,6 +94,10 @@ protocol ImageProcessingService {
         from bitmapAlphabetSource: BitmapAlphabetSourceModel,
         completion: @escaping SVGAlphabetSourceCreationCompletion
     )
+
+    func tryCreateSVGsArchive(
+        from svgAlphabetSource: SVGAlphabetSourceModel
+    ) -> URL?
 }
 
 // MARK: - Default Implementaton
@@ -102,6 +107,23 @@ class DefaultImageProcessingService: ImageProcessingService {
     // MARK: - Internal Type Properties
 
     static let shared = DefaultImageProcessingService()
+
+    // MARK: - Private Type Properties
+
+    private static let isLoggingEnabled: Bool = true
+    private static let fileName = #file.components(separatedBy: "/").last!
+
+    // MARK: - Private Type Methods
+
+    private static func logIfEnabled(
+        title: String = "",
+        startDate: Date,
+        endDate: Date = Date(),
+        function: String = #function
+    ) {
+        let timePassed = endDate.timeIntervalSince(startDate)
+        print(Self.fileName, function, "\(title) took \(timePassed) seconds")
+    }
 
     // MARK: - Initializers
 
@@ -113,7 +135,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         from image: UIImage,
         completion: @escaping AlphabetTypeResolutionCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: AlphabetTypeResolutionResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -139,7 +164,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         for alphabetType: AlphabetType,
         completion: @escaping BitmapAlphabetSourceCreationCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: BitmapAlphabetSourceCreationResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -188,7 +216,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         from bitmapAlphabetSource: BitmapAlphabetSourceModel,
         completion: @escaping SVGAlphabetSourceCreationCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: SVGAlphabetSourceCreationResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -215,12 +246,57 @@ class DefaultImageProcessingService: ImageProcessingService {
         complete(with: .success(svgAlphabetSourceModel))
     }
 
+    func tryCreateSVGsArchive(
+        from svgAlphabetSource: SVGAlphabetSourceModel
+    ) -> URL? {
+        let fileManager = FileManager.default
+        let documentDirectoryURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        guard let documentsDirectoryURL = documentDirectoryURLs.first else {
+            return nil
+        }
+
+        let svgsDirectoryURL = documentsDirectoryURL.appendingPathComponent("svgs", isDirectory: true)
+        let archiveURL = documentsDirectoryURL.appendingPathComponent("archive.zip")
+
+        do {
+            if fileManager.fileExists(atPath: svgsDirectoryURL.path) {
+                try fileManager.removeItem(at: svgsDirectoryURL)
+            }
+            if fileManager.fileExists(atPath: archiveURL.path) {
+                try fileManager.removeItem(at: archiveURL)
+            }
+            if !fileManager.fileExists(atPath: svgsDirectoryURL.path) {
+                try fileManager.createDirectory(
+                    at: svgsDirectoryURL,
+                    withIntermediateDirectories: false,
+                    attributes: nil
+                )
+            }
+            for svgLetterSource in svgAlphabetSource.letterSources {
+                let fileName = "\(svgLetterSource.letter)"
+                let fileUrl = svgsDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("svg")
+                try svgLetterSource.svgContents.write(to: fileUrl, atomically: true, encoding: .utf8)
+            }
+            try fileManager.zipItem(at: svgsDirectoryURL, to: archiveURL)
+        } catch {
+            print("Failed to create archive: ", error)
+            return nil
+        }
+
+        guard fileManager.fileExists(atPath: archiveURL.path) else {
+            return nil
+        }
+
+        return archiveURL
+    }
+
     // MARK: - Private Instance Methods
 
     private func makeBitmapLetterSources(
         from image: UIImage,
         orderedLetters: [LetterType]
     ) -> Result<[BitmapLetterSourceModel], BitmapAlphabetSourceCreationError> {
+        let startDate = Date()
         let imageHeight = image.size.height
         var cropRect = CGRect(origin: CGPoint.zero, size: CGSize(width: imageHeight, height: imageHeight))
 
@@ -236,6 +312,7 @@ class DefaultImageProcessingService: ImageProcessingService {
             letterSources.append(.init(letter: letter, image: croppedImage))
         }
 
+        Self.logIfEnabled(startDate: startDate)
         return .success(letterSources)
     }
 
@@ -243,7 +320,11 @@ class DefaultImageProcessingService: ImageProcessingService {
         from bitmapLetterSource: BitmapLetterSourceModel,
         with settings: Potrace.Settings
     ) -> SVGLetterSourceModel? {
-        guard let pixelData = bitmapLetterSource.image.pixelData() else { return nil }
+        guard
+            let pixelData = bitmapLetterSource.image.pixelData()
+        else { return nil }
+
+        let startDate = Date()
 
         // TODO: Fix this warning https://stackoverflow.com/a/60912479
         let potrace = Potrace(
@@ -254,11 +335,15 @@ class DefaultImageProcessingService: ImageProcessingService {
 
         potrace.process(settings: settings)
 
-        return SVGLetterSourceModel(
+        let scale: Double = Constants.lineHeight / Double(bitmapLetterSource.image.size.height)
+        let result: SVGLetterSourceModel = SVGLetterSourceModel(
             letter: bitmapLetterSource.letter,
-            svgContents: potrace.getSVG(),
-            bezierPath: potrace.getBezierPath(scale: 2.0)
+            svgContents: potrace.getSVG(scale: scale, opt_type: nil),
+            bezierPath: potrace.getBezierPath(scale: 4)
         )
+
+        Self.logIfEnabled(title: "Letter \"\(bitmapLetterSource.letter)\"", startDate: startDate)
+        return result
     }
 }
 
@@ -288,5 +373,14 @@ private extension UIImage {
 
 private enum Constants {
 
-    static let defaultPotraceSettings: Potrace.Settings = .init()
+    static let defaultPotraceSettings: Potrace.Settings = {
+        var settings = Potrace.Settings()
+        settings.turdsize = 10
+        settings.alphamax = 0.5
+        settings.optcurve = false
+        settings.opttolerance = 2.0
+        return settings
+    }()
+
+    static let lineHeight: Double = 1000.0
 }
