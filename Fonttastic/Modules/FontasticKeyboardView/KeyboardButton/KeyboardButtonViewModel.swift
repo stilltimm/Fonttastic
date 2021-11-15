@@ -25,7 +25,7 @@ protocol KeyboardButtonViewModelProtocol {
 
 // MARK: - Implementations
 
-class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class DefaultKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -48,7 +48,7 @@ class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class CapitalizableKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class CapitalizableKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -80,21 +80,21 @@ class CapitalizableKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class LatinSpaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class LatinSpaceKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init() {
         super.init(symbol: " ", displayString: "space")
     }
 }
 
-class LatinReturnKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class LatinReturnKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init() {
         super.init(symbol: "\n", displayString: "return")
     }
 }
 
-class BackspaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class BackspaceKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init(shouldDeleteSymbolEvent: Event<Void>) {
         super.init(normalIconName: "delete.left", highlightedIconName: "delete.left.fill")
@@ -105,7 +105,7 @@ class BackspaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
     }
 }
 
-class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class CaseChangeKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Nested Types
 
@@ -218,7 +218,7 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class PunctuationSetToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class PunctuationSetToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -243,7 +243,7 @@ class PunctuationSetToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtoc
     }
 }
 
-class LanguageToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class LanguageToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -283,7 +283,8 @@ class LanguageToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class LanguagePunctuationToggleKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+// swiftlint:disable:next type_name
+class LanguagePunctuationToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 

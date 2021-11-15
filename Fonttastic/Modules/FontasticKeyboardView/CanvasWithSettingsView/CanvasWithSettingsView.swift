@@ -78,7 +78,7 @@ class CanvasWithSettingsView: UIView {
         return view
     }()
 
-    private let fontChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let fontChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "character.book.closed",
         highlightedIconName: "character.book.closed.fill"
     )
@@ -87,13 +87,13 @@ class CanvasWithSettingsView: UIView {
     private let textAlignmentChangeViewModel = TextAlignmentChangeButtonViewModel()
     private let textAlignmentChangeButton: KeyboardButton
 
-    private let backgroundColorChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let backgroundColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "square.fill",
         highlightedIconName: nil
     )
     private let backgroundColorChangeButton: KeyboardButton
 
-    private let textColorChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let textColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "character.cursor.ibeam",
         highlightedIconName: nil
     )

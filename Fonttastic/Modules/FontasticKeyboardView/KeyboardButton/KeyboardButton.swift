@@ -222,11 +222,11 @@ class KeyboardButton: UIControl {
 
 class CaseChangeKeyboardButton: KeyboardButton {
 
-    private let caseChangeViewModel: CaseChangeKeyboardButtonViewModel
+    private let caseChangeViewModel: CaseChangeKeyboardButtonVM
 
     override fileprivate var updatesHighlightedStateFromNativeControl: Bool { return false }
 
-    init(caseChangeViewModel: CaseChangeKeyboardButtonViewModel, design: Design) {
+    init(caseChangeViewModel: CaseChangeKeyboardButtonVM, design: Design) {
         self.caseChangeViewModel = caseChangeViewModel
         super.init(viewModel: caseChangeViewModel, design: design)
 

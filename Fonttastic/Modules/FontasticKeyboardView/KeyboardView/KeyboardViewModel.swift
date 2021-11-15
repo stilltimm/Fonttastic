@@ -13,7 +13,7 @@ final class KeyboardViewModel {
     // MARK: - Nested Types
 
     enum RowItem {
-        case caseChangeButton(CaseChangeKeyboardButtonViewModel, KeyboardButtonDesign)
+        case caseChangeButton(CaseChangeKeyboardButtonVM, KeyboardButtonDesign)
         case button(KeyboardButtonViewModelProtocol, KeyboardButtonDesign)
         case nestedRow(Row)
     }
@@ -86,7 +86,9 @@ final class KeyboardViewModel {
         self.isCapitalizedSourceEvent = isCapitalizedSourceEvent
     }
 
-    // swiftlint:disable:next function_body_length
+    // TODO: Refactor into many type methods for setup
+    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     convenience init(
         config: Config,
         lastUsedLanguageSource: Event<KeyboardType.Language>
@@ -120,14 +122,14 @@ final class KeyboardViewModel {
                     let symbolViewModel: KeyboardButtonViewModelProtocol
                     switch symbolSourceModel {
                     case let .capitalizableSymbol(lowercase, uppercase):
-                        symbolViewModel = CapitalizableKeyboardButtonViewModel(
+                        symbolViewModel = CapitalizableKeyboardButtonVM(
                             uncapitalizedSymbol: lowercase,
                             capitalizedSymbol: uppercase,
                             capitalizationSource: isCapitalizedSourceEvent
                         )
 
                     case let .symbol(symbol):
-                        symbolViewModel = DefaultKeyboardButtonViewModel(symbol: symbol)
+                        symbolViewModel = DefaultKeyboardButtonVM(symbol: symbol)
                     }
                     symbolViewModel.didTapEvent
                         .subscribe(didSubmitSymbolEvent) { [weak didSubmitSymbolEvent] content in
@@ -174,14 +176,14 @@ final class KeyboardViewModel {
 
         switch config.keyboardType {
         case .language:
-            let caseChangeButtonViewModel = CaseChangeKeyboardButtonViewModel(
+            let caseChangeButtonViewModel = CaseChangeKeyboardButtonVM(
                 capitalizationSource: isCapitalizedSourceEvent,
                 textInsertedSource: didSubmitSymbolEvent
             )
             thirdRowItems.append(.caseChangeButton(caseChangeButtonViewModel, thirdRowFunctionalButtonDesign))
 
         case let .punctuation(punctuationSet):
-            let punctuationChangeButtonViewModel = PunctuationSetToggleKeyboardButtonViewModel(
+            let punctuationChangeButtonViewModel = PunctuationSetToggleKeyboardButtonVM(
                 punctuationSet: punctuationSet,
                 punctuationSetToggleEvent: punctuationSetToggleEvent
             )
@@ -191,7 +193,7 @@ final class KeyboardViewModel {
             thirdRowItems.append(.button(punctuationChangeButtonViewModel, punctuationChangeButtonDesign))
         }
 
-        let backspaceViewModel = BackspaceKeyboardButtonViewModel(shouldDeleteSymbolEvent: shouldDeleteSymbolEvent)
+        let backspaceViewModel = BackspaceKeyboardButtonVM(shouldDeleteSymbolEvent: shouldDeleteSymbolEvent)
         let backspaceButtonDesign = KeyboardButtonDesignBuilder(thirdRowFunctionalButtonDesign)
             .withPressSoundID(Sounds.deleteKeyPress)
             .build()
@@ -200,7 +202,7 @@ final class KeyboardViewModel {
 
         var fourthRowItems: [KeyboardViewModel.RowItem] = []
 
-        let languagePunctuationToggleButtonViewModel = LanguagePunctuationToggleKeyboardButtonViewModel(
+        let languagePunctuationToggleButtonViewModel = LanguagePunctuationToggleKeyboardButtonVM(
             keyboardType: config.keyboardType,
             languagePunctuationToggleEvent: punctuationLanguageToggleEvent
         )
@@ -209,13 +211,13 @@ final class KeyboardViewModel {
         let languageButtonDesign = buttonDesignBuilder
             .withLabelFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
             .build()
-        let languageChangeButtonViewModel = LanguageToggleKeyboardButtonViewModel(
+        let languageChangeButtonViewModel = LanguageToggleKeyboardButtonVM(
             lastUsedLanguageSource: lastUsedLanguageSource,
             languageToggleEvent: languageToggleEvent
         )
         fourthRowItems.append(.button(languageChangeButtonViewModel, languageButtonDesign))
 
-        let spaceButtonViewModel = LatinSpaceKeyboardButtonViewModel()
+        let spaceButtonViewModel = LatinSpaceKeyboardButtonVM()
         let spaceAndReturnButtonTotalWidth = design.containerWidth
             - (3 * design.letterSpacing)
             - (2 * design.defaultFunctionalButtonWidth)
@@ -227,7 +229,7 @@ final class KeyboardViewModel {
             .withPressSoundID(Sounds.defaultKeyPress)
             .build()
         fourthRowItems.append(.button(spaceButtonViewModel, spaceButtonDesign))
-        let returnButtonViewModel = LatinReturnKeyboardButtonViewModel()
+        let returnButtonViewModel = LatinReturnKeyboardButtonVM()
         let returnButtonDesign = buttonDesignBuilder
             .withLayoutWidth(.fixed(width: floor(spaceAndReturnButtonTotalWidth / 3)))
             .withForegroungColor(Colors.keyboardButtonMinor)
