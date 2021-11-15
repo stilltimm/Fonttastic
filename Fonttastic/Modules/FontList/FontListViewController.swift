@@ -44,7 +44,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
 
-    private let addFontButton = AddFontButton()
+    // TODO: Show add font after solving [svg]->.ttf pipe
+//    private let addFontButton = AddFontButton()
 
     // MARK: - Private Properties
 
@@ -91,28 +92,27 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        addFontButton.layer.applyShadow(
-            color: Colors.brandMainLight,
-            alpha: 1.0,
-            x: 0,
-            y: 8,
-            blur: 16,
-            spread: -8
-        )
+//        addFontButton.layer.applyShadow(
+//            color: Colors.brandMainLight,
+//            alpha: 1.0,
+//            x: 0,
+//            y: 8,
+//            blur: 16,
+//            spread: -8
+//        )
     }
 
     // MARK: - Private Methods
 
     private func setupLayout() {
-        view.addSubview(collectionView)
-        view.addSubview(addFontButton)
-        constrain(view, collectionView, addFontButton) { view, collection, addFontButton in
-            collection.edges == view.edges
+        setupCollectionView()
+//        setupAddFontButton()
+    }
 
-            addFontButton.width == Constants.fontButtonSize.width
-            addFontButton.height == Constants.fontButtonSize.height
-            addFontButton.right == view.safeAreaLayoutGuide.right - Constants.fontButtonEdgeInsets.right
-            addFontButton.bottom == view.safeAreaLayoutGuide.bottom - Constants.fontButtonEdgeInsets.bottom
+    private func setupCollectionView() {
+        view.addSubview(collectionView)
+        constrain(view, collectionView) { view, collection in
+            collection.edges == view.edges
         }
 
         collectionView.backgroundColor = .clear
@@ -125,6 +125,16 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         collectionView.dataSource = self
     }
 
+//    private func setupAddFontButton() {
+//        view.addSubview(addFontButton)
+//        constrain(view, addFontButton) { view, addFontButton in
+//            addFontButton.width == Constants.fontButtonSize.width
+//            addFontButton.height == Constants.fontButtonSize.height
+//            addFontButton.right == view.safeAreaLayoutGuide.right - Constants.fontButtonEdgeInsets.right
+//            addFontButton.bottom == view.safeAreaLayoutGuide.bottom - Constants.fontButtonEdgeInsets.bottom
+//        }
+//    }
+
     private func setupBusinessLogic() {
         viewModel.shouldReloadDataEvent.subscribe(self) { [weak self] in
             self?.reloadData()
@@ -134,11 +144,15 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             self?.openAppSettings()
         }
 
-        addFontButton.addTarget(
-            self,
-            action: #selector(handleAddFontButtonDidTap),
-            for: .touchUpInside
-        )
+        //setupAddFontButtonTapHandling()
+    }
+
+    private func setupAddFontButtonTapHandling() {
+//        addFontButton.addTarget(
+//            self,
+//            action: #selector(handleAddFontButtonDidTap),
+//            for: .touchUpInside
+//        )
     }
 
     private func reloadData() {

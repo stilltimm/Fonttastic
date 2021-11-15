@@ -78,7 +78,7 @@ class CanvasWithSettingsView: UIView {
         return view
     }()
 
-    private let fontChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let fontChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "character.book.closed",
         highlightedIconName: "character.book.closed.fill"
     )
@@ -87,13 +87,13 @@ class CanvasWithSettingsView: UIView {
     private let textAlignmentChangeViewModel = TextAlignmentChangeButtonViewModel()
     private let textAlignmentChangeButton: KeyboardButton
 
-    private let backgroundColorChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let backgroundColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "square.fill",
         highlightedIconName: nil
     )
     private let backgroundColorChangeButton: KeyboardButton
 
-    private let textColorChangeViewModel = DefaultKeyboardButtonViewModel(
+    private let textColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "character.cursor.ibeam",
         highlightedIconName: nil
     )
@@ -309,7 +309,7 @@ class CanvasWithSettingsView: UIView {
     @objc private func copyCanvasContainerScreenshot() {
         let generalPasteboard = UIPasteboard.general
         canvasView.textView.resignFirstResponder()
-        generalPasteboard.image = canvasContainerButton.takeScreenshot(backgroundColor: .white)
+        generalPasteboard.image = canvasContainerButton.takeScreenshot()
 
         setCopiedStatusLabel(isHidden: false, animated: true)
         let workItem = DispatchWorkItem { [weak self] in
@@ -333,9 +333,9 @@ class CanvasWithSettingsView: UIView {
 
         if animated {
             UIView.animate(
-                withDuration: 0.35,
+                withDuration: 0.2,
                 delay: 0,
-                options: .curveEaseInOut,
+                options: .curveEaseOut,
                 animations: changes,
                 completion: nil
             )

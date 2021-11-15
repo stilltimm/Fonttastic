@@ -9,13 +9,12 @@ import UIKit
 
 extension UIView {
 
-    public func takeScreenshot(backgroundColor: UIColor? = nil) -> UIImage? {
+    public func takeScreenshot() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
 
-        if let backgroundColor = backgroundColor {
-            backgroundColor.setFill()
-            UIRectFill(self.bounds)
-        }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        context.clear(CGRect(origin: .zero, size: self.bounds.size))
+
         drawHierarchy(in: self.bounds, afterScreenUpdates: true)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()

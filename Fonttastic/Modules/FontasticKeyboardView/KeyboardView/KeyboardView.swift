@@ -15,8 +15,14 @@ class KeyboardView: UIView {
 
     typealias ViewModel = KeyboardViewModel
 
-    private let viewModel: ViewModel
+    // MARK: - Internal Instance Methods
+
     var design: ViewModel.Design { viewModel.design }
+    var keyboardType: KeyboardType { viewModel.config.keyboardType }
+
+    // MARK: - Private Instance Properties
+
+    private let viewModel: ViewModel
 
     // MARK: - Initializers
 

@@ -12,7 +12,6 @@ enum KeyboardButtonLayoutStyle {
 
     case intrinsic(spacing: CGFloat)
     case fixed(width: CGFloat)
-    case flexible(flexBasis: CGFloat)
 }
 
 struct KeyboardButtonDesign {

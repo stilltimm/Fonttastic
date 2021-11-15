@@ -12,7 +12,7 @@ import FonttasticTools
 
 enum KeyboardButtonContent {
 
-    case text(contentString: String, displayString: String)
+    case text(contentString: String?, displayString: String)
     case systemIcon(normalIconName: String, highilightedIconName: String?)
 }
 
@@ -25,7 +25,7 @@ protocol KeyboardButtonViewModelProtocol {
 
 // MARK: - Implementations
 
-class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class DefaultKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -48,7 +48,7 @@ class DefaultKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class CapitalizableKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class CapitalizableKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Public Instance Properties
 
@@ -80,21 +80,21 @@ class CapitalizableKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
     }
 }
 
-class LatinSpaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class LatinSpaceKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init() {
         super.init(symbol: " ", displayString: "space")
     }
 }
 
-class LatinReturnKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class LatinReturnKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init() {
         super.init(symbol: "\n", displayString: "return")
     }
 }
 
-class BackspaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
+class BackspaceKeyboardButtonVM: DefaultKeyboardButtonVM {
 
     init(shouldDeleteSymbolEvent: Event<Void>) {
         super.init(normalIconName: "delete.left", highlightedIconName: "delete.left.fill")
@@ -105,7 +105,7 @@ class BackspaceKeyboardButtonViewModel: DefaultKeyboardButtonViewModel {
     }
 }
 
-class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
+class CaseChangeKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Nested Types
 
@@ -148,7 +148,6 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
 
     var state: State = .lowercase {
         didSet {
-            print("CaseChangeKeyboardState: \(state)")
             isCapitalizedEvent.onNext(state.isCapitalized)
             shouldUpdateContentEvent.onNext(())
         }
@@ -215,6 +214,97 @@ class CaseChangeKeyboardButtonViewModel: KeyboardButtonViewModelProtocol {
                 self.shouldTurnIntoLockedState = false
             }
             self.state = targetState
+        }
+    }
+}
+
+class PunctuationSetToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    let content: KeyboardButtonContent
+
+    // MARK: - Initializers
+
+    init(punctuationSet: KeyboardType.PunctuationSet, punctuationSetToggleEvent: Event<Void>) {
+        switch punctuationSet {
+        case .default:
+            self.content = .text(contentString: nil, displayString: "#+=")
+
+        case .alternative:
+            self.content = .systemIcon(normalIconName: "textformat.123", highilightedIconName: nil)
+        }
+
+        didTapEvent.subscribe(punctuationSetToggleEvent) { [weak punctuationSetToggleEvent] _ in
+            punctuationSetToggleEvent?.onNext(())
+        }
+    }
+}
+
+class LanguageToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    var content: KeyboardButtonContent {
+        switch lastUsedLanguage {
+        case .latin:
+            return latinLanguageContent
+
+        case .cyrillic:
+            return cyrillicLanguageContent
+        }
+    }
+
+    // MARK: - Private Instance Properties
+
+    private let latinLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "EN")
+    private let cyrillicLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "RU")
+    private var lastUsedLanguage: KeyboardType.Language = .latin
+
+    // MARK: - Initializers
+
+    init(
+        lastUsedLanguageSource: Event<KeyboardType.Language>,
+        languageToggleEvent: Event<Void>
+    ) {
+        didTapEvent.subscribe(languageToggleEvent) { [weak languageToggleEvent] _ in
+            languageToggleEvent?.onNext(())
+        }
+
+        lastUsedLanguageSource.subscribe(self) { [weak self] language in
+            guard let self = self else { return }
+            self.lastUsedLanguage = language
+            self.shouldUpdateContentEvent.onNext(())
+        }
+    }
+}
+
+// swiftlint:disable:next type_name
+class LanguagePunctuationToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
+
+    // MARK: - Public Instance Properties
+
+    let didTapEvent = Event<KeyboardButtonContent>()
+    let shouldUpdateContentEvent = Event<Void>()
+    let content: KeyboardButtonContent
+
+    // MARK: - Initializers
+
+    init(keyboardType: KeyboardType, languagePunctuationToggleEvent: Event<Void>) {
+        switch keyboardType {
+        case .language:
+            self.content = .systemIcon(normalIconName: "textformat.123", highilightedIconName: nil)
+
+        case .punctuation:
+            self.content = .systemIcon(normalIconName: "abc", highilightedIconName: nil)
+        }
+
+        didTapEvent.subscribe(languagePunctuationToggleEvent) { [weak languagePunctuationToggleEvent] _ in
+            languagePunctuationToggleEvent?.onNext(())
         }
     }
 }
