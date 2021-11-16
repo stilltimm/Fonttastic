@@ -28,12 +28,13 @@ public typealias FontInstallationCompletion = (FontInstallationResult) -> Void
 
 // MARK: - FontsService
 
-public protocol FontsService {
+public protocol FontsService: AnyObject {
 
     var hasInstalledCustomFonts: Bool { get }
     var fontModelsRepository: FontModelsRepository { get }
+    var lastUsedFontModel: FontModel { get set }
 
-    func installFonts()
+    func installFonts(completion: @escaping () -> Void)
 
     func installFont(
         from fontSourceModel: FontSourceModel,
@@ -50,8 +51,38 @@ public class DefaultFontsService: FontsService {
     // MARK: - Public Instance Properties
 
     public let fontModelsRepository: FontModelsRepository
-
     public private(set) var hasInstalledCustomFonts: Bool = false
+
+    public var lastUsedFontModel: FontModel {
+        get {
+            guard let lastUsedFontModelData = UserDefaults.standard.data(forKey: Constants.lastUsedFontKey) else {
+                return Constants.defaultLastUsedFontModel
+            }
+
+            do {
+                return try JSONDecoder().decode(FontModel.self, from: lastUsedFontModelData)
+            } catch {
+                logger.log(
+                    "Failed to decode FontModel from lastUsedFontModelData",
+                    description: "Error: \(error)",
+                    level: .error
+                )
+                return Constants.defaultLastUsedFontModel
+            }
+        }
+        set {
+            do {
+                let lastUsedFontModelData = try JSONEncoder().encode(newValue)
+                UserDefaults.standard.set(lastUsedFontModelData, forKey: Constants.lastUsedFontKey)
+            } catch {
+                logger.log(
+                    "Failed to encode lastUsedFontModel to data",
+                    description: "Error: \(error)",
+                    level: .error
+                )
+            }
+        }
+    }
 
     // MARK: - Private Instance Properties
 
@@ -87,9 +118,9 @@ public class DefaultFontsService: FontsService {
         }
     }
 
-    public func installFonts() {
+    public func installFonts(completion: @escaping () -> Void) {
         installSystemFonts()
-        installCustomFonts()
+        installCustomFonts(completion: completion)
     }
 
     // MARK: - Private Instance Methods
@@ -100,7 +131,7 @@ public class DefaultFontsService: FontsService {
         fontModelsRepository.addFonts(systemFontModels)
     }
 
-    private func installCustomFonts() {
+    private func installCustomFonts(completion: @escaping () -> Void) {
         logger.log("Started installing custom fonts", level: .debug)
         let bundle = Bundle(for: Self.self)
 
@@ -117,26 +148,31 @@ public class DefaultFontsService: FontsService {
         let dispatchGroup = DispatchGroup()
         var installedFontModels: [FontModel] = []
 
-        for customFontFileURL in customFontFileURLs {
+        for customFontFileURL in customFontFileURLs /*.prefix(100)*/ {
             dispatchGroup.enter()
 
-            let fontName: String = customFontFileURL.lastPathComponent
-            let fontSourceModel = FontSourceModel(name: fontName, resourceType: .file(fileURL: customFontFileURL))
-
-            self.installFont(from: fontSourceModel) { result in
-                switch result {
-                case let .failure(error):
-                    logger.log(
-                        "Failed to install custom font",
-                        description: "Error: \(error)",
-                        level: .error
-                    )
-
-                case let .success(fontModel):
-                    installedFontModels.append(fontModel)
+            autoreleasepool { [weak self] in
+                guard let self = self else {
+                    return
                 }
+                let fontName: String = customFontFileURL.lastPathComponent
+                let fontSourceModel = FontSourceModel(name: fontName, resourceType: .file(fileURL: customFontFileURL))
 
-                dispatchGroup.leave()
+                self.installFont(from: fontSourceModel) { result in
+                    switch result {
+                    case let .failure(error):
+                        logger.log(
+                            "Failed to install custom font",
+                            description: "Error: \(error)",
+                            level: .error
+                        )
+
+                    case let .success(fontModel):
+                        installedFontModels.append(fontModel)
+                    }
+
+                    dispatchGroup.leave()
+                }
             }
         }
 
@@ -145,6 +181,8 @@ public class DefaultFontsService: FontsService {
 
             self.hasInstalledCustomFonts = true
             self.fontModelsRepository.didUpdateFontsEvent.onNext(())
+
+            completion()
         }
     }
 
@@ -286,6 +324,13 @@ private enum Constants {
 
     static let defaultFontExtension: String = "ttf"
 
-    static let hasInstalledSystemFontsKey: String = "com.timofeysurkov.Fontastic.hasInstalledSystemFonts"
     static let hasInstalledCustomFontsKey: String = "com.timofeysurkov.Fontastic.hasInstalledCustomFonts"
+    static let lastUsedFontKey: String = "com.timofeysurkov.Fontastic.lastUsedFont"
+
+    static let defaultLastUsedFontModel: FontModel = FontModel(
+        name: "Georgia-Bold",
+        displayName: "Georgia Bold",
+        resourceType: .system,
+        status: .ready
+    )
 }

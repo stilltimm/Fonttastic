@@ -9,24 +9,34 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-let logger: FonttasticLogger = FonttasticLogger.shared
-
 class KeyboardViewController: UIInputViewController {
 
     // MARK: - Private Instance Properties
 
-    private let fontasticKeyboardView = FontasticKeyboardView()
+    private var fontasticKeyboardView: FontasticKeyboardView?
 
     private var colorPickerCompletion: ((UIColor) -> Void)?
     private weak var colorPickerViewController: UIColorPickerViewController?
+
+    fileprivate lazy var fontsSerivce: FontsService = DefaultFontsService.shared
 
     // MARK: - Public Instance Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        FonttasticLogger.shared.setup(with: .default)
+
+        self.fontasticKeyboardView = FontasticKeyboardView(initiallySelectedFontModel: fontsSerivce.lastUsedFontModel)
+
         setupLayout()
         setupBusinessLogic()
+
+        fontsSerivce.installFonts { [weak self] in
+            guard let fontasticKeyboardView = self?.fontasticKeyboardView else { return }
+            let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+            fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = selectedFontModel
+        }
     }
 
     override func viewWillTransition(
@@ -35,13 +45,14 @@ class KeyboardViewController: UIInputViewController {
     ) {
         let isPortrait: Bool = UIScreen.main.isPortrait
         coordinator.animate { [weak self] _ in
-            self?.fontasticKeyboardView.adaptToOrientationChange(isPortrait: isPortrait)
+            self?.fontasticKeyboardView?.adaptToOrientationChange(isPortrait: isPortrait)
         }
     }
 
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
         view.addSubview(fontasticKeyboardView)
         constrain(view, fontasticKeyboardView) { view, keyboard in
             keyboard.edges == view.edges
@@ -49,6 +60,8 @@ class KeyboardViewController: UIInputViewController {
     }
 
     private func setupBusinessLogic() {
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
+
         fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
             .subscribe(self) { [weak self] in
                 self?.showFontPickerViewController()
@@ -66,30 +79,31 @@ class KeyboardViewController: UIInputViewController {
     }
 
     private func showFontPickerViewController() {
-        logger.log("TODO: Implement custom font picker", level: .debug)
-//        let config = UIFontPickerViewController.Configuration()
-//        config.displayUsingSystemFont = false
-//        config.includeFaces = true
-//        let viewModel = FontListViewModel(mode: .fontSelection)
-//        let fontPickerViewController = FontListViewController(viewModel: viewModel)
-//        fontPickerViewController.delegate = self
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
+        let fontSelectionViewController = FontSelectionController(
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        )
+        fontSelectionViewController.delegate = self
 
-//        present(fontPickerViewController, animated: true)
+        let nav = BaseNavigationController(rootViewController: fontSelectionViewController)
+        present(nav, animated: true)
     }
 
     private func showColorPickerViewControllerForBackgroundColor() {
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
         showColorPickerViewController(
             selectedColor: fontasticKeyboardView.canvasWithSettingsView.canvasBackgroundColor
         ) { [weak self] color in
-            self?.fontasticKeyboardView.canvasWithSettingsView.canvasBackgroundColor = color
+            self?.fontasticKeyboardView?.canvasWithSettingsView.canvasBackgroundColor = color
         }
     }
 
     private func showColorPickerViewControllerForTextColor() {
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
         showColorPickerViewController(
             selectedColor: fontasticKeyboardView.canvasWithSettingsView.canvasTextColor
         ) { [weak self] color in
-            self?.fontasticKeyboardView.canvasWithSettingsView.canvasTextColor = color
+            self?.fontasticKeyboardView?.canvasWithSettingsView.canvasTextColor = color
         }
     }
 
@@ -113,24 +127,35 @@ class KeyboardViewController: UIInputViewController {
     }
 }
 
-//extension KeyboardViewController: FontListViewControllerDelegate {
-//
-//    func didCancelFontSelection() {
-//        self.dismiss(animated: true)
-//    }
-//
-//    func didSelectFontModel(_ fontModel: FontModel) {
-//        guard let font = UIFontFactory.makeFont(from: fontModel, withSize: 36.0) else {
-//            logger.log(
-//                "Cannot instantiate font from selected model",
-//                description: "FontModel: \(fontModel)",
-//                level: .error
-//            )
-//            return
-//        }
-//        fontasticKeyboardView.canvasWithSettingsView.canvasLabelFont = font
-//    }
-//}
+extension KeyboardViewController: FontSelectionControllerDelegate {
+
+    // MARK: - Internal Instance Methods
+
+    func didSelectFontModel(_ fontModel: FontModel) {
+        setFontModelToCanvas(fontModel)
+    }
+
+    func didCancelFontSelection(_ initiallySelectedFontModel: FontModel) {
+        setFontModelToCanvas(initiallySelectedFontModel)
+    }
+
+    func didFinishFontSelection() {
+        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
+        let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        logger.log(
+            "Finished font selection",
+            description: "Selected FontModel: \(selectedFontModel)",
+            level: .info
+        )
+    }
+
+    // MARK: - Private Instance Methods
+
+    private func setFontModelToCanvas(_ fontModel: FontModel) {
+        fontasticKeyboardView?.canvasWithSettingsView.canvasFontModel = fontModel
+        DefaultFontsService.shared.lastUsedFontModel = fontModel
+    }
+}
 
 extension KeyboardViewController: UIColorPickerViewControllerDelegate {
 

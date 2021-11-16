@@ -10,12 +10,6 @@ import UIKit
 
 public final class FontModelFactory {
 
-    // MARK: - Nested Types
-
-    public enum FontValidationError: Error {
-        case notPresentInSystem
-    }
-
     // MARK: - Instance Methods
 
     public func makeFontModels(from fontSourceModels: [FontSourceModel]) -> [FontModel] {
@@ -38,7 +32,7 @@ public final class FontModelFactory {
 
     private func validateFont(withName fontName: String) -> FontStatus {
         guard UIFont.familyNames.contains(fontName) else {
-            return .invalid(FontValidationError.notPresentInSystem as NSError)
+            return .invalid
         }
 
         return .ready

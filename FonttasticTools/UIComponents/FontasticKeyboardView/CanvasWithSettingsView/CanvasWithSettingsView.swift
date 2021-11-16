@@ -16,10 +16,17 @@ public class CanvasWithSettingsView: UIView {
     public let shouldPresentTextColorPickerEvent = Event<Void>()
     public let shouldPresentBackgroundColorPickerEvent = Event<Void>()
 
-    public var canvasLabelFont: UIFont {
-        get { canvasViewDesign.font }
+    public var canvasFontModel: FontModel {
+        get { canvasViewDesign.fontModel }
         set {
-            canvasViewDesign.font = newValue
+            canvasViewDesign.fontModel = newValue
+            updateCanvasViewDesign()
+        }
+    }
+    public var canvasFontSize: CGFloat {
+        get { canvasViewDesign.fontSize }
+        set {
+            canvasViewDesign.fontSize = newValue
             updateCanvasViewDesign()
         }
     }
@@ -99,7 +106,7 @@ public class CanvasWithSettingsView: UIView {
     private let textColorChangeButton: KeyboardButton
 
     private var insertedText: [String] = []
-    private var canvasViewDesign: CanvasView.Design = .default
+    private var canvasViewDesign: CanvasView.Design
 
     private let keyboardButtonDesignBuilder = KeyboardButtonDesignBuilder(
         .default(
@@ -118,7 +125,8 @@ public class CanvasWithSettingsView: UIView {
 
     // MARK: - Initializers
 
-    public init() {
+    public init(fontModel: FontModel) {
+        self.canvasViewDesign = CanvasView.Design.default(fontModel: fontModel)
         functionalButtonDesign = keyboardButtonDesignBuilder
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
@@ -357,4 +365,17 @@ private enum Constants {
 
     static let buttonsToCanvasSpacing: CGFloat = 11
     static let buttonsSpacing: CGFloat = 6
+}
+
+extension CanvasView.Design {
+
+    static func `default`(fontModel: FontModel) -> CanvasView.Design {
+        return CanvasView.Design(
+            backgroundColor: .white,
+            fontModel: fontModel,
+            fontSize: 36,
+            textColor: .black,
+            textAlignment: .center
+        )
+    }
 }

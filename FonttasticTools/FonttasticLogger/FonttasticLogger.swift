@@ -148,3 +148,28 @@ public class FonttasticLogger {
         }
     }
 }
+
+extension FonttasticLogger.Config {
+
+    public static var `default`: FonttasticLogger.Config {
+        #if DEBUG
+        return FonttasticLogger.Config(
+            enabledOutputs: [
+                .console: Set(FonttasticLogger.LogLevel.allCases)
+            ]
+        )
+        #elseif BETA
+        return FonttasticLogger.Config(
+            enabledOutputs: [
+                .osLog: [.error, .info]
+            ]
+        )
+        #else
+        return FonttasticLogger.Config(
+            enabledOutputs: [
+                .analytics: [.error]
+            ]
+        )
+        #endif
+    }
+}

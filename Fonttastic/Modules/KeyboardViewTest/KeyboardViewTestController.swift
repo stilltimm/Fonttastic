@@ -27,11 +27,19 @@ class KeyboardViewTestViewController: UIViewController {
         view.backgroundColor = .clear
         return view
     }()
-    private let fontasticKeyboardView = FontasticKeyboardView()
+    private let fontasticKeyboardView: FontasticKeyboardView
+
+    // MARK: - Private Instance Properties
+
+    private let fontsService: FontsService = DefaultFontsService.shared
 
     // MARK: - Initializers
 
     init() {
+        self.fontasticKeyboardView = FontasticKeyboardView(
+            initiallySelectedFontModel: fontsService.lastUsedFontModel
+        )
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,28 +87,40 @@ class KeyboardViewTestViewController: UIViewController {
     }
 
     private func presentFontPickerViewController() {
-        let fontPickerViewController = FontSelectionController()
-        fontPickerViewController.delegate = self
-
-        present(fontPickerViewController, animated: true)
+        let fontSelectionViewController = FontSelectionController(
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        )
+        fontSelectionViewController.delegate = self
+        let nav = BaseNavigationController(rootViewController: fontSelectionViewController)
+        present(nav, animated: true)
     }
 }
 
 extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
 
-    func didCancelFontSelection() {
-        self.dismiss(animated: true)
-    }
+    // MARK: - Internal Instance Methods
 
     func didSelectFontModel(_ fontModel: FontModel) {
-        guard let font = UIFontFactory.makeFont(from: fontModel, withSize: 36.0) else {
-            logger.log(
-                "Cannot instantiate font from selected model",
-                description: "FontModel: \(fontModel)",
-                level: .error
-            )
-            return
-        }
-        fontasticKeyboardView.canvasWithSettingsView.canvasLabelFont = font
+        setFontModelToCanvas(fontModel)
+    }
+
+    func didCancelFontSelection(_ initiallySelectedFontModel: FontModel) {
+        setFontModelToCanvas(initiallySelectedFontModel)
+    }
+
+    func didFinishFontSelection() {
+        let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        logger.log(
+            "Finished font selection",
+            description: "Selected FontModel: \(selectedFontModel)",
+            level: .info
+        )
+    }
+
+    // MARK: - Private Instance Methods
+
+    private func setFontModelToCanvas(_ fontModel: FontModel) {
+        fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = fontModel
+        fontsService.lastUsedFontModel = fontModel
     }
 }

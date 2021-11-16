@@ -6,11 +6,19 @@
 //
 
 import UIKit
-import FonttasticTools
 
-class BaseNavigationController: UINavigationController {
+open class BaseNavigationController: UINavigationController {
 
-    override func viewDidLoad() {
+    public override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+    }
+
+    @available(*, unavailable)
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationBar.prefersLargeTitles = true

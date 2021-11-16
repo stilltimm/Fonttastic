@@ -19,6 +19,7 @@
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D4270DB8D40096772B /* FontListViewModel.swift */; };
 		2D43F3DD270DE9870096772B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D43F3DC270DE9870096772B /* Settings.bundle */; };
+		2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
 		2D5239FC2702503C0039C112 /* akzidenzgroteskpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */; };
@@ -71,7 +72,6 @@
 		2DC3C09D271CC79A00213DEF /* SVGAlphabetSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C09C271CC79A00213DEF /* SVGAlphabetSourceModel.swift */; };
 		2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */; };
 		2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */; };
-		2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
 		2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254326FCC6B800DFF767 /* SettingsNavigationController.swift */; };
 		2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254526FCC6BF00DFF767 /* SettingsViewController.swift */; };
 		2DD4254826FCC6C900DFF767 /* AddFontNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */; };
@@ -957,6 +957,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		2D4BD5FD2743F5A500B90D8A /* BaseNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */,
+			);
+			path = BaseNavigationController;
+			sourceTree = "<group>";
+		};
 		2D5239E52702431C0039C112 /* KeyboardViewTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -1009,6 +1017,7 @@
 		2D89FEBF2742E977004B6711 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2D4BD5FD2743F5A500B90D8A /* BaseNavigationController */,
 				2D2A0C9627021A980006E27B /* FontasticKeyboardView */,
 				2D89FEC92742EFF7004B6711 /* FontSelectionViewController */,
 				2D89FEC52742EF62004B6711 /* FontListCollectionViewController */,
@@ -1450,7 +1459,6 @@
 		2DD4254026FCC4D000DFF767 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */,
 				2D24C469271C999A00BB5C17 /* AddFontButton.swift */,
 			);
 			path = Components;
@@ -1486,8 +1494,8 @@
 		2DEDBEA6274333F5009C2347 /* FonttasticTools */ = {
 			isa = PBXGroup;
 			children = (
-				2D4BD5FC2743DBEF00B90D8A /* Resources */,
 				2DEDBEA7274333F5009C2347 /* FonttasticTools.h */,
+				2D4BD5FC2743DBEF00B90D8A /* Resources */,
 				2D89FEBF2742E977004B6711 /* UIComponents */,
 				2DA4CD8F274282EC00CBE6A0 /* FonttasticLogger */,
 				2D5239FD2703C3530039C112 /* Extensions */,
@@ -2072,7 +2080,6 @@
 				2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
 				2DC3C09D271CC79A00213DEF /* SVGAlphabetSourceModel.swift in Sources */,
-				2DD4254226FCC4EB00DFF767 /* BaseNavigationController.swift in Sources */,
 				2DD4254826FCC6C900DFF767 /* AddFontNavigationController.swift in Sources */,
 				2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
@@ -2113,6 +2120,7 @@
 				2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */,
 				2D872705274336A200D6D6DA /* FontModelsRepository.swift in Sources */,
 				2D87270F274336A200D6D6DA /* KeyboardButtonViewModel.swift in Sources */,
+				2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */,
 				2D872720274336A200D6D6DA /* KeyboardView.swift in Sources */,
 				2D872707274336A200D6D6DA /* FontSelectionViewController.swift in Sources */,
 				2D872724274336A200D6D6DA /* FontListCollectionViewModel.swift in Sources */,

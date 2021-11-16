@@ -23,7 +23,8 @@ class CanvasView: UIView {
 
     struct Design {
         var backgroundColor: UIColor
-        var font: UIFont
+        var fontModel: FontModel
+        var fontSize: CGFloat
         var textColor: UIColor
         var textAlignment: NSTextAlignment
     }
@@ -95,7 +96,10 @@ class CanvasView: UIView {
     func applyDesign(_ design: Design) {
         backgroundColor = design.backgroundColor
 
-        textView.font = design.font
+        textView.font = UIFontFactory.makeFont(
+            from: design.fontModel,
+            withSize: design.fontSize
+        ) ?? .default(withSize: design.fontSize)
         textView.textColor = design.textColor
         textView.textAlignment = design.textAlignment
     }
@@ -117,17 +121,17 @@ class CanvasView: UIView {
     }
 }
 
-extension CanvasView.Design {
-
-    static let `default`: CanvasView.Design = .init(
-        backgroundColor: .white,
-        font: UIFont(name: "Georgia-Bold", size: 36.0) ?? UIFont.systemFont(ofSize: 36, weight: .bold),
-        textColor: .black,
-        textAlignment: .center
-    )
-}
-
 private enum Constants {
 
     static let maxHeight: CGFloat = 300
+}
+
+private extension UIFont {
+
+    static func `default`(withSize fontSize: CGFloat) -> UIFont {
+        return UIFont(
+            name: "Georgia-Bold",
+            size: fontSize
+        ) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
+    }
 }

@@ -28,30 +28,10 @@ class DefaultAppConfigurationService: AppConfigurationService {
     }
 
     private func configureLogger() {
-        let config: FonttasticLogger.Config
-        #if DEBUG
-        config = FonttasticLogger.Config(
-            enabledOutputs: [
-                .console: Set(FonttasticLogger.LogLevel.allCases)
-            ]
-        )
-        #elseif BETA
-        config = FonttasticLogger.Config(
-            enabledOutputs: [
-                .osLog: [.error, .info]
-            ]
-        )
-        #else
-        config = FonttasticLogger.Config(
-            enabledOutputs: [
-                .analytics: [.error]
-            ]
-        )
-        #endif
-        FonttasticLogger.shared.setup(with: config)
+        FonttasticLogger.shared.setup(with: .default)
     }
 
     private func configureFontsService() {
-        fontsService.installFonts()
+        fontsService.installFonts { }
     }
 }

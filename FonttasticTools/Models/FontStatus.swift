@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum FontStatus: Hashable {
+public enum FontStatus: Codable, Hashable {
 
     case uninstalled
-    case invalid(NSError)
+    case invalid
     case ready
 }
