@@ -18,7 +18,7 @@ public enum FontInstallationError: Error {
     case failedToLoadFontFile(path: String, error: Error)
     case failedToCreateCGDataProvider
     case failedToCreateCGFont
-    case failedToRegisterFont(String?)
+    case failedToRegisterFont(errorString: String?, resourceType: FontResourceType)
     case missingFontName
     case networkError
     case unimplemented
@@ -243,7 +243,12 @@ public class DefaultFontsService: FontsService {
         var error: Unmanaged<CFError>?
         guard CTFontManagerRegisterGraphicsFont(cgFont, &error) else {
             let cfError = error?.takeRetainedValue()
-            complete(with: .failure(.failedToRegisterFont(cfError?.localizedDescription)))
+            complete(
+                with: .failure(.failedToRegisterFont(
+                    errorString: cfError?.localizedDescription,
+                    resourceType: resourceType
+                ))
+            )
             return
         }
 

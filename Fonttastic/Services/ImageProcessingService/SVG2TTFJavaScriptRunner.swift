@@ -7,7 +7,7 @@
 
 import Foundation
 import JavaScriptCore
-import FonttasticToolsStatic
+import FonttasticTools
 
 class SVG2TTFJavaScriptRunner {
 

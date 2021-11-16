@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FonttasticToolsStatic
+import FonttasticTools
 import zlib
 
 protocol AppConfigurationService {

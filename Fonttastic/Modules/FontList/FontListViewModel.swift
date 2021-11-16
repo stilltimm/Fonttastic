@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-import FonttasticToolsStatic
+import FonttasticTools
 
 class FontListViewModel {
 

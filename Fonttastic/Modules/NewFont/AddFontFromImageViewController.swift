@@ -8,7 +8,7 @@
 import UIKit
 import Cartography
 import SVGKit
-import FonttasticToolsStatic
+import FonttasticTools
 
 class AddFontFromImageViewController: UIViewController {
 

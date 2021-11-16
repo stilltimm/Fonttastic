@@ -66,7 +66,7 @@ public class CapitalizableKeyboardButtonVM: KeyboardButtonViewModelProtocol {
     public init(
         uncapitalizedSymbol: String,
         capitalizedSymbol: String,
-        capitalizationSource: FonttasticToolsStatic.Event<Bool>
+        capitalizationSource: FonttasticTools.Event<Bool>
     ) {
         self.uncapitalizedContent = .text(contentString: uncapitalizedSymbol, displayString: uncapitalizedSymbol)
         self.capitalizedContent = .text(contentString: capitalizedSymbol, displayString: capitalizedSymbol)

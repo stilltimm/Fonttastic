@@ -7,7 +7,7 @@
 
 import UIKit
 import Cartography
-import FonttasticToolsStatic
+import FonttasticTools
 
 let logger: FonttasticLogger = FonttasticLogger.shared
 

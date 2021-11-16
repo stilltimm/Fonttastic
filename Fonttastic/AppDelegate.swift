@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FonttasticToolsStatic
+import FonttasticTools
 
 let appLogger: FonttasticLogger = FonttasticLogger.shared
 

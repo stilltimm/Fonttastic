@@ -7,7 +7,7 @@
 
 import UIKit
 import Cartography
-import FonttasticToolsStatic
+import FonttasticTools
 
 class FontDetailsViewController: UIViewController {
 
