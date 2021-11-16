@@ -18,8 +18,6 @@ class KeyboardViewController: UIInputViewController {
     private var colorPickerCompletion: ((UIColor) -> Void)?
     private weak var colorPickerViewController: UIColorPickerViewController?
 
-    fileprivate lazy var fontsSerivce: FontsService = DefaultFontsService.shared
-
     // MARK: - Public Instance Methods
 
     override func viewDidLoad() {
@@ -27,12 +25,14 @@ class KeyboardViewController: UIInputViewController {
 
         FonttasticLogger.shared.setup(with: .default)
 
-        self.fontasticKeyboardView = FontasticKeyboardView(initiallySelectedFontModel: fontsSerivce.lastUsedFontModel)
+        self.fontasticKeyboardView = FontasticKeyboardView(
+            initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign
+        )
 
         setupLayout()
         setupBusinessLogic()
 
-        fontsSerivce.installFonts { [weak self] in
+        DefaultFontsService.shared.installFonts { [weak self] in
             guard let fontasticKeyboardView = self?.fontasticKeyboardView else { return }
             let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
             fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = selectedFontModel
@@ -153,7 +153,6 @@ extension KeyboardViewController: FontSelectionControllerDelegate {
 
     private func setFontModelToCanvas(_ fontModel: FontModel) {
         fontasticKeyboardView?.canvasWithSettingsView.canvasFontModel = fontModel
-        DefaultFontsService.shared.lastUsedFontModel = fontModel
     }
 }
 

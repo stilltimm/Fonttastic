@@ -7,25 +7,6 @@
 
 import UIKit
 
-private extension UIColor {
-
-    convenience init(red: UInt32, green: UInt32, blue: UInt32) {
-        self.init(
-            red: CGFloat(red) / 255.0,
-            green: CGFloat(green) / 255.0,
-            blue: CGFloat(blue) / 255.0,
-            alpha: 1.0
-        )
-    }
-
-    convenience init(hex: UInt32) {
-        let red = (hex >> 16) & 0xFF
-        let green = (hex >> 8) & 0xFF
-        let blue = hex & 0xFF
-        self.init(red: red, green: green, blue: blue)
-    }
-}
-
 public final class Colors {
 
     // MARK: - Public Type Properties

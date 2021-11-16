@@ -64,7 +64,7 @@ public class CanvasWithSettingsView: UIView {
         button.backgroundColor = .clear
         return button
     }()
-    private let canvasView = CanvasView()
+    private let canvasView: CanvasView
 
     private let copiedStatusLabel: UILabel = {
         let label = UILabel()
@@ -90,7 +90,7 @@ public class CanvasWithSettingsView: UIView {
     )
     private let fontChangeButton: KeyboardButton
 
-    private let textAlignmentChangeViewModel = TextAlignmentChangeButtonViewModel()
+    private let textAlignmentChangeViewModel: TextAlignmentChangeButtonViewModel
     private let textAlignmentChangeButton: KeyboardButton
 
     private let backgroundColorChangeViewModel = DefaultKeyboardButtonVM(
@@ -106,7 +106,7 @@ public class CanvasWithSettingsView: UIView {
     private let textColorChangeButton: KeyboardButton
 
     private var insertedText: [String] = []
-    private var canvasViewDesign: CanvasView.Design
+    private var canvasViewDesign: CanvasViewDesign
 
     private let keyboardButtonDesignBuilder = KeyboardButtonDesignBuilder(
         .default(
@@ -125,8 +125,10 @@ public class CanvasWithSettingsView: UIView {
 
     // MARK: - Initializers
 
-    public init(fontModel: FontModel) {
-        self.canvasViewDesign = CanvasView.Design.default(fontModel: fontModel)
+    public init(canvasViewDesign: CanvasViewDesign) {
+        self.canvasViewDesign = canvasViewDesign
+        self.canvasView = CanvasView(design: canvasViewDesign)
+
         functionalButtonDesign = keyboardButtonDesignBuilder
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
@@ -145,6 +147,9 @@ public class CanvasWithSettingsView: UIView {
             design: backgroundChangeButtonDesign
         )
 
+        textAlignmentChangeViewModel = TextAlignmentChangeButtonViewModel(
+            textAlignment: canvasViewDesign.textAlignment
+        )
         textAlignmentChangeButton = KeyboardButton(
             viewModel: textAlignmentChangeViewModel,
             design: functionalButtonDesign
@@ -302,6 +307,8 @@ public class CanvasWithSettingsView: UIView {
         backgroundColorChangeButton.iconImageView.tintColor = canvasViewDesign.backgroundColor
         textColorChangeButton.iconImageView.tintColor = canvasViewDesign.textColor
 
+        DefaultFontsService.shared.lastUsedCanvasViewDesign = canvasViewDesign
+
         setCopiedStatusLabel(isHidden: true, animated: false)
     }
 
@@ -367,13 +374,13 @@ private enum Constants {
     static let buttonsSpacing: CGFloat = 6
 }
 
-extension CanvasView.Design {
+extension CanvasViewDesign {
 
-    static func `default`(fontModel: FontModel) -> CanvasView.Design {
-        return CanvasView.Design(
-            backgroundColor: .white,
+    public static func `default`(fontModel: FontModel) -> CanvasViewDesign {
+        return CanvasViewDesign(
             fontModel: fontModel,
             fontSize: 36,
+            backgroundColor: .white,
             textColor: .black,
             textAlignment: .center
         )

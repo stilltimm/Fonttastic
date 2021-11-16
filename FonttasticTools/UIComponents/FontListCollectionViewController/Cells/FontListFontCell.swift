@@ -140,7 +140,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
                 delay: 0.0,
                 options: isHighlighted ? .curveEaseOut : .curveEaseIn,
                 animations: {
-                    self.alpha = self.isHighlighted ? 0.5 : 1.0
                     self.transform = self.isHighlighted ?
                         CGAffineTransform.init(scaleX: 0.95, y: 0.95) :
                         .identity

@@ -37,7 +37,7 @@ class KeyboardViewTestViewController: UIViewController {
 
     init() {
         self.fontasticKeyboardView = FontasticKeyboardView(
-            initiallySelectedFontModel: fontsService.lastUsedFontModel
+            initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign
         )
 
         super.init(nibName: nil, bundle: nil)
@@ -121,6 +121,5 @@ extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
 
     private func setFontModelToCanvas(_ fontModel: FontModel) {
         fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = fontModel
-        fontsService.lastUsedFontModel = fontModel
     }
 }

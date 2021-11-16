@@ -32,8 +32,8 @@ public class FontasticKeyboardView: UIView {
 
     // MARK: - Initializers
 
-    public init(initiallySelectedFontModel: FontModel) {
-        self.canvasWithSettingsView = CanvasWithSettingsView(fontModel: initiallySelectedFontModel)
+    public init(initiallySelectedCanvasViewDesign: CanvasViewDesign) {
+        self.canvasWithSettingsView = CanvasWithSettingsView(canvasViewDesign: initiallySelectedCanvasViewDesign)
         let lastUsedLanguageEvent = HotEvent<KeyboardType.Language>(value: .latin)
         self.lastUsedLanguageEvent = lastUsedLanguageEvent
 

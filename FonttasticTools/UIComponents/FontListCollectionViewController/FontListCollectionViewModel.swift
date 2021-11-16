@@ -206,7 +206,5 @@ private extension FontListLoaderCell.Design {
 
 private enum Constants {
 
-    static let installBannerText = """
-    Install Fonttastic Keyboard ⌨️
-    """
+    static let installBannerText = "Install Keyboard ⌨️"
 }

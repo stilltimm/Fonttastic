@@ -331,7 +331,7 @@ public class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol
     public let shouldUpdateContentEvent = Event<Void>()
     public lazy var didChangeTextAligmentEvent = HotEvent<NSTextAlignment>(value: textAlignment)
 
-    public var textAlignment: NSTextAlignment = Constants.defaultTextAlignment {
+    public var textAlignment: NSTextAlignment {
         didSet {
             shouldUpdateContentEvent.onNext(())
             didChangeTextAligmentEvent.onNext(textAlignment)
@@ -358,7 +358,8 @@ public class TextAlignmentChangeButtonViewModel: KeyboardButtonViewModelProtocol
 
     // MARK: - Initializers
 
-    public init() {
+    public init(textAlignment: NSTextAlignment) {
+        self.textAlignment = textAlignment
         didTapEvent.subscribe(self) { [weak self] _ in
             guard let self = self else { return }
 

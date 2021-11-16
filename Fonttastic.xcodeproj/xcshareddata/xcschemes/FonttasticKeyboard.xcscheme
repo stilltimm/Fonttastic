@@ -85,16 +85,20 @@
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "1"
+         BundleIdentifier = "com.apple.MobileSMS"
+         RemotePath = "/Applications/MobileSMS.app">
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D060EAC26FCC10900047D89"
-            BuildableName = "Fonttastic.app"
-            BlueprintName = "Fonttastic"
+            BlueprintIdentifier = "2D2A0C89270210A70006E27B"
+            BuildableName = "FonttasticKeyboard.appex"
+            BlueprintName = "FonttasticKeyboard"
             ReferencedContainer = "container:Fonttastic.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

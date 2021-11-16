@@ -32,7 +32,7 @@ public protocol FontsService: AnyObject {
 
     var hasInstalledCustomFonts: Bool { get }
     var fontModelsRepository: FontModelsRepository { get }
-    var lastUsedFontModel: FontModel { get set }
+    var lastUsedCanvasViewDesign: CanvasViewDesign { get set }
 
     func installFonts(completion: @escaping () -> Void)
 
@@ -53,30 +53,30 @@ public class DefaultFontsService: FontsService {
     public let fontModelsRepository: FontModelsRepository
     public private(set) var hasInstalledCustomFonts: Bool = false
 
-    public var lastUsedFontModel: FontModel {
+    public var lastUsedCanvasViewDesign: CanvasViewDesign {
         get {
-            guard let lastUsedFontModelData = UserDefaults.standard.data(forKey: Constants.lastUsedFontKey) else {
-                return Constants.defaultLastUsedFontModel
-            }
+            guard
+                let lastUsedCanvasDesignData = UserDefaults.standard.data(forKey: Constants.lastUsedCanvasDesignKey)
+            else { return Constants.defaultCanvasViewDesign }
 
             do {
-                return try JSONDecoder().decode(FontModel.self, from: lastUsedFontModelData)
+                return try JSONDecoder().decode(CanvasViewDesign.self, from: lastUsedCanvasDesignData)
             } catch {
                 logger.log(
-                    "Failed to decode FontModel from lastUsedFontModelData",
+                    "Failed to decode FontModel from lastUsedCanvasViewDesign",
                     description: "Error: \(error)",
                     level: .error
                 )
-                return Constants.defaultLastUsedFontModel
+                return Constants.defaultCanvasViewDesign
             }
         }
         set {
             do {
-                let lastUsedFontModelData = try JSONEncoder().encode(newValue)
-                UserDefaults.standard.set(lastUsedFontModelData, forKey: Constants.lastUsedFontKey)
+                let lastUsedCanvasDesignData = try JSONEncoder().encode(newValue)
+                UserDefaults.standard.set(lastUsedCanvasDesignData, forKey: Constants.lastUsedCanvasDesignKey)
             } catch {
                 logger.log(
-                    "Failed to encode lastUsedFontModel to data",
+                    "Failed to encode lastUsedCanvasDesignData  to data",
                     description: "Error: \(error)",
                     level: .error
                 )
@@ -148,7 +148,7 @@ public class DefaultFontsService: FontsService {
         let dispatchGroup = DispatchGroup()
         var installedFontModels: [FontModel] = []
 
-        for customFontFileURL in customFontFileURLs /*.prefix(100)*/ {
+        for customFontFileURL in customFontFileURLs.prefix(100) {
             dispatchGroup.enter()
 
             autoreleasepool { [weak self] in
@@ -325,7 +325,7 @@ private enum Constants {
     static let defaultFontExtension: String = "ttf"
 
     static let hasInstalledCustomFontsKey: String = "com.timofeysurkov.Fontastic.hasInstalledCustomFonts"
-    static let lastUsedFontKey: String = "com.timofeysurkov.Fontastic.lastUsedFont"
+    static let lastUsedCanvasDesignKey: String = "com.timofeysurkov.Fontastic.lastUsedCanvasViewDesign"
 
     static let defaultLastUsedFontModel: FontModel = FontModel(
         name: "Georgia-Bold",
@@ -333,4 +333,5 @@ private enum Constants {
         resourceType: .system,
         status: .ready
     )
+    static let defaultCanvasViewDesign: CanvasViewDesign = .default(fontModel: defaultLastUsedFontModel)
 }

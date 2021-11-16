@@ -21,13 +21,7 @@ class CanvasView: UIView {
 
     // MARK: - Nested Types
 
-    struct Design {
-        var backgroundColor: UIColor
-        var fontModel: FontModel
-        var fontSize: CGFloat
-        var textColor: UIColor
-        var textAlignment: NSTextAlignment
-    }
+    typealias Design = CanvasViewDesign
 
     // MARK: - Subviews
 
@@ -59,10 +53,11 @@ class CanvasView: UIView {
 
     // MARK: - Initializers
 
-    init() {
+    init(design: Design) {
         super.init(frame: .zero)
 
         setupLayout()
+        applyDesign(design)
     }
 
     required init?(coder: NSCoder) {
@@ -121,11 +116,6 @@ class CanvasView: UIView {
     }
 }
 
-private enum Constants {
-
-    static let maxHeight: CGFloat = 300
-}
-
 private extension UIFont {
 
     static func `default`(withSize fontSize: CGFloat) -> UIFont {
@@ -134,4 +124,9 @@ private extension UIFont {
             size: fontSize
         ) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
     }
+}
+
+private enum Constants {
+
+    static let maxHeight: CGFloat = 300
 }

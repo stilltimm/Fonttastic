@@ -165,6 +165,11 @@ extension FontListCollectionViewController: UICollectionViewDelegate, UICollecti
         }
     }
 
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        impactFeedbackGenerator.prepare()
+        return true
+    }
+
     public func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath

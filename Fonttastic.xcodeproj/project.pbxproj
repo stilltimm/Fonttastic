@@ -78,6 +78,8 @@
 		2DD4254A26FCC6D200DFF767 /* AddFontFromImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254926FCC6D200DFF767 /* AddFontFromImageViewController.swift */; };
 		2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */; };
 		2DE4D1AE271E06E10014E222 /* SVG2TTFJavaScriptRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE4D1AD271E06E10014E222 /* SVG2TTFJavaScriptRunner.swift */; };
+		2DE6000027440890004DC829 /* CanvasViewDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE6FFFF27440890004DC829 /* CanvasViewDesign.swift */; };
+		2DE6FFFC27440580004DC829 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */; };
 		2DEDBEA8274333F5009C2347 /* FonttasticTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DEDBEA7274333F5009C2347 /* FonttasticTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DEDBEAB274333F5009C2347 /* FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; };
 		2DEDBEAC274333F5009C2347 /* FonttasticTools.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -782,6 +784,8 @@
 		2DD4255A26FD487A00DFF767 /* FontListFontCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontListFontCell.swift; sourceTree = "<group>"; };
 		2DD4255D26FD4C1700DFF767 /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		2DE4D1AD271E06E10014E222 /* SVG2TTFJavaScriptRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVG2TTFJavaScriptRunner.swift; sourceTree = "<group>"; };
+		2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		2DE6FFFF27440890004DC829 /* CanvasViewDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewDesign.swift; sourceTree = "<group>"; };
 		2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FonttasticTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DEDBEA7274333F5009C2347 /* FonttasticTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FonttasticTools.h; sourceTree = "<group>"; };
 		2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Orientation.swift"; sourceTree = "<group>"; };
@@ -952,6 +956,8 @@
 		2D4BD5FC2743DBEF00B90D8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
+				2D2E46F9270CA37A00728CC2 /* Sounds.swift */,
 				2DA4CD85274274E400CBE6A0 /* Fonts */,
 			);
 			path = Resources;
@@ -984,6 +990,7 @@
 				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
 				2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */,
 				2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */,
+				2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1021,18 +1028,8 @@
 				2D2A0C9627021A980006E27B /* FontasticKeyboardView */,
 				2D89FEC92742EFF7004B6711 /* FontSelectionViewController */,
 				2D89FEC52742EF62004B6711 /* FontListCollectionViewController */,
-				2D89FEC02742E97E004B6711 /* SharedResources */,
 			);
 			path = UIComponents;
-			sourceTree = "<group>";
-		};
-		2D89FEC02742E97E004B6711 /* SharedResources */ = {
-			isa = PBXGroup;
-			children = (
-				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
-				2D2E46F9270CA37A00728CC2 /* Sounds.swift */,
-			);
-			path = SharedResources;
 			sourceTree = "<group>";
 		};
 		2D89FEC52742EF62004B6711 /* FontListCollectionViewController */ = {
@@ -1378,6 +1375,7 @@
 			children = (
 				2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */,
 				2DC34895270B265F00420C63 /* CanvasView.swift */,
+				2DE6FFFF27440890004DC829 /* CanvasViewDesign.swift */,
 			);
 			path = CanvasWithSettingsView;
 			sourceTree = "<group>";
@@ -2118,6 +2116,7 @@
 				2D872709274336A200D6D6DA /* FontResourceType.swift in Sources */,
 				2D872723274336A200D6D6DA /* UIView+Screenshot.swift in Sources */,
 				2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */,
+				2DE6000027440890004DC829 /* CanvasViewDesign.swift in Sources */,
 				2D872705274336A200D6D6DA /* FontModelsRepository.swift in Sources */,
 				2D87270F274336A200D6D6DA /* KeyboardButtonViewModel.swift in Sources */,
 				2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */,
@@ -2142,6 +2141,7 @@
 				2D872713274336A200D6D6DA /* CALayer+Shadow.swift in Sources */,
 				2D87271E274336A200D6D6DA /* FontModelFactory.swift in Sources */,
 				2D872718274336A200D6D6DA /* FonttasticLogger.swift in Sources */,
+				2DE6FFFC27440580004DC829 /* UIColor+Hex.swift in Sources */,
 				2DEDBFE027433605009C2347 /* Event.swift in Sources */,
 				2D872710274336A200D6D6DA /* FontListBannerCell.swift in Sources */,
 				2D872717274336A200D6D6DA /* CanvasView.swift in Sources */,
@@ -2354,6 +2354,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticAppStore;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2363,6 +2364,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8ABE0D06ECE24F8B6ADBE951 /* Pods-FonttasticKeyboard.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "Apple Development: Timofey Surkov (EAYXVUZYU4)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
@@ -2388,6 +2390,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F7326B8B014271D9FD32811E /* Pods-FonttasticKeyboard.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Timofey Surkov (PL6N9LRHKL)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
@@ -2404,6 +2407,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticWildcardAppStore;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2489,6 +2493,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticAppStore;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2498,6 +2503,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0702328E8A7EA5932D5261FF /* Pods-FonttasticKeyboard.beta.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Timofey Surkov (PL6N9LRHKL)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 4;
@@ -2514,6 +2520,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = FontasticWildcardAppStore;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2523,7 +2530,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C5A9371B0EA2EC8ABB938E99 /* Pods-FonttasticTools.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
@@ -2560,7 +2567,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1AA5864BCE341A05DA37A80F /* Pods-FonttasticTools.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
@@ -2585,6 +2592,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2597,7 +2605,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B1E09B5037C29CFC329E049 /* Pods-FonttasticTools.beta.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -2622,6 +2630,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
