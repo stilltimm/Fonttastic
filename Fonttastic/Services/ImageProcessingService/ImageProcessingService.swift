@@ -122,8 +122,12 @@ class DefaultImageProcessingService: ImageProcessingService {
         function: String = #function
     ) {
         let timePassed = endDate.timeIntervalSince(startDate)
-        print(Self.fileName, function, "\(title) took \(timePassed) seconds")
+        logger.log("\(function): \(title) took \(timePassed) seconds", level: .debug)
     }
+
+    // MARK: - Private Instance Properties
+
+    private let fileService: FileService = DefaultFileService.shared
 
     // MARK: - Initializers
 
@@ -249,45 +253,24 @@ class DefaultImageProcessingService: ImageProcessingService {
     func tryCreateSVGsArchive(
         from svgAlphabetSource: SVGAlphabetSourceModel
     ) -> URL? {
-        let fileManager = FileManager.default
-        let documentDirectoryURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        guard let documentsDirectoryURL = documentDirectoryURLs.first else {
-            return nil
-        }
-
-        let svgsDirectoryURL = documentsDirectoryURL.appendingPathComponent("svgs", isDirectory: true)
-        let archiveURL = documentsDirectoryURL.appendingPathComponent("archive.zip")
-
         do {
-            if fileManager.fileExists(atPath: svgsDirectoryURL.path) {
-                try fileManager.removeItem(at: svgsDirectoryURL)
-            }
-            if fileManager.fileExists(atPath: archiveURL.path) {
-                try fileManager.removeItem(at: archiveURL)
-            }
-            if !fileManager.fileExists(atPath: svgsDirectoryURL.path) {
-                try fileManager.createDirectory(
-                    at: svgsDirectoryURL,
-                    withIntermediateDirectories: false,
-                    attributes: nil
-                )
-            }
+            let documentsDirectoryURL = try fileService.documentsDirectoryURL()
+            let svgsDirectoryURL = documentsDirectoryURL.appendingPathComponent("svgs", isDirectory: true)
+            let archiveURL = documentsDirectoryURL.appendingPathComponent("archive.zip")
+
+            try fileService.recreateDirectoryIfNeeded(at: svgsDirectoryURL)
             for svgLetterSource in svgAlphabetSource.letterSources {
                 let fileName = "\(svgLetterSource.letter)"
-                let fileUrl = svgsDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("svg")
-                try svgLetterSource.svgContents.write(to: fileUrl, atomically: true, encoding: .utf8)
+                let fileURL = svgsDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("svg")
+                try fileService.write(fileContent: svgLetterSource.svgContents, to: fileURL)
             }
-            try fileManager.zipItem(at: svgsDirectoryURL, to: archiveURL)
+
+            try fileService.makeZip(of: svgsDirectoryURL, to: archiveURL)
+            return archiveURL
         } catch {
-            print("Failed to create archive: ", error)
+            logger.log("Failed to create archive: \(error)", level: .error)
             return nil
         }
-
-        guard fileManager.fileExists(atPath: archiveURL.path) else {
-            return nil
-        }
-
-        return archiveURL
     }
 
     // MARK: - Private Instance Methods

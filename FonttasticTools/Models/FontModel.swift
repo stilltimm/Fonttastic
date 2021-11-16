@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FontModel {
+public struct FontModel: Codable, Hashable {
 
     public let name: String
     public let displayName: String

@@ -7,6 +7,7 @@
 
 import Foundation
 import JavaScriptCore
+import FonttasticTools
 
 class SVG2TTFJavaScriptRunner {
 
@@ -25,14 +26,14 @@ class SVG2TTFJavaScriptRunner {
             let testFunction = context.objectForKeyedSubscript(testFunctionName),
             let result = testFunction.call(withArguments: [inputs])
         else {
-            print("Failed to get testFunction or create result")
+            logger.log("Failed to get testFunction or create result", level: .error)
             return
         }
 
         if result.isString, let stringValue = result.toString() {
-            print("String result: \"\(stringValue)\"")
+            logger.log("String result: \"\(stringValue)\"", level: .debug)
         } else {
-            print("Not string result: ", result)
+            logger.log("Not string result: \(result)", level: .debug)
         }
     }
 }

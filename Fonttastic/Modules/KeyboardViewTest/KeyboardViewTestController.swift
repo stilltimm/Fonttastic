@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import FonttasticTools
 
 class KeyboardViewTestViewController: UIViewController {
 
@@ -26,11 +27,19 @@ class KeyboardViewTestViewController: UIViewController {
         view.backgroundColor = .clear
         return view
     }()
-    private let fontasticKeyboardView = FontasticKeyboardView()
+    private let fontasticKeyboardView: FontasticKeyboardView
+
+    // MARK: - Private Instance Properties
+
+    private let fontsService: FontsService = DefaultFontsService.shared
 
     // MARK: - Initializers
 
     init() {
+        self.fontasticKeyboardView = FontasticKeyboardView(
+            initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign
+        )
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -72,19 +81,45 @@ class KeyboardViewTestViewController: UIViewController {
     }
 
     private func setupBusinessLogic() {
-        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
-            .subscribe(self) {
-                print("Should present UIFontPickerViewController")
-            }
+        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection.subscribe(self) { [weak self] in
+            self?.presentFontPickerViewController()
+        }
+    }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for backgroundColor")
-            }
+    private func presentFontPickerViewController() {
+        let fontSelectionViewController = FontSelectionController(
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        )
+        fontSelectionViewController.delegate = self
+        let nav = BaseNavigationController(rootViewController: fontSelectionViewController)
+        present(nav, animated: true)
+    }
+}
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for textColor")
-            }
+extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
+
+    // MARK: - Internal Instance Methods
+
+    func didSelectFontModel(_ fontModel: FontModel) {
+        setFontModelToCanvas(fontModel)
+    }
+
+    func didCancelFontSelection(_ initiallySelectedFontModel: FontModel) {
+        setFontModelToCanvas(initiallySelectedFontModel)
+    }
+
+    func didFinishFontSelection() {
+        let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        logger.log(
+            "Finished font selection",
+            description: "Selected FontModel: \(selectedFontModel)",
+            level: .info
+        )
+    }
+
+    // MARK: - Private Instance Methods
+
+    private func setFontModelToCanvas(_ fontModel: FontModel) {
+        fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = fontModel
     }
 }

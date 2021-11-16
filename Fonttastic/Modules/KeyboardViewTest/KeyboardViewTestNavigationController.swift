@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FonttasticTools
 
 class KeyboardViewTestNavigationController: BaseNavigationController {
 

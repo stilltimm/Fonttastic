@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FontSourceModel {
+public struct FontSourceModel: Codable, Hashable {
 
     public let name: String
     public let resourceType: FontResourceType

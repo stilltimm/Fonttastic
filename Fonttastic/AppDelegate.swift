@@ -6,16 +6,25 @@
 //
 
 import UIKit
+import FonttasticTools
+
+let appLogger: FonttasticLogger = FonttasticLogger.shared
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    /// NOTE: Retain static instance of FonttasticLogger for it to remain present until app termination
+    private let logger: FonttasticLogger = FonttasticLogger.shared
+
+    private lazy var appConfigurationService: AppConfigurationService = DefaultAppConfigurationService.shared
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        appConfigurationService.configureApp()
         setupRootWindow()
 
         return true
