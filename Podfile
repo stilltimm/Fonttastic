@@ -9,10 +9,6 @@ def default_pods
 
   pod 'Cartography'
 
-  # Font Creation Helpers
-
-  pod 'ZIPFoundation', '~> 0.9'
-
   # Dev Tools
 
   pod 'SwiftLint', :configurations => ['Debug']
@@ -31,6 +27,13 @@ target 'Fonttastic' do
   target 'FonttasticTests' do
     inherit! :search_paths
   end
+
+end
+
+target 'FonttasticToolsStatic' do
+
+  pod 'ZIPFoundation', '~> 0.9'
+  pod 'Cartography'
 
 end
 

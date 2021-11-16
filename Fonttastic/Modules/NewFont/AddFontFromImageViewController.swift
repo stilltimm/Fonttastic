@@ -8,6 +8,7 @@
 import UIKit
 import Cartography
 import SVGKit
+import FonttasticToolsStatic
 
 class AddFontFromImageViewController: UIViewController {
 
@@ -173,13 +174,21 @@ class AddFontFromImageViewController: UIViewController {
             let letter = svgLetterSource.letter
             let svgContents = svgLetterSource.svgContents
             guard let svgData = svgContents.data(using: .utf8) else {
-                print("Failed to create SVG data for letter \"\(letter)\" from string \(svgContents)")
+                logger.log(
+                    "Failed to create SVG data for letter",
+                    description: "Letter: \"\(letter)\" from string: \(svgContents)",
+                    level: .debug
+                )
                 continue
             }
 
             let svgImage = SVGKImage(data: svgData)
             guard let imageView = SVGKFastImageView(svgkImage: svgImage) else {
-                print("Failed to create SVGKFastImageView for letter \"\(letter)\"")
+                logger.log(
+                    "Failed to create SVGKFastImageView for letter",
+                    description: "Letter: \"\(letter)\"",
+                    level: .debug
+                )
                 continue
             }
 
@@ -253,10 +262,18 @@ class AddFontFromImageViewController: UIViewController {
         imageProcessingService.resolveAlphabetType(from: sourceImage) { [weak self] result in
             switch result {
             case let .failure(error):
-                print("Failed to resolveAlphabetType, error: \(error.localizedDescription)")
+                logger.log(
+                    "Failed to resolveAlphabetType",
+                    description: "Error: \(error)",
+                    level: .debug
+                )
 
             case let .success(alphabetType):
-                print("Succesffully resolved alphabet type: \(alphabetType)")
+                logger.log(
+                    "Succesffully resolved alphabet type",
+                    description: "AlphabetType: \(alphabetType)",
+                    level: .debug
+                )
                 self?.tryToMakeAlphabetSource(with: alphabetType)
             }
         }
@@ -266,10 +283,14 @@ class AddFontFromImageViewController: UIViewController {
         imageProcessingService.makeBitmapAlphabetSource(from: sourceImage, for: alphabetType) { [weak self] result in
             switch result {
             case let .failure(error):
-                print("Failed to make bitmap alphabet source, error: \(error.localizedDescription)")
+                logger.log(
+                    "Failed to make bitmap alphabet source",
+                    description: "Error: \(error)",
+                    level: .debug
+                )
 
             case let .success(alphabetSourceModel):
-                print("Succesffully made bitmap alphabet source model")
+                logger.log("Succesffully made bitmap alphabet source model", level: .debug)
                 self?.tryToMakeSVGs(from: alphabetSourceModel)
             }
         }
@@ -279,10 +300,14 @@ class AddFontFromImageViewController: UIViewController {
         imageProcessingService.makeSVGAlphabetSource(from: bitmapAlphabetSourceModel) { [weak self] result in
             switch result {
             case let .failure(error):
-                print("Failed make SVG alphabet source, error: \(error.localizedDescription)")
+                logger.log(
+                    "Failed make SVG alphabet source",
+                    description: "Error: \(error)",
+                    level: .debug
+                )
 
             case let .success(alphabetSourceModel):
-                print("Succesffully made SVG alphabet source model")
+                logger.log("Succesffully made SVG alphabet source model", level: .debug)
                 self?.processSVGAlphabetSource(alphabetSourceModel)
             }
         }

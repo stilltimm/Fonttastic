@@ -11,7 +11,9 @@ class FontListNavigationController: BaseNavigationController {
 
     // MARK: - Private Properties
 
-    private let fontListViewController = FontListViewController(viewModel: .init())
+    private let fontListViewController = FontListViewController(
+        viewModel: FontListViewModel(mode: .fontsShowcase)
+    )
 
     // MARK: - Initializers
 

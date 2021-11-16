@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Fonttastic.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2D71F27827430C8300AF37E8"
+               BuildableName = "FonttasticToolsTests.xctest"
+               BlueprintName = "FonttasticToolsTests"
+               ReferencedContainer = "container:Fonttastic.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

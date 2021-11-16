@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import FonttasticToolsStatic
 
 class KeyboardViewTestViewController: UIViewController {
 
@@ -72,19 +73,34 @@ class KeyboardViewTestViewController: UIViewController {
     }
 
     private func setupBusinessLogic() {
-        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
-            .subscribe(self) {
-                print("Should present UIFontPickerViewController")
-            }
+        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection.subscribe(self) { [weak self] in
+            self?.presentFontPickerViewController()
+        }
+    }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for backgroundColor")
-            }
+    private func presentFontPickerViewController() {
+        let fontPickerViewController = FontSelectionController()
+        fontPickerViewController.delegate = self
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for textColor")
-            }
+        present(fontPickerViewController, animated: true)
+    }
+}
+
+extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
+
+    func didCancelFontSelection() {
+        self.dismiss(animated: true)
+    }
+
+    func didSelectFontModel(_ fontModel: FontModel) {
+        guard let font = UIFontFactory.makeFont(from: fontModel, withSize: 36.0) else {
+            logger.log(
+                "Cannot instantiate font from selected model",
+                description: "FontModel: \(fontModel)",
+                level: .error
+            )
+            return
+        }
+        fontasticKeyboardView.canvasWithSettingsView.canvasLabelFont = font
     }
 }

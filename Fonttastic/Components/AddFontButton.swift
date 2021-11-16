@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FonttasticToolsStatic
 
 class AddFontButton: UIButton {
 
