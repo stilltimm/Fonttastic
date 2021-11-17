@@ -95,7 +95,8 @@ class KeyboardViewController: UIInputViewController {
     private func showFontPickerViewController() {
         guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
         let fontSelectionViewController = FontSelectionController(
-            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel,
+            keyboardLanguage: fontasticKeyboardView.lastUsedLanguage
         )
         fontSelectionViewController.delegate = self
 

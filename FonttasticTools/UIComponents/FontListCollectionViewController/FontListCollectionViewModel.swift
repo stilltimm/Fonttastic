@@ -39,7 +39,7 @@ public class FontListCollectionViewModel {
 
     public enum Mode {
         case fontsShowcase
-        case fontSelection
+        case fontSelection(language: KeyboardType.Language)
     }
 
     // MARK: - Public Instance Properties
@@ -136,6 +136,7 @@ public class FontListCollectionViewModel {
 
     private func makeSectionsForFontSelection() -> [Section] {
         var result: [Section] = []
+        let availableFontModels = getAvailableFontModels(for: mode)
 
         // Custom Fonts
 
@@ -145,7 +146,7 @@ public class FontListCollectionViewModel {
         )
         result.append(.title(customFontsTitleSection))
         if fontsService.hasInstalledCustomFonts {
-            let customFontViewModels = fontModelsRepository.fonts
+            let customFontViewModels = availableFontModels
                 .filter { $0.resourceType != .system }
                 .map { FontListFontViewModel(withModel: $0) }
             result.append(.fontList(FontListSection(fontViewModels: customFontViewModels)))
@@ -161,12 +162,30 @@ public class FontListCollectionViewModel {
         )
         result.append(.title(fontListTitleSection))
 
-        let systemFontViewModels = fontModelsRepository.fonts
+        let systemFontViewModels = availableFontModels
             .filter { $0.resourceType == .system }
             .map { FontListFontViewModel(withModel: $0) }
         result.append(.fontList(FontListSection(fontViewModels: systemFontViewModels)))
 
         return result
+    }
+
+    // MARK: - Utils
+
+    private func getAvailableFontModels(for mode: Mode) -> [FontModel] {
+        let allFontModels = fontModelsRepository.fonts
+        switch mode {
+        case .fontsShowcase:
+            return allFontModels
+
+        case let .fontSelection(language):
+            guard case .cyrillic = language else { return allFontModels }
+            return allFontModels.filter { fontModel -> Bool in
+                let ctFont = CTFontCreateWithName(fontModel.name as CFString, Constants.dummyFontSize, nil)
+                guard let supportedLanguages = CTFontCopySupportedLanguages(ctFont) as? [String] else { return false }
+                return supportedLanguages.contains(Constants.russianLanguageID)
+            }
+        }
     }
 }
 
@@ -205,5 +224,8 @@ private extension FontListLoaderCell.Design {
 
 private enum Constants {
 
-    static let installBannerText = "Install Keyboard ⌨️"
+    static let installBannerText: String = "Install Keyboard ⌨️"
+
+    static let russianLanguageID: String = "ru"
+    static let dummyFontSize: CGFloat = 24.0
 }

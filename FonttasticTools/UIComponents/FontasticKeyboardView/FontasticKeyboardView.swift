@@ -13,16 +13,17 @@ public class FontasticKeyboardView: UIView {
 
     public let keyboardViewModels: [KeyboardViewModel]
 
+    public private(set) var lastUsedLanguage: KeyboardType.Language = .latin {
+        didSet {
+            lastUsedLanguageEvent.onNext(lastUsedLanguage)
+        }
+    }
+
     // MARK: - Private Instance Properties
 
     private var portraitOrientationConstraints: [NSLayoutConstraint] = []
     private var landscapeOrientationConstraints: [NSLayoutConstraint] = []
 
-    private var lastUsedLanguage: KeyboardType.Language = .latin {
-        didSet {
-            lastUsedLanguageEvent.onNext(lastUsedLanguage)
-        }
-    }
     private let lastUsedLanguageEvent: HotEvent<KeyboardType.Language>
     private var currentKeyboardType: KeyboardType = .language(.latin) {
         didSet {

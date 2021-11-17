@@ -24,11 +24,21 @@ public class FontSelectionController: UIViewController {
     // MARK: - Private Instance Properties
 
     private let initiallySelectedFontModel: FontModel
-    private let fontListCollectionViewModel = FontListCollectionViewModel(mode: .fontSelection)
+    private let keyboardLanguage: KeyboardType.Language
+
+    private let fontListCollectionViewModel: FontListCollectionViewModel
     private let fontListCollectionViewController: FontListCollectionViewController
 
-    public init(initiallySelectedFontModel: FontModel) {
+    public init(
+        initiallySelectedFontModel: FontModel,
+        keyboardLanguage: KeyboardType.Language
+    ) {
         self.initiallySelectedFontModel = initiallySelectedFontModel
+        self.keyboardLanguage = keyboardLanguage
+
+        self.fontListCollectionViewModel = FontListCollectionViewModel(
+            mode: .fontSelection(language: keyboardLanguage)
+        )
         self.fontListCollectionViewController = FontListCollectionViewController(
             viewModel: fontListCollectionViewModel
         )
@@ -55,6 +65,7 @@ public class FontSelectionController: UIViewController {
 
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = Constants.title
+        navigationItem.prompt = promptText(for: keyboardLanguage)
 
         navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
             name: "AvenirNext-Medium",
@@ -107,6 +118,16 @@ public class FontSelectionController: UIViewController {
     @objc private func handleFontSelectionCancel() {
         delegate?.didCancelFontSelection(initiallySelectedFontModel)
         dismiss(animated: true)
+    }
+
+    private func promptText(for language: KeyboardType.Language) -> String {
+        switch language {
+        case .latin:
+            return "English-compatible fonts"
+
+        case .cyrillic:
+            return "Russian-compatible fonts"
+        }
     }
 }
 

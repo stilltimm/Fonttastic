@@ -95,7 +95,8 @@ class KeyboardViewTestViewController: UIViewController {
 
     private func presentFontPickerViewController() {
         let fontSelectionViewController = FontSelectionController(
-            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel,
+            keyboardLanguage: fontasticKeyboardView.lastUsedLanguage
         )
         fontSelectionViewController.delegate = self
         let nav = BaseNavigationController(rootViewController: fontSelectionViewController)
