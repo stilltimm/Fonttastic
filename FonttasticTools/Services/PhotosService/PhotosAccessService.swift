@@ -8,14 +8,19 @@
 import UIKit
 import Photos
 
-typealias PhotosAccessResult = Bool
-typealias PhotosAccessCompletion = (PhotosAccessResult) -> Void
+public typealias PhotosAccessResult = Bool
+public typealias PhotosAccessCompletion = (PhotosAccessResult) -> Void
 
-class PhotosAccessService {
+public protocol PhotosAccessService {
+
+    func grantPhotosAccess(_ completion: @escaping PhotosAccessCompletion)
+}
+
+public  class DefaultPhotosAccessService: PhotosAccessService {
 
     // MARK: - Internal Type Properties
 
-    static let shared = PhotosAccessService()
+    public static let shared = DefaultPhotosAccessService()
 
     // MARK: - Initializers
 
@@ -23,7 +28,7 @@ class PhotosAccessService {
 
     // MARK: - Internal Instance Methods
 
-    func grantPhotosAccess(_ completion: @escaping PhotosAccessCompletion) {
+    public func grantPhotosAccess(_ completion: @escaping PhotosAccessCompletion) {
         func complete(with result: PhotosAccessResult) {
             DispatchQueue.main.async {
                 completion(result)
@@ -43,6 +48,4 @@ class PhotosAccessService {
             }
         }
     }
-
-    // MARK: - Private Instance Methods
 }

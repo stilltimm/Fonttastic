@@ -25,6 +25,16 @@ class CanvasView: UIView {
 
     // MARK: - Subviews
 
+    let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFill
+        imageView.isUserInteractionEnabled = false
+        imageView.layer.cornerRadius = 8.0
+        imageView.layer.cornerCurve = .continuous
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
     let textView: UITextView = {
         let textView = StrictCursorTextView()
         textView.backgroundColor = .clear
@@ -69,16 +79,16 @@ class CanvasView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        layer.applyShadow(layerShadow)
-
         DispatchQueue.main.async { [weak self] in
-            guard
-                let self = self,
-                self.frame.height != self.lastTextViewHeight
-            else { return }
+            guard let self = self else { return }
 
-            self.lastTextViewHeight = self.frame.height
-            self.textViewHeightChangedEvent.onNext(())
+            self.backgroundImageView.frame = self.bounds
+            self.layer.applyShadow(self.layerShadow)
+
+            if self.frame.height != self.lastTextViewHeight {
+                self.lastTextViewHeight = self.frame.height
+                self.textViewHeightChangedEvent.onNext(())
+            }
         }
     }
 
@@ -90,6 +100,7 @@ class CanvasView: UIView {
 
     func applyDesign(_ design: Design) {
         backgroundColor = design.backgroundColor
+        backgroundImageView.image = design.backgroundImage
 
         textView.font = UIFontFactory.makeFont(
             from: design.fontModel,
@@ -102,8 +113,8 @@ class CanvasView: UIView {
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
-        layer.cornerRadius = 8.0
-        layer.cornerCurve = .continuous
+        addSubview(backgroundImageView)
+        backgroundImageView.frame = self.bounds
 
         addSubview(textView)
         constrain(self, textView) { view, textView in
@@ -113,6 +124,9 @@ class CanvasView: UIView {
             textView.top >= view.top + 12
             textView.bottom <= view.bottom - 12
         }
+
+        layer.cornerRadius = 8.0
+        layer.cornerCurve = .continuous
     }
 }
 

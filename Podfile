@@ -12,7 +12,7 @@ def default_pods
   # Dev Tools
 
   pod 'SwiftLint', :configurations => ['Debug']
-  pod 'Reveal-SDK', :configurations => ['Debug']
+  # pod 'Reveal-SDK', :configurations => ['Debug']
 
 end
 

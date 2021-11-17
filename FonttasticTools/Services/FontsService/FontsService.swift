@@ -35,11 +35,11 @@ public protocol FontsService: AnyObject {
     var lastUsedCanvasViewDesign: CanvasViewDesign { get set }
 
     func installFonts(completion: @escaping () -> Void)
-
     func installFont(
         from fontSourceModel: FontSourceModel,
         completion: @escaping FontInstallationCompletion
     )
+    func storeLastUsedCanvasViewDesign()
 }
 
 public class DefaultFontsService: FontsService {
@@ -53,36 +53,7 @@ public class DefaultFontsService: FontsService {
     public let fontModelsRepository: FontModelsRepository
     public private(set) var hasInstalledCustomFonts: Bool = false
 
-    public var lastUsedCanvasViewDesign: CanvasViewDesign {
-        get {
-            guard
-                let lastUsedCanvasDesignData = UserDefaults.standard.data(forKey: Constants.lastUsedCanvasDesignKey)
-            else { return Constants.defaultCanvasViewDesign }
-
-            do {
-                return try JSONDecoder().decode(CanvasViewDesign.self, from: lastUsedCanvasDesignData)
-            } catch {
-                logger.log(
-                    "Failed to decode FontModel from lastUsedCanvasViewDesign",
-                    description: "Error: \(error)",
-                    level: .error
-                )
-                return Constants.defaultCanvasViewDesign
-            }
-        }
-        set {
-            do {
-                let lastUsedCanvasDesignData = try JSONEncoder().encode(newValue)
-                UserDefaults.standard.set(lastUsedCanvasDesignData, forKey: Constants.lastUsedCanvasDesignKey)
-            } catch {
-                logger.log(
-                    "Failed to encode lastUsedCanvasDesignData  to data",
-                    description: "Error: \(error)",
-                    level: .error
-                )
-            }
-        }
-    }
+    public var lastUsedCanvasViewDesign: CanvasViewDesign = .default(fontModel: Constants.defaultLastUsedFontModel)
 
     // MARK: - Private Instance Properties
 
@@ -94,6 +65,10 @@ public class DefaultFontsService: FontsService {
     private init() {
         self.fontModelsRepository = DefaultFontModelsRepository(fonts: [])
         installSystemFonts()
+
+        if let cachedLastUsedCanvasViewDesign = restoreLastUsedCanvasDesign() {
+            self.lastUsedCanvasViewDesign = cachedLastUsedCanvasViewDesign
+        }
     }
 
     // MARK: - Public Instance Methods
@@ -121,6 +96,19 @@ public class DefaultFontsService: FontsService {
     public func installFonts(completion: @escaping () -> Void) {
         installSystemFonts()
         installCustomFonts(completion: completion)
+    }
+
+    public func storeLastUsedCanvasViewDesign() {
+        do {
+            let lastUsedCanvasDesignData = try JSONEncoder().encode(lastUsedCanvasViewDesign)
+            UserDefaults.standard.set(lastUsedCanvasDesignData, forKey: Constants.lastUsedCanvasDesignKey)
+        } catch {
+            logger.log(
+                "Failed to encode lastUsedCanvasDesignData  to data",
+                description: "Error: \(error)",
+                level: .error
+            )
+        }
     }
 
     // MARK: - Private Instance Methods
@@ -306,6 +294,23 @@ public class DefaultFontsService: FontsService {
         fontModelsRepository.addFont(fontModel)
 
         complete(with: .success(fontModel))
+    }
+
+    private func restoreLastUsedCanvasDesign() -> CanvasViewDesign? {
+        guard
+            let lastUsedCanvasDesignData = UserDefaults.standard.data(forKey: Constants.lastUsedCanvasDesignKey)
+        else { return nil }
+
+        do {
+            return try JSONDecoder().decode(CanvasViewDesign.self, from: lastUsedCanvasDesignData)
+        } catch {
+            logger.log(
+                "Failed to decode FontModel from lastUsedCanvasViewDesign",
+                description: "Error: \(error)",
+                level: .error
+            )
+            return nil
+        }
     }
 
     // MARK: - Utils

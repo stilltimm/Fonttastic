@@ -14,9 +14,9 @@
 		2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */; };
 		2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */; };
 		2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C469271C999A00BB5C17 /* AddFontButton.swift */; };
-		2D24C46D271C9BE400BB5C17 /* PhotosAccessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */; };
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2D336E4727451B51006AD631 /* PhotosAccessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */; };
 		2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D4270DB8D40096772B /* FontListViewModel.swift */; };
 		2D43F3DD270DE9870096772B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D43F3DC270DE9870096772B /* Settings.bundle */; };
 		2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
@@ -877,6 +877,7 @@
 		2D060EE326FCC14D00047D89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				2D336E4627451B45006AD631 /* PhotosService */,
 				2D89FB1E2742A8FA004B6711 /* FileService */,
 				2D89FB1D2742A8E9004B6711 /* FontsService */,
 			);
@@ -911,7 +912,6 @@
 			children = (
 				2DA4CD8A2742771500CBE6A0 /* Configuration */,
 				2DC3C090271CB98C00213DEF /* ImageProcessingService */,
-				2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -951,6 +951,14 @@
 				2DC80F592709DBE700A81F45 /* KeyboardView */,
 			);
 			path = FontasticKeyboardView;
+			sourceTree = "<group>";
+		};
+		2D336E4627451B45006AD631 /* PhotosService */ = {
+			isa = PBXGroup;
+			children = (
+				2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */,
+			);
+			path = PhotosService;
 			sourceTree = "<group>";
 		};
 		2D4BD5FC2743DBEF00B90D8A /* Resources */ = {
@@ -2087,7 +2095,6 @@
 				2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */,
 				2DC3C09B271CC75500213DEF /* LetterType.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* AddFontFromImageViewController.swift in Sources */,
-				2D24C46D271C9BE400BB5C17 /* PhotosAccessService.swift in Sources */,
 				2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2DE4D1AE271E06E10014E222 /* SVG2TTFJavaScriptRunner.swift in Sources */,
@@ -2138,6 +2145,7 @@
 				2D87270E274336A200D6D6DA /* FontListTitleCell.swift in Sources */,
 				2DEDBFE127433605009C2347 /* Potrace.swift in Sources */,
 				2D872715274336A200D6D6DA /* Sounds.swift in Sources */,
+				2D336E4727451B51006AD631 /* PhotosAccessService.swift in Sources */,
 				2D872713274336A200D6D6DA /* CALayer+Shadow.swift in Sources */,
 				2D87271E274336A200D6D6DA /* FontModelFactory.swift in Sources */,
 				2D872718274336A200D6D6DA /* FonttasticLogger.swift in Sources */,
