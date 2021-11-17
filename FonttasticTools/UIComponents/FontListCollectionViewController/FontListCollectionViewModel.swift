@@ -53,7 +53,6 @@ public class FontListCollectionViewModel {
 
     // MARK: - Private Instance Properties
 
-    // TODO: Use DependencyInjection instead of Singleton
     private let fontsService: FontsService = DefaultFontsService.shared
     private var fontModelsRepository: FontModelsRepository { fontsService.fontModelsRepository }
 

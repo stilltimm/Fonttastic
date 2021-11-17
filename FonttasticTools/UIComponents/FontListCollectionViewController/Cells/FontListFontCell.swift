@@ -179,13 +179,24 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     public func apply(viewModel: FontListFontViewModel) {
         self.viewModel = viewModel
 
-        let adjustedLineHeight = viewModel.fontDisplayLabelFont.capHeight + Constants.fontDisplayLabelSafeSpacing
-        let baselineOffset = viewModel.fontDisplayLabelFont.descender + Constants.fontDisplayLabelSafeSpacing / 2
+        let baselineOffset = viewModel.fontDisplayLabelFont.descender
+            + (Constants.containerHeight / 5)
+        logger.log(
+            "FontListCell font",
+            description: """
+            font=\(viewModel.fontModel.displayName),
+            lineHeight=\(viewModel.fontDisplayLabelFont.lineHeight),
+            descender=\(viewModel.fontDisplayLabelFont.descender),
+            ascender=\(viewModel.fontDisplayLabelFont.ascender),
+            capHeight=\(viewModel.fontDisplayLabelFont.capHeight),
+            """,
+            level: .debug
+        )
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        paragraphStyle.minimumLineHeight = adjustedLineHeight
-        paragraphStyle.maximumLineHeight = adjustedLineHeight
+        paragraphStyle.minimumLineHeight = Constants.containerHeight
+        paragraphStyle.maximumLineHeight = Constants.containerHeight
 
         let attributedString = NSAttributedString(
             string: viewModel.fontDisplayText,
@@ -225,7 +236,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
             fontDisplay.left == container.left
             fontDisplay.right == container.right
-            fontDisplay.centerY == container.centerY + Constants.fontDisplayLabelCenterYOffset
+            fontDisplay.centerY == container.centerY
 
             detailsLabel.left == contentView.left
             detailsLabel.right == contentView.right
@@ -250,7 +261,6 @@ private enum Constants {
         spread: -8
     )
 
-    static let fontDisplayLabelCenterYOffset: CGFloat = -floor(containerHeight / 20)
     static let fontDisplayLabelTextSize: CGFloat = 48.0
     static let fontDisplayLabelSafeSpacing: CGFloat = 10.0
     static let detailsLabelTextSize: CGFloat = 16.0
