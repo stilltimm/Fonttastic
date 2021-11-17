@@ -8,6 +8,8 @@
 import UIKit
 import Cartography
 import FonttasticTools
+import Photos
+import PhotosUI
 
 class KeyboardViewController: UIInputViewController {
 
@@ -17,6 +19,8 @@ class KeyboardViewController: UIInputViewController {
 
     private var colorPickerCompletion: ((UIColor) -> Void)?
     private weak var colorPickerViewController: UIColorPickerViewController?
+
+    private lazy var phImageManager = PHImageManager()
 
     // MARK: - Public Instance Methods
 
@@ -37,6 +41,12 @@ class KeyboardViewController: UIInputViewController {
             let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
             fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = selectedFontModel
         }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        DefaultFontsService.shared.storeLastUsedCanvasViewDesign()
     }
 
     override func viewWillTransition(
@@ -72,6 +82,10 @@ class KeyboardViewController: UIInputViewController {
                 self?.showColorPickerViewControllerForBackgroundColor()
             }
 
+        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundImageSelectionEvent
+            .subscribe(self) { [weak self] in
+                self?.showBackgroundColorSelectionController()
+            }
         fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
             .subscribe(self) { [weak self] in
                 self?.showColorPickerViewControllerForTextColor()
@@ -125,6 +139,23 @@ class KeyboardViewController: UIInputViewController {
 
         self.present(colorPickerViewController, animated: true)
     }
+
+    private func showBackgroundColorSelectionController() {
+        DefaultPhotosAccessService.shared.grantPhotosAccess { [weak self] accessGranted in
+            guard let self = self else { return }
+            guard accessGranted else {
+                return
+            }
+
+            var configuration = PHPickerConfiguration(photoLibrary: .shared())
+            configuration.filter = .images
+            configuration.selectionLimit = 1
+            let photoPickerViewController = PHPickerViewController(configuration: configuration)
+            photoPickerViewController.delegate = self
+
+            self.present(photoPickerViewController, animated: true)
+        }
+    }
 }
 
 extension KeyboardViewController: FontSelectionControllerDelegate {
@@ -171,5 +202,57 @@ extension KeyboardViewController: UIColorPickerViewControllerDelegate {
         guard let completion = colorPickerCompletion else { return }
         completion(viewController.selectedColor)
         colorPickerCompletion = nil
+    }
+}
+
+extension KeyboardViewController: PHPickerViewControllerDelegate {
+
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let fontasticKeyboardView = fontasticKeyboardView else { return }
+
+        guard let result = results.first, let assetIdentifier = result.assetIdentifier else {
+            logger.log("PhotoPicker did finish, but result is empty or has nil assetIdentifier", level: .debug)
+            self.dismiss(animated: true)
+            return
+        }
+
+        guard
+            let phAsset = PHAsset.fetchAssets(withLocalIdentifiers: [assetIdentifier], options: nil).firstObject
+        else {
+            logger.log("PhotoPicker did finish, but unable to fetch PHAsset", level: .debug)
+            self.dismiss(animated: true)
+            return
+        }
+
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        options.resizeMode = .exact
+        options.version = .current
+        phImageManager.requestImage(
+            for: phAsset,
+               targetSize: fontasticKeyboardView.canvasWithSettingsView.targetBackgroundImageSize,
+               contentMode: .aspectFill,
+               options: options
+        ) { [weak self] image, info in
+            guard let self = self else { return }
+            guard let image = image else {
+                logger.log(
+                    "Failed to fetch image with PHAsset",
+                    description: "Info: \(info?.debugDescription ?? "nil")",
+                    level: .debug
+                )
+                self.dismiss(animated: true)
+                return
+            }
+            logger.log(
+                "Did fetch image for backgroundImage",
+                description: "ImageSize: \(image.size)",
+                level: .debug
+            )
+            self.fontasticKeyboardView?.canvasWithSettingsView.canvasBackgroundImage = image
+            self.dismiss(animated: true)
+        }
     }
 }

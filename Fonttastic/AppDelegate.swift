@@ -30,6 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func applicationWillResignActive(_ application: UIApplication) {
+        DefaultFontsService.shared.storeLastUsedCanvasViewDesign()
+    }
+
     // MARK: - Window setup
 
     private func setupRootWindow() {

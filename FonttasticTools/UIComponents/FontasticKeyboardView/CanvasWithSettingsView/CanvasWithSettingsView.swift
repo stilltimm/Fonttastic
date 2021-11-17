@@ -15,6 +15,7 @@ public class CanvasWithSettingsView: UIView {
     public let shouldToggleFontSelection = Event<Void>()
     public let shouldPresentTextColorPickerEvent = Event<Void>()
     public let shouldPresentBackgroundColorPickerEvent = Event<Void>()
+    public let shouldPresentBackgroundImageSelectionEvent = Event<Void>()
 
     public var canvasFontModel: FontModel {
         get { canvasViewDesign.fontModel }
@@ -34,6 +35,14 @@ public class CanvasWithSettingsView: UIView {
         get { canvasViewDesign.backgroundColor }
         set {
             canvasViewDesign.backgroundColor = newValue
+            canvasViewDesign.backgroundImage = nil
+            updateCanvasViewDesign()
+        }
+    }
+    public var canvasBackgroundImage: UIImage? {
+        get { canvasViewDesign.backgroundImage }
+        set {
+            canvasViewDesign.backgroundImage = newValue
             updateCanvasViewDesign()
         }
     }
@@ -44,6 +53,8 @@ public class CanvasWithSettingsView: UIView {
             updateCanvasViewDesign()
         }
     }
+
+    public var targetBackgroundImageSize: CGSize { canvasView.frame.size }
 
     // MARK: - Subviews
 
@@ -88,25 +99,25 @@ public class CanvasWithSettingsView: UIView {
         normalIconName: "character.book.closed",
         highlightedIconName: "character.book.closed.fill"
     )
-    private let fontChangeButton: KeyboardButton
-
     private let textAlignmentChangeViewModel: TextAlignmentChangeButtonViewModel
-    private let textAlignmentChangeButton: KeyboardButton
-
+    private let fontChangeButton: KeyboardButton
     private let backgroundColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "square.fill",
         highlightedIconName: nil
     )
-    private let backgroundColorChangeButton: KeyboardButton
-
+    private let backgroundImageSelectionViewModel = DefaultKeyboardButtonVM(
+        normalIconName: "photo",
+        highlightedIconName: nil
+    )
     private let textColorChangeViewModel = DefaultKeyboardButtonVM(
         normalIconName: "character.cursor.ibeam",
         highlightedIconName: nil
     )
-    private let textColorChangeButton: KeyboardButton
 
-    private var insertedText: [String] = []
-    private var canvasViewDesign: CanvasViewDesign
+    private let textAlignmentChangeButton: KeyboardButton
+    private let backgroundColorChangeButton: KeyboardButton
+    private let backgroundImageSelectionButton: KeyboardButton
+    private let textColorChangeButton: KeyboardButton
 
     private let keyboardButtonDesignBuilder = KeyboardButtonDesignBuilder(
         .default(
@@ -121,6 +132,8 @@ public class CanvasWithSettingsView: UIView {
     )
     private let functionalButtonDesign: KeyboardButtonDesign
 
+    private var insertedText: [String] = []
+    private var canvasViewDesign: CanvasViewDesign
     private var copiedStatusHideWorkItem: DispatchWorkItem?
 
     // MARK: - Initializers
@@ -133,20 +146,22 @@ public class CanvasWithSettingsView: UIView {
             .withForegroungColor(Colors.keyboardButtonMinor)
             .withHighlightedForegroundColor(Colors.keyboardButtonMain)
             .build()
+        let backgroundChangeButtonDesign = keyboardButtonDesignBuilder
+            .withIconSize(CGSize(width: 36, height: 36))
+            .build()
 
         fontChangeButton = KeyboardButton(
             viewModel: fontChangeViewModel,
             design: functionalButtonDesign
         )
-
-        let backgroundChangeButtonDesign = keyboardButtonDesignBuilder
-            .withIconSize(CGSize(width: 36, height: 36))
-            .build()
         backgroundColorChangeButton = KeyboardButton(
             viewModel: backgroundColorChangeViewModel,
             design: backgroundChangeButtonDesign
         )
-
+        backgroundImageSelectionButton = KeyboardButton(
+            viewModel: backgroundImageSelectionViewModel,
+            design: functionalButtonDesign
+        )
         textAlignmentChangeViewModel = TextAlignmentChangeButtonViewModel(
             textAlignment: canvasViewDesign.textAlignment
         )
@@ -195,6 +210,7 @@ public class CanvasWithSettingsView: UIView {
             fontChangeButton,
             textAlignmentChangeButton,
             backgroundColorChangeButton,
+            backgroundImageSelectionButton,
             textColorChangeButton
         ]
         buttonViews.forEach { buttonsContainerView.addSubview($0) }
@@ -279,6 +295,10 @@ public class CanvasWithSettingsView: UIView {
 
         backgroundColorChangeViewModel.didTapEvent.subscribe(self) { [weak self] _ in
             self?.shouldPresentBackgroundColorPickerEvent.onNext(())
+        }
+
+        backgroundImageSelectionViewModel.didTapEvent.subscribe(self) { [weak self] _ in
+            self?.shouldPresentBackgroundImageSelectionEvent.onNext(())
         }
 
         textColorChangeViewModel.didTapEvent.subscribe(self) { [weak self] _ in
@@ -381,6 +401,7 @@ extension CanvasViewDesign {
             fontModel: fontModel,
             fontSize: 36,
             backgroundColor: .white,
+            backgroundImage: nil,
             textColor: .black,
             textAlignment: .center
         )

@@ -17,6 +17,7 @@ public struct CanvasViewDesign: Codable {
         case backgroundColorHex
         case textColorHex
         case textAlignmentRawValue
+        case backgroundImagePngData
     }
 
     // MARK: - Pulic Instance Properties
@@ -24,6 +25,7 @@ public struct CanvasViewDesign: Codable {
     public var fontModel: FontModel
     public var fontSize: CGFloat
     public var backgroundColor: UIColor
+    public var backgroundImage: UIImage?
     public var textColor: UIColor
     public var textAlignment: NSTextAlignment
 
@@ -33,12 +35,14 @@ public struct CanvasViewDesign: Codable {
         fontModel: FontModel,
         fontSize: CGFloat,
         backgroundColor: UIColor,
+        backgroundImage: UIImage?,
         textColor: UIColor,
         textAlignment: NSTextAlignment
     ) {
         self.fontModel = fontModel
         self.fontSize = fontSize
         self.backgroundColor = backgroundColor
+        self.backgroundImage = backgroundImage
         self.textColor = textColor
         self.textAlignment = textAlignment
     }
@@ -55,6 +59,12 @@ public struct CanvasViewDesign: Codable {
 
         let textAlignmentRawValue = try container.decode(NSTextAlignment.RawValue.self, forKey: .textAlignmentRawValue)
         self.textAlignment = NSTextAlignment(rawValue: textAlignmentRawValue) ?? Constants.defaultTextAlignment
+
+        if let backgroundImagePngData = try container.decodeIfPresent(Data.self, forKey: .backgroundImagePngData) {
+            self.backgroundImage = UIImage(data: backgroundImagePngData)
+        } else {
+            self.backgroundImage = nil
+        }
     }
 
     // MARK: - Public Instance Methods
@@ -66,6 +76,9 @@ public struct CanvasViewDesign: Codable {
         try container.encode(backgroundColor.hexValue, forKey: .backgroundColorHex)
         try container.encode(textColor.hexValue, forKey: .textColorHex)
         try container.encode(textAlignment.rawValue, forKey: .textAlignmentRawValue)
+        if let backgroundImagePngData = backgroundImage?.jpegData(compressionQuality: 0.9) {
+            try container.encode(backgroundImagePngData, forKey: .backgroundImagePngData)
+        }
     }
 }
 
