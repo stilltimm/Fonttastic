@@ -14,12 +14,12 @@ public enum KeyboardType: Equatable, CaseIterable {
 
     // MARK: - Nested Types
 
-    public enum Language: Equatable, CaseIterable {
+    public enum Language: Int, CaseIterable {
         case latin
         case cyrillic
     }
 
-    public enum PunctuationSet: Equatable, CaseIterable {
+    public enum PunctuationSet: Int, CaseIterable {
         case `default`
         case alternative
     }

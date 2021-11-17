@@ -32,6 +32,8 @@ public protocol FontsService: AnyObject {
 
     var hasInstalledCustomFonts: Bool { get }
     var fontModelsRepository: FontModelsRepository { get }
+
+    var lastUsedLanguage: KeyboardType.Language { get set }
     var lastUsedCanvasViewDesign: CanvasViewDesign { get set }
 
     func installFonts(completion: @escaping () -> Void)
@@ -39,7 +41,7 @@ public protocol FontsService: AnyObject {
         from fontSourceModel: FontSourceModel,
         completion: @escaping FontInstallationCompletion
     )
-    func storeLastUsedCanvasViewDesign()
+    func storeLastUsedSettings()
 }
 
 public class DefaultFontsService: FontsService {
@@ -54,6 +56,7 @@ public class DefaultFontsService: FontsService {
     public private(set) var hasInstalledCustomFonts: Bool = false
 
     public var lastUsedCanvasViewDesign: CanvasViewDesign = .default(fontModel: Constants.defaultLastUsedFontModel)
+    public var lastUsedLanguage: KeyboardType.Language = Constants.defaultLastUsedLanguage
 
     // MARK: - Private Instance Properties
 
@@ -64,8 +67,15 @@ public class DefaultFontsService: FontsService {
 
     private init() {
         self.fontModelsRepository = DefaultFontModelsRepository(fonts: [])
+
         installSystemFonts()
 
+        if
+            let lastUsedLanguageRawValue = UserDefaults.standard.object(forKey: Constants.lastUsedLanguageKey) as? Int,
+            let lastUsedLanguage = KeyboardType.Language(rawValue: lastUsedLanguageRawValue)
+        {
+            self.lastUsedLanguage = lastUsedLanguage
+        }
         if let cachedLastUsedCanvasViewDesign = restoreLastUsedCanvasDesign() {
             self.lastUsedCanvasViewDesign = cachedLastUsedCanvasViewDesign
         }
@@ -94,11 +104,12 @@ public class DefaultFontsService: FontsService {
     }
 
     public func installFonts(completion: @escaping () -> Void) {
-        installSystemFonts()
         installCustomFonts(completion: completion)
     }
 
-    public func storeLastUsedCanvasViewDesign() {
+    public func storeLastUsedSettings() {
+        UserDefaults.standard.set(lastUsedLanguage.rawValue, forKey: Constants.lastUsedLanguageKey)
+
         do {
             let lastUsedCanvasDesignData = try JSONEncoder().encode(lastUsedCanvasViewDesign)
             UserDefaults.standard.set(lastUsedCanvasDesignData, forKey: Constants.lastUsedCanvasDesignKey)
@@ -296,6 +307,8 @@ public class DefaultFontsService: FontsService {
         complete(with: .success(fontModel))
     }
 
+    // MARK: - Utils
+
     private func restoreLastUsedCanvasDesign() -> CanvasViewDesign? {
         guard
             let lastUsedCanvasDesignData = UserDefaults.standard.data(forKey: Constants.lastUsedCanvasDesignKey)
@@ -313,8 +326,6 @@ public class DefaultFontsService: FontsService {
         }
     }
 
-    // MARK: - Utils
-
     private func systemFontSources() -> [FontSourceModel] {
         let systemFonts = UIFont.familyNames.compactMap { fontName -> FontSourceModel? in
             guard !fontName.lowercased().contains("system") else { return nil }
@@ -331,6 +342,9 @@ private enum Constants {
 
     static let hasInstalledCustomFontsKey: String = "com.timofeysurkov.Fontastic.hasInstalledCustomFonts"
     static let lastUsedCanvasDesignKey: String = "com.timofeysurkov.Fontastic.lastUsedCanvasViewDesign"
+    static let lastUsedLanguageKey: String = "com.timofeysurkov.Fontastic.lastUsedLanguage"
+
+    static let defaultLastUsedLanguage: KeyboardType.Language = .latin
 
     static let defaultLastUsedFontModel: FontModel = FontModel(
         name: "Georgia-Bold",

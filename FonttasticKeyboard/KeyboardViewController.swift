@@ -46,7 +46,7 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        DefaultFontsService.shared.storeLastUsedCanvasViewDesign()
+        DefaultFontsService.shared.storeLastUsedSettings()
     }
 
     override func viewWillTransition(
