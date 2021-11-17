@@ -13,9 +13,10 @@ public class FontasticKeyboardView: UIView {
 
     public let keyboardViewModels: [KeyboardViewModel]
 
-    public private(set) var lastUsedLanguage: KeyboardType.Language = .latin {
+    public private(set) var lastUsedLanguage: KeyboardType.Language = DefaultFontsService.shared.lastUsedLanguage {
         didSet {
             lastUsedLanguageEvent.onNext(lastUsedLanguage)
+            DefaultFontsService.shared.lastUsedLanguage = lastUsedLanguage
         }
     }
 
@@ -25,7 +26,7 @@ public class FontasticKeyboardView: UIView {
     private var landscapeOrientationConstraints: [NSLayoutConstraint] = []
 
     private let lastUsedLanguageEvent: HotEvent<KeyboardType.Language>
-    private var currentKeyboardType: KeyboardType = .language(.latin) {
+    private var currentKeyboardType: KeyboardType = .language(DefaultFontsService.shared.lastUsedLanguage) {
         didSet {
             updateUI(for: currentKeyboardType)
         }
@@ -35,7 +36,7 @@ public class FontasticKeyboardView: UIView {
 
     public init(initiallySelectedCanvasViewDesign: CanvasViewDesign) {
         self.canvasWithSettingsView = CanvasWithSettingsView(canvasViewDesign: initiallySelectedCanvasViewDesign)
-        let lastUsedLanguageEvent = HotEvent<KeyboardType.Language>(value: .latin)
+        let lastUsedLanguageEvent = HotEvent<KeyboardType.Language>(value: DefaultFontsService.shared.lastUsedLanguage)
         self.lastUsedLanguageEvent = lastUsedLanguageEvent
 
         keyboardViewModels = KeyboardType.allCases.map {

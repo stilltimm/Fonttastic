@@ -262,7 +262,7 @@ public class LanguageToggleKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     private let latinLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "EN")
     private let cyrillicLanguageContent = KeyboardButtonContent.text(contentString: nil, displayString: "RU")
-    private var lastUsedLanguage: KeyboardType.Language = .latin
+    private var lastUsedLanguage: KeyboardType.Language = DefaultFontsService.shared.lastUsedLanguage
 
     // MARK: - Initializers
 
