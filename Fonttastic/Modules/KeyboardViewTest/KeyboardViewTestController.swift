@@ -40,6 +40,7 @@ class KeyboardViewTestViewController: UIViewController {
 
     init() {
         self.fontasticKeyboardView = FontasticKeyboardView(
+            insertedText: "Test string".map { String($0) },
             initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign
         )
 

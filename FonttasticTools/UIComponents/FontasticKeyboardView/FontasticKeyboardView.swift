@@ -34,8 +34,11 @@ public class FontasticKeyboardView: UIView {
 
     // MARK: - Initializers
 
-    public init(initiallySelectedCanvasViewDesign: CanvasViewDesign) {
-        self.canvasWithSettingsView = CanvasWithSettingsView(canvasViewDesign: initiallySelectedCanvasViewDesign)
+    public init(insertedText: [String], initiallySelectedCanvasViewDesign: CanvasViewDesign) {
+        self.canvasWithSettingsView = CanvasWithSettingsView(
+            insertedText: insertedText,
+            canvasViewDesign: initiallySelectedCanvasViewDesign
+        )
         let lastUsedLanguageEvent = HotEvent<KeyboardType.Language>(value: DefaultFontsService.shared.lastUsedLanguage)
         self.lastUsedLanguageEvent = lastUsedLanguageEvent
 

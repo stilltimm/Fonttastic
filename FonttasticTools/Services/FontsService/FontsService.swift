@@ -19,6 +19,7 @@ public enum FontInstallationError: Error {
     case failedToCreateCGDataProvider
     case failedToCreateCGFont
     case failedToRegisterFont(errorString: String?, resourceType: FontResourceType)
+    case fontAlreadyInstalled(FontResourceType)
     case missingFontName
     case networkError
     case unimplemented
@@ -87,6 +88,13 @@ public class DefaultFontsService: FontsService {
         from fontSourceModel: FontSourceModel,
         completion: @escaping FontInstallationCompletion
     ) {
+        if fontModelsRepository.fonts.contains(
+            where: { $0.resourceType == fontSourceModel.resourceType && $0.status == .ready }
+        ) {
+            completion(.failure(.fontAlreadyInstalled(fontSourceModel.resourceType)))
+            return
+        }
+
         switch fontSourceModel.resourceType {
         case .system:
             installSystemFont(with: fontSourceModel.name, completion: completion)
@@ -147,7 +155,7 @@ public class DefaultFontsService: FontsService {
         let dispatchGroup = DispatchGroup()
         var installedFontModels: [FontModel] = []
 
-        for customFontFileURL in customFontFileURLs.prefix(100) {
+        for customFontFileURL in customFontFileURLs {
             dispatchGroup.enter()
 
             autoreleasepool { [weak self] in
