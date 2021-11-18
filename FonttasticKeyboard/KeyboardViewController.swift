@@ -30,6 +30,7 @@ class KeyboardViewController: UIInputViewController {
         FonttasticLogger.shared.setup(with: .default)
 
         self.fontasticKeyboardView = FontasticKeyboardView(
+            insertedText: [],
             initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign
         )
 

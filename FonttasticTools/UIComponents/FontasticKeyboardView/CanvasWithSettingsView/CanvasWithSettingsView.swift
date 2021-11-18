@@ -132,13 +132,14 @@ public class CanvasWithSettingsView: UIView {
     )
     private let functionalButtonDesign: KeyboardButtonDesign
 
-    private var insertedText: [String] = []
+    private var insertedText: [String]
     private var canvasViewDesign: CanvasViewDesign
     private var copiedStatusHideWorkItem: DispatchWorkItem?
 
     // MARK: - Initializers
 
-    public init(canvasViewDesign: CanvasViewDesign) {
+    public init(insertedText: [String], canvasViewDesign: CanvasViewDesign) {
+        self.insertedText = insertedText
         self.canvasViewDesign = canvasViewDesign
         self.canvasView = CanvasView(design: canvasViewDesign)
 
@@ -178,6 +179,7 @@ public class CanvasWithSettingsView: UIView {
 
         setupSubviews()
         setupBusinessLogic()
+        updateCanvasViewText()
     }
 
     required init?(coder: NSCoder) {
@@ -330,6 +332,10 @@ public class CanvasWithSettingsView: UIView {
         DefaultFontsService.shared.lastUsedCanvasViewDesign = canvasViewDesign
 
         setCopiedStatusLabel(isHidden: true, animated: false)
+
+        DispatchQueue.main.async {
+            DefaultFontsService.shared.storeLastUsedSettings()
+        }
     }
 
     private func updateScrollViewContent() {
