@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum FontStatus {
+public enum FontStatus: Codable, Hashable {
 
     case uninstalled
-    case invalid(Error)
+    case invalid
     case ready
 }

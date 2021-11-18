@@ -6,6 +6,7 @@ disabled_rules:
 excluded:
 - Pods
 - FonttasticTools/Potrace.swift
+- FonttasticToolsStatic/Potrace.swift
 
 function_parameter_count:
 - 9

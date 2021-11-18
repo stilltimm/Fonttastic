@@ -7,10 +7,11 @@
 
 import Foundation
 
-public enum FontResourceType: Equatable {
+public enum FontResourceType: Codable, Hashable {
 
     case system
     case bundled(fileName: String)
+    case file(fileURL: URL)
     case userCreated
 
     public var isAvailableForReinstall: Bool {
@@ -18,7 +19,7 @@ public enum FontResourceType: Equatable {
         case .system:
             return false
 
-        case .bundled, .userCreated:
+        case .bundled, .file, .userCreated:
             return true
         }
     }

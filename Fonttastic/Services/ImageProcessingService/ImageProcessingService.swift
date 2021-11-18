@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import FonttasticTools
+import ZIPFoundation
 
 // MARK: - Supporting Types
 
@@ -93,6 +94,10 @@ protocol ImageProcessingService {
         from bitmapAlphabetSource: BitmapAlphabetSourceModel,
         completion: @escaping SVGAlphabetSourceCreationCompletion
     )
+
+    func tryCreateSVGsArchive(
+        from svgAlphabetSource: SVGAlphabetSourceModel
+    ) -> URL?
 }
 
 // MARK: - Default Implementaton
@@ -102,6 +107,27 @@ class DefaultImageProcessingService: ImageProcessingService {
     // MARK: - Internal Type Properties
 
     static let shared = DefaultImageProcessingService()
+
+    // MARK: - Private Type Properties
+
+    private static let isLoggingEnabled: Bool = true
+    private static let fileName = #file.components(separatedBy: "/").last!
+
+    // MARK: - Private Type Methods
+
+    private static func logIfEnabled(
+        title: String = "",
+        startDate: Date,
+        endDate: Date = Date(),
+        function: String = #function
+    ) {
+        let timePassed = endDate.timeIntervalSince(startDate)
+        logger.log("\(function): \(title) took \(timePassed) seconds", level: .debug)
+    }
+
+    // MARK: - Private Instance Properties
+
+    private let fileService: FileService = DefaultFileService.shared
 
     // MARK: - Initializers
 
@@ -113,7 +139,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         from image: UIImage,
         completion: @escaping AlphabetTypeResolutionCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: AlphabetTypeResolutionResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -139,7 +168,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         for alphabetType: AlphabetType,
         completion: @escaping BitmapAlphabetSourceCreationCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: BitmapAlphabetSourceCreationResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -188,7 +220,10 @@ class DefaultImageProcessingService: ImageProcessingService {
         from bitmapAlphabetSource: BitmapAlphabetSourceModel,
         completion: @escaping SVGAlphabetSourceCreationCompletion
     ) {
+        let startDate = Date()
+        let function = #function
         func complete(with result: SVGAlphabetSourceCreationResult) {
+            Self.logIfEnabled(startDate: startDate, function: function)
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -215,12 +250,36 @@ class DefaultImageProcessingService: ImageProcessingService {
         complete(with: .success(svgAlphabetSourceModel))
     }
 
+    func tryCreateSVGsArchive(
+        from svgAlphabetSource: SVGAlphabetSourceModel
+    ) -> URL? {
+        do {
+            let documentsDirectoryURL = try fileService.documentsDirectoryURL()
+            let svgsDirectoryURL = documentsDirectoryURL.appendingPathComponent("svgs", isDirectory: true)
+            let archiveURL = documentsDirectoryURL.appendingPathComponent("archive.zip")
+
+            try fileService.recreateDirectoryIfNeeded(at: svgsDirectoryURL)
+            for svgLetterSource in svgAlphabetSource.letterSources {
+                let fileName = "\(svgLetterSource.letter)"
+                let fileURL = svgsDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("svg")
+                try fileService.write(fileContent: svgLetterSource.svgContents, to: fileURL)
+            }
+
+            try fileService.makeZip(of: svgsDirectoryURL, to: archiveURL)
+            return archiveURL
+        } catch {
+            logger.log("Failed to create archive: \(error)", level: .error)
+            return nil
+        }
+    }
+
     // MARK: - Private Instance Methods
 
     private func makeBitmapLetterSources(
         from image: UIImage,
         orderedLetters: [LetterType]
     ) -> Result<[BitmapLetterSourceModel], BitmapAlphabetSourceCreationError> {
+        let startDate = Date()
         let imageHeight = image.size.height
         var cropRect = CGRect(origin: CGPoint.zero, size: CGSize(width: imageHeight, height: imageHeight))
 
@@ -236,6 +295,7 @@ class DefaultImageProcessingService: ImageProcessingService {
             letterSources.append(.init(letter: letter, image: croppedImage))
         }
 
+        Self.logIfEnabled(startDate: startDate)
         return .success(letterSources)
     }
 
@@ -243,7 +303,11 @@ class DefaultImageProcessingService: ImageProcessingService {
         from bitmapLetterSource: BitmapLetterSourceModel,
         with settings: Potrace.Settings
     ) -> SVGLetterSourceModel? {
-        guard let pixelData = bitmapLetterSource.image.pixelData() else { return nil }
+        guard
+            let pixelData = bitmapLetterSource.image.pixelData()
+        else { return nil }
+
+        let startDate = Date()
 
         // TODO: Fix this warning https://stackoverflow.com/a/60912479
         let potrace = Potrace(
@@ -254,11 +318,15 @@ class DefaultImageProcessingService: ImageProcessingService {
 
         potrace.process(settings: settings)
 
-        return SVGLetterSourceModel(
+        let scale: Double = Constants.lineHeight / Double(bitmapLetterSource.image.size.height)
+        let result: SVGLetterSourceModel = SVGLetterSourceModel(
             letter: bitmapLetterSource.letter,
-            svgContents: potrace.getSVG(),
-            bezierPath: potrace.getBezierPath(scale: 2.0)
+            svgContents: potrace.getSVG(scale: scale, opt_type: nil),
+            bezierPath: potrace.getBezierPath(scale: 4)
         )
+
+        Self.logIfEnabled(title: "Letter \"\(bitmapLetterSource.letter)\"", startDate: startDate)
+        return result
     }
 }
 
@@ -288,5 +356,14 @@ private extension UIImage {
 
 private enum Constants {
 
-    static let defaultPotraceSettings: Potrace.Settings = .init()
+    static let defaultPotraceSettings: Potrace.Settings = {
+        var settings = Potrace.Settings()
+        settings.turdsize = 10
+        settings.alphamax = 0.5
+        settings.optcurve = false
+        settings.opttolerance = 2.0
+        return settings
+    }()
+
+    static let lineHeight: Double = 1000.0
 }

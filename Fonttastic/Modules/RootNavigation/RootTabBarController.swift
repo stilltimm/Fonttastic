@@ -44,8 +44,8 @@ class RootTabBarController: UITabBarController {
     private func setupRootControllers() {
         let rootViewControllers: [UIViewController] = [
             fontListNavigationController
-//            keyboardTestNavigationController,
-//            newFontNavigationController,
+//            keyboardTestNavigationController
+//            newFontNavigationController
 //            settingsNavigationController
         ]
         self.setViewControllers(rootViewControllers, animated: false)

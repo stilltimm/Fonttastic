@@ -7,6 +7,9 @@
 
 import UIKit
 import Cartography
+import FonttasticTools
+import Photos
+import PhotosUI
 
 class KeyboardViewTestViewController: UIViewController {
 
@@ -26,11 +29,21 @@ class KeyboardViewTestViewController: UIViewController {
         view.backgroundColor = .clear
         return view
     }()
-    private let fontasticKeyboardView = FontasticKeyboardView()
+    private let fontasticKeyboardView: FontasticKeyboardView
+
+    // MARK: - Private Instance Properties
+
+    private let fontsService: FontsService = DefaultFontsService.shared
+    private let phImageManager = PHImageManager()
 
     // MARK: - Initializers
 
     init() {
+        self.fontasticKeyboardView = FontasticKeyboardView(
+            insertedText: "Test string".map { String($0) },
+            initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign
+        )
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -72,19 +85,125 @@ class KeyboardViewTestViewController: UIViewController {
     }
 
     private func setupBusinessLogic() {
-        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
-            .subscribe(self) {
-                print("Should present UIFontPickerViewController")
+        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection.subscribe(self) { [weak self] in
+            self?.presentFontPickerViewController()
+        }
+        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundImageSelectionEvent
+            .subscribe(self) { [weak self] in
+                self?.presentBackgroundColorSelectionController()
+            }
+    }
+
+    private func presentFontPickerViewController() {
+        let fontSelectionViewController = FontSelectionController(
+            initiallySelectedFontModel: fontasticKeyboardView.canvasWithSettingsView.canvasFontModel,
+            keyboardLanguage: fontasticKeyboardView.lastUsedLanguage
+        )
+        fontSelectionViewController.delegate = self
+        let nav = BaseNavigationController(rootViewController: fontSelectionViewController)
+        present(nav, animated: true)
+    }
+
+    private func presentBackgroundColorSelectionController() {
+        DefaultPhotosAccessService.shared.grantPhotosAccess { [weak self] accessGranted in
+            guard let self = self else { return }
+            guard accessGranted else {
+                self.presentPhotosAccesAlert()
+                return
             }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for backgroundColor")
-            }
+            var configuration = PHPickerConfiguration(photoLibrary: .shared())
+            configuration.filter = .images
+            configuration.selectionLimit = 1
+            let photoPickerViewController = PHPickerViewController(configuration: configuration)
+            photoPickerViewController.delegate = self
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
-            .subscribe(self) {
-                print("Should present UIColorPickerViewController for textColor")
+            self.navigationController?.present(photoPickerViewController, animated: true)
+        }
+    }
+
+    private func presentPhotosAccesAlert() {
+        let alertController = UIAlertController(
+            title: "Cannot access Photos",
+            message: "Please give Fonttastic access to Ph",
+            preferredStyle: .actionSheet
+        )
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+
+        navigationController?.present(alertController, animated: true)
+    }
+}
+
+extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
+
+    // MARK: - Internal Instance Methods
+
+    func didSelectFontModel(_ fontModel: FontModel) {
+        setFontModelToCanvas(fontModel)
+    }
+
+    func didCancelFontSelection(_ initiallySelectedFontModel: FontModel) {
+        setFontModelToCanvas(initiallySelectedFontModel)
+    }
+
+    func didFinishFontSelection() {
+        let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
+        logger.log(
+            "Finished font selection",
+            description: "Selected FontModel: \(selectedFontModel)",
+            level: .info
+        )
+    }
+
+    // MARK: - Private Instance Methods
+
+    private func setFontModelToCanvas(_ fontModel: FontModel) {
+        fontasticKeyboardView.canvasWithSettingsView.canvasFontModel = fontModel
+    }
+}
+
+extension KeyboardViewTestViewController: PHPickerViewControllerDelegate {
+
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let result = results.first, let assetIdentifier = result.assetIdentifier else {
+            logger.log("PhotoPicker did finish, but result is empty or has nil assetIdentifier", level: .debug)
+            return
+        }
+
+        guard
+            let phAsset = PHAsset.fetchAssets(withLocalIdentifiers: [assetIdentifier], options: nil).firstObject
+        else {
+            logger.log("PhotoPicker did finish, but unable to fetch PHAsset", level: .debug)
+            return
+        }
+
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        options.isSynchronous = true
+        options.resizeMode = .exact
+        options.version = .current
+        phImageManager.requestImage(
+            for: phAsset,
+               targetSize: fontasticKeyboardView.canvasWithSettingsView.targetBackgroundImageSize,
+               contentMode: .aspectFill,
+               options: options
+        ) { [weak self] image, info in
+            guard let image = image else {
+                logger.log(
+                    "Failed to fetch image with PHAsset",
+                    description: "Info: \(info?.debugDescription ?? "nil")",
+                    level: .debug
+                )
+                return
             }
+            logger.log(
+                "Did fetch image for backgroundImage",
+                description: "ImageSize: \(image.size)",
+                level: .debug
+            )
+            self?.fontasticKeyboardView.canvasWithSettingsView.canvasBackgroundImage = image
+            self?.navigationController?.dismiss(animated: true)
+        }
     }
 }
