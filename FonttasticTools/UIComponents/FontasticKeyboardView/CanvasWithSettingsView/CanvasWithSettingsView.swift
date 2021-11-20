@@ -313,7 +313,7 @@ public class CanvasWithSettingsView: UIView {
             for: .touchUpInside
         )
 
-        canvasView.textViewHeightChangedEvent.subscribe(self) { [weak self] in
+        canvasView.contentHeightChangedEvent.subscribe(self) { [weak self] in
             self?.updateScrollViewContent()
         }
     }
@@ -347,9 +347,10 @@ public class CanvasWithSettingsView: UIView {
     }
 
     @objc private func copyCanvasContainerScreenshot() {
-        let generalPasteboard = UIPasteboard.general
         canvasView.textView.resignFirstResponder()
-        generalPasteboard.image = canvasContainerButton.takeScreenshot()
+        canvasView.showWatermark()
+        UIPasteboard.general.image = canvasContainerButton.takeScreenshot()
+        canvasView.hideWatermark()
 
         setCopiedStatusLabel(isHidden: false, animated: true)
         let workItem = DispatchWorkItem { [weak self] in

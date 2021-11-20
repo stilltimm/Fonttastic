@@ -63,6 +63,7 @@
 		2D872724274336A200D6D6DA /* FontListCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89FEC72742EFD4004B6711 /* FontListCollectionViewModel.swift */; };
 		2D89FEC42742EC78004B6711 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */; };
 		2DA4CD8C2742772600CBE6A0 /* AppConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA4CD8B2742772600CBE6A0 /* AppConfigurationService.swift */; };
+		2DAA49412747D1700089D024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DAA49402747D1700089D024 /* Assets.xcassets */; };
 		2DAF9C1727453C27000A3489 /* FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; platformFilter = ios; };
 		2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */; };
 		2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C092271CB9AB00213DEF /* AlphabetType.swift */; };
@@ -197,6 +198,7 @@
 		2DEDBFDF27433605009C2347 /* WeakBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C842700B8D80006E27B /* WeakBox.swift */; };
 		2DEDBFE027433605009C2347 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C822700B7CA0006E27B /* Event.swift */; };
 		2DEDBFE127433605009C2347 /* Potrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D67EC13271101F300ADE22A /* Potrace.swift */; };
+		2DEE07152747C6E5008342C4 /* FonttasticWatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */; };
 		94ECF605EE244714D846C11C /* Pods_Fonttastic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */; };
 		B37868BF4144A8EA61AF8EE2 /* Pods_FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C803B520657DA52516392A /* Pods_FonttasticTools.framework */; };
 /* End PBXBuildFile section */
@@ -413,6 +415,7 @@
 		2DA4CD8B2742772600CBE6A0 /* AppConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurationService.swift; sourceTree = "<group>"; };
 		2DA4CD8D2742788800CBE6A0 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		2DA4CD90274282F300CBE6A0 /* FonttasticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticLogger.swift; sourceTree = "<group>"; };
+		2DAA49402747D1700089D024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
 		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
 		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
@@ -444,6 +447,7 @@
 		2DE6FFFF27440890004DC829 /* CanvasViewDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewDesign.swift; sourceTree = "<group>"; };
 		2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FonttasticTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DEDBEA7274333F5009C2347 /* FonttasticTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FonttasticTools.h; sourceTree = "<group>"; };
+		2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticWatermarkView.swift; sourceTree = "<group>"; };
 		2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Orientation.swift"; sourceTree = "<group>"; };
 		63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fonttastic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ABE0D06ECE24F8B6ADBE951 /* Pods-FonttasticKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-FonttasticKeyboard/Pods-FonttasticKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
@@ -621,6 +625,7 @@
 		2D4BD5FC2743DBEF00B90D8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2DAA49402747D1700089D024 /* Assets.xcassets */,
 				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
 				2D2E46F9270CA37A00728CC2 /* Sounds.swift */,
 				2DA4CD85274274E400CBE6A0 /* Fonts */,
@@ -865,6 +870,7 @@
 				2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */,
 				2DC34895270B265F00420C63 /* CanvasView.swift */,
 				2DE6FFFF27440890004DC829 /* CanvasViewDesign.swift */,
+				2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */,
 			);
 			path = CanvasWithSettingsView;
 			sourceTree = "<group>";
@@ -1227,6 +1233,7 @@
 				2DEDBEF227433483009C2347 /* 16010.ttf in Resources */,
 				2DEDBEE027433482009C2347 /* 14109.ttf in Resources */,
 				2DEDBFDA27433483009C2347 /* 12360.ttf in Resources */,
+				2DAA49412747D1700089D024 /* Assets.xcassets in Resources */,
 				2DEDBFD727433483009C2347 /* 13162.ttf in Resources */,
 				2DEDBF3427433483009C2347 /* 12197.ttf in Resources */,
 				2DEDBF7A27433483009C2347 /* 13194.ttf in Resources */,
@@ -1423,6 +1430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DEE07152747C6E5008342C4 /* FonttasticWatermarkView.swift in Sources */,
 				2D8726FF274336A200D6D6DA /* KeyboardType.swift in Sources */,
 				2D872706274336A200D6D6DA /* KeyboardViewModel+Config.swift in Sources */,
 				2D872711274336A200D6D6DA /* UIEdgeInsets+Utils.swift in Sources */,
