@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  Fonttastic
+
+  Created by Timofey Surkov on 21.11.2021.
+  
+*/
+
+// MARK: - Keyboard
+
+"keyboard.canvas.copied.title" = "✅ Copied";
+
+// MARK: - Font Selection
+
+"fontSelection.title" = "Select Font";
+"fontSelection.prompt.latinFonts" = "Latin fonts";
+"fontSelection.prompt.cyrillicFonts" = "Cyrillic fonts";
+
+// MARK: - Font List Collection
+
+"fontListCollection.sectionHeader.systemFonts" = "System fonts";
+"fontListCollection.sectionHeader.customFonts" = "Custom fonts";
+"fontListCollection.keyboardInstallBanner.title" = "Install Keyboard ⌨️";

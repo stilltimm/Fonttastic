@@ -13,6 +13,9 @@
 		2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EB926FCC10A00047D89 /* Assets.xcassets */; };
 		2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */; };
 		2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */; };
+		2D1E3A2B274A672200822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A2D274A672200822F05 /* Localizable.strings */; };
+		2D1E3A31274A675C00822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A33274A675C00822F05 /* Localizable.strings */; };
+		2D1E3A36274A678000822F05 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A35274A678000822F05 /* Strings.swift */; };
 		2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C469271C999A00BB5C17 /* AddFontButton.swift */; };
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -22,7 +25,6 @@
 		2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
-		2D5239FC2702503C0039C112 /* akzidenzgroteskpro-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */; };
 		2D8726FF274336A200D6D6DA /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D705AA7273AB44C00015D25 /* KeyboardType.swift */; };
 		2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
 		2D872701274336A200D6D6DA /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4255126FCDDC500DFF767 /* FontModel.swift */; };
@@ -264,6 +266,12 @@
 		2D060EBC26FCC10A00047D89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2D060EBE26FCC10A00047D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		2D1E3A28274A666700822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		2D1E3A2C274A672200822F05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2D1E3A2E274A672500822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2D1E3A32274A675C00822F05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2D1E3A34274A675D00822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		2D1E3A35274A678000822F05 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		2D24C469271C999A00BB5C17 /* AddFontButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontButton.swift; sourceTree = "<group>"; };
 		2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccessService.swift; sourceTree = "<group>"; };
 		2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontDetailsViewController.swift; sourceTree = "<group>"; };
@@ -290,7 +298,6 @@
 		2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
 		2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestNavigationController.swift; sourceTree = "<group>"; };
 		2D5239E8270243650039C112 /* KeyboardViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestController.swift; sourceTree = "<group>"; };
-		2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "akzidenzgroteskpro-bold.ttf"; sourceTree = "<group>"; };
 		2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
 		2D67EC13271101F300ADE22A /* Potrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Potrace.swift; sourceTree = "<group>"; };
 		2D705AA3273AB22100015D25 /* FontSymbolSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontSymbolSourceModel.swift; sourceTree = "<group>"; };
@@ -531,6 +538,7 @@
 				2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */,
 				2D43F3DC270DE9870096772B /* Settings.bundle */,
 				2D060EBE26FCC10A00047D89 /* Info.plist */,
+				2D1E3A2D274A672200822F05 /* Localizable.strings */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
@@ -596,7 +604,6 @@
 		2D2A0C8B270210A70006E27B /* FonttasticKeyboard */ = {
 			isa = PBXGroup;
 			children = (
-				2D5239FB2702503C0039C112 /* akzidenzgroteskpro-bold.ttf */,
 				2D2A0C8C270210A70006E27B /* KeyboardViewController.swift */,
 				2D2A0C8E270210A70006E27B /* Info.plist */,
 			);
@@ -625,10 +632,12 @@
 		2D4BD5FC2743DBEF00B90D8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2DA4CD85274274E400CBE6A0 /* Fonts */,
 				2DAA49402747D1700089D024 /* Assets.xcassets */,
 				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
 				2D2E46F9270CA37A00728CC2 /* Sounds.swift */,
-				2DA4CD85274274E400CBE6A0 /* Fonts */,
+				2D1E3A35274A678000822F05 /* Strings.swift */,
+				2D1E3A33274A675C00822F05 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1130,6 +1139,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 2D060EA426FCC10900047D89;
 			productRefGroup = 2D060EAE26FCC10900047D89 /* Products */;
@@ -1149,6 +1159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D43F3DD270DE9870096772B /* Settings.bundle in Resources */,
+				2D1E3A2B274A672200822F05 /* Localizable.strings in Resources */,
 				2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */,
 				2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */,
 			);
@@ -1158,7 +1169,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D5239FC2702503C0039C112 /* akzidenzgroteskpro-bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1211,6 +1221,7 @@
 				2DEDBF2D27433483009C2347 /* 15664.ttf in Resources */,
 				2DEDBF2527433483009C2347 /* 2- Moonglade Regular DEMO.ttf in Resources */,
 				2DEDBF4727433483009C2347 /* 14180.ttf in Resources */,
+				2D1E3A31274A675C00822F05 /* Localizable.strings in Resources */,
 				2DEDBF5C27433483009C2347 /* 14274.ttf in Resources */,
 				2DEDBEDB27433482009C2347 /* 16138.ttf in Resources */,
 				2DEDBEEC27433483009C2347 /* 14294.ttf in Resources */,
@@ -1449,6 +1460,7 @@
 				2D872702274336A200D6D6DA /* FontListCollectionViewController.swift in Sources */,
 				2D872704274336A200D6D6DA /* FontasticKeyboardView.swift in Sources */,
 				2D87271C274336A200D6D6DA /* Reusable.swift in Sources */,
+				2D1E3A36274A678000822F05 /* Strings.swift in Sources */,
 				2D872721274336A200D6D6DA /* FontsService.swift in Sources */,
 				2D87270A274336A200D6D6DA /* FontStatus.swift in Sources */,
 				2D872708274336A200D6D6DA /* Colors.swift in Sources */,
@@ -1505,8 +1517,27 @@
 			isa = PBXVariantGroup;
 			children = (
 				2D060EBC26FCC10A00047D89 /* Base */,
+				2D1E3A28274A666700822F05 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		2D1E3A2D274A672200822F05 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D1E3A2C274A672200822F05 /* en */,
+				2D1E3A2E274A672500822F05 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		2D1E3A33274A675C00822F05 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2D1E3A32274A675C00822F05 /* en */,
+				2D1E3A34274A675D00822F05 /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1516,6 +1547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1577,6 +1609,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1745,6 +1778,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -352,7 +352,13 @@ private enum Constants {
     static let lastUsedCanvasDesignKey: String = "com.timofeysurkov.Fontastic.lastUsedCanvasViewDesign"
     static let lastUsedLanguageKey: String = "com.timofeysurkov.Fontastic.lastUsedLanguage"
 
-    static let defaultLastUsedLanguage: KeyboardType.Language = .latin
+    static let defaultLastUsedLanguage: KeyboardType.Language = {
+        if Locale.current.identifier.lowercased().contains("ru") {
+            return KeyboardType.Language.cyrillic
+        }
+
+        return KeyboardType.Language.latin
+    }()
 
     static let defaultLastUsedFontModel: FontModel = FontModel(
         name: "Georgia-Bold",

@@ -105,7 +105,7 @@ public class FontListCollectionViewModel {
         // Custom Fonts
 
         let customFontsTitleSection = TitleSection(
-            titleViewModel: .init(title: "Custom fonts"),
+            titleViewModel: .init(title: Strings.fontListCollectionSectionHeaderCustomFonts),
             titleDesign: .fontListTitle
         )
         result.append(.title(customFontsTitleSection))
@@ -121,7 +121,7 @@ public class FontListCollectionViewModel {
         // System Fonts
 
         let fontListTitleSection = TitleSection(
-            titleViewModel: .init(title: "System fonts"),
+            titleViewModel: .init(title: Strings.fontListCollectionSectionHeaderSystemFonts),
             titleDesign: .fontListTitle
         )
         result.append(.title(fontListTitleSection))
@@ -141,7 +141,7 @@ public class FontListCollectionViewModel {
         // Custom Fonts
 
         let customFontsTitleSection = TitleSection(
-            titleViewModel: .init(title: "Custom fonts"),
+            titleViewModel: .init(title: Strings.fontListCollectionSectionHeaderCustomFonts),
             titleDesign: .fontListTitle
         )
         result.append(.title(customFontsTitleSection))
@@ -157,7 +157,7 @@ public class FontListCollectionViewModel {
         // System Fonts
 
         let fontListTitleSection = TitleSection(
-            titleViewModel: .init(title: "System fonts"),
+            titleViewModel: .init(title: Strings.fontListCollectionSectionHeaderSystemFonts),
             titleDesign: .fontListTitle
         )
         result.append(.title(fontListTitleSection))
@@ -194,7 +194,7 @@ private extension FontListBannerCell.Design {
     static let keyboardInstall = FontListBannerCell.Design(
         minHeightToWidthAspectRatio: 1.0 / 5.0,
         contentInsets: .init(vertical: 16, horizontal: 16),
-        font: UIFont(name: "AvenirNext-Medium", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .medium),
+        font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
         textColor: .white,
         backgroundColor: Colors.brandMainLight,
         cornerRadius: 16,
@@ -224,7 +224,7 @@ private extension FontListLoaderCell.Design {
 
 private enum Constants {
 
-    static let installBannerText: String = "Install Keyboard ⌨️"
+    static let installBannerText: String = Strings.fontListCollectionKeyboardInstallBannerTitle
 
     static let russianLanguageID: String = "ru"
     static let dummyFontSize: CGFloat = 24.0
