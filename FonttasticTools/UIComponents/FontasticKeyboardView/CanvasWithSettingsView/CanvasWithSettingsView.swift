@@ -79,10 +79,10 @@ public class CanvasWithSettingsView: UIView {
 
     private let copiedStatusLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Georgia-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont(name: "Georgia-Bold", size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = Colors.whiteAndBlack
         label.textAlignment = .center
-        label.text = "✅ Copied"
+        label.text = Strings.keyboardCanvasCopiedTitle
         label.isUserInteractionEnabled = false
         return label
     }()

@@ -64,7 +64,7 @@ public class FontSelectionController: UIViewController {
         navigationController?.navigationBar.isHidden = false
 
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = Constants.title
+        navigationItem.title = Strings.fontSelectionTitle
         navigationItem.prompt = promptText(for: keyboardLanguage)
 
         navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
@@ -123,15 +123,10 @@ public class FontSelectionController: UIViewController {
     private func promptText(for language: KeyboardType.Language) -> String {
         switch language {
         case .latin:
-            return "English-compatible fonts"
+            return Strings.fontSelectionPromptLatinFonts
 
         case .cyrillic:
-            return "Russian-compatible fonts"
+            return Strings.fontSelectionPromptCyrillicFonts
         }
     }
-}
-
-private enum Constants {
-
-    static let title: String = "Select Font"
 }
