@@ -16,6 +16,10 @@
 		2D1E3A2B274A672200822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A2D274A672200822F05 /* Localizable.strings */; };
 		2D1E3A31274A675C00822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A33274A675C00822F05 /* Localizable.strings */; };
 		2D1E3A36274A678000822F05 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A35274A678000822F05 /* Strings.swift */; };
+		2D1E3A39274A7BB700822F05 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A38274A7BB700822F05 /* SubscriptionViewController.swift */; };
+		2D1E3A3B274A812900822F05 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A3A274A812900822F05 /* Strings.swift */; };
+		2D1E3A3D274A8EC100822F05 /* SubscriptionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */; };
+		2D1E3A41274A8ED900822F05 /* SubscriptionItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A40274A8ED900822F05 /* SubscriptionItemModel.swift */; };
 		2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C469271C999A00BB5C17 /* AddFontButton.swift */; };
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -272,6 +276,10 @@
 		2D1E3A32274A675C00822F05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D1E3A34274A675D00822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D1E3A35274A678000822F05 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		2D1E3A38274A7BB700822F05 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		2D1E3A3A274A812900822F05 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionItemView.swift; sourceTree = "<group>"; };
+		2D1E3A40274A8ED900822F05 /* SubscriptionItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionItemModel.swift; sourceTree = "<group>"; };
 		2D24C469271C999A00BB5C17 /* AddFontButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontButton.swift; sourceTree = "<group>"; };
 		2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccessService.swift; sourceTree = "<group>"; };
 		2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontDetailsViewController.swift; sourceTree = "<group>"; };
@@ -556,6 +564,7 @@
 		2D060EE526FCC15F00047D89 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2D1E3A37274A7BA800822F05 /* Subscription */,
 				2D89FEAE2742DAFF004B6711 /* FontPickerViewController */,
 				2D060EE626FCC20000047D89 /* RootNavigation */,
 				2DD4253926FCC44800DFF767 /* FontList */,
@@ -576,6 +585,32 @@
 			path = RootNavigation;
 			sourceTree = "<group>";
 		};
+		2D1E3A37274A7BA800822F05 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				2D1E3A3F274A8EC800822F05 /* Models */,
+				2D1E3A3E274A8EC500822F05 /* Views */,
+				2D1E3A38274A7BB700822F05 /* SubscriptionViewController.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
+		2D1E3A3E274A8EC500822F05 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2D1E3A3F274A8EC800822F05 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2D1E3A40274A8ED900822F05 /* SubscriptionItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		2D24C46B271C9BD200BB5C17 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -589,6 +624,7 @@
 			isa = PBXGroup;
 			children = (
 				2D060EB926FCC10A00047D89 /* Assets.xcassets */,
+				2D1E3A3A274A812900822F05 /* Strings.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1405,6 +1441,7 @@
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
 				2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */,
+				2D1E3A3D274A8EC100822F05 /* SubscriptionItemView.swift in Sources */,
 				2DC3C099271CC73D00213DEF /* SVGLetterSourceModel.swift in Sources */,
 				2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */,
 				2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */,
@@ -1420,9 +1457,12 @@
 				2DC3C09B271CC75500213DEF /* LetterType.swift in Sources */,
 				2DD4254A26FCC6D200DFF767 /* AddFontFromImageViewController.swift in Sources */,
 				2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */,
+				2D1E3A41274A8ED900822F05 /* SubscriptionItemModel.swift in Sources */,
 				2D060EB126FCC10900047D89 /* AppDelegate.swift in Sources */,
 				2DE4D1AE271E06E10014E222 /* SVG2TTFJavaScriptRunner.swift in Sources */,
+				2D1E3A3B274A812900822F05 /* Strings.swift in Sources */,
 				2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */,
+				2D1E3A39274A7BB700822F05 /* SubscriptionViewController.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
 				2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */,
 				2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */,

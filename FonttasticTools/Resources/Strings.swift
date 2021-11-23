@@ -7,11 +7,21 @@
 
 import Foundation
 
-class Strings {
+public class LocalizedStringsBox {
 
-    private static let bundle: Bundle = Bundle(for: Strings.self)
+    // MARK: - Private Instance Properties
 
-    private static func localizedString(key: String) -> String {
+    private let bundle: Bundle
+
+    // MARK: - Initializers
+
+    public init(bundle: Bundle) {
+        self.bundle = bundle
+    }
+
+    // MARK: - Public Instance Methods
+
+    public func localizedString(for key: String) -> String {
         return NSLocalizedString(
             key,
             tableName: nil,
@@ -21,25 +31,36 @@ class Strings {
         )
     }
 
+    public subscript(_ key: String) -> String {
+        localizedString(for: key)
+    }
+}
+
+class Strings {
+
+    // MARK: - Private Type Properties
+
+    private static let localizedStringBox = LocalizedStringsBox(bundle: Bundle(for: Strings.self))
+
     // MARK: - Keyboard
 
-    static let keyboardCanvasCopiedTitle = localizedString(key: "keyboard.canvas.copied.title")
+    static let keyboardCanvasCopiedTitle = localizedStringBox["keyboard.canvas.copied.title"]
 
     // MARK: - Font Selection
 
-    static let fontSelectionTitle = localizedString(key: "fontSelection.title")
-    static let fontSelectionPromptLatinFonts = localizedString(key: "fontSelection.prompt.latinFonts")
-    static let fontSelectionPromptCyrillicFonts = localizedString(key: "fontSelection.prompt.cyrillicFonts")
+    static let fontSelectionTitle = localizedStringBox["fontSelection.title"]
+    static let fontSelectionPromptLatinFonts = localizedStringBox["fontSelection.prompt.latinFonts"]
+    static let fontSelectionPromptCyrillicFonts = localizedStringBox["fontSelection.prompt.cyrillicFonts"]
 
     // MARK: - Font List Collection
 
-    static let fontListCollectionSectionHeaderSystemFonts = localizedString(
-        key: "fontListCollection.sectionHeader.systemFonts"
-    )
-    static let fontListCollectionSectionHeaderCustomFonts = localizedString(
-        key: "fontListCollection.sectionHeader.customFonts"
-    )
-    static let fontListCollectionKeyboardInstallBannerTitle = localizedString(
-        key: "fontListCollection.keyboardInstallBanner.title"
-    )
+    static let fontListCollectionSectionHeaderSystemFonts = localizedStringBox[
+        "fontListCollection.sectionHeader.systemFonts"
+    ]
+    static let fontListCollectionSectionHeaderCustomFonts = localizedStringBox[
+        "fontListCollection.sectionHeader.customFonts"
+    ]
+    static let fontListCollectionKeyboardInstallBannerTitle = localizedStringBox[
+        "fontListCollection.keyboardInstallBanner.title"
+    ]
 }

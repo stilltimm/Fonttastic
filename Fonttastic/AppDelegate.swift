@@ -8,8 +8,6 @@
 import UIKit
 import FonttasticTools
 
-let appLogger: FonttasticLogger = FonttasticLogger.shared
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -72,6 +72,14 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         setupBusinessLogic()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.presentSubscription()
+        }
+    }
+
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
 //
@@ -156,6 +164,13 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         case let .openDetails(fontModel):
             openFontDetails(fontModel)
         }
+    }
+
+    private func presentSubscription() {
+        let subscriptionViewController = SubscriptionViewController()
+        let nav = BaseNavigationController(rootViewController: subscriptionViewController)
+
+        self.navigationController?.present(nav, animated: true)
     }
 
 //    @objc private func handleAddFontButtonDidTap() {

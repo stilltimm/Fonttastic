@@ -5,3 +5,11 @@
   Created by Timofey Surkov on 21.11.2021.
   
 */
+
+// MARK: - Subscription
+
+"subscription.navigationItem.restoreActionTitle" = "Restore";
+"subscription.navigationItem.termsActionTitle" = "Terms";
+"subscription.header.title" = "Get Fonttastic";
+"subscription.header.subtitle" = "to start using custom fonts anywhere";
+"subscription.actionButton.title" = "Continue";

@@ -181,17 +181,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
         let baselineOffset = viewModel.fontDisplayLabelFont.descender
             + (Constants.containerHeight / 5)
-        logger.log(
-            "FontListCell font",
-            description: """
-            font=\(viewModel.fontModel.displayName),
-            lineHeight=\(viewModel.fontDisplayLabelFont.lineHeight),
-            descender=\(viewModel.fontDisplayLabelFont.descender),
-            ascender=\(viewModel.fontDisplayLabelFont.ascender),
-            capHeight=\(viewModel.fontDisplayLabelFont.capHeight),
-            """,
-            level: .debug
-        )
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
