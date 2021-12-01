@@ -9,6 +9,9 @@
 // MARK: - Keyboard
 
 "keyboard.canvas.copied.title" = "✅ Скопировано";
+"keyboard.lockedState.title" = "Клавиатура заблокирована";
+"keyboard.lockedState.message" = "Чтобы использовать клавиатуру, пожалуйста откройте приложение и оформите подписку";
+"keyboard.lockedState.openAppButton.title" = "Открыть приложение";
 
 // MARK: - Font Selection
 

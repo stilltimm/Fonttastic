@@ -45,6 +45,9 @@ class Strings {
     // MARK: - Keyboard
 
     static let keyboardCanvasCopiedTitle = localizedStringBox["keyboard.canvas.copied.title"]
+    static let keyboardLockedStateTitle = localizedStringBox["keyboard.lockedState.title"]
+    static let keyboardLockedStateMessage = localizedStringBox["keyboard.lockedState.message"]
+    static let keyboardLockedStateOpenAppButtonTitle = localizedStringBox["keyboard.lockedState.openAppButton.title"]
 
     // MARK: - Font Selection
 

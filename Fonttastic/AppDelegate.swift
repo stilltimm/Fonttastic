@@ -32,6 +32,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DefaultFontsService.shared.storeLastUsedSettings()
     }
 
+    // MARK: - Open URL handling
+
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return false }
+        return components.scheme  == Constants.appScheme
+    }
+
     // MARK: - Window setup
 
     private func setupRootWindow() {
@@ -44,4 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window = window
     }
+}
+
+private enum Constants {
+
+    static let appScheme: String = "fonttastic"
 }

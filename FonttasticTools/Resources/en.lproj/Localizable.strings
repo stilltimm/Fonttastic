@@ -9,6 +9,9 @@
 // MARK: - Keyboard
 
 "keyboard.canvas.copied.title" = "✅ Copied";
+"keyboard.lockedState.title" = "Keyboard is locked";
+"keyboard.lockedState.message" = "To use keyboard, please got to app and purchase subscription";
+"keyboard.lockedState.openAppButton.title" = "Open App";
 
 // MARK: - Font Selection
 
