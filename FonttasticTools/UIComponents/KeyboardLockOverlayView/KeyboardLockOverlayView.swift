@@ -103,12 +103,22 @@ public class KeyboardLockOverlayView: UIControl {
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
 
-        updateTitleAndMessageheightConstraints()
+        updateTitleAndMessageHeightConstraints()
     }
 
     public func adaptToOrientationChange(isPortrait: Bool) {
+        titleLabel.textAlignment = isPortrait ? .center : .left
+        messageLabel.textAlignment = isPortrait ? .center : .left
 
-        updateTitleAndMessageheightConstraints()
+        if isPortrait {
+            NSLayoutConstraint.deactivate(landscapeOrientationConstraints)
+            NSLayoutConstraint.activate(portraitOrientationConstraints)
+        } else {
+            NSLayoutConstraint.deactivate(portraitOrientationConstraints)
+            NSLayoutConstraint.activate(landscapeOrientationConstraints)
+        }
+
+        updateTitleAndMessageHeightConstraints()
     }
 
     // MARK: - Private Instance Methods
@@ -123,34 +133,56 @@ public class KeyboardLockOverlayView: UIControl {
         constrain(
             self, lockImageView, titleLabel, messageLabel, openAppContainer, openAppLabel
         ) { view, lockImage, title, message, openAppContainer, openAppLabel in
-            lockImage.centerX == view.centerX
+            // lockImage / default
             lockImage.width == Constants.lockIconSize.width
             lockImage.height == Constants.lockIconSize.height
-            lockImage.bottom == title.top - Constants.lockImageToTitleSpacing
+            // lockImage / portrait
+            portraitOrientationConstraints.append(lockImage.centerX == view.centerX)
+            portraitOrientationConstraints.append(lockImage.bottom == title.top - Constants.lockImageToTitleSpacing)
+            // lockImage / landscape
+            landscapeOrientationConstraints.append(lockImage.centerY == view.centerY)
+            landscapeOrientationConstraints.append(lockImage.left == view.left + Constants.edgeInsets.left)
+            landscapeOrientationConstraints.append(lockImage.centerY == view.centerY)
 
-            title.left == view.left + Constants.edgeInsets.left
-            title.right == view.right - Constants.edgeInsets.right
-            title.centerY == view.centerY
+            // title / default
             titleHeightConstraint = (title.height == 0)
+            title.right == view.right - Constants.edgeInsets.right
+            // title / portrait
+            portraitOrientationConstraints.append(title.left == view.left + Constants.edgeInsets.left)
+            portraitOrientationConstraints.append(title.bottom == view.centerY)
+            // title / landscape
+            landscapeOrientationConstraints.append(title.left == lockImage.right + Constants.edgeInsets.left)
 
-            message.left == view.left + Constants.edgeInsets.left
-            message.right == view.right - Constants.edgeInsets.right
+            // message / default
+            message.left == title.left
+            message.right == title.right
             message.top == title.bottom + Constants.titleToMessageSpacing
             messageHeightConstraint = (message.height == 0)
+            // message / landscape
+            landscapeOrientationConstraints.append(message.bottom == view.centerY)
 
+            // openAppContainer / default
             openAppContainer.top == message.bottom + Constants.messageToButtonSpacing
-            openAppContainer.centerX == view.centerX
+            // openAppContainer / portrait
+            portraitOrientationConstraints.append(openAppContainer.centerX == view.centerX)
+            // openAppContainer / landscape
+            landscapeOrientationConstraints.append(openAppContainer.left == title.left)
 
+            // openAppLabel / default
             openAppLabel.edges == openAppContainer.edges.inseted(by: Constants.openAppButtonInsets)
         }
 
-        updateTitleAndMessageheightConstraints()
+        adaptToOrientationChange(isPortrait: UIScreen.main.isPortrait)
     }
 
-    private func updateTitleAndMessageheightConstraints() {
-        let boundingWidth = UIScreen.main.bounds.width
+    private func updateTitleAndMessageHeightConstraints() {
+        var boundingWidth = UIScreen.main.bounds.width
         - Constants.edgeInsets.horizontalSum
         - safeAreaInsets.horizontalSum
+        if !UIScreen.main.isPortrait {
+            boundingWidth -= Constants.edgeInsets.left
+            boundingWidth -= Constants.lockIconSize.width
+        }
         let boundingSize = CGSize(width: boundingWidth, height: .greatestFiniteMagnitude)
 
         titleHeightConstraint?.constant = ceil(titleLabel.sizeThatFits(boundingSize).height)

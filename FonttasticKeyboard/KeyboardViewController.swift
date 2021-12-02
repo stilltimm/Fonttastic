@@ -59,7 +59,7 @@ class KeyboardViewController: UIInputViewController {
         let isPortrait: Bool = UIScreen.main.isPortrait
         coordinator.animate { [weak self] _ in
             self?.fontasticKeyboardView?.adaptToOrientationChange(isPortrait: isPortrait)
-            self?.lockOverlayView?.
+            self?.lockOverlayView?.adaptToOrientationChange(isPortrait: isPortrait)
         }
     }
 
