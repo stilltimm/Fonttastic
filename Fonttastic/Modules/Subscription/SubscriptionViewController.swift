@@ -37,8 +37,8 @@ class SubscriptionViewController: UIViewController {
         label.text = Strings.subscriptionHeaderSubtitle
         return label
     }()
-    private let actionButton: UIButton = {
-        let button = UIButton()
+    private let actionButton: SubscriptionActionButton = {
+        let button = SubscriptionActionButton()
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
         button.titleLabel?.textColor = UIColor.white
@@ -74,6 +74,9 @@ class SubscriptionViewController: UIViewController {
             strikethroughPrice: Price(value: 400, currency: .rub)
         )
     ]
+    private var selectedSubscriptionItemID: SubscriptionItemModel.Identifier?
+
+    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
 
     // MARK: - Internal Instance Methods
 
@@ -84,6 +87,7 @@ class SubscriptionViewController: UIViewController {
 
         setupNavigationBar()
         setupLayout()
+        setupBusinessLogic()
     }
 
     override func viewDidLayoutSubviews() {
@@ -126,6 +130,7 @@ class SubscriptionViewController: UIViewController {
         )
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupLayout() {
         subscriptionItemViews = subscriptionItems.map { SubscriptionItemView(model: $0) }
 
@@ -194,17 +199,62 @@ class SubscriptionViewController: UIViewController {
             actionButton.height == Constants.actionButtonHeight
         }
 
-        firstSubscriptionItemView.isSelected = true
+        selectedSubscriptionItemID = lastSubscriptionItemView.model.identifier
+        updateSelectedSubscriptionItemView()
+    }
+
+    private func setupBusinessLogic() {
+        subscriptionItemViews.forEach { subscriptionItemView in
+            subscriptionItemView.didSelectEvent.subscribe(self) { [weak self, weak subscriptionItemView] in
+                self?.setSelectedSubscriptionItemID(subscriptionItemView?.model.identifier)
+            }
+        }
+
+        actionButton.addTarget(self, action: #selector(self.handleContinueAction), for: .touchUpInside)
+    }
+
+    private func setSelectedSubscriptionItemID(_ id: SubscriptionItemModel.Identifier?) {
+        impactFeedbackGenerator.impactOccurred()
+
+        selectedSubscriptionItemID = id
+        updateSelectedSubscriptionItemView()
+    }
+
+    private func updateSelectedSubscriptionItemView() {
+        subscriptionItemViews.forEach { itemView in
+            itemView.isSelected = (itemView.model.identifier == self.selectedSubscriptionItemID)
+        }
     }
 
     // MARK: - Actions Handling
 
+    @objc private func handleContinueAction() {
+        impactFeedbackGenerator.impactOccurred()
+
+        guard
+            let selectedSubscriptionItemID = selectedSubscriptionItemID,
+            let selectedSubscriptionItem = subscriptionItems.first(
+                where: { $0.identifier == selectedSubscriptionItemID }
+            )
+        else { return }
+
+        logger.log(
+            "TODO: handle continue subscription action",
+            description: "Selected SubscriptionItem: \(selectedSubscriptionItem)",
+            level: .debug
+        )
+    }
+
     @objc private func handleRestoreAction() {
+        impactFeedbackGenerator.impactOccurred()
         logger.log("TODO: handle restore action", level: .debug)
     }
+
     @objc private func handleTermsAction() {
+        impactFeedbackGenerator.impactOccurred()
         logger.log("TODO: handle terms action", level: .debug)
     }
+
     @objc private func handleCloseAction() {
         self.dismiss(animated: true)
     }

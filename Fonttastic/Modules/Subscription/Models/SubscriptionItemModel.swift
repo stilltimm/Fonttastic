@@ -9,7 +9,9 @@ import Foundation
 
 struct SubscriptionItemModel {
 
-    let identifier: String
+    typealias Identifier = String
+
+    let identifier: Identifier
     let title: String
     let price: Price
     let strikethroughPrice: Price?

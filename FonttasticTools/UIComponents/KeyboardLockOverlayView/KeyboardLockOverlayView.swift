@@ -62,11 +62,7 @@ public class KeyboardLockOverlayView: UIControl {
 
     public override var isHighlighted: Bool {
         didSet {
-            UIView.animate(
-                withDuration: 0.1,
-                delay: 0.0,
-                options: .curveEaseOut
-            ) {
+            UIView.animate(withConfig: .fastControl) {
                 self.actionButtonContainer.transform = self.isHighlighted ?
                 CGAffineTransform(scaleX: 0.95, y: 0.95) :
                     .identity

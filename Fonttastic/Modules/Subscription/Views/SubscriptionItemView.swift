@@ -13,6 +13,8 @@ class SubscriptionItemView: UIControl {
 
     // MARK: - Internal Instance Properties
 
+    let model: SubscriptionItemModel
+
     let didSelectEvent = FonttasticTools.Event<Void>()
 
     override var isSelected: Bool {
@@ -21,14 +23,23 @@ class SubscriptionItemView: UIControl {
         }
     }
 
+    override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withConfig: .fastControl) {
+                self.transform = self.isHighlighted ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
+            }
+        }
+    }
+
     // MARK: - Subviews
 
     private let checkboxContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.backgroundFocused
+        view.backgroundColor = Colors.backgroundMain
         view.layer.masksToBounds = true
         view.layer.cornerRadius = Constants.checkboxSize.height / 2
         view.layer.cornerCurve = .circular
+        view.isUserInteractionEnabled = false
         return view
     }()
     private let checkboxImageView: UIImageView = {
@@ -37,25 +48,30 @@ class SubscriptionItemView: UIControl {
         imageView.image = UIImage(systemName: "checkmark")?.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = UIColor.white
         imageView.alpha = 0.0
+        imageView.isUserInteractionEnabled = false
         return imageView
     }()
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = Colors.textMajor
+        label.isUserInteractionEnabled = false
         return label
     }()
-    private lazy var strikethroughPriceLabel = UILabel()
+    private lazy var strikethroughPriceLabel: UILabel = {
+        let label = UILabel()
+        label.isUserInteractionEnabled = false
+        return label
+    }()
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16)
         label.textColor = Colors.textMajor
+        label.isUserInteractionEnabled = false
         return label
     }()
 
     // MARK: - Private Instance Properties
-
-    private let model: SubscriptionItemModel
 
     private let priceFormatter = PriceFormatter()
 
@@ -152,15 +168,11 @@ class SubscriptionItemView: UIControl {
     }
 
     private func updateSelectedState() {
-        UIView.animate(
-            withDuration: 0.2,
-            delay: 0,
-            options: .curveEaseOut
-        ) {
+        UIView.animate(withConfig: .fastControl) {
             self.layer.borderWidth = self.isSelected ? 3.0 : 0.0
             self.checkboxContainerView.backgroundColor = self.isSelected ?
                 Colors.brandMainLight :
-                Colors.backgroundMinor
+                Colors.backgroundMain
             self.checkboxImageView.alpha = self.isSelected ? 1.0 : 0.0
         }
     }

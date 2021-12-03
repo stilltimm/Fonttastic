@@ -135,16 +135,11 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     public override var isHighlighted: Bool {
         didSet {
-            UIView.animate(
-                withDuration: 0.1,
-                delay: 0.0,
-                options: isHighlighted ? .curveEaseOut : .curveEaseIn,
-                animations: {
-                    self.transform = self.isHighlighted ?
-                        CGAffineTransform.init(scaleX: 0.95, y: 0.95) :
-                        .identity
-                }
-            )
+            UIView.animate(withConfig: .fastControl) {
+                self.transform = self.isHighlighted ?
+                    CGAffineTransform.init(scaleX: 0.95, y: 0.95) :
+                    .identity
+            }
         }
     }
 

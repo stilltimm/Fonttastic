@@ -78,6 +78,8 @@
 		2DAA49412747D1700089D024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DAA49402747D1700089D024 /* Assets.xcassets */; };
 		2DAF9C1727453C27000A3489 /* FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; platformFilter = ios; };
 		2DB2F561275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */; };
+		2DB2F563275A6FF200BF84D3 /* UIView+DefaultAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */; };
+		2DB2F565275A74AD00BF84D3 /* SubscriptionActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */; };
 		2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */; };
 		2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C092271CB9AB00213DEF /* AlphabetType.swift */; };
 		2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */; };
@@ -447,6 +449,8 @@
 		2DA4CD90274282F300CBE6A0 /* FonttasticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticLogger.swift; sourceTree = "<group>"; };
 		2DAA49402747D1700089D024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLockOverlayViewConfig.swift; sourceTree = "<group>"; };
+		2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+DefaultAnimations.swift"; sourceTree = "<group>"; };
+		2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionActionButton.swift; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
 		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
 		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
@@ -584,13 +588,13 @@
 		2D060EE526FCC15F00047D89 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				2D1E3A37274A7BA800822F05 /* Subscription */,
-				2D060EE626FCC20000047D89 /* RootNavigation */,
-				2DD4253926FCC44800DFF767 /* FontList */,
 				2D2A0C7726FF81C00006E27B /* FontDetails */,
-				2DD4253A26FCC45A00DFF767 /* NewFont */,
+				2DD4253926FCC44800DFF767 /* FontList */,
 				2D5239E52702431C0039C112 /* KeyboardViewTest */,
+				2DD4253A26FCC45A00DFF767 /* NewFont */,
+				2D060EE626FCC20000047D89 /* RootNavigation */,
 				2DD4253B26FCC46800DFF767 /* Settings */,
+				2D1E3A37274A7BA800822F05 /* Subscription */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -618,6 +622,7 @@
 			isa = PBXGroup;
 			children = (
 				2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */,
+				2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -728,8 +733,8 @@
 		2D5239E52702431C0039C112 /* KeyboardViewTest */ = {
 			isa = PBXGroup;
 			children = (
-				2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */,
 				2D5239E8270243650039C112 /* KeyboardViewTestController.swift */,
+				2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */,
 			);
 			path = KeyboardViewTest;
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 				2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */,
 				2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */,
 				2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */,
+				2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1017,7 +1023,6 @@
 		2DD4253926FCC44800DFF767 /* FontList */ = {
 			isa = PBXGroup;
 			children = (
-				2DD4255926FD486500DFF767 /* Cells */,
 				2DD4253E26FCC4B500DFF767 /* FontListNavigationController.swift */,
 				2DD4253C26FCC47C00DFF767 /* FontListViewController.swift */,
 				2D43F3D4270DB8D40096772B /* FontListViewModel.swift */,
@@ -1028,8 +1033,8 @@
 		2DD4253A26FCC45A00DFF767 /* NewFont */ = {
 			isa = PBXGroup;
 			children = (
-				2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */,
 				2DD4254926FCC6D200DFF767 /* AddFontFromImageViewController.swift */,
+				2DD4254726FCC6C900DFF767 /* AddFontNavigationController.swift */,
 			);
 			path = NewFont;
 			sourceTree = "<group>";
@@ -1061,13 +1066,6 @@
 				2D705AA3273AB22100015D25 /* FontSymbolSourceModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		2DD4255926FD486500DFF767 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		2DD4255C26FD4C0900DFF767 /* Tools */ = {
@@ -1514,6 +1512,7 @@
 				2D1E3A39274A7BB700822F05 /* SubscriptionViewController.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
 				2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */,
+				2DB2F565275A74AD00BF84D3 /* SubscriptionActionButton.swift in Sources */,
 				2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1563,6 +1562,7 @@
 				2D87270E274336A200D6D6DA /* FontListTitleCell.swift in Sources */,
 				2DEDBFE127433605009C2347 /* Potrace.swift in Sources */,
 				2D872715274336A200D6D6DA /* Sounds.swift in Sources */,
+				2DB2F563275A6FF200BF84D3 /* UIView+DefaultAnimations.swift in Sources */,
 				2D336E4727451B51006AD631 /* PhotosAccessService.swift in Sources */,
 				2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */,
 				2D872713274336A200D6D6DA /* CALayer+Shadow.swift in Sources */,
