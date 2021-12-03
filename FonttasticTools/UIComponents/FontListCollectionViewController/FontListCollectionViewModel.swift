@@ -47,7 +47,7 @@ public class FontListCollectionViewModel {
     private let mode: Mode
     public var sections: [Section] = []
 
-    public let didTapKeyboardInstallBanner = Event<Void>()
+    public let didTapBannerEvent = Event<Void>()
     public let didTapFontCell = Event<FontListFontViewModel>()
     let shouldReloadDataEvent = Event<Void>()
 
@@ -55,6 +55,7 @@ public class FontListCollectionViewModel {
 
     private let fontsService: FontsService = DefaultFontsService.shared
     private var fontModelsRepository: FontModelsRepository { fontsService.fontModelsRepository }
+    private var appStatusService: AppStatusService = DefaultAppStatusService.shared
 
     public init(mode: Mode) {
         self.mode = mode
@@ -63,7 +64,9 @@ public class FontListCollectionViewModel {
         setupBusinessLogic()
     }
 
-    // MARK: - Private Instance Properties
+    // MARK: - Public Instance Methods
+
+    // MARK: - Private Instance Methods
 
     private func setupBusinessLogic() {
         fontModelsRepository.didUpdateFontsEvent.subscribe(self) { [weak self] in
@@ -80,27 +83,39 @@ public class FontListCollectionViewModel {
     private func makeSections() -> [Section] {
         switch mode {
         case .fontsShowcase:
-            return makeSectionsForFontsShowcase()
+            return makeSectionsForFontsShowcase(appStatus: appStatusService.appStatus)
 
         case .fontSelection:
             return makeSectionsForFontSelection()
         }
     }
 
-    private func makeSectionsForFontsShowcase() -> [Section] {
+    private func makeSectionsForFontsShowcase(appStatus: AppStatus) -> [Section] {
         var result: [Section] = []
 
         // Banner
 
-        let bannerViewModel = FontListBannerCell.ViewModel(title: Constants.installBannerText)
-        bannerViewModel.didTapEvent.subscribe(self) { [weak self] in
-            self?.didTapKeyboardInstallBanner.onNext(())
+        let bannerViewModel: FontListBannerCell.ViewModel?
+        switch (appStatus.appSubscriptionStatus, appStatus.keyboardInstallationStatus) {
+        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+            bannerViewModel = FontListBannerCell.ViewModel(title: Constants.keyboardInstallBannerText)
+
+        case (.noSubscription, _):
+            bannerViewModel = FontListBannerCell.ViewModel(title: Constants.subscriptionPurchaseBannerText)
+
+        case (.hasActiveSubscription, .installedWithFullAccess):
+            bannerViewModel = nil
         }
-        let keyboardInstallBannerSection = BannerSection(
-            bannerViewModel: bannerViewModel,
-            bannerDesign: .keyboardInstall
-        )
-        result.append(.banner(keyboardInstallBannerSection))
+        if let bannerViewModel = bannerViewModel {
+            bannerViewModel.didTapEvent.subscribe(self) { [weak self] in
+                self?.didTapBannerEvent.onNext(())
+            }
+            let keyboardInstallBannerSection = BannerSection(
+                bannerViewModel: bannerViewModel,
+                bannerDesign: .default
+            )
+            result.append(.banner(keyboardInstallBannerSection))
+        }
 
         // Custom Fonts
 
@@ -191,7 +206,7 @@ public class FontListCollectionViewModel {
 
 private extension FontListBannerCell.Design {
 
-    static let keyboardInstall = FontListBannerCell.Design(
+    static let `default` = FontListBannerCell.Design(
         minHeightToWidthAspectRatio: 1.0 / 5.0,
         contentInsets: .init(vertical: 16, horizontal: 16),
         font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
@@ -224,7 +239,8 @@ private extension FontListLoaderCell.Design {
 
 private enum Constants {
 
-    static let installBannerText: String = Strings.fontListCollectionKeyboardInstallBannerTitle
+    static let keyboardInstallBannerText: String = Strings.fontListCollectionBannerTitleKeyboardInstall
+    static let subscriptionPurchaseBannerText: String = Strings.fontListCollectionBannerTitleSubscriptionPurchase
 
     static let russianLanguageID: String = "ru"
     static let dummyFontSize: CGFloat = 24.0

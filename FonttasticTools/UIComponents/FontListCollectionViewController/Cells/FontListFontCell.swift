@@ -135,16 +135,11 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     public override var isHighlighted: Bool {
         didSet {
-            UIView.animate(
-                withDuration: 0.1,
-                delay: 0.0,
-                options: isHighlighted ? .curveEaseOut : .curveEaseIn,
-                animations: {
-                    self.transform = self.isHighlighted ?
-                        CGAffineTransform.init(scaleX: 0.95, y: 0.95) :
-                        .identity
-                }
-            )
+            UIView.animate(withConfig: .fastControl) {
+                self.transform = self.isHighlighted ?
+                    CGAffineTransform.init(scaleX: 0.95, y: 0.95) :
+                    .identity
+            }
         }
     }
 
@@ -181,17 +176,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
         let baselineOffset = viewModel.fontDisplayLabelFont.descender
             + (Constants.containerHeight / 5)
-        logger.log(
-            "FontListCell font",
-            description: """
-            font=\(viewModel.fontModel.displayName),
-            lineHeight=\(viewModel.fontDisplayLabelFont.lineHeight),
-            descender=\(viewModel.fontDisplayLabelFont.descender),
-            ascender=\(viewModel.fontDisplayLabelFont.ascender),
-            capHeight=\(viewModel.fontDisplayLabelFont.capHeight),
-            """,
-            level: .debug
-        )
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center

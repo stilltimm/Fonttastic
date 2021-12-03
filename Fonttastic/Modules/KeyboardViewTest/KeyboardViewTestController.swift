@@ -30,6 +30,7 @@ class KeyboardViewTestViewController: UIViewController {
         return view
     }()
     private let fontasticKeyboardView: FontasticKeyboardView
+    private let lockOverlayView: KeyboardLockOverlayView = KeyboardLockOverlayView()
 
     // MARK: - Private Instance Properties
 
@@ -66,14 +67,17 @@ class KeyboardViewTestViewController: UIViewController {
     // MARK: - Private Methods
 
     private func setupLayout() {
+        fontasticKeyboardView.alpha = 0.25
+
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         containerView.backgroundColor = Colors.backgroundMain
 
         containerView.addSubview(fontasticKeyboardView)
+        containerView.addSubview(lockOverlayView)
         constrain(
-            view, scrollView, containerView, fontasticKeyboardView
-        ) { (view, scrollView, container, keyboard) in
+            view, scrollView, containerView, fontasticKeyboardView, lockOverlayView
+        ) { (view, scrollView, container, keyboard, overlay) in
             scrollView.edges == view.edges
 
             (container.width == view.width).priority = .required
@@ -81,6 +85,8 @@ class KeyboardViewTestViewController: UIViewController {
 
             keyboard.center == container.center
             keyboard.width == container.width
+
+            overlay.edges == keyboard.edges
         }
     }
 

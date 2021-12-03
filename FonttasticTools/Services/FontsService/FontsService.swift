@@ -61,6 +61,8 @@ public class DefaultFontsService: FontsService {
 
     // MARK: - Private Instance Properties
 
+    private let keychainService: KeychainService
+    private let keychainContainer: KeychainContainer
     private lazy var fileService: FileService = DefaultFileService.shared
     private let fontModelFactory = FontModelFactory()
 
@@ -68,13 +70,12 @@ public class DefaultFontsService: FontsService {
 
     private init() {
         self.fontModelsRepository = DefaultFontModelsRepository(fonts: [])
+        self.keychainService = DefaultKeychainService.shared
+        self.keychainContainer = keychainService.makeKeychainContainer(for: .sharedItems)
 
         installSystemFonts()
 
-        if
-            let lastUsedLanguageRawValue = UserDefaults.standard.object(forKey: Constants.lastUsedLanguageKey) as? Int,
-            let lastUsedLanguage = KeyboardType.Language(rawValue: lastUsedLanguageRawValue)
-        {
+        if let lastUsedLanguage = restoreLastUsedLanguage() {
             self.lastUsedLanguage = lastUsedLanguage
         }
         if let cachedLastUsedCanvasViewDesign = restoreLastUsedCanvasDesign() {
@@ -116,18 +117,8 @@ public class DefaultFontsService: FontsService {
     }
 
     public func storeLastUsedSettings() {
-        UserDefaults.standard.set(lastUsedLanguage.rawValue, forKey: Constants.lastUsedLanguageKey)
-
-        do {
-            let lastUsedCanvasDesignData = try JSONEncoder().encode(lastUsedCanvasViewDesign)
-            UserDefaults.standard.set(lastUsedCanvasDesignData, forKey: Constants.lastUsedCanvasDesignKey)
-        } catch {
-            logger.log(
-                "Failed to encode lastUsedCanvasDesignData  to data",
-                description: "Error: \(error)",
-                level: .error
-            )
-        }
+        storeLastUsedLanguage(lastUsedLanguage)
+        storeLastUsedCanvasViewDesign(lastUsedCanvasViewDesign)
     }
 
     // MARK: - Private Instance Methods
@@ -317,20 +308,68 @@ public class DefaultFontsService: FontsService {
 
     // MARK: - Utils
 
-    private func restoreLastUsedCanvasDesign() -> CanvasViewDesign? {
-        guard
-            let lastUsedCanvasDesignData = UserDefaults.standard.data(forKey: Constants.lastUsedCanvasDesignKey)
-        else { return nil }
-
+    private func restoreLastUsedLanguage() -> KeyboardType.Language? {
         do {
-            return try JSONDecoder().decode(CanvasViewDesign.self, from: lastUsedCanvasDesignData)
+            if
+                let lastUsedLanguageRawValueString = try keychainContainer.getString(
+                    for: Constants.lastUsedLanguageKey
+                ),
+                let lastUsedLanguageRawValue = Int(lastUsedLanguageRawValueString),
+                let lastUsedLanguage = KeyboardType.Language(rawValue: lastUsedLanguageRawValue)
+            {
+                return lastUsedLanguage
+            }
         } catch {
             logger.log(
-                "Failed to decode FontModel from lastUsedCanvasViewDesign",
+                "Error restoring last used Language",
                 description: "Error: \(error)",
                 level: .error
             )
-            return nil
+        }
+
+        return nil
+    }
+
+    private func storeLastUsedLanguage(_ language: KeyboardType.Language) {
+        do {
+            try keychainContainer.setString("\(language.rawValue)", for: Constants.lastUsedLanguageKey)
+        } catch {
+            logger.log(
+                "Error storing last used Language",
+                description: "Error: \(error)",
+                level: .error
+            )
+        }
+    }
+
+    private func restoreLastUsedCanvasDesign() -> CanvasViewDesign? {
+        do {
+            if
+                let canvasViewDesignData = try keychainContainer.getData(for: Constants.lastUsedCanvasViewDesignKey)
+            {
+                return try JSONDecoder().decode(CanvasViewDesign.self, from: canvasViewDesignData)
+            }
+        } catch {
+            logger.log(
+                "Error restoring last used CanvasViewDesign",
+                description: "Error: \(error)",
+                level: .error
+            )
+        }
+
+        return nil
+    }
+
+    private func storeLastUsedCanvasViewDesign(_ canvasViewDesign: CanvasViewDesign) {
+        do {
+            let canvasViewDesignData = try JSONEncoder().encode(canvasViewDesign)
+            try keychainContainer.setData(canvasViewDesignData, for: Constants.lastUsedCanvasViewDesignKey)
+        } catch {
+            logger.log(
+                "Error storing last used CanvasViewDesign",
+                description: "Error: \(error)",
+                level: .error
+            )
         }
     }
 
@@ -348,9 +387,8 @@ private enum Constants {
 
     static let defaultFontExtension: String = "ttf"
 
-    static let hasInstalledCustomFontsKey: String = "com.timofeysurkov.Fontastic.hasInstalledCustomFonts"
-    static let lastUsedCanvasDesignKey: String = "com.timofeysurkov.Fontastic.lastUsedCanvasViewDesign"
-    static let lastUsedLanguageKey: String = "com.timofeysurkov.Fontastic.lastUsedLanguage"
+    static let lastUsedLanguageKey: String = "com.romandegtyarev.Fontastic.lastUsedLanguage"
+    static let lastUsedCanvasViewDesignKey: String = "com.romandegtyarev.Fontastic.lastUsedCanvasViewDesign"
 
     static let defaultLastUsedLanguage: KeyboardType.Language = {
         if Locale.current.identifier.lowercased().contains("ru") {

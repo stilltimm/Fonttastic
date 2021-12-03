@@ -16,6 +16,7 @@ class KeyboardViewController: UIInputViewController {
     // MARK: - Private Instance Properties
 
     private var fontasticKeyboardView: FontasticKeyboardView?
+    private var lockOverlayView: KeyboardLockOverlayView?
 
     private var colorPickerCompletion: ((UIColor) -> Void)?
     private weak var colorPickerViewController: UIColorPickerViewController?
@@ -29,10 +30,11 @@ class KeyboardViewController: UIInputViewController {
 
         FonttasticLogger.shared.setup(with: .default)
 
-        self.fontasticKeyboardView = FontasticKeyboardView(
-            insertedText: [],
-            initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign
-        )
+        logger.log("Keyboard hasFullAccess: \(self.hasFullAccess)", level: .debug)
+        let keyboardInstallationStatus: KeyboardInstallationStatus = self.hasFullAccess ?
+            .installedWithFullAccess :
+            .installedWithLimitedAccess
+        DefaultAppStatusService.shared.setKeyboardInstallationStatus(keyboardInstallationStatus)
 
         setupLayout()
         setupBusinessLogic()
@@ -57,41 +59,111 @@ class KeyboardViewController: UIInputViewController {
         let isPortrait: Bool = UIScreen.main.isPortrait
         coordinator.animate { [weak self] _ in
             self?.fontasticKeyboardView?.adaptToOrientationChange(isPortrait: isPortrait)
+            self?.lockOverlayView?.adaptToOrientationChange(isPortrait: isPortrait)
         }
     }
 
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
-        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
-        view.addSubview(fontasticKeyboardView)
-        constrain(view, fontasticKeyboardView) { view, keyboard in
-            keyboard.edges == view.edges
+        let fonttasticKeyboardView: FontasticKeyboardView
+        if let keyboardView = self.fontasticKeyboardView {
+            fonttasticKeyboardView = keyboardView
+        } else {
+            fonttasticKeyboardView = FontasticKeyboardView(
+                insertedText: [],
+                initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign
+            )
+            self.fontasticKeyboardView = fonttasticKeyboardView
+        }
+        if fonttasticKeyboardView.superview == nil {
+            view.addSubview(fonttasticKeyboardView)
+            constrain(view, fonttasticKeyboardView) { view, keyboard in
+                keyboard.edges == view.edges
+            }
+        }
+
+        let lockOverlayView: KeyboardLockOverlayView
+        if let overlayView = self.lockOverlayView {
+            lockOverlayView = overlayView
+        } else {
+            lockOverlayView = KeyboardLockOverlayView()
+            self.lockOverlayView = lockOverlayView
+        }
+        if lockOverlayView.superview == nil {
+            view.addSubview(lockOverlayView)
+            constrain(view, lockOverlayView) { view, overlay in
+                overlay.edges == view.edges
+            }
+        }
+
+        if let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: DefaultAppStatusService.shared.appStatus) {
+            logger.log(
+                "Will show lock overlay",
+                description: "AppStatus: \(DefaultAppStatusService.shared.appStatus)",
+                level: .debug
+            )
+            lockOverlayView.isHidden = false
+            lockOverlayView.apply(config: lockOverlayConfig)
+            fonttasticKeyboardView.alpha = 0.1
+        } else {
+            logger.log(
+                "Will NOT show lock overlay",
+                description: "AppStatus: \(DefaultAppStatusService.shared.appStatus)",
+                level: .debug
+            )
+            lockOverlayView.isHidden = true
+            fonttasticKeyboardView.alpha = 1.0
         }
     }
 
     private func setupBusinessLogic() {
-        guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
+        if let fontasticKeyboardView = self.fontasticKeyboardView {
+            fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
+                .subscribe(self) { [weak self] in
+                    self?.showFontPickerViewController()
+                }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
-            .subscribe(self) { [weak self] in
-                self?.showFontPickerViewController()
-            }
+            fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
+                .subscribe(self) { [weak self] in
+                    self?.showColorPickerViewControllerForBackgroundColor()
+                }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundColorPickerEvent
-            .subscribe(self) { [weak self] in
-                self?.showColorPickerViewControllerForBackgroundColor()
-            }
+            fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundImageSelectionEvent
+                .subscribe(self) { [weak self] in
+                    self?.showBackgroundColorSelectionController()
+                }
+            fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
+                .subscribe(self) { [weak self] in
+                    self?.showColorPickerViewControllerForTextColor()
+                }
+        }
 
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentBackgroundImageSelectionEvent
-            .subscribe(self) { [weak self] in
-                self?.showBackgroundColorSelectionController()
+        if let lockOverlayView = lockOverlayView {
+            lockOverlayView.didTapEvent.subscribe(self) { [weak self] actionLinkURL in
+                self?.openApp(url: actionLinkURL)
             }
-        fontasticKeyboardView.canvasWithSettingsView.shouldPresentTextColorPickerEvent
-            .subscribe(self) { [weak self] in
-                self?.showColorPickerViewControllerForTextColor()
-            }
+        }
     }
+
+    // MARK: - Opening URLs
+
+    @objc func openURL(_ url: URL) {}
+
+    func openApp(url: URL) {
+        var responder: UIResponder? = self as UIResponder
+        let selector = #selector(openURL(_:))
+
+        while responder != nil {
+            if responder?.responds(to: selector) == true && responder != self {
+                responder?.perform(selector, with: url)
+                return
+            }
+            responder = responder?.next
+        }
+    }
+
+    // MARK: - Presenting Font And Color Pickers
 
     private func showFontPickerViewController() {
         guard let fontasticKeyboardView = self.fontasticKeyboardView else { return }
@@ -257,4 +329,9 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
             self.dismiss(animated: true)
         }
     }
+}
+
+private enum Constants {
+
+    static let openAppUrlString = "fonttastic://home"
 }

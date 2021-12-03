@@ -9,6 +9,11 @@
 // MARK: - Keyboard
 
 "keyboard.canvas.copied.title" = "✅ Copied";
+"keyboard.lockedState.title" = "Keyboard is locked";
+"keyboard.lockedState.noSubscription.message" = "To use keyboard, please open app and purchase subscription";
+"keyboard.lockedState.noSubscription.actionTitle" = "Open App";
+"keyboard.lockedState.limitedAccess.message" = "To use keyboard, please open settings and enable keyboard full access";
+"keyboard.lockedState.limitedAccess.actionTitle" = "Open Settings";
 
 // MARK: - Font Selection
 
@@ -20,4 +25,5 @@
 
 "fontListCollection.sectionHeader.systemFonts" = "System fonts";
 "fontListCollection.sectionHeader.customFonts" = "Custom fonts";
-"fontListCollection.keyboardInstallBanner.title" = "Install Keyboard ⌨️";
+"fontListCollection.bannerTitle.keyboardInstall" = "Install Keyboard ⌨️";
+"fontListCollection.bannerTitle.subscriptionPurchase" = "Become Pro 🦹‍♂️";

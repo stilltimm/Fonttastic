@@ -12,11 +12,7 @@ class AddFontButton: UIButton {
 
     override var isHighlighted: Bool {
         didSet {
-            UIView.animate(
-                withDuration: 0.1,
-                delay: 0,
-                options: isHighlighted ? .curveEaseOut : .curveEaseIn
-            ) {
+            UIView.animate(withConfig: .fastControl) {
                 self.transform = self.isHighlighted ? .init(scaleX: 0.95, y: 0.95) : .identity
             }
         }
