@@ -5,11 +5,7 @@ inhibit_all_warnings!
 
 def default_pods
 
-  # UI
-
   pod 'Cartography'
-
-  # Dev Tools
 
   pod 'SwiftLint', :configurations => ['Debug']
   # pod 'Reveal-SDK', :configurations => ['Debug']
@@ -26,6 +22,7 @@ end
 target 'FonttasticTools' do
 
   default_pods
+  pod 'KeychainAccess'
   pod 'ZIPFoundation', '~> 0.9'
 
 end

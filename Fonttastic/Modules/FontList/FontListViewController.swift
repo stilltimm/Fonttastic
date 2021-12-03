@@ -43,6 +43,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Private Properties
 
     private let viewModel: FontListViewModel
+    private let appStatusService: AppStatusService = DefaultAppStatusService.shared
 
     // MARK: - Initializers
 
@@ -70,14 +71,6 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
         setupLayout()
         setupBusinessLogic()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.presentSubscription()
-        }
     }
 
 //    override func viewDidLayoutSubviews() {
@@ -121,9 +114,21 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 //    }
 
     private func setupBusinessLogic() {
-        viewModel.fontListCollectionViewModel.didTapKeyboardInstallBanner
+        viewModel.fontListCollectionViewModel.didTapBannerEvent
             .subscribe(self) { [weak self] in
-                self?.openAppSettings()
+                guard let self = self else { return }
+
+                let appStatus = self.appStatusService.appStatus
+                switch (appStatus.appSubscriptionStatus, appStatus.keyboardInstallationStatus) {
+                case (_, .notInstalled), (_, .installedWithLimitedAccess):
+                    self.openAppSettings()
+
+                case (.noSubscription, _):
+                    self.presentSubscription()
+
+                case (.hasActiveSubscription, .installedWithFullAccess):
+                    break
+                }
             }
 
         viewModel.fontListCollectionViewModel.didTapFontCell

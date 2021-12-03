@@ -27,6 +27,11 @@
 		2D43F3D5270DB8D40096772B /* FontListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D4270DB8D40096772B /* FontListViewModel.swift */; };
 		2D43F3DD270DE9870096772B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D43F3DC270DE9870096772B /* Settings.bundle */; };
 		2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD4254126FCC4EB00DFF767 /* BaseNavigationController.swift */; };
+		2D4DB60927590CC000C4B6D5 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB60827590CC000C4B6D5 /* KeychainService.swift */; };
+		2D4DB60C27590E6D00C4B6D5 /* AppStatusService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB60B27590E6D00C4B6D5 /* AppStatusService.swift */; };
+		2D4DB60E2759163B00C4B6D5 /* AppStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB60D2759163B00C4B6D5 /* AppStatus.swift */; };
+		2D4DB61027591E5A00C4B6D5 /* KeychainContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB60F27591E5A00C4B6D5 /* KeychainContainer.swift */; };
+		2D4DB61227591E9000C4B6D5 /* KeychainContainerScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB61127591E9000C4B6D5 /* KeychainContainerScope.swift */; };
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
 		2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */; };
@@ -72,6 +77,7 @@
 		2DA4CD8C2742772600CBE6A0 /* AppConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA4CD8B2742772600CBE6A0 /* AppConfigurationService.swift */; };
 		2DAA49412747D1700089D024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DAA49402747D1700089D024 /* Assets.xcassets */; };
 		2DAF9C1727453C27000A3489 /* FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; platformFilter = ios; };
+		2DB2F561275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */; };
 		2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */; };
 		2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C092271CB9AB00213DEF /* AlphabetType.swift */; };
 		2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */; };
@@ -303,6 +309,11 @@
 		2D43F3D8270DC0D80096772B /* UICollectionView+DequeReusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+DequeReusable.swift"; sourceTree = "<group>"; };
 		2D43F3DA270DDEE90096772B /* Array+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Utils.swift"; sourceTree = "<group>"; };
 		2D43F3DC270DE9870096772B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		2D4DB60827590CC000C4B6D5 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		2D4DB60B27590E6D00C4B6D5 /* AppStatusService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatusService.swift; sourceTree = "<group>"; };
+		2D4DB60D2759163B00C4B6D5 /* AppStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatus.swift; sourceTree = "<group>"; };
+		2D4DB60F27591E5A00C4B6D5 /* KeychainContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainContainer.swift; sourceTree = "<group>"; };
+		2D4DB61127591E9000C4B6D5 /* KeychainContainerScope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainContainerScope.swift; sourceTree = "<group>"; };
 		2D5239DB2702351E0039C112 /* KeyboardButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonViewModel.swift; sourceTree = "<group>"; };
 		2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
 		2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestNavigationController.swift; sourceTree = "<group>"; };
@@ -435,6 +446,7 @@
 		2DA4CD8D2742788800CBE6A0 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		2DA4CD90274282F300CBE6A0 /* FonttasticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticLogger.swift; sourceTree = "<group>"; };
 		2DAA49402747D1700089D024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLockOverlayViewConfig.swift; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
 		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
 		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
@@ -559,6 +571,8 @@
 		2D060EE326FCC14D00047D89 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				2D4DB60A27590E5E00C4B6D5 /* AppStatusService */,
+				2D4DB60727590CB300C4B6D5 /* KeychainService */,
 				2D5665CC2757FE1200A57AA2 /* Subscription */,
 				2D336E4627451B45006AD631 /* PhotosService */,
 				2D89FB1E2742A8FA004B6711 /* FileService */,
@@ -692,6 +706,25 @@
 			path = BaseNavigationController;
 			sourceTree = "<group>";
 		};
+		2D4DB60727590CB300C4B6D5 /* KeychainService */ = {
+			isa = PBXGroup;
+			children = (
+				2D4DB60827590CC000C4B6D5 /* KeychainService.swift */,
+				2D4DB60F27591E5A00C4B6D5 /* KeychainContainer.swift */,
+				2D4DB61127591E9000C4B6D5 /* KeychainContainerScope.swift */,
+			);
+			path = KeychainService;
+			sourceTree = "<group>";
+		};
+		2D4DB60A27590E5E00C4B6D5 /* AppStatusService */ = {
+			isa = PBXGroup;
+			children = (
+				2D4DB60D2759163B00C4B6D5 /* AppStatus.swift */,
+				2D4DB60B27590E6D00C4B6D5 /* AppStatusService.swift */,
+			);
+			path = AppStatusService;
+			sourceTree = "<group>";
+		};
 		2D5239E52702431C0039C112 /* KeyboardViewTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -727,6 +760,7 @@
 			isa = PBXGroup;
 			children = (
 				2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */,
+				2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */,
 			);
 			path = KeyboardLockOverlayView;
 			sourceTree = "<group>";
@@ -1500,6 +1534,7 @@
 				2D8726FF274336A200D6D6DA /* KeyboardType.swift in Sources */,
 				2D872706274336A200D6D6DA /* KeyboardViewModel+Config.swift in Sources */,
 				2D872711274336A200D6D6DA /* UIEdgeInsets+Utils.swift in Sources */,
+				2D4DB60C27590E6D00C4B6D5 /* AppStatusService.swift in Sources */,
 				2D872709274336A200D6D6DA /* FontResourceType.swift in Sources */,
 				2D872723274336A200D6D6DA /* UIView+Screenshot.swift in Sources */,
 				2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */,
@@ -1507,6 +1542,8 @@
 				2D872705274336A200D6D6DA /* FontModelsRepository.swift in Sources */,
 				2D87270F274336A200D6D6DA /* KeyboardButtonViewModel.swift in Sources */,
 				2D4BD5FE2743F5D100B90D8A /* BaseNavigationController.swift in Sources */,
+				2D4DB60927590CC000C4B6D5 /* KeychainService.swift in Sources */,
+				2D4DB61027591E5A00C4B6D5 /* KeychainContainer.swift in Sources */,
 				2D872720274336A200D6D6DA /* KeyboardView.swift in Sources */,
 				2D872707274336A200D6D6DA /* FontSelectionViewController.swift in Sources */,
 				2D872724274336A200D6D6DA /* FontListCollectionViewModel.swift in Sources */,
@@ -1530,6 +1567,9 @@
 				2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */,
 				2D872713274336A200D6D6DA /* CALayer+Shadow.swift in Sources */,
 				2D87271E274336A200D6D6DA /* FontModelFactory.swift in Sources */,
+				2D4DB60E2759163B00C4B6D5 /* AppStatus.swift in Sources */,
+				2D4DB61227591E9000C4B6D5 /* KeychainContainerScope.swift in Sources */,
+				2DB2F561275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift in Sources */,
 				2D872718274336A200D6D6DA /* FonttasticLogger.swift in Sources */,
 				2DE6FFFC27440580004DC829 /* UIColor+Hex.swift in Sources */,
 				2DEDBFE027433605009C2347 /* Event.swift in Sources */,

@@ -62,22 +62,16 @@ class SubscriptionViewController: UIViewController {
 
     private let subscriptionItems: [SubscriptionItemModel] = [
         SubscriptionItemModel(
-            identifier: "com.timofeysurkov.fonttastic.subscription.weekly",
-            title: "1 week",
-            price: Price(value: 2.49, currency: .dollar),
+            identifier: "com.romandegtyarev.fonttastic.subscription.weekly",
+            title: "1 неделя",
+            price: Price(value: 99, currency: .rub),
             strikethroughPrice: nil
         ),
         SubscriptionItemModel(
-            identifier: "com.timofeysurkov.fonttastic.subscription.mothly",
-            title: "1 month",
-            price: Price(value: 5.49, currency: .dollar),
-            strikethroughPrice: Price(value: 10, currency: .dollar)
-        ),
-        SubscriptionItemModel(
-            identifier: "com.timofeysurkov.fonttastic.subscription.yearly",
-            title: "1 year",
-            price: Price(value: 16.49, currency: .dollar),
-            strikethroughPrice: Price(value: 80, currency: .dollar)
+            identifier: "com.romandegtyarev.fonttastic.subscription.monthly",
+            title: "1 месяц",
+            price: Price(value: 169, currency: .rub),
+            strikethroughPrice: Price(value: 400, currency: .rub)
         )
     ]
 

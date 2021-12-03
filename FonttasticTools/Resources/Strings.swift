@@ -46,8 +46,18 @@ class Strings {
 
     static let keyboardCanvasCopiedTitle = localizedStringBox["keyboard.canvas.copied.title"]
     static let keyboardLockedStateTitle = localizedStringBox["keyboard.lockedState.title"]
-    static let keyboardLockedStateMessage = localizedStringBox["keyboard.lockedState.message"]
-    static let keyboardLockedStateOpenAppButtonTitle = localizedStringBox["keyboard.lockedState.openAppButton.title"]
+    static let keyboardLockedStateNoSubscriptionMessage = localizedStringBox[
+        "keyboard.lockedState.noSubscription.message"
+    ]
+    static let keyboardLockedStateNoSubscriptionActionTitle = localizedStringBox[
+        "keyboard.lockedState.noSubscription.actionTitle"
+    ]
+    static let keyboardLockedStateLimitedAccessMessage = localizedStringBox[
+        "keyboard.lockedState.limitedAccess.message"
+    ]
+    static let keyboardLockedStateLimitedAccessActionTitle = localizedStringBox[
+        "keyboard.lockedState.limitedAccess.actionTitle"
+    ]
 
     // MARK: - Font Selection
 
@@ -63,7 +73,10 @@ class Strings {
     static let fontListCollectionSectionHeaderCustomFonts = localizedStringBox[
         "fontListCollection.sectionHeader.customFonts"
     ]
-    static let fontListCollectionKeyboardInstallBannerTitle = localizedStringBox[
-        "fontListCollection.keyboardInstallBanner.title"
+    static let fontListCollectionBannerTitleKeyboardInstall = localizedStringBox[
+        "fontListCollection.bannerTitle.keyboardInstall"
+    ]
+    static let fontListCollectionBannerTitleSubscriptionPurchase = localizedStringBox[
+        "fontListCollection.bannerTitle.subscriptionPurchase"
     ]
 }

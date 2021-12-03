@@ -22,7 +22,6 @@ public class KeyboardLockOverlayView: UIControl {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.text = Strings.keyboardLockedStateTitle
         label.textColor = Colors.blackAndWhite
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -32,14 +31,13 @@ public class KeyboardLockOverlayView: UIControl {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext", size: 18) ?? UIFont.systemFont(ofSize: 18)
-        label.text = Strings.keyboardLockedStateMessage
         label.textColor = Colors.blackAndWhite
         label.textAlignment = .center
         label.numberOfLines = 0
         label.isUserInteractionEnabled = false
         return label
     }()
-    private let openAppContainer: UIView = {
+    private let actionButtonContainer: UIView = {
         let view = UIView()
         view.backgroundColor = Colors.brandMainLight
         view.isUserInteractionEnabled = false
@@ -48,10 +46,9 @@ public class KeyboardLockOverlayView: UIControl {
         view.isUserInteractionEnabled = false
         return view
     }()
-    private let openAppLabel: UILabel = {
+    private let actionButtonLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.text = Strings.keyboardLockedStateOpenAppButtonTitle
         label.textColor = UIColor.white
         label.textAlignment = .center
         label.numberOfLines = 1
@@ -61,7 +58,7 @@ public class KeyboardLockOverlayView: UIControl {
 
     // MARK: - Public Instance Properties
 
-    public let didTapEvent = FonttasticTools.Event<Void>()
+    public let didTapEvent = FonttasticTools.Event<URL>()
 
     public override var isHighlighted: Bool {
         didSet {
@@ -70,7 +67,7 @@ public class KeyboardLockOverlayView: UIControl {
                 delay: 0.0,
                 options: .curveEaseOut
             ) {
-                self.openAppContainer.transform = self.isHighlighted ?
+                self.actionButtonContainer.transform = self.isHighlighted ?
                 CGAffineTransform(scaleX: 0.95, y: 0.95) :
                     .identity
             }
@@ -83,6 +80,8 @@ public class KeyboardLockOverlayView: UIControl {
     private var landscapeOrientationConstraints: [NSLayoutConstraint] = []
     private var titleHeightConstraint: NSLayoutConstraint?
     private var messageHeightConstraint: NSLayoutConstraint?
+
+    private var config: KeyboardLockOverlayViewConfig?
 
     // MARK: - Initializers
 
@@ -121,18 +120,28 @@ public class KeyboardLockOverlayView: UIControl {
         updateTitleAndMessageHeightConstraints()
     }
 
+    public func apply(config: KeyboardLockOverlayViewConfig) {
+        self.config = config
+
+        titleLabel.text = config.title
+        messageLabel.text = config.message
+        actionButtonLabel.text = config.actionButtonTitle
+
+        updateTitleAndMessageHeightConstraints()
+    }
+
     // MARK: - Private Instance Methods
 
     private func configureLayout() {
         addSubview(lockImageView)
         addSubview(titleLabel)
         addSubview(messageLabel)
-        addSubview(openAppContainer)
-        openAppContainer.addSubview(openAppLabel)
+        addSubview(actionButtonContainer)
+        actionButtonContainer.addSubview(actionButtonLabel)
 
         constrain(
-            self, lockImageView, titleLabel, messageLabel, openAppContainer, openAppLabel
-        ) { view, lockImage, title, message, openAppContainer, openAppLabel in
+            self, lockImageView, titleLabel, messageLabel, actionButtonContainer, actionButtonLabel
+        ) { view, lockImage, title, message, actionButtonContainer, actionButtonLabel in
             // lockImage / default
             lockImage.width == Constants.lockIconSize.width
             lockImage.height == Constants.lockIconSize.height
@@ -161,15 +170,15 @@ public class KeyboardLockOverlayView: UIControl {
             // message / landscape
             landscapeOrientationConstraints.append(message.bottom == view.centerY)
 
-            // openAppContainer / default
-            openAppContainer.top == message.bottom + Constants.messageToButtonSpacing
-            // openAppContainer / portrait
-            portraitOrientationConstraints.append(openAppContainer.centerX == view.centerX)
-            // openAppContainer / landscape
-            landscapeOrientationConstraints.append(openAppContainer.left == title.left)
+            // actionButtonContainer / default
+            actionButtonContainer.top == message.bottom + Constants.messageToButtonSpacing
+            // actionButtonContainer / portrait
+            portraitOrientationConstraints.append(actionButtonContainer.centerX == view.centerX)
+            // actionButtonContainer / landscape
+            landscapeOrientationConstraints.append(actionButtonContainer.left == title.left)
 
-            // openAppLabel / default
-            openAppLabel.edges == openAppContainer.edges.inseted(by: Constants.openAppButtonInsets)
+            // actionButtonLabel / default
+            actionButtonLabel.edges == actionButtonContainer.edges.inseted(by: Constants.actionButtonInsets)
         }
 
         adaptToOrientationChange(isPortrait: UIScreen.main.isPortrait)
@@ -194,7 +203,12 @@ public class KeyboardLockOverlayView: UIControl {
     }
 
     @objc private func handleTap() {
-        didTapEvent.onNext(())
+        guard
+            let config = self.config,
+            let actionLinkURL = URL(string: config.actionLinkURLString)
+        else { return }
+
+        didTapEvent.onNext(actionLinkURL)
     }
 }
 
@@ -202,7 +216,7 @@ private enum Constants {
 
     static let lockIconSize: CGSize = CGSize(width: 96, height: 96)
     static let edgeInsets: UIEdgeInsets = UIEdgeInsets(vertical: 16, horizontal: 16)
-    static let openAppButtonInsets: UIEdgeInsets = UIEdgeInsets(vertical: 12, horizontal: 16)
+    static let actionButtonInsets: UIEdgeInsets = UIEdgeInsets(vertical: 12, horizontal: 16)
 
     static let lockImageToTitleSpacing: CGFloat = 8
     static let titleToMessageSpacing: CGFloat = 4

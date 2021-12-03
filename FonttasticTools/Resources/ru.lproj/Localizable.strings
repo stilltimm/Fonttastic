@@ -10,8 +10,10 @@
 
 "keyboard.canvas.copied.title" = "✅ Скопировано";
 "keyboard.lockedState.title" = "Клавиатура заблокирована";
-"keyboard.lockedState.message" = "Чтобы использовать клавиатуру, пожалуйста откройте приложение и оформите подписку";
-"keyboard.lockedState.openAppButton.title" = "Открыть приложение";
+"keyboard.lockedState.noSubscription.message" = "Чтобы использовать клавиатуру, пожалуйста откройте приложение и оформите подписку";
+"keyboard.lockedState.noSubscription.actionTitle" = "Открыть приложение";
+"keyboard.lockedState.limitedAccess.message" = "Чтобы использовать клавиатуру, пожалуйста откройте настройки приложения и дайте клавиатуре полный доступ";
+"keyboard.lockedState.limitedAccess.actionTitle" = "Открыть Настройки";
 
 // MARK: - Font Selection
 
@@ -23,4 +25,5 @@
 
 "fontListCollection.sectionHeader.systemFonts" = "Системные шрифты";
 "fontListCollection.sectionHeader.customFonts" = "Кастомные шрифты";
-"fontListCollection.keyboardInstallBanner.title" = "Установить клавиатуру ⌨️";
+"fontListCollection.bannerTitle.keyboardInstall" = "Установить клавиатуру ⌨️";
+"fontListCollection.bannerTitle.subscriptionPurchase" = "Стать Pro 🦹‍♂️";
