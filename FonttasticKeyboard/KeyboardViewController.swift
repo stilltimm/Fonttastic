@@ -31,10 +31,6 @@ class KeyboardViewController: UIInputViewController {
         FonttasticLogger.shared.setup(with: .default)
 
         logger.log("Keyboard hasFullAccess: \(self.hasFullAccess)", level: .debug)
-        let keyboardInstallationStatus: KeyboardInstallationStatus = self.hasFullAccess ?
-            .installedWithFullAccess :
-            .installedWithLimitedAccess
-        DefaultAppStatusService.shared.setKeyboardInstallationStatus(keyboardInstallationStatus)
 
         setupLayout()
         setupBusinessLogic()
@@ -97,10 +93,11 @@ class KeyboardViewController: UIInputViewController {
             }
         }
 
-        if let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: DefaultAppStatusService.shared.appStatus) {
+        let appStatus = DefaultAppStatusService.shared.getAppStatus(hasFullAccess: self.hasFullAccess)
+        if let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: appStatus) {
             logger.log(
                 "Will show lock overlay",
-                description: "AppStatus: \(DefaultAppStatusService.shared.appStatus)",
+                description: "AppStatus: \(appStatus)",
                 level: .debug
             )
             lockOverlayView.isHidden = false
@@ -109,7 +106,7 @@ class KeyboardViewController: UIInputViewController {
         } else {
             logger.log(
                 "Will NOT show lock overlay",
-                description: "AppStatus: \(DefaultAppStatusService.shared.appStatus)",
+                description: "AppStatus: \(appStatus)",
                 level: .debug
             )
             lockOverlayView.isHidden = true

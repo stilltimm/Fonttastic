@@ -13,6 +13,8 @@
 		2D060EBA26FCC10A00047D89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EB926FCC10A00047D89 /* Assets.xcassets */; };
 		2D060EBD26FCC10A00047D89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2D060EBB26FCC10A00047D89 /* LaunchScreen.storyboard */; };
 		2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */; };
+		2D19E293275B7D97008DB8CE /* LinearGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D19E292275B7D97008DB8CE /* LinearGradientView.swift */; };
+		2D19E295275B808E008DB8CE /* LinearGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D19E294275B808E008DB8CE /* LinearGradient.swift */; };
 		2D1E3A2B274A672200822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A2D274A672200822F05 /* Localizable.strings */; };
 		2D1E3A31274A675C00822F05 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D1E3A33274A675C00822F05 /* Localizable.strings */; };
 		2D1E3A36274A678000822F05 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A35274A678000822F05 /* Strings.swift */; };
@@ -279,6 +281,8 @@
 		2D060EBC26FCC10A00047D89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2D060EBE26FCC10A00047D89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D060EE726FCC2AE00047D89 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
+		2D19E292275B7D97008DB8CE /* LinearGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientView.swift; sourceTree = "<group>"; };
+		2D19E294275B808E008DB8CE /* LinearGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradient.swift; sourceTree = "<group>"; };
 		2D1E3A28274A666700822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		2D1E3A2C274A672200822F05 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2D1E3A2E274A672500822F05 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -608,6 +612,15 @@
 			path = RootNavigation;
 			sourceTree = "<group>";
 		};
+		2D19E291275B7D8B008DB8CE /* LinearGradientView */ = {
+			isa = PBXGroup;
+			children = (
+				2D19E292275B7D97008DB8CE /* LinearGradientView.swift */,
+				2D19E294275B808E008DB8CE /* LinearGradient.swift */,
+			);
+			path = LinearGradientView;
+			sourceTree = "<group>";
+		};
 		2D1E3A37274A7BA800822F05 /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
@@ -793,6 +806,7 @@
 		2D89FEBF2742E977004B6711 /* UIComponents */ = {
 			isa = PBXGroup;
 			children = (
+				2D19E291275B7D8B008DB8CE /* LinearGradientView */,
 				2D5665CD2757FE6B00A57AA2 /* KeyboardLockOverlayView */,
 				2D4BD5FD2743F5A500B90D8A /* BaseNavigationController */,
 				2D2A0C9627021A980006E27B /* FontasticKeyboardView */,
@@ -1554,6 +1568,7 @@
 				2D1E3A36274A678000822F05 /* Strings.swift in Sources */,
 				2D872721274336A200D6D6DA /* FontsService.swift in Sources */,
 				2D87270A274336A200D6D6DA /* FontStatus.swift in Sources */,
+				2D19E295275B808E008DB8CE /* LinearGradient.swift in Sources */,
 				2D872708274336A200D6D6DA /* Colors.swift in Sources */,
 				2D87270B274336A200D6D6DA /* KeyboardViewModel+Design.swift in Sources */,
 				2D872703274336A200D6D6DA /* KeyboardButtonDesign.swift in Sources */,
@@ -1575,6 +1590,7 @@
 				2DEDBFE027433605009C2347 /* Event.swift in Sources */,
 				2D872710274336A200D6D6DA /* FontListBannerCell.swift in Sources */,
 				2D872717274336A200D6D6DA /* CanvasView.swift in Sources */,
+				2D19E293275B7D97008DB8CE /* LinearGradientView.swift in Sources */,
 				2DEDBFDF27433605009C2347 /* WeakBox.swift in Sources */,
 				2D87270C274336A200D6D6DA /* CanvasWithSettingsView.swift in Sources */,
 				2D872712274336A200D6D6DA /* UIFontFactory.swift in Sources */,

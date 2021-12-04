@@ -25,5 +25,5 @@
 
 "fontListCollection.sectionHeader.systemFonts" = "Системные шрифты";
 "fontListCollection.sectionHeader.customFonts" = "Кастомные шрифты";
-"fontListCollection.bannerTitle.keyboardInstall" = "Установить клавиатуру ⌨️";
-"fontListCollection.bannerTitle.subscriptionPurchase" = "Стать Pro 🦹‍♂️";
+"fontListCollection.bannerTitle.keyboardInstall" = "Нажмите, чтобы добавить\nклавиатуру Fonttastic в iOS ⌨️";
+"fontListCollection.bannerTitle.subscriptionPurchase" = "Нажмите,\nчтобы стать Pro 🦹‍♂️";

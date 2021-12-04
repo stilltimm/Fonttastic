@@ -71,10 +71,6 @@ class FontDetailsViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = fontModel.displayName
 
-        navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
-            name: "AvenirNext-Medium",
-            size: 24
-        )
         view.backgroundColor = Colors.backgroundMain
 
         setupLayout()

@@ -62,7 +62,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
     // MARK: - Subviews
 
     private let containerView: UIView = {
-        let view = UIView()
+        let view = LinearGradientView(linearGradient: Constants.bannerLinearGradient)
         view.layer.cornerCurve = .continuous
         return view
     }()
@@ -125,7 +125,6 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
         self.viewModel = viewModel
         self.design = design
 
-        containerView.backgroundColor = design.backgroundColor
         containerView.layer.cornerRadius = design.cornerRadius
 
         titleLabel.font = design.font
@@ -140,7 +139,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if let shadow = self.design?.shadow {
-                self.containerView.layer.applyShadow(shadow)
+//                self.containerView.layer.applyShadow(shadow)
             }
         }
     }
@@ -148,6 +147,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
+        containerView.backgroundColor = .clear
         contentView.addSubview(containerView)
         containerView.addSubview(titleLabel)
         constrain(contentView, containerView, titleLabel) { contentView, container, titleLabel in
@@ -166,5 +166,11 @@ private enum Constants {
         left: 0,
         bottom: 0,
         right: 0
+    )
+
+    static let bannerLinearGradient: LinearGradient = LinearGradient(
+        direction: CGPoint(x: 0, y: 1),
+        locations: [0, 1],
+        colors: [Colors.accentBackgroundTop, Colors.accentBackgroundBottom]
     )
 }

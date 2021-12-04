@@ -74,6 +74,9 @@ extension CALayer {
             blur: shadow.blur,
             spread: shadow.spread
         )
+
+        let layer = CALayer()
+        addSublayer(layer)
     }
 
     public var shadow: Shadow {

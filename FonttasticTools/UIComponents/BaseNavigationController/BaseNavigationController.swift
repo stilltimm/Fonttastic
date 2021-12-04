@@ -21,15 +21,11 @@ open class BaseNavigationController: UINavigationController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
 
         navigationBar.titleTextAttributes = [
-            .font: UIFont(name: "Georgia-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
-            .foregroundColor: Colors.textMajor
-        ]
-        navigationBar.largeTitleTextAttributes = [
-            .font: UIFont(name: "Georgia-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold),
+            .font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
             .foregroundColor: Colors.textMajor
         ]
 

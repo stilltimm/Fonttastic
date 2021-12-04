@@ -28,7 +28,7 @@ extension KeyboardLockOverlayViewConfig {
         case (.noSubscription, _):
             self = .lockedDueToNoActiveSubscription
 
-        case (.hasActiveSubscription, .installedWithFullAccess):
+        default:
             return nil
         }
     }

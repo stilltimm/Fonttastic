@@ -35,6 +35,12 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     // MARK: - Subviews
 
+    private let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "bg")
+        return imageView
+    }()
     private let fontListCollectionViewController: FontListCollectionViewController
 
     // TODO: Show add font after solving [svg]->.ttf pipe
@@ -67,7 +73,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         super.viewDidLoad()
 
         view.backgroundColor = Colors.backgroundMain
-        navigationItem.title = Constants.title
+        navigationController?.navigationBar.isHidden = true
 
         setupLayout()
         setupBusinessLogic()
@@ -89,6 +95,10 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Private Methods
 
     private func setupLayout() {
+        view.addSubview(backgroundImageView)
+        constrain(view, backgroundImageView) { view, background in
+            background.edges == view.edges
+        }
         setupFontListCollectionViewController()
 //        setupAddFontButton()
     }
@@ -118,15 +128,15 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             .subscribe(self) { [weak self] in
                 guard let self = self else { return }
 
-                let appStatus = self.appStatusService.appStatus
+                let appStatus = self.appStatusService.getAppStatus(hasFullAccess: nil)
                 switch (appStatus.appSubscriptionStatus, appStatus.keyboardInstallationStatus) {
-                case (_, .notInstalled), (_, .installedWithLimitedAccess):
+                case (_, .notInstalled):
                     self.openAppSettings()
 
                 case (.noSubscription, _):
                     self.presentSubscription()
 
-                case (.hasActiveSubscription, .installedWithFullAccess):
+                default:
                     break
                 }
             }
@@ -136,6 +146,12 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 self?.handleFontViewModelSelection(fontViewModel)
             }
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.handleAppDidBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
         // setupAddFontButtonTapHandling()
     }
 
@@ -146,6 +162,10 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 //            for: .touchUpInside
 //        )
 //    }
+
+    @objc private func handleAppDidBecomeActive() {
+        self.viewModel.reloadData()
+    }
 
     private func openFontDetails(_ fontModel: FontModel) {
         let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)

@@ -25,5 +25,5 @@
 
 "fontListCollection.sectionHeader.systemFonts" = "System fonts";
 "fontListCollection.sectionHeader.customFonts" = "Custom fonts";
-"fontListCollection.bannerTitle.keyboardInstall" = "Install Keyboard ⌨️";
-"fontListCollection.bannerTitle.subscriptionPurchase" = "Become Pro 🦹‍♂️";
+"fontListCollection.bannerTitle.keyboardInstall" = "Tap here to add\nFonttastic keyboard to iOS ⌨️";
+"fontListCollection.bannerTitle.subscriptionPurchase" = "Tap here\nto become Pro 🦹‍♂️";
