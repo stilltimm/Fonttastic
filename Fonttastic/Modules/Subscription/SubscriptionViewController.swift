@@ -36,7 +36,7 @@ class SubscriptionViewController: UIViewController {
     private let headerSubtitle: UILabel = {
         let label = UILabel()
         label.textColor = Colors.blackAndWhite
-        label.font = UIFont(name: "Avenir Next", size: 16) ?? UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = Strings.subscriptionHeaderSubtitle
@@ -45,7 +45,7 @@ class SubscriptionViewController: UIViewController {
     private let actionButton: SubscriptionActionButton = {
         let button = SubscriptionActionButton(frame: .zero)
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
-        button.titleLabel?.font = UIFont(name: "Avenir Next Bold", size: 24)
+        button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
         button.titleLabel?.textColor = UIColor.white
         button.layer.cornerRadius = 16
         button.layer.cornerCurve = .continuous

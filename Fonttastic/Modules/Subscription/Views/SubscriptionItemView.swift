@@ -58,7 +58,7 @@ class SubscriptionItemView: UIControl {
     }()
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir Next", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
@@ -70,7 +70,7 @@ class SubscriptionItemView: UIControl {
     }()
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir Next", size: 16) ?? UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
         label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
@@ -158,7 +158,7 @@ class SubscriptionItemView: UIControl {
             strikethroughPriceLabel.attributedText = NSAttributedString(
                 string: priceFormatter.string(from: strikethroughPrice),
                 attributes: [
-                    .font: UIFont(name: "Avenir Next", size: 16) ?? UIFont.systemFont(ofSize: 16),
+                    .font: UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
                     .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.3),
                     .strikethroughStyle: 1,
                     .strikethroughColor: Colors.blackAndWhite

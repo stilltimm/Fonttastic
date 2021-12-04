@@ -256,7 +256,7 @@ private enum Constants {
         weight: .regular
     )
     static let detailsLabelFont: UIFont = {
-        if let customFont = UIFont(name: "Avenir Next", size: Constants.detailsLabelTextSize) {
+        if let customFont = UIFont(name: "AvenirNext-Medium", size: Constants.detailsLabelTextSize) {
             return customFont
         }
         return UIFont.systemFont(ofSize: Constants.detailsLabelTextSize, weight: .regular)

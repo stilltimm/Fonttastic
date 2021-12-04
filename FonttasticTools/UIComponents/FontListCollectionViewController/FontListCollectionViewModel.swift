@@ -217,7 +217,7 @@ private extension FontListBannerCell.Design {
     static let `default` = FontListBannerCell.Design(
         minHeightToWidthAspectRatio: 9.0 / 16.0,
         contentInsets: .init(vertical: 16, horizontal: 16),
-        font: UIFont(name: "Avenir Next Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
+        font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
         textColor: .white,
         backgroundColor: Colors.brandMainLight,
         cornerRadius: 16,
@@ -240,7 +240,7 @@ private extension FontListTitleCell.Design {
     )
 
     static let fontListTitle: FontListTitleCell.Design = FontListTitleCell.Design(
-        font: UIFont(name: "Avenir Next Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
+        font: UIFont(name: "AvenirNext-DemiBold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
         textColor: Colors.titleMinor
     )
 }

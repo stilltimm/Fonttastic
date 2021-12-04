@@ -32,7 +32,7 @@ class AddFontFromImageViewController: UIViewController {
     }()
     private let sourceImageLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir Next", size: 24.0)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 24.0)
         label.textColor = Colors.titleMinor
         label.numberOfLines = 0
         label.text = "Source image"
@@ -46,7 +46,7 @@ class AddFontFromImageViewController: UIViewController {
     }()
     private let resultImagesLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir Next", size: 24.0)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 24.0)
         label.textColor = Colors.titleMinor
         label.numberOfLines = 0
         label.text = "Letters vector images"

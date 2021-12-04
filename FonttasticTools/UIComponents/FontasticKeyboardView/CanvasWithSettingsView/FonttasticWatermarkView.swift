@@ -29,7 +29,7 @@ class FonttasticWatermarkView: UIImageView {
     }()
     private let watermarkLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir Next", size: 12) ?? UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 12) ?? UIFont.systemFont(ofSize: 12)
         label.text = Constants.watermarkLabelText
         label.textColor = UIColor(white: 0.0, alpha: 0.2)
         return label
