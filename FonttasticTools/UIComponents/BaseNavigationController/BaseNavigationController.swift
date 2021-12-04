@@ -25,7 +25,7 @@ open class BaseNavigationController: UINavigationController {
         navigationItem.largeTitleDisplayMode = .never
 
         navigationBar.titleTextAttributes = [
-            .font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
+            .font: UIFont(name: "Avenir Next", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
             .foregroundColor: Colors.blackAndWhite
         ]
 

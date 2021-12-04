@@ -32,9 +32,11 @@ class SubscriptionActionButton: UIButton {
     }
 
     private func setupLayout() {
+        self.clipsToBounds = true
         self.backgroundColor = .clear
 
         addSubview(gradientView)
+        gradientView.isUserInteractionEnabled = false
         self.sendSubviewToBack(gradientView)
 
         constrain(self, gradientView) { view, gradientView in
@@ -48,6 +50,9 @@ private extension LinearGradient {
     static let actionButton = LinearGradient(
         direction: CGPoint(x: 0, y: 1),
         locations: [0, 1],
-        colors: [Colors.accentBackgroundTop, Colors.accentBackgroundBottom]
+        colors: [
+            UIColor(red: 0.968, green: 0, blue: 0.988, alpha: 1),
+            UIColor(red: 0.42, green: 0, blue: 0.75, alpha: 1)
+        ]
     )
 }

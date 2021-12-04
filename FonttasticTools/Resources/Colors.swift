@@ -14,7 +14,7 @@ public final class Colors {
     public static let blackAndWhite: UIColor = makeDynamicColor(light: .black, dark: .white)
     public static let whiteAndBlack: UIColor = makeDynamicColor(light: .white, dark: .black)
 
-    public static let brandMainLight: UIColor = UIColor(hex: 0x0032FC)
+    public static let brandMainLight: UIColor = UIColor(hex: 0x7E00FC)
     public static let brandMain: UIColor = makeDynamicColor(
         light: brandMainLight,
         dark: .white
