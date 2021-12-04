@@ -26,7 +26,7 @@ open class BaseNavigationController: UINavigationController {
 
         navigationBar.titleTextAttributes = [
             .font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
-            .foregroundColor: Colors.textMajor
+            .foregroundColor: Colors.blackAndWhite
         ]
 
         navigationBar.shadowImage = UIImage()

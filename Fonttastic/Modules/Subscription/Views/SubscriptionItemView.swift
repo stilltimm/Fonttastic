@@ -54,7 +54,7 @@ class SubscriptionItemView: UIControl {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.textColor = Colors.textMajor
+        label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
     }()
@@ -66,7 +66,7 @@ class SubscriptionItemView: UIControl {
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16)
-        label.textColor = Colors.textMajor
+        label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
     }()
@@ -150,9 +150,9 @@ class SubscriptionItemView: UIControl {
                 string: priceFormatter.string(from: strikethroughPrice),
                 attributes: [
                     .font: UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16),
-                    .foregroundColor: Colors.textMinor,
+                    .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.5),
                     .strikethroughStyle: 1,
-                    .strikethroughColor: Colors.textMinor
+                    .strikethroughColor: Colors.blackAndWhite
                 ]
             )
         }

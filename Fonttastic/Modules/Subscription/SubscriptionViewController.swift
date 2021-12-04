@@ -13,16 +13,21 @@ class SubscriptionViewController: UIViewController {
 
     // MARK: - Subviews
 
+    private let backgroundView: UIView = {
+        let imageView = UIImageView(image: UIImage(named: "bg"))
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     private let headerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .center
-        imageView.image = UIImage(named: "subscription-header-image")
+        imageView.image = UIImage(named: "keyboard-pro-header")
         return imageView
     }()
     private let headerTitle: UILabel = {
         let label = UILabel()
-        label.textColor = Colors.textMajor
-        label.font = UIFont(name: "Georgia-Bold", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .bold)
+        label.textColor = Colors.blackAndWhite
+        label.font = UIFont(name: "Futura-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = Strings.subscriptionHeaderTitle
@@ -30,7 +35,7 @@ class SubscriptionViewController: UIViewController {
     }()
     private let headerSubtitle: UILabel = {
         let label = UILabel()
-        label.textColor = Colors.textMinor
+        label.textColor = Colors.blackAndWhite
         label.font = UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -38,12 +43,10 @@ class SubscriptionViewController: UIViewController {
         return label
     }()
     private let actionButton: SubscriptionActionButton = {
-        let button = SubscriptionActionButton()
+        let button = SubscriptionActionButton(frame: .zero)
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
         button.titleLabel?.textColor = UIColor.white
-        button.backgroundColor = Colors.brandMainLight
-        button.clipsToBounds = false
         button.layer.cornerRadius = 16
         button.layer.cornerCurve = .continuous
         return button
@@ -88,12 +91,6 @@ class SubscriptionViewController: UIViewController {
         setupNavigationBar()
         setupLayout()
         setupBusinessLogic()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        actionButton.layer.applyShadow(actionButtonShadow)
     }
 
     // MARK: - Private Instance Methods
@@ -142,6 +139,7 @@ class SubscriptionViewController: UIViewController {
             return
         }
 
+        view.addSubview(backgroundView)
         view.addSubview(headerImageView)
         view.addSubview(headerTitle)
         view.addSubview(headerSubtitle)
@@ -171,13 +169,16 @@ class SubscriptionViewController: UIViewController {
 
         constrain(
             view,
+            backgroundView,
             headerImageView,
             headerTitle,
             headerSubtitle,
             actionButton,
             firstSubscriptionItemView,
             lastSubscriptionItemView
-        ) { view, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
+        ) { view, background, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
+            background.edges == view.edges
+
             headerImage.left == view.left
             headerImage.right == view.right
             headerImage.top == view.safeAreaLayoutGuide.top + Constants.edgeInsets.top

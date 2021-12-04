@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
+    <accessibilityOverrides dynamicTypePreference="3"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
@@ -21,12 +22,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="W7U-pa-VyQ">
-                                <rect key="frame" x="76.5" y="422" width="245" height="62.5"/>
+                                <rect key="frame" x="84.5" y="422" width="245" height="62.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fonttastic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOu-0W-4Oe">
                                         <rect key="frame" x="0.0" y="0.0" width="245" height="62.5"/>
                                         <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="48"/>
-                                        <color key="textColor" name="AccentColor"/>
+                                        <color key="textColor" name="BlackAndWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -35,7 +36,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="BackgroundMain"/>
                         <constraints>
-                            <constraint firstItem="W7U-pa-VyQ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" constant="-8" id="2Kl-tr-nKc"/>
+                            <constraint firstItem="W7U-pa-VyQ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="2Kl-tr-nKc"/>
                             <constraint firstItem="UsX-ES-Nhw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="J2l-9g-rrW"/>
                             <constraint firstItem="W7U-pa-VyQ" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="KlM-tl-Y99"/>
                             <constraint firstItem="UsX-ES-Nhw" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="g6K-F6-Ppp"/>
@@ -51,11 +52,11 @@
     </scenes>
     <resources>
         <image name="bg" width="375" height="812"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="BackgroundMain">
             <color red="0.97254901960784312" green="0.97647058823529409" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BlackAndWhite">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
