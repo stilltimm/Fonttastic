@@ -67,11 +67,6 @@ public class FontSelectionController: UIViewController {
         navigationItem.title = Strings.fontSelectionTitle
         navigationItem.prompt = promptText(for: keyboardLanguage)
 
-        navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
-            name: "AvenirNext-Medium",
-            size: 24
-        )
-
         navigationItem.setRightBarButton(
             UIBarButtonItem(
                 barButtonSystemItem: .done,

@@ -13,6 +13,11 @@ class FontDetailsViewController: UIViewController {
 
     // MARK: - Subviews
 
+    private let backgroundView: UIView = {
+        let imageView = UIImageView(image: UIImage(named: "bg"))
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -28,15 +33,14 @@ class FontDetailsViewController: UIViewController {
         return view
     }()
     private let textContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.backgroundMinor
+        let view = LinearGradientView(linearGradient: .glass)
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
         return view
     }()
     private let textView: UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = Colors.backgroundMinor
+        textView.backgroundColor = .clear
         textView.isScrollEnabled = false
         return textView
     }()
@@ -45,7 +49,7 @@ class FontDetailsViewController: UIViewController {
 
     private let fontModel: FontModel
 
-    private var text: String = Constants.initialText
+    private var text: String = ""
     private var textAlignment: NSTextAlignment = Constants.initialFontAlignment
     private var textSize: CGFloat = Constants.initialFontSize
 
@@ -71,16 +75,14 @@ class FontDetailsViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = fontModel.displayName
 
-        navigationController?.navigationBar.titleTextAttributes?[.font] = UIFont(
-            name: "AvenirNext-Medium",
-            size: 24
-        )
         view.backgroundColor = Colors.backgroundMain
 
         setupLayout()
         updateTextViewStyle()
 
-        textView.text = text
+        textView.text = Constants.placeholderText
+        textView.textColor = Constants.placeholderTextColor
+        textView.delegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -92,14 +94,16 @@ class FontDetailsViewController: UIViewController {
     // MARK: - Private Methods
 
     private func setupLayout() {
+        view.addSubview(backgroundView)
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         containerView.addSubview(textContainerView)
         textContainerView.addSubview(textView)
 
         constrain(
-            view, scrollView, containerView, textContainerView, textView
-        ) { (view, scrollView, container, textContainer, textView) in
+            view, backgroundView, scrollView, containerView, textContainerView, textView
+        ) { (view, background, scrollView, container, textContainer, textView) in
+            background.edges == view.edges
             scrollView.edges == view.edges
 
             textView.edges == textContainer.edges.inseted(by: Constants.textInsets)
@@ -140,6 +144,34 @@ class FontDetailsViewController: UIViewController {
     }
 }
 
+extension FontDetailsViewController: UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.textColor == Constants.placeholderTextColor {
+            textView.text = nil
+            textView.textColor = Colors.blackAndWhite
+        }
+
+        return true
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = Constants.placeholderText
+            textView.textColor = Constants.placeholderTextColor
+        }
+    }
+}
+
+private extension LinearGradient {
+
+    static let glass: LinearGradient = LinearGradient(
+        direction: CGPoint(x: 0, y: 1),
+        locations: [0, 1],
+        colors: [Colors.glassBackgroundTop, Colors.glassBackgroundBottom]
+    )
+}
+
 private enum Constants {
 
     static let containerHorziontalMargins: CGFloat = 16
@@ -149,7 +181,8 @@ private enum Constants {
 
     static let containerCornerRadius: CGFloat = 16.0
 
-    static let initialText: String = "Quick brown fox jumps over the lazy dog"
+    static let placeholderText: String = "Quick brown fox jumps over the lazy dog"
+    static let placeholderTextColor: UIColor = Colors.blackAndWhite.withAlphaComponent(0.5)
     static let initialFontSize: CGFloat = 36.0
     static let initialFontAlignment: NSTextAlignment = .center
 

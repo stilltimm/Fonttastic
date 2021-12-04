@@ -33,9 +33,14 @@ class SubscriptionItemView: UIControl {
 
     // MARK: - Subviews
 
+    private let backgroundView: UIView = {
+        let view = LinearGradientView(linearGradient: .glass)
+        view.isUserInteractionEnabled = false
+        return view
+    }()
     private let checkboxContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Colors.backgroundMain
+        view.backgroundColor = UIColor.white
         view.layer.masksToBounds = true
         view.layer.cornerRadius = Constants.checkboxSize.height / 2
         view.layer.cornerCurve = .circular
@@ -53,8 +58,8 @@ class SubscriptionItemView: UIControl {
     }()
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
-        label.textColor = Colors.textMajor
+        label.font = UIFont(name: "Avenir Next", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
     }()
@@ -65,8 +70,8 @@ class SubscriptionItemView: UIControl {
     }()
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16)
-        label.textColor = Colors.textMajor
+        label.font = UIFont(name: "Avenir Next", size: 16) ?? UIFont.systemFont(ofSize: 16)
+        label.textColor = Colors.blackAndWhite
         label.isUserInteractionEnabled = false
         return label
     }()
@@ -93,12 +98,14 @@ class SubscriptionItemView: UIControl {
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
+        self.clipsToBounds = true
         self.layer.borderColor = Colors.brandMainLight.cgColor
         self.layer.borderWidth = 0
         self.layer.cornerRadius = 16
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = Colors.backgroundMinor
+        self.backgroundColor = .clear
 
+        addSubview(backgroundView)
         addSubview(checkboxContainerView)
         checkboxContainerView.addSubview(checkboxImageView)
         addSubview(titleLabel)
@@ -127,8 +134,10 @@ class SubscriptionItemView: UIControl {
         )
 
         constrain(
-            self, checkboxContainerView, checkboxImageView, titleLabel, priceLabel
-        ) { view, checkboxContainer, checkboxImage, title, price in
+            self, backgroundView, checkboxContainerView, checkboxImageView, titleLabel, priceLabel
+        ) { view, background, checkboxContainer, checkboxImage, title, price in
+            background.edges == view.edges
+
             checkboxContainer.width == Constants.checkboxSize.width
             checkboxContainer.height == Constants.checkboxSize.height
             checkboxContainer.centerY == view.centerY
@@ -149,10 +158,10 @@ class SubscriptionItemView: UIControl {
             strikethroughPriceLabel.attributedText = NSAttributedString(
                 string: priceFormatter.string(from: strikethroughPrice),
                 attributes: [
-                    .font: UIFont(name: "AvenirNext", size: 16) ?? UIFont.systemFont(ofSize: 16),
-                    .foregroundColor: Colors.textMinor,
+                    .font: UIFont(name: "Avenir Next", size: 16) ?? UIFont.systemFont(ofSize: 16),
+                    .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.3),
                     .strikethroughStyle: 1,
-                    .strikethroughColor: Colors.textMinor
+                    .strikethroughColor: Colors.blackAndWhite
                 ]
             )
         }
@@ -169,13 +178,22 @@ class SubscriptionItemView: UIControl {
 
     private func updateSelectedState() {
         UIView.animate(withConfig: .fastControl) {
-            self.layer.borderWidth = self.isSelected ? 3.0 : 0.0
+            self.layer.borderWidth = self.isSelected ? 2.0 : 0.0
             self.checkboxContainerView.backgroundColor = self.isSelected ?
                 Colors.brandMainLight :
-                Colors.backgroundMain
+            UIColor.white.withAlphaComponent(0.5)
             self.checkboxImageView.alpha = self.isSelected ? 1.0 : 0.0
         }
     }
+}
+
+private extension LinearGradient {
+
+    static let glass = LinearGradient(
+        direction: CGPoint(x: 0, y: 1),
+        locations: [0, 1],
+        colors: [Colors.glassBackgroundTop, Colors.glassBackgroundBottom]
+    )
 }
 
 private enum Constants {

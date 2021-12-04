@@ -21,7 +21,6 @@ class FontListViewModel {
 
     init(mode: FontListCollectionViewModel.Mode) {
         self.fontListCollectionViewModel = FontListCollectionViewModel(mode: mode)
-        setupBusinessLogic()
     }
 
     // MARK: - Public Instance Properties
@@ -42,9 +41,9 @@ class FontListViewModel {
         }
     }
 
-    // MARK: - Private Instance Properties
+    // MARK: - Internal Instance Properties
 
-    private func setupBusinessLogic() {
-
+    func reloadData() {
+        fontListCollectionViewModel.reloadData()
     }
 }

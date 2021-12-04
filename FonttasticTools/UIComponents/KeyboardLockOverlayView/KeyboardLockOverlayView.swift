@@ -21,7 +21,7 @@ public class KeyboardLockOverlayView: UIControl {
     }()
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont(name: "Avenir Next Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = Colors.blackAndWhite
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -30,7 +30,7 @@ public class KeyboardLockOverlayView: UIControl {
     }()
     private let messageLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext", size: 18) ?? UIFont.systemFont(ofSize: 18)
+        label.font = UIFont(name: "Avenir Next", size: 18) ?? UIFont.systemFont(ofSize: 18)
         label.textColor = Colors.blackAndWhite
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -48,7 +48,7 @@ public class KeyboardLockOverlayView: UIControl {
     }()
     private let actionButtonLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext-Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont(name: "Avenir Next Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = UIColor.white
         label.textAlignment = .center
         label.numberOfLines = 1

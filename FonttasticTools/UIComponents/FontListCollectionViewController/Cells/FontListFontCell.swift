@@ -7,6 +7,7 @@
 
 import UIKit
 import Cartography
+import FonttasticTools
 
 public struct FontListFontViewModel {
 
@@ -110,8 +111,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     // MARK: - Subviews
 
     private let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.backgroundFocused
+        let view = LinearGradientView(linearGradient: Constants.backgroundLinearGradient)
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
         return view
@@ -123,7 +123,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     }()
     private let detailsTextLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Colors.textMinor
+        label.textColor = Colors.blackAndWhite
         label.font = Constants.detailsLabelFont
         label.numberOfLines = 0
         return label
@@ -199,7 +199,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     public func applyShadowIfNeeded() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.containerView.layer.applyShadow(Constants.containerShadow)
+//            self.containerView.layer.applyShadow(Constants.containerShadow)
         }
     }
 
@@ -256,9 +256,15 @@ private enum Constants {
         weight: .regular
     )
     static let detailsLabelFont: UIFont = {
-        if let customFont = UIFont(name: "AvenirNext", size: Constants.detailsLabelTextSize) {
+        if let customFont = UIFont(name: "Avenir Next", size: Constants.detailsLabelTextSize) {
             return customFont
         }
         return UIFont.systemFont(ofSize: Constants.detailsLabelTextSize, weight: .regular)
     }()
+
+    static let backgroundLinearGradient: LinearGradient = LinearGradient(
+        direction: CGPoint(x: 0, y: 1),
+        locations: [0, 1],
+        colors: [Colors.glassBackgroundTop, Colors.glassBackgroundBottom]
+    )
 }

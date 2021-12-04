@@ -53,7 +53,7 @@ extension UIView {
 extension UIView.SpringAnimationConfig {
 
     public static let fastControl: UIView.SpringAnimationConfig = UIView.SpringAnimationConfig(
-        duration: 0.2,
-        usingSpringWithDamping: 0.75
+        duration: 0.25,
+        usingSpringWithDamping: 0.8
     )
 }

@@ -60,30 +60,30 @@ public class FontListCollectionViewModel {
     public init(mode: Mode) {
         self.mode = mode
 
-        updateData()
+        reloadData()
         setupBusinessLogic()
     }
 
     // MARK: - Public Instance Methods
+
+    public func reloadData() {
+        sections = makeSections()
+        self.shouldReloadDataEvent.onNext(())
+    }
 
     // MARK: - Private Instance Methods
 
     private func setupBusinessLogic() {
         fontModelsRepository.didUpdateFontsEvent.subscribe(self) { [weak self] in
             guard let self = self else { return }
-            self.updateData()
-            self.shouldReloadDataEvent.onNext(())
+            self.reloadData()
         }
-    }
-
-    private func updateData() {
-        sections = makeSections()
     }
 
     private func makeSections() -> [Section] {
         switch mode {
         case .fontsShowcase:
-            return makeSectionsForFontsShowcase(appStatus: appStatusService.appStatus)
+            return makeSectionsForFontsShowcase(appStatus: appStatusService.getAppStatus(hasFullAccess: nil))
 
         case .fontSelection:
             return makeSectionsForFontSelection()
@@ -93,17 +93,25 @@ public class FontListCollectionViewModel {
     private func makeSectionsForFontsShowcase(appStatus: AppStatus) -> [Section] {
         var result: [Section] = []
 
+        // Header
+
+        let logoTitleSection = TitleSection(
+            titleViewModel: FontListTitleCell.ViewModel(title: "Fonttastic"),
+            titleDesign: .logo
+        )
+        result.append(.title(logoTitleSection))
+
         // Banner
 
         let bannerViewModel: FontListBannerCell.ViewModel?
         switch (appStatus.appSubscriptionStatus, appStatus.keyboardInstallationStatus) {
-        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+        case (_, .notInstalled):
             bannerViewModel = FontListBannerCell.ViewModel(title: Constants.keyboardInstallBannerText)
 
         case (.noSubscription, _):
             bannerViewModel = FontListBannerCell.ViewModel(title: Constants.subscriptionPurchaseBannerText)
 
-        case (.hasActiveSubscription, .installedWithFullAccess):
+        default:
             bannerViewModel = nil
         }
         if let bannerViewModel = bannerViewModel {
@@ -207,9 +215,9 @@ public class FontListCollectionViewModel {
 private extension FontListBannerCell.Design {
 
     static let `default` = FontListBannerCell.Design(
-        minHeightToWidthAspectRatio: 1.0 / 5.0,
+        minHeightToWidthAspectRatio: 9.0 / 16.0,
         contentInsets: .init(vertical: 16, horizontal: 16),
-        font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
+        font: UIFont(name: "Avenir Next Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium),
         textColor: .white,
         backgroundColor: Colors.brandMainLight,
         cornerRadius: 16,
@@ -226,8 +234,13 @@ private extension FontListBannerCell.Design {
 
 private extension FontListTitleCell.Design {
 
-    static let fontListTitle: FontListTitleCell.Design = .init(
-        font: UIFont(name: "AvenirNext-Demibold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
+    static let logo: FontListTitleCell.Design = FontListTitleCell.Design(
+        font: UIFont(name: "Futura-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold),
+        textColor: Colors.blackAndWhite
+    )
+
+    static let fontListTitle: FontListTitleCell.Design = FontListTitleCell.Design(
+        font: UIFont(name: "Avenir Next Bold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
         textColor: Colors.titleMinor
     )
 }
