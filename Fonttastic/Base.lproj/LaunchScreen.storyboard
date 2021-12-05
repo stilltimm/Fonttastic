@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="UsX-ES-Nhw">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="UsX-ES-Nhw">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="W7U-pa-VyQ">
@@ -37,10 +37,10 @@
                         <color key="backgroundColor" name="BackgroundMain"/>
                         <constraints>
                             <constraint firstItem="W7U-pa-VyQ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="2Kl-tr-nKc"/>
-                            <constraint firstItem="UsX-ES-Nhw" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="J2l-9g-rrW"/>
                             <constraint firstItem="W7U-pa-VyQ" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="KlM-tl-Y99"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UsX-ES-Nhw" secondAttribute="trailing" id="ToV-IE-cXD"/>
+                            <constraint firstItem="UsX-ES-Nhw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XY4-uD-KnJ"/>
                             <constraint firstItem="UsX-ES-Nhw" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="g6K-F6-Ppp"/>
-                            <constraint firstItem="UsX-ES-Nhw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="tf7-aw-Stl"/>
                             <constraint firstAttribute="bottom" secondItem="UsX-ES-Nhw" secondAttribute="bottom" id="xHc-5N-HJr"/>
                         </constraints>
                     </view>

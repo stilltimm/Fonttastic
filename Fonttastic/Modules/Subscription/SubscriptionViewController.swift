@@ -27,7 +27,7 @@ class SubscriptionViewController: UIViewController {
     private let headerTitle: UILabel = {
         let label = UILabel()
         label.textColor = Colors.blackAndWhite
-        label.font = UIFont(name: "Futura-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold)
+        label.font = UIFont(name: "Futura-Bold", size: 36) ?? UIFont.systemFont(ofSize: 36, weight: .bold)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.text = Strings.subscriptionHeaderTitle
@@ -65,16 +65,16 @@ class SubscriptionViewController: UIViewController {
 
     private let subscriptionItems: [SubscriptionItemModel] = [
         SubscriptionItemModel(
-            identifier: "com.romandegtyarev.fonttastic.subscription.weekly",
-            title: "1 неделя",
-            price: Price(value: 99, currency: .rub),
+            identifier: "com.romandegtyarev.fonttastic.subscription.premium.weekly",
+            title: "1 week",
+            price: Price(value: 0.99, currency: .dollar),
             strikethroughPrice: nil
         ),
         SubscriptionItemModel(
-            identifier: "com.romandegtyarev.fonttastic.subscription.monthly",
-            title: "1 месяц",
-            price: Price(value: 169, currency: .rub),
-            strikethroughPrice: Price(value: 400, currency: .rub)
+            identifier: "com.romandegtyarev.fonttastic.subscription.premium.monthly",
+            title: "1 month",
+            price: Price(value: 1.99, currency: .dollar),
+            strikethroughPrice: Price(value: 4, currency: .dollar)
         )
     ]
     private var selectedSubscriptionItemID: SubscriptionItemModel.Identifier?
