@@ -14,7 +14,7 @@ class SubscriptionViewController: UIViewController {
     // MARK: - Subviews
 
     private let backgroundView: UIView = {
-        let imageView = UIImageView(image: UIImage(named: "bg"))
+        let imageView = UIImageView(image: Images.defaultBackground)
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -102,16 +102,16 @@ class SubscriptionViewController: UIViewController {
         self.navigationItem.setLeftBarButtonItems(
             [
                 UIBarButtonItem(
-                    title: Strings.subscriptionNavigationItemRestoreActionTitle,
-                    style: UIBarButtonItem.Style.plain,
-                    target: self,
-                    action: #selector(self.handleRestoreAction)
-                ),
-                UIBarButtonItem(
                     title: Strings.subscriptionNavigationItemTermsActionTitle,
                     style: UIBarButtonItem.Style.plain,
                     target: self,
                     action: #selector(self.handleTermsAction)
+                ),
+                UIBarButtonItem(
+                    title: Strings.subscriptionNavigationItemRestoreActionTitle,
+                    style: UIBarButtonItem.Style.plain,
+                    target: self,
+                    action: #selector(self.handleRestoreAction)
                 )
             ],
             animated: false

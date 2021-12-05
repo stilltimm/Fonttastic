@@ -11,7 +11,12 @@ import Cartography
 public class FontListCollectionViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 
     // MARK: - Subviews
-
+    private let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = Images.defaultBackground
+        return imageView
+    }()
     private let collectionViewLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = Constants.spacing
@@ -69,6 +74,10 @@ public class FontListCollectionViewController: UIViewController, UICollectionVie
     // MARK: - Private Methods
 
     private func setupLayout() {
+        view.addSubview(backgroundImageView)
+        constrain(view, backgroundImageView) { view, background in
+            background.edges == view.edges
+        }
         setupCollectionView()
     }
 

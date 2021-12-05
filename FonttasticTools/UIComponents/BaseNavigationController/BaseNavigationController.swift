@@ -21,15 +21,10 @@ open class BaseNavigationController: UINavigationController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationBar.prefersLargeTitles = false
-        navigationItem.largeTitleDisplayMode = .never
-
         navigationBar.titleTextAttributes = [
             .font: UIFont(name: "AvenirNext-Medium", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold),
             .foregroundColor: Colors.blackAndWhite
         ]
-
-        navigationBar.shadowImage = UIImage()
-        view.backgroundColor = Colors.backgroundMain
+        navigationBar.isTranslucent = true
     }
 }

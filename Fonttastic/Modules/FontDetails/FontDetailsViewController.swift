@@ -14,7 +14,7 @@ class FontDetailsViewController: UIViewController {
     // MARK: - Subviews
 
     private let backgroundView: UIView = {
-        let imageView = UIImageView(image: UIImage(named: "bg"))
+        let imageView = UIImageView(image: Images.defaultBackground)
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -31,6 +31,13 @@ class FontDetailsViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .clear
         return view
+    }()
+    private let fontNameLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont(name: "AvenirNext-Bold", size: 36) ?? UIFont.systemFont(ofSize: 36, weight: .bold)
+        label.textColor = Colors.blackAndWhite
+        return label
     }()
     private let textContainerView: UIView = {
         let view = LinearGradientView(linearGradient: .glass)
@@ -72,14 +79,13 @@ class FontDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = fontModel.displayName
-
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = Colors.backgroundMain
 
         setupLayout()
         updateTextViewStyle()
 
+        fontNameLabel.text = fontModel.displayName
         textView.text = Constants.placeholderText
         textView.textColor = Constants.placeholderTextColor
         textView.delegate = self
@@ -97,12 +103,13 @@ class FontDetailsViewController: UIViewController {
         view.addSubview(backgroundView)
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
+        containerView.addSubview(fontNameLabel)
         containerView.addSubview(textContainerView)
         textContainerView.addSubview(textView)
 
         constrain(
-            view, backgroundView, scrollView, containerView, textContainerView, textView
-        ) { (view, background, scrollView, container, textContainer, textView) in
+            view, backgroundView, scrollView, containerView, fontNameLabel, textContainerView, textView
+        ) { (view, background, scrollView, container, fontName, textContainer, textView) in
             background.edges == view.edges
             scrollView.edges == view.edges
 
@@ -110,7 +117,14 @@ class FontDetailsViewController: UIViewController {
             let heightConstraint = (textView.height >= Constants.textViewMinimumHeight)
             heightConstraint.priority = .required
 
-            textContainer.edges == container.edges.inseted(by: Constants.contentInsets)
+            fontName.top == container.top + Constants.contentInsets.top
+            fontName.left == container.left + Constants.contentInsets.left
+            fontName.right == container.right - Constants.contentInsets.right
+
+            textContainer.top == fontName.bottom + Constants.fontNameToTextContainerSpacing
+            textContainer.left == container.left + Constants.contentInsets.left
+            textContainer.right == container.right - Constants.contentInsets.right
+            textContainer.bottom == container.bottom - Constants.contentInsets.bottom
 
             container.width == view.width
         }
@@ -178,13 +192,14 @@ private enum Constants {
     static let contentInsets: UIEdgeInsets = .init(vertical: 24, horizontal: 16)
     static let textInsets: UIEdgeInsets = .init(vertical: 12, horizontal: 16)
     static let textViewMinimumHeight: CGFloat = 44.0
+    static let fontNameToTextContainerSpacing: CGFloat = 8.0
 
     static let containerCornerRadius: CGFloat = 16.0
 
     static let placeholderText: String = "Quick brown fox jumps over the lazy dog"
-    static let placeholderTextColor: UIColor = Colors.blackAndWhite.withAlphaComponent(0.5)
+    static let placeholderTextColor: UIColor = Colors.blackAndWhite.withAlphaComponent(0.9)
     static let initialFontSize: CGFloat = 36.0
-    static let initialFontAlignment: NSTextAlignment = .center
+    static let initialFontAlignment: NSTextAlignment = .left
 
     static let exportImageName: String = "square.and.arrow.up"
 }

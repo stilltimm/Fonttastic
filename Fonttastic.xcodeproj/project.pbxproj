@@ -36,6 +36,7 @@
 		2D4DB61227591E9000C4B6D5 /* KeychainContainerScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D4DB61127591E9000C4B6D5 /* KeychainContainerScope.swift */; };
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
+		2D53A3DC275BDDA50099DBE8 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3DB275BDDA50099DBE8 /* Images.swift */; };
 		2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */; };
 		2D8726FF274336A200D6D6DA /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D705AA7273AB44C00015D25 /* KeyboardType.swift */; };
 		2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
@@ -325,6 +326,7 @@
 		2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestNavigationController.swift; sourceTree = "<group>"; };
 		2D5239E8270243650039C112 /* KeyboardViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestController.swift; sourceTree = "<group>"; };
 		2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
+		2D53A3DB275BDDA50099DBE8 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLockOverlayView.swift; sourceTree = "<group>"; };
 		2D5665D02758044100A57AA2 /* Fonttastic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fonttastic.entitlements; sourceTree = "<group>"; };
 		2D5665D12758096D00A57AA2 /* FonttasticKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FonttasticKeyboard.entitlements; sourceTree = "<group>"; };
@@ -711,6 +713,7 @@
 				2DD4254B26FCC84D00DFF767 /* Colors.swift */,
 				2D2E46F9270CA37A00728CC2 /* Sounds.swift */,
 				2D1E3A35274A678000822F05 /* Strings.swift */,
+				2D53A3DB275BDDA50099DBE8 /* Images.swift */,
 				2D1E3A33274A675C00822F05 /* Localizable.strings */,
 			);
 			path = Resources;
@@ -1582,6 +1585,7 @@
 				2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */,
 				2D872713274336A200D6D6DA /* CALayer+Shadow.swift in Sources */,
 				2D87271E274336A200D6D6DA /* FontModelFactory.swift in Sources */,
+				2D53A3DC275BDDA50099DBE8 /* Images.swift in Sources */,
 				2D4DB60E2759163B00C4B6D5 /* AppStatus.swift in Sources */,
 				2D4DB61227591E9000C4B6D5 /* KeychainContainerScope.swift in Sources */,
 				2DB2F561275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift in Sources */,

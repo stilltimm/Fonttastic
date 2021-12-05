@@ -195,7 +195,7 @@ public class DefaultFontsService: FontsService {
             return
         }
 
-        let fontModel = FontModel(name: name, displayName: name, resourceType: .system, status: .ready)
+        let fontModel = FontModel(name: name, resourceType: .system, status: .ready)
         fontModelsRepository.addFont(fontModel)
 
         completion(.success(fontModel))
@@ -296,7 +296,6 @@ public class DefaultFontsService: FontsService {
         let fontName = String(cfFontName)
         let fontModel = FontModel(
             name: fontName,
-            displayName: fontName,
             resourceType: resourceType,
             status: .ready
         )
@@ -400,7 +399,6 @@ private enum Constants {
 
     static let defaultLastUsedFontModel: FontModel = FontModel(
         name: "Georgia-Bold",
-        displayName: "Georgia Bold",
         resourceType: .system,
         status: .ready
     )

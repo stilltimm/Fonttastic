@@ -35,12 +35,6 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     // MARK: - Subviews
 
-    private let backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "bg")
-        return imageView
-    }()
     private let fontListCollectionViewController: FontListCollectionViewController
 
     // TODO: Show add font after solving [svg]->.ttf pipe
@@ -95,10 +89,6 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Private Methods
 
     private func setupLayout() {
-        view.addSubview(backgroundImageView)
-        constrain(view, backgroundImageView) { view, background in
-            background.edges == view.edges
-        }
         setupFontListCollectionViewController()
 //        setupAddFontButton()
     }

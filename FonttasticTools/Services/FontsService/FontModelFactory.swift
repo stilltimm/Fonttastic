@@ -17,7 +17,6 @@ public final class FontModelFactory {
             let fontState = makeFontState(fontSourceModel)
             return FontModel(
                 name: fontSourceModel.name,
-                displayName: fontSourceModel.name,
                 resourceType: fontSourceModel.resourceType,
                 status: fontState
             )
