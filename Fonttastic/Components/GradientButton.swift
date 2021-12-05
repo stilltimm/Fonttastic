@@ -1,5 +1,5 @@
 //
-//  SubscriptionActionButton.swift
+//  GradientButton.swift
 //  Fonttastic
 //
 //  Created by Timofey Surkov on 03.12.2021.
@@ -9,7 +9,7 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-class SubscriptionActionButton: UIButton {
+class GradientButton: UIButton {
 
     override var isHighlighted: Bool {
         didSet {

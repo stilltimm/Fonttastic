@@ -9,15 +9,10 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-class SubscriptionViewController: UIViewController {
+class SubscriptionViewController: UIViewController, OnboardingPageViewControllerType {
 
     // MARK: - Subviews
 
-    private let backgroundView: UIView = {
-        let imageView = UIImageView(image: Images.defaultBackground)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
     private let headerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .center
@@ -42,8 +37,8 @@ class SubscriptionViewController: UIViewController {
         label.text = Strings.subscriptionHeaderSubtitle
         return label
     }()
-    private let actionButton: SubscriptionActionButton = {
-        let button = SubscriptionActionButton(frame: .zero)
+    private let actionButton: GradientButton = {
+        let button = GradientButton(frame: .zero)
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
         button.titleLabel?.textColor = UIColor.white
@@ -60,6 +55,10 @@ class SubscriptionViewController: UIViewController {
         spread: -8
     )
     private var subscriptionItemViews: [SubscriptionItemView] = []
+
+    // MARK: - Internal Instance Properties
+
+    var onboardingPage: OnboardingPage { .subscription }
 
     // MARK: - Private Instance Properties
 
@@ -85,8 +84,6 @@ class SubscriptionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = Colors.backgroundMain
 
         setupNavigationBar()
         setupLayout()
@@ -139,7 +136,6 @@ class SubscriptionViewController: UIViewController {
             return
         }
 
-        view.addSubview(backgroundView)
         view.addSubview(headerImageView)
         view.addSubview(headerTitle)
         view.addSubview(headerSubtitle)
@@ -169,16 +165,13 @@ class SubscriptionViewController: UIViewController {
 
         constrain(
             view,
-            backgroundView,
             headerImageView,
             headerTitle,
             headerSubtitle,
             actionButton,
             firstSubscriptionItemView,
             lastSubscriptionItemView
-        ) { view, background, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
-            background.edges == view.edges
-
+        ) { view, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
             headerImage.left == view.left
             headerImage.right == view.right
             headerImage.top == view.safeAreaLayoutGuide.top + Constants.edgeInsets.top

@@ -37,6 +37,11 @@
 		2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E6270243360039C112 /* KeyboardViewTestNavigationController.swift */; };
 		2D5239E9270243650039C112 /* KeyboardViewTestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239E8270243650039C112 /* KeyboardViewTestController.swift */; };
 		2D53A3DC275BDDA50099DBE8 /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3DB275BDDA50099DBE8 /* Images.swift */; };
+		2D53A3DF275D36010099DBE8 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3DE275D36010099DBE8 /* OnboardingViewController.swift */; };
+		2D53A3E1275D360C0099DBE8 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3E0275D360C0099DBE8 /* OnboardingPageViewController.swift */; };
+		2D53A3E3275D4FE50099DBE8 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3E2275D4FE50099DBE8 /* OnboardingPage.swift */; };
+		2D53A3E5275D55BE0099DBE8 /* OnboardingFirstPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3E4275D55BE0099DBE8 /* OnboardingFirstPageViewController.swift */; };
+		2D53A3E7275D60ED0099DBE8 /* OnboardingSecondPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D53A3E6275D60ED0099DBE8 /* OnboardingSecondPageViewController.swift */; };
 		2D5665CF2757FE8300A57AA2 /* KeyboardLockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */; };
 		2D8726FF274336A200D6D6DA /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D705AA7273AB44C00015D25 /* KeyboardType.swift */; };
 		2D872700274336A200D6D6DA /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5239DD270236CA0039C112 /* KeyboardViewModel.swift */; };
@@ -82,7 +87,7 @@
 		2DAF9C1727453C27000A3489 /* FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */; platformFilter = ios; };
 		2DB2F561275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */; };
 		2DB2F563275A6FF200BF84D3 /* UIView+DefaultAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */; };
-		2DB2F565275A74AD00BF84D3 /* SubscriptionActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */; };
+		2DB2F565275A74AD00BF84D3 /* GradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2F564275A74AD00BF84D3 /* GradientButton.swift */; };
 		2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C08E271CB4CB00213DEF /* ImageProcessingService.swift */; };
 		2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C092271CB9AB00213DEF /* AlphabetType.swift */; };
 		2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC3C094271CB9DA00213DEF /* BitmapLetterSourceModel.swift */; };
@@ -327,6 +332,11 @@
 		2D5239E8270243650039C112 /* KeyboardViewTestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewTestController.swift; sourceTree = "<group>"; };
 		2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
 		2D53A3DB275BDDA50099DBE8 /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		2D53A3DE275D36010099DBE8 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		2D53A3E0275D360C0099DBE8 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		2D53A3E2275D4FE50099DBE8 /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
+		2D53A3E4275D55BE0099DBE8 /* OnboardingFirstPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFirstPageViewController.swift; sourceTree = "<group>"; };
+		2D53A3E6275D60ED0099DBE8 /* OnboardingSecondPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSecondPageViewController.swift; sourceTree = "<group>"; };
 		2D5665CE2757FE8300A57AA2 /* KeyboardLockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLockOverlayView.swift; sourceTree = "<group>"; };
 		2D5665D02758044100A57AA2 /* Fonttastic.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Fonttastic.entitlements; sourceTree = "<group>"; };
 		2D5665D12758096D00A57AA2 /* FonttasticKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FonttasticKeyboard.entitlements; sourceTree = "<group>"; };
@@ -456,7 +466,7 @@
 		2DAA49402747D1700089D024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB2F560275A36B200BF84D3 /* KeyboardLockOverlayViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLockOverlayViewConfig.swift; sourceTree = "<group>"; };
 		2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+DefaultAnimations.swift"; sourceTree = "<group>"; };
-		2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionActionButton.swift; sourceTree = "<group>"; };
+		2DB2F564275A74AD00BF84D3 /* GradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientButton.swift; sourceTree = "<group>"; };
 		2DBB1E3F2709E8A900E33DA9 /* KeyboardButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardButtonDesign.swift; sourceTree = "<group>"; };
 		2DC34893270B264D00420C63 /* CanvasWithSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasWithSettingsView.swift; sourceTree = "<group>"; };
 		2DC34895270B265F00420C63 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
@@ -594,6 +604,7 @@
 		2D060EE526FCC15F00047D89 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2D53A3DD275D35EF0099DBE8 /* Onboarding */,
 				2D2A0C7726FF81C00006E27B /* FontDetails */,
 				2DD4253926FCC44800DFF767 /* FontList */,
 				2D5239E52702431C0039C112 /* KeyboardViewTest */,
@@ -637,7 +648,6 @@
 			isa = PBXGroup;
 			children = (
 				2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */,
-				2DB2F564275A74AD00BF84D3 /* SubscriptionActionButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -769,6 +779,18 @@
 				2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2D53A3DD275D35EF0099DBE8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				2D53A3E4275D55BE0099DBE8 /* OnboardingFirstPageViewController.swift */,
+				2D53A3E2275D4FE50099DBE8 /* OnboardingPage.swift */,
+				2D53A3E0275D360C0099DBE8 /* OnboardingPageViewController.swift */,
+				2D53A3E6275D60ED0099DBE8 /* OnboardingSecondPageViewController.swift */,
+				2D53A3DE275D36010099DBE8 /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		2D5665CC2757FE1200A57AA2 /* Subscription */ = {
@@ -1068,6 +1090,7 @@
 		2DD4254026FCC4D000DFF767 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				2DB2F564275A74AD00BF84D3 /* GradientButton.swift */,
 				2D24C469271C999A00BB5C17 /* AddFontButton.swift */,
 			);
 			path = Components;
@@ -1503,18 +1526,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D060EB526FCC10900047D89 /* RootTabBarController.swift in Sources */,
+				2D53A3E1275D360C0099DBE8 /* OnboardingPageViewController.swift in Sources */,
 				2DD4255E26FD4C1700DFF767 /* Array+Utils.swift in Sources */,
 				2DC3C093271CB9AB00213DEF /* AlphabetType.swift in Sources */,
 				2D1E3A3D274A8EC100822F05 /* SubscriptionItemView.swift in Sources */,
 				2DC3C099271CC73D00213DEF /* SVGLetterSourceModel.swift in Sources */,
 				2D5239E7270243360039C112 /* KeyboardViewTestNavigationController.swift in Sources */,
 				2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */,
+				2D53A3DF275D36010099DBE8 /* OnboardingViewController.swift in Sources */,
 				2DD4253F26FCC4B500DFF767 /* FontListNavigationController.swift in Sources */,
+				2D53A3E7275D60ED0099DBE8 /* OnboardingSecondPageViewController.swift in Sources */,
 				2DC3C09D271CC79A00213DEF /* SVGAlphabetSourceModel.swift in Sources */,
 				2DD4254826FCC6C900DFF767 /* AddFontNavigationController.swift in Sources */,
 				2DC3C095271CB9DA00213DEF /* BitmapLetterSourceModel.swift in Sources */,
 				2DD4254426FCC6B800DFF767 /* SettingsNavigationController.swift in Sources */,
 				2DC3C097271CBD8D00213DEF /* BitmapAlphabetSourceModel.swift in Sources */,
+				2D53A3E3275D4FE50099DBE8 /* OnboardingPage.swift in Sources */,
 				2DA4CD8C2742772600CBE6A0 /* AppConfigurationService.swift in Sources */,
 				2DD4253D26FCC47C00DFF767 /* FontListViewController.swift in Sources */,
 				2DC3C08F271CB4CB00213DEF /* ImageProcessingService.swift in Sources */,
@@ -1529,7 +1556,8 @@
 				2D1E3A39274A7BB700822F05 /* SubscriptionViewController.swift in Sources */,
 				2D060EE826FCC2AE00047D89 /* RootNavigationController.swift in Sources */,
 				2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */,
-				2DB2F565275A74AD00BF84D3 /* SubscriptionActionButton.swift in Sources */,
+				2DB2F565275A74AD00BF84D3 /* GradientButton.swift in Sources */,
+				2D53A3E5275D55BE0099DBE8 /* OnboardingFirstPageViewController.swift in Sources */,
 				2DD4254626FCC6BF00DFF767 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
