@@ -131,6 +131,54 @@ final class OnboardingFirstPageViewController: OnboardingPageViewController {
             heading3.centerY == iphone.centerY - 30
         }
     }
+
+    override func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            isViewLoaded,
+            let window = view.window
+        else { return }
+
+        let originInWindow = view.convert(view.frame.center, to: window)
+        let windowWidth = window.bounds.width
+        let percentageOffsetFromWindowCenter: CGFloat = (originInWindow.x / windowWidth) - 0.5
+
+        titleLabel.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 40,
+            y: 0
+        )
+
+        let iPhoneScale: CGFloat = (1 - 0.2 * percentageOffsetFromWindowCenter)
+        iphoneImageView.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -20,
+            y: percentageOffsetFromWindowCenter * 40
+        ).scaledBy(x: iPhoneScale, y: iPhoneScale)
+
+        smileImageView1.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 80,
+            y: percentageOffsetFromWindowCenter * 60
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.4)
+        smileImageView2.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 40,
+            y: percentageOffsetFromWindowCenter * 20
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.2)
+        smileImageView3.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -30,
+            y: percentageOffsetFromWindowCenter * 10
+        ).rotated(by: percentageOffsetFromWindowCenter * -0.4)
+
+        headingImageView1.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 50
+        ).rotated(by: percentageOffsetFromWindowCenter * -0.3)
+        headingImageView2.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -50,
+            y: percentageOffsetFromWindowCenter * 30
+        ).rotated(by: percentageOffsetFromWindowCenter * -0.2)
+        headingImageView3.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 20
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.2)
+    }
 }
 
 private enum Constants {

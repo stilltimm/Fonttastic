@@ -91,12 +91,15 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         setupNavigationBar()
         setupLayout()
         setupBusinessLogic()
+
+        impactFeedbackGenerator.prepare()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         didAppearEvent.onNext(onboardingPage)
+        impactFeedbackGenerator.impactOccurred()
     }
 
     // MARK: - Private Instance Methods
@@ -226,6 +229,35 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private func updateSelectedSubscriptionItemView() {
         subscriptionItemViews.forEach { itemView in
             itemView.isSelected = (itemView.model.identifier == self.selectedSubscriptionItemID)
+        }
+    }
+
+    func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            isViewLoaded,
+            let window = view.window
+        else { return }
+
+        let originInWindow = view.convert(view.frame.center, to: window)
+        let windowWidth = window.bounds.width
+        let percentageOffsetFromWindowCenter: CGFloat = (originInWindow.x / windowWidth) - 0.5
+
+        let logoScale: CGFloat = 1 + (percentageOffsetFromWindowCenter * -0.2)
+        headerImageView.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 40
+        )
+            .rotated(by: percentageOffsetFromWindowCenter * -0.1)
+            .scaledBy(x: logoScale, y: logoScale)
+        headerTitle.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 40,
+            y: 0
+        )
+        subscriptionItemViews.enumerated().forEach { (i, subscriptionItemView) in
+            subscriptionItemView.transform = CGAffineTransform(
+                translationX: percentageOffsetFromWindowCenter * (40 + (CGFloat(i) + 1) * 10),
+                y: 0
+            )
         }
     }
 

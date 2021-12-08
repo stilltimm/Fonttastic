@@ -222,6 +222,7 @@
 		2DEDBFE027433605009C2347 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C822700B7CA0006E27B /* Event.swift */; };
 		2DEDBFE127433605009C2347 /* Potrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D67EC13271101F300ADE22A /* Potrace.swift */; };
 		2DEE07152747C6E5008342C4 /* FonttasticWatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */; };
+		2DF02AAD276107C200BB97D7 /* CGRect+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF02AAC276107C200BB97D7 /* CGRect+Center.swift */; };
 		94ECF605EE244714D846C11C /* Pods_Fonttastic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */; };
 		B37868BF4144A8EA61AF8EE2 /* Pods_FonttasticTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0C803B520657DA52516392A /* Pods_FonttasticTools.framework */; };
 /* End PBXBuildFile section */
@@ -500,6 +501,7 @@
 		2DEDBEA7274333F5009C2347 /* FonttasticTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FonttasticTools.h; sourceTree = "<group>"; };
 		2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticWatermarkView.swift; sourceTree = "<group>"; };
 		2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Orientation.swift"; sourceTree = "<group>"; };
+		2DF02AAC276107C200BB97D7 /* CGRect+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Center.swift"; sourceTree = "<group>"; };
 		63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fonttastic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ABE0D06ECE24F8B6ADBE951 /* Pods-FonttasticKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-FonttasticKeyboard/Pods-FonttasticKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		A0C803B520657DA52516392A /* Pods_FonttasticTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FonttasticTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -777,6 +779,7 @@
 				2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */,
 				2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */,
 				2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */,
+				2DF02AAC276107C200BB97D7 /* CGRect+Center.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1603,6 +1606,7 @@
 				2D872708274336A200D6D6DA /* Colors.swift in Sources */,
 				2D87270B274336A200D6D6DA /* KeyboardViewModel+Design.swift in Sources */,
 				2D872703274336A200D6D6DA /* KeyboardButtonDesign.swift in Sources */,
+				2DF02AAD276107C200BB97D7 /* CGRect+Center.swift in Sources */,
 				2D872716274336A200D6D6DA /* KeyboardButton.swift in Sources */,
 				2D87271F274336A200D6D6DA /* UICollectionView+DequeReusable.swift in Sources */,
 				2D87270E274336A200D6D6DA /* FontListTitleCell.swift in Sources */,

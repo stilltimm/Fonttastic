@@ -14,6 +14,8 @@ protocol OnboardingPageViewControllerProtocol: AnyObject {
     var onboardingPage: OnboardingPage { get }
     var didAppearEvent: Event<OnboardingPage> { get }
     var didTapActionButtonEvent: Event<OnboardingPage> { get }
+
+    func handleSrollViewDidScroll(_ scrollView: UIScrollView)
 }
 typealias OnboardingPageViewControllerType = (UIViewController & OnboardingPageViewControllerProtocol)
 
@@ -27,7 +29,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         view.backgroundColor = .clear
         return view
     }()
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -35,7 +37,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         label.textColor = Colors.blackAndWhite
         return label
     }()
-    private let actionButton: UIButton = {
+    let actionButton: UIButton = {
         let button = GradientButton()
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
@@ -53,7 +55,8 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
 
     // MARK: - Private Instance Properties
 
-    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
+    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
+    private let rigidImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
     // MARK: - Initializers
 
@@ -76,11 +79,14 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
 
         setupLayout()
         setupBusinessLogic()
+
+        impactFeedbackGenerator.prepare()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        impactFeedbackGenerator.impactOccurred()
         didAppearEvent.onNext(onboardingPage)
     }
 
@@ -114,8 +120,12 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
     }
 
     @objc private func handleActionButtonTap() {
-        impactFeedbackGenerator.impactOccurred()
+        rigidImpactFeedbackGenerator.impactOccurred()
         didTapActionButtonEvent.onNext(onboardingPage)
+    }
+
+    func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
+        logger.log("Subclasses must override this method", level: .debug)
     }
 }
 

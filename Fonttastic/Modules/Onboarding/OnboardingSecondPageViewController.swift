@@ -98,13 +98,52 @@ final class OnboardingSecondPageViewController: OnboardingPageViewController {
             appLogo.top == cardPreview.top
 
             heading1.left == content.left + 10
-            heading1.top == content.top + 30
+            heading1.top == content.top + 10
 
             heading2.right == content.right - 55
-            heading2.top == heading1.top + 30
+            heading2.top == heading1.top + 20
 
             heading3.centerX == content.centerX
-            heading3.centerY == content.centerY - 60
+            heading3.top == heading1.bottom + 10
         }
+    }
+
+    override func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            isViewLoaded,
+            let window = view.window
+        else { return }
+
+        let originInWindow = view.convert(view.frame.center, to: window)
+        let windowWidth = window.bounds.width
+        let percentageOffsetFromWindowCenter: CGFloat = (originInWindow.x / windowWidth) - 0.5
+
+        titleLabel.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 40,
+            y: 0
+        )
+
+        let cardScale: CGFloat = (1 - 0.1 * percentageOffsetFromWindowCenter)
+        cardPreviewImageView.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -20,
+            y: percentageOffsetFromWindowCenter * 40
+        ).scaledBy(x: cardScale, y: cardScale)
+        appLogoImageView.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 80,
+            y: percentageOffsetFromWindowCenter * 60
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.4)
+
+        headingImageView1.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 80
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.3)
+        headingImageView2.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -50,
+            y: percentageOffsetFromWindowCenter * 70
+        ).rotated(by: percentageOffsetFromWindowCenter * -0.2)
+        headingImageView3.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 60
+        ).rotated(by: percentageOffsetFromWindowCenter * 0.2)
     }
 }

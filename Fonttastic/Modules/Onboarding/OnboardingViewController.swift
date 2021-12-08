@@ -14,6 +14,15 @@ class OnboardingViewController: UIPageViewController {
 
     private let appStatusService: AppStatusService = DefaultAppStatusService.shared
 
+    private var scrollView: UIScrollView? {
+        for subview in view.subviews {
+            guard let firstScrollView = subview as? UIScrollView else { continue }
+            return firstScrollView
+        }
+
+        return nil
+    }
+
     // MARK: - Initializers
 
     init() {
@@ -35,6 +44,9 @@ class OnboardingViewController: UIPageViewController {
         super.viewDidLoad()
 
         self.dataSource = self
+        self.delegate = self
+        scrollView?.delegate = self
+
         self.isModalInPresentation = true
 
         let firstPageViewController = makeOnboardingPageViewController(for: .firstAppShowcase)
@@ -46,6 +58,8 @@ class OnboardingViewController: UIPageViewController {
         )
     }
 }
+
+extension OnboardingViewController: UIPageViewControllerDelegate {}
 
 extension OnboardingViewController: UIPageViewControllerDataSource {
 
@@ -132,6 +146,19 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
                 "TODO: log onboarding page \"\(onboardingPage)\" did appear",
                 level: .info
             )
+        }
+    }
+}
+
+extension OnboardingViewController: UIScrollViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.children.forEach { childViewController in
+            guard
+                let onboardingPageViewController = childViewController as? OnboardingPageViewControllerType
+            else { return }
+
+            onboardingPageViewController.handleSrollViewDidScroll(scrollView)
         }
     }
 }
