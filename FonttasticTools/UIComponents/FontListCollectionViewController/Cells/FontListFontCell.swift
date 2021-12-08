@@ -231,7 +231,7 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
 private enum Constants {
 
-    static let fontDisplayText: String = "Aa"
+    static let fontDisplayText: String = "Ab"
 
     static let containerHeight: CGFloat = 104.0
     static let containerCornerRadius: CGFloat = 16.0
