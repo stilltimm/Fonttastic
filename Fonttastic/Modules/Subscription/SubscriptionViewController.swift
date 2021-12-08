@@ -9,7 +9,7 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-class SubscriptionViewController: UIViewController, OnboardingPageViewControllerType {
+class SubscriptionViewController: UIViewController, OnboardingPageViewControllerProtocol {
 
     // MARK: - Subviews
 
@@ -59,6 +59,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     // MARK: - Internal Instance Properties
 
     var onboardingPage: OnboardingPage { .subscription }
+    let didAppearEvent = Event<OnboardingPage>()
+    let didTapActionButtonEvent = Event<OnboardingPage>()
 
     // MARK: - Private Instance Properties
 
@@ -79,6 +81,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private var selectedSubscriptionItemID: SubscriptionItemModel.Identifier?
 
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
+    private let rigidImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
     // MARK: - Internal Instance Methods
 
@@ -88,6 +91,12 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         setupNavigationBar()
         setupLayout()
         setupBusinessLogic()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppearEvent.onNext(onboardingPage)
     }
 
     // MARK: - Private Instance Methods
@@ -223,7 +232,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     // MARK: - Actions Handling
 
     @objc private func handleContinueAction() {
-        impactFeedbackGenerator.impactOccurred()
+        rigidImpactFeedbackGenerator.impactOccurred()
+        didTapActionButtonEvent.onNext(onboardingPage)
 
         guard
             let selectedSubscriptionItemID = selectedSubscriptionItemID,

@@ -80,6 +80,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             let onboardingViewController = OnboardingViewController()
             let nav = BaseNavigationController(rootViewController: onboardingViewController)
             navigationController?.present(nav, animated: true)
+
+            logger.log("TODO: log onboarding started", level: .info)
         }
     }
 

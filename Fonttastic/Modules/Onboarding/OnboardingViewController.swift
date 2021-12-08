@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import FonttasticTools
 
 class OnboardingViewController: UIPageViewController {
+
+    // MARK: - Private Instance Properties
+
+    private let appStatusService: AppStatusService = DefaultAppStatusService.shared
+
+    // MARK: - Initializers
 
     init() {
         super.init(
@@ -27,56 +34,104 @@ class OnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.dataSource = self
+        self.isModalInPresentation = true
+
+        let firstPageViewController = makeOnboardingPageViewController(for: .firstAppShowcase)
         self.setViewControllers(
-            [OnboardingFirstPageViewController()],
+            [firstPageViewController],
             direction: .forward,
             animated: false,
             completion: nil
         )
-
-        self.dataSource = self
     }
 }
 
 extension OnboardingViewController: UIPageViewControllerDataSource {
 
+    // MARK: - Internal Instance Methods
+
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard let onboardingPageViewController = viewController as? OnboardingPageViewControllerType else {
-            return nil
-        }
+        guard
+            let onboardingPageViewController = viewController as? OnboardingPageViewControllerType,
+            let nextPage = onboardingPageViewController.onboardingPage.next
+        else { return nil }
 
-        switch onboardingPageViewController.onboardingPage {
-        case .firstAppShowcase:
-            return OnboardingSecondPageViewController()
+        let nextOnboardingPageViewController = makeOnboardingPageViewController(for: nextPage)
+        configureOnboardingPageViewController(nextOnboardingPageViewController)
 
-        case .secondAppShowcase:
-            return SubscriptionViewController()
-
-        case .subscription:
-            return nil
-        }
+        return nextOnboardingPageViewController
     }
 
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard let onboardingPageViewController = viewController as? OnboardingPageViewControllerType else {
-            return nil
-        }
+        guard
+            let onboardingPageViewController = viewController as? OnboardingPageViewControllerType,
+            let prevPage = onboardingPageViewController.onboardingPage.prev
+        else { return nil }
 
-        switch onboardingPageViewController.onboardingPage {
+        let prevOnboardingPageViewController = makeOnboardingPageViewController(for: prevPage)
+        configureOnboardingPageViewController(prevOnboardingPageViewController)
+
+        return prevOnboardingPageViewController
+    }
+
+    // MARK: - Private Instance Methods
+
+    private func makeOnboardingPageViewController(
+        for onboardingPage: OnboardingPage
+    ) -> OnboardingPageViewControllerType {
+        let onboardingPageViewController: OnboardingPageViewControllerType
+        switch onboardingPage {
         case .firstAppShowcase:
-            return nil
+            onboardingPageViewController = OnboardingFirstPageViewController()
 
         case .secondAppShowcase:
-            return OnboardingFirstPageViewController()
+            onboardingPageViewController = OnboardingSecondPageViewController()
 
         case .subscription:
-            return OnboardingSecondPageViewController()
+            onboardingPageViewController = SubscriptionViewController()
+        }
+        configureOnboardingPageViewController(onboardingPageViewController)
+
+        return onboardingPageViewController
+    }
+
+    private func configureOnboardingPageViewController(_ viewController: OnboardingPageViewControllerType) {
+        viewController.didTapActionButtonEvent.subscribe(self) { [weak self] onboardingPage in
+            guard let self = self else { return }
+
+            if let nextPage = onboardingPage.next {
+                let viewController = self.makeOnboardingPageViewController(for: nextPage)
+                self.setViewControllers(
+                    [viewController],
+                    direction: .forward,
+                    animated: true,
+                    completion: nil
+                )
+            }
+
+            logger.log(
+                "TODO: log action button tapped at onboarding page \"\(onboardingPage)\"",
+                level: .info
+            )
+
+            if onboardingPage == .subscription {
+                self.dismiss(animated: true, completion: nil)
+                self.appStatusService.setOnboardingComplete()
+            }
+        }
+
+        viewController.didAppearEvent.subscribe(self) { [weak self] onboardingPage in
+            logger.log(
+                "TODO: log onboarding page \"\(onboardingPage)\" did appear",
+                level: .info
+            )
         }
     }
 }

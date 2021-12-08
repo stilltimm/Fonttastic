@@ -9,12 +9,15 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-protocol OnboardingPageViewControllerType: AnyObject {
+protocol OnboardingPageViewControllerProtocol: AnyObject {
 
     var onboardingPage: OnboardingPage { get }
+    var didAppearEvent: Event<OnboardingPage> { get }
+    var didTapActionButtonEvent: Event<OnboardingPage> { get }
 }
+typealias OnboardingPageViewControllerType = (UIViewController & OnboardingPageViewControllerProtocol)
 
-class OnboardingPageViewController: UIViewController, OnboardingPageViewControllerType {
+class OnboardingPageViewController: UIViewController, OnboardingPageViewControllerProtocol {
 
     // MARK: - Subviews
 
@@ -45,7 +48,12 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
     // MARK: - Instance Properties
 
     let onboardingPage: OnboardingPage
+    let didAppearEvent = Event<OnboardingPage>()
     let didTapActionButtonEvent = Event<OnboardingPage>()
+
+    // MARK: - Private Instance Properties
+
+    private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
     // MARK: - Initializers
 
@@ -68,6 +76,12 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
 
         setupLayout()
         setupBusinessLogic()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppearEvent.onNext(onboardingPage)
     }
 
     private func setupLayout() {
@@ -100,6 +114,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
     }
 
     @objc private func handleActionButtonTap() {
+        impactFeedbackGenerator.impactOccurred()
         didTapActionButtonEvent.onNext(onboardingPage)
     }
 }
@@ -108,5 +123,5 @@ private enum Constants {
 
     static let edgeInsets: UIEdgeInsets = UIEdgeInsets(vertical: 16, horizontal: 16)
     static let actionButtonHeight: CGFloat = 56
-    static let titleToActionButtonSpacing: CGFloat = 16
+    static let titleToActionButtonSpacing: CGFloat = 44
 }

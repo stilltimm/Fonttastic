@@ -7,9 +7,29 @@
 
 import Foundation
 
-enum OnboardingPage: UInt8 {
+enum OnboardingPage: UInt8, CaseIterable {
 
     case firstAppShowcase
     case secondAppShowcase
     case subscription
+
+    // MARK: - Type Properties
+
+    static let allCases: [OnboardingPage] = [
+        .firstAppShowcase,
+        .secondAppShowcase,
+        .subscription
+    ]
+
+    // MARK: - Instance Properties
+
+    var next: OnboardingPage? {
+        guard let indexOfSelf = Self.allCases.firstIndex(of: self) else { return nil }
+        return Self.allCases[safe: indexOfSelf + 1]
+    }
+
+    var prev: OnboardingPage? {
+        guard let indexOfSelf = Self.allCases.firstIndex(of: self) else { return nil }
+        return Self.allCases[safe: indexOfSelf - 1]
+    }
 }
