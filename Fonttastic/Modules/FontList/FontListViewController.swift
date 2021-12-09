@@ -73,6 +73,18 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
         setupBusinessLogic()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if !appStatusService.hasCompletedOnboarding() {
+            let onboardingViewController = OnboardingViewController()
+            let nav = BaseNavigationController(rootViewController: onboardingViewController)
+            navigationController?.present(nav, animated: true)
+
+            logger.log("TODO: log onboarding started", level: .info)
+        }
+    }
+
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
 //

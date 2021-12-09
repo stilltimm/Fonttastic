@@ -6,8 +6,15 @@
 //
 
 import UIKit
+import Cartography
 
 open class BaseNavigationController: UINavigationController {
+
+    private let backgroundView: UIView = {
+        let imageView = UIImageView(image: Images.defaultBackground)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
 
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
@@ -26,5 +33,12 @@ open class BaseNavigationController: UINavigationController {
             .foregroundColor: Colors.blackAndWhite
         ]
         navigationBar.isTranslucent = true
+
+        view.addSubview(backgroundView)
+        view.sendSubviewToBack(backgroundView)
+
+        constrain(view, backgroundView) { view, background in
+            background.edges == view.edges
+        }
     }
 }

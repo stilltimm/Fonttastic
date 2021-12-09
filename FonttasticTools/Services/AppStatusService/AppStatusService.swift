@@ -106,7 +106,7 @@ public class DefaultAppStatusService: AppStatusService {
     }
 
     private func hasActiveSubscription() -> Bool {
-        return false
+        return true
     }
 }
 

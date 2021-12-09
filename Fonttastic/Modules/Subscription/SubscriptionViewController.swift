@@ -9,15 +9,10 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-class SubscriptionViewController: UIViewController {
+class SubscriptionViewController: UIViewController, OnboardingPageViewControllerProtocol {
 
     // MARK: - Subviews
 
-    private let backgroundView: UIView = {
-        let imageView = UIImageView(image: Images.defaultBackground)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
     private let headerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .center
@@ -42,8 +37,8 @@ class SubscriptionViewController: UIViewController {
         label.text = Strings.subscriptionHeaderSubtitle
         return label
     }()
-    private let actionButton: SubscriptionActionButton = {
-        let button = SubscriptionActionButton(frame: .zero)
+    private let actionButton: GradientButton = {
+        let button = GradientButton(frame: .zero)
         button.setTitle(Strings.subscriptionActionButtonTitle, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 24)
         button.titleLabel?.textColor = UIColor.white
@@ -60,6 +55,12 @@ class SubscriptionViewController: UIViewController {
         spread: -8
     )
     private var subscriptionItemViews: [SubscriptionItemView] = []
+
+    // MARK: - Internal Instance Properties
+
+    var onboardingPage: OnboardingPage { .subscription }
+    let didAppearEvent = Event<OnboardingPage>()
+    let didTapActionButtonEvent = Event<OnboardingPage>()
 
     // MARK: - Private Instance Properties
 
@@ -80,23 +81,32 @@ class SubscriptionViewController: UIViewController {
     private var selectedSubscriptionItemID: SubscriptionItemModel.Identifier?
 
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
+    private let rigidImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
     // MARK: - Internal Instance Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Colors.backgroundMain
-
         setupNavigationBar()
         setupLayout()
         setupBusinessLogic()
+
+        impactFeedbackGenerator.prepare()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppearEvent.onNext(onboardingPage)
+        impactFeedbackGenerator.impactOccurred()
     }
 
     // MARK: - Private Instance Methods
 
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.title = nil
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.setLeftBarButtonItems(
@@ -139,7 +149,6 @@ class SubscriptionViewController: UIViewController {
             return
         }
 
-        view.addSubview(backgroundView)
         view.addSubview(headerImageView)
         view.addSubview(headerTitle)
         view.addSubview(headerSubtitle)
@@ -169,16 +178,13 @@ class SubscriptionViewController: UIViewController {
 
         constrain(
             view,
-            backgroundView,
             headerImageView,
             headerTitle,
             headerSubtitle,
             actionButton,
             firstSubscriptionItemView,
             lastSubscriptionItemView
-        ) { view, background, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
-            background.edges == view.edges
-
+        ) { view, headerImage, headerTitle, headerSubtitle, actionButton, firstSubItem, lastSubItem in
             headerImage.left == view.left
             headerImage.right == view.right
             headerImage.top == view.safeAreaLayoutGuide.top + Constants.edgeInsets.top
@@ -227,10 +233,40 @@ class SubscriptionViewController: UIViewController {
         }
     }
 
+    func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            isViewLoaded,
+            let window = view.window
+        else { return }
+
+        let originInWindow = view.convert(view.frame.center, to: window)
+        let windowWidth = window.bounds.width
+        let percentageOffsetFromWindowCenter: CGFloat = (originInWindow.x / windowWidth) - 0.5
+
+        let logoScale: CGFloat = 1 + (percentageOffsetFromWindowCenter * -0.2)
+        headerImageView.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * -40,
+            y: percentageOffsetFromWindowCenter * 40
+        )
+            .rotated(by: percentageOffsetFromWindowCenter * -0.1)
+            .scaledBy(x: logoScale, y: logoScale)
+        headerTitle.transform = CGAffineTransform(
+            translationX: percentageOffsetFromWindowCenter * 40,
+            y: 0
+        )
+        subscriptionItemViews.enumerated().forEach { (i, subscriptionItemView) in
+            subscriptionItemView.transform = CGAffineTransform(
+                translationX: percentageOffsetFromWindowCenter * (40 + (CGFloat(i) + 1) * 10),
+                y: 0
+            )
+        }
+    }
+
     // MARK: - Actions Handling
 
     @objc private func handleContinueAction() {
-        impactFeedbackGenerator.impactOccurred()
+        rigidImpactFeedbackGenerator.impactOccurred()
+        didTapActionButtonEvent.onNext(onboardingPage)
 
         guard
             let selectedSubscriptionItemID = selectedSubscriptionItemID,

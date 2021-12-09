@@ -13,11 +13,6 @@ class FontDetailsViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private let backgroundView: UIView = {
-        let imageView = UIImageView(image: Images.defaultBackground)
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -80,7 +75,6 @@ class FontDetailsViewController: UIViewController {
         super.viewDidLoad()
 
         navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = Colors.backgroundMain
 
         setupLayout()
         updateTextViewStyle()
@@ -100,7 +94,6 @@ class FontDetailsViewController: UIViewController {
     // MARK: - Private Methods
 
     private func setupLayout() {
-        view.addSubview(backgroundView)
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         containerView.addSubview(fontNameLabel)
@@ -108,9 +101,8 @@ class FontDetailsViewController: UIViewController {
         textContainerView.addSubview(textView)
 
         constrain(
-            view, backgroundView, scrollView, containerView, fontNameLabel, textContainerView, textView
-        ) { (view, background, scrollView, container, fontName, textContainer, textView) in
-            background.edges == view.edges
+            view, scrollView, containerView, fontNameLabel, textContainerView, textView
+        ) { (view, scrollView, container, fontName, textContainer, textView) in
             scrollView.edges == view.edges
 
             textView.edges == textContainer.edges.inseted(by: Constants.textInsets)
@@ -192,7 +184,7 @@ private enum Constants {
     static let contentInsets: UIEdgeInsets = .init(vertical: 24, horizontal: 16)
     static let textInsets: UIEdgeInsets = .init(vertical: 12, horizontal: 16)
     static let textViewMinimumHeight: CGFloat = 44.0
-    static let fontNameToTextContainerSpacing: CGFloat = 8.0
+    static let fontNameToTextContainerSpacing: CGFloat = 16.0
 
     static let containerCornerRadius: CGFloat = 16.0
 
