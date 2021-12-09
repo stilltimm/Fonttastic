@@ -70,7 +70,7 @@
 		2D872717274336A200D6D6DA /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DC34895270B265F00420C63 /* CanvasView.swift */; };
 		2D872718274336A200D6D6DA /* FonttasticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA4CD90274282F300CBE6A0 /* FonttasticLogger.swift */; };
 		2D872719274336A200D6D6DA /* FontSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7E26FF92170006E27B /* FontSourceModel.swift */; };
-		2D87271A274336A200D6D6DA /* UIScreen+Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */; };
+		2D87271A274336A200D6D6DA /* UIScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEFFF0A2716449200E141D0 /* UIScreen+Extensions.swift */; };
 		2D87271B274336A200D6D6DA /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA4CD8D2742788800CBE6A0 /* FileService.swift */; };
 		2D87271C274336A200D6D6DA /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D43F3D6270DC0C80096772B /* Reusable.swift */; };
 		2D87271D274336A200D6D6DA /* FontListLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89FB222742D3DC004B6711 /* FontListLoaderCell.swift */; };
@@ -500,7 +500,7 @@
 		2DEDBEA5274333F5009C2347 /* FonttasticTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FonttasticTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DEDBEA7274333F5009C2347 /* FonttasticTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FonttasticTools.h; sourceTree = "<group>"; };
 		2DEE07142747C6E5008342C4 /* FonttasticWatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FonttasticWatermarkView.swift; sourceTree = "<group>"; };
-		2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Orientation.swift"; sourceTree = "<group>"; };
+		2DEFFF0A2716449200E141D0 /* UIScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extensions.swift"; sourceTree = "<group>"; };
 		2DF02AAC276107C200BB97D7 /* CGRect+Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Center.swift"; sourceTree = "<group>"; };
 		63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fonttastic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ABE0D06ECE24F8B6ADBE951 /* Pods-FonttasticKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FonttasticKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-FonttasticKeyboard/Pods-FonttasticKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
@@ -776,7 +776,7 @@
 				2D43F3D8270DC0D80096772B /* UICollectionView+DequeReusable.swift */,
 				2D2A0C8027009CF80006E27B /* UIEdgeInsets+Utils.swift */,
 				2D5239FE2703C3650039C112 /* UIView+Screenshot.swift */,
-				2DEFFF0A2716449200E141D0 /* UIScreen+Orientation.swift */,
+				2DEFFF0A2716449200E141D0 /* UIScreen+Extensions.swift */,
 				2DE6FFFB27440580004DC829 /* UIColor+Hex.swift */,
 				2DB2F562275A6FF200BF84D3 /* UIView+DefaultAnimations.swift */,
 				2DF02AAC276107C200BB97D7 /* CGRect+Center.swift */,
@@ -1594,7 +1594,7 @@
 				2D872720274336A200D6D6DA /* KeyboardView.swift in Sources */,
 				2D872707274336A200D6D6DA /* FontSelectionViewController.swift in Sources */,
 				2D872724274336A200D6D6DA /* FontListCollectionViewModel.swift in Sources */,
-				2D87271A274336A200D6D6DA /* UIScreen+Orientation.swift in Sources */,
+				2D87271A274336A200D6D6DA /* UIScreen+Extensions.swift in Sources */,
 				2D872701274336A200D6D6DA /* FontModel.swift in Sources */,
 				2D872702274336A200D6D6DA /* FontListCollectionViewController.swift in Sources */,
 				2D872704274336A200D6D6DA /* FontasticKeyboardView.swift in Sources */,

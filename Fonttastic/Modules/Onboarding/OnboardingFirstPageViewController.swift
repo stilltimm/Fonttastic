@@ -68,6 +68,8 @@ final class OnboardingFirstPageViewController: OnboardingPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.navigationBar.isHidden = true
+
         contentView.addSubview(headingImageView1)
         contentView.addSubview(headingImageView3)
         contentView.addSubview(smileImageView2)

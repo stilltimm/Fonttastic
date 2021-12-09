@@ -184,7 +184,7 @@ private enum Constants {
     static let contentInsets: UIEdgeInsets = .init(vertical: 24, horizontal: 16)
     static let textInsets: UIEdgeInsets = .init(vertical: 12, horizontal: 16)
     static let textViewMinimumHeight: CGFloat = 44.0
-    static let fontNameToTextContainerSpacing: CGFloat = 8.0
+    static let fontNameToTextContainerSpacing: CGFloat = 16.0
 
     static let containerCornerRadius: CGFloat = 16.0
 

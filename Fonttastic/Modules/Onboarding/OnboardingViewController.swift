@@ -48,6 +48,7 @@ class OnboardingViewController: UIPageViewController {
         scrollView?.delegate = self
 
         self.isModalInPresentation = true
+        navigationController?.navigationBar.isHidden = true
 
         let firstPageViewController = makeOnboardingPageViewController(for: .firstAppShowcase)
         self.setViewControllers(

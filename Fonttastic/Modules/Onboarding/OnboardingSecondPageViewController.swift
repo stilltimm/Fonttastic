@@ -58,6 +58,8 @@ final class OnboardingSecondPageViewController: OnboardingPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.navigationBar.isHidden = true
+
         contentView.addSubview(cardPreviewImageView)
         contentView.addSubview(appLogoImageView)
         contentView.addSubview(headingImageView1)

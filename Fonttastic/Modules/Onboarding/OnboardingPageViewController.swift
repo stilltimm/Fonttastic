@@ -33,7 +33,16 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = UIFont(name: "Futura-Bold", size: 30) ?? UIFont.systemFont(ofSize: 30, weight: .bold)
+
+        let fontSize: CGFloat
+        switch UIScreen.main.sizeClass {
+        case .small, .normal:
+            fontSize = 24
+
+        default:
+            fontSize = 30
+        }
+        label.font = UIFont(name: "Futura-Bold", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: .bold)
         label.textColor = Colors.blackAndWhite
         return label
     }()
@@ -100,7 +109,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
 
         constrain(view, contentView, titleLabel, actionButton) { view, content, title, actionButton in
             content.left == view.safeAreaLayoutGuide.left
-            content.top == view.safeAreaLayoutGuide.top
+            content.top == view.top
             content.right == view.safeAreaLayoutGuide.right
             content.bottom == title.top
 
@@ -133,5 +142,13 @@ private enum Constants {
 
     static let edgeInsets: UIEdgeInsets = UIEdgeInsets(vertical: 16, horizontal: 16)
     static let actionButtonHeight: CGFloat = 56
-    static let titleToActionButtonSpacing: CGFloat = 44
+    static let titleToActionButtonSpacing: CGFloat = {
+        switch UIScreen.main.sizeClass {
+        case .small, .normal:
+            return 20
+
+        default:
+            return 44
+        }
+    }()
 }

@@ -106,6 +106,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private func setupNavigationBar() {
         self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.title = nil
         self.navigationItem.largeTitleDisplayMode = .never
         self.navigationItem.setLeftBarButtonItems(
