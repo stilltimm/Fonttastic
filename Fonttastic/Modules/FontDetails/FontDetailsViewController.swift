@@ -188,7 +188,7 @@ private enum Constants {
 
     static let containerCornerRadius: CGFloat = 16.0
 
-    static let placeholderText: String = "Quick brown fox jumps over the lazy dog"
+    static let placeholderText: String = "You are awesome"
     static let placeholderTextColor: UIColor = Colors.blackAndWhite.withAlphaComponent(0.9)
     static let initialFontSize: CGFloat = 36.0
     static let initialFontAlignment: NSTextAlignment = .left
