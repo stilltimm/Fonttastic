@@ -68,7 +68,8 @@ class KeyboardViewController: UIInputViewController {
         } else {
             fonttasticKeyboardView = FontasticKeyboardView(
                 insertedText: [],
-                initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign
+                initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign,
+                needsNextInputKey: self.needsInputModeSwitchKey
             )
             self.fontasticKeyboardView = fonttasticKeyboardView
         }
@@ -116,6 +117,9 @@ class KeyboardViewController: UIInputViewController {
 
     private func setupBusinessLogic() {
         if let fontasticKeyboardView = self.fontasticKeyboardView {
+            fontasticKeyboardView.advanceToNextInputEvent.subscribe(self) { [weak self] in
+                self?.advanceToNextInputMode()
+            }
             fontasticKeyboardView.canvasWithSettingsView.shouldToggleFontSelection
                 .subscribe(self) { [weak self] in
                     self?.showFontPickerViewController()

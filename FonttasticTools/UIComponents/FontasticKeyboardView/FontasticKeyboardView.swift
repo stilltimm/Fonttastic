@@ -11,6 +11,8 @@ public class FontasticKeyboardView: UIView {
 
     // MARK: - Public Instance Properties
 
+    public let advanceToNextInputEvent: Event<Void>
+
     public let keyboardViewModels: [KeyboardViewModel]
 
     public private(set) var lastUsedLanguage: KeyboardType.Language = DefaultFontsService.shared.lastUsedLanguage {
@@ -34,16 +36,31 @@ public class FontasticKeyboardView: UIView {
 
     // MARK: - Initializers
 
-    public init(insertedText: [String], initiallySelectedCanvasViewDesign: CanvasViewDesign) {
+    public init(
+        insertedText: [String],
+        initiallySelectedCanvasViewDesign: CanvasViewDesign,
+        needsNextInputKey: Bool
+    ) {
+        let advanceToNextInputEvent = Event<Void>()
+        self.advanceToNextInputEvent = advanceToNextInputEvent
+
         self.canvasWithSettingsView = CanvasWithSettingsView(
             insertedText: insertedText,
             canvasViewDesign: initiallySelectedCanvasViewDesign
         )
         let lastUsedLanguageEvent = HotEvent<KeyboardType.Language>(value: DefaultFontsService.shared.lastUsedLanguage)
-        self.lastUsedLanguageEvent = lastUsedLanguageEvent
 
+        self.lastUsedLanguageEvent = lastUsedLanguageEvent
         keyboardViewModels = KeyboardType.allCases.map {
-            KeyboardViewModel(config: .default(for: $0), lastUsedLanguageSource: lastUsedLanguageEvent)
+            let keyboardViewModel = KeyboardViewModel(
+                config: .default(for: $0),
+                lastUsedLanguageSource: lastUsedLanguageEvent,
+                needsNextInputKey: needsNextInputKey
+            )
+
+            keyboardViewModel.advanceToNextInputTypeEvent.bind(to: advanceToNextInputEvent)
+
+            return keyboardViewModel
         }
         keyboardViews = keyboardViewModels.map { KeyboardView(viewModel: $0)  }
 

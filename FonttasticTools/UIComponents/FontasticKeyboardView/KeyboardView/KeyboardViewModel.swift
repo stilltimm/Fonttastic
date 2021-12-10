@@ -55,6 +55,7 @@ public final class KeyboardViewModel {
     public let languageToggleEvent: Event<Void>
     public let punctuationSetToggleEvent: Event<Void>
     public let punctuationLanguageToggleEvent: Event<Void>
+    public let advanceToNextInputTypeEvent: Event<Void>
 
     // MARK: - Private Instance Properties
 
@@ -71,7 +72,8 @@ public final class KeyboardViewModel {
         languageToggleEvent: Event<Void>,
         punctuationSetToggleEvent: Event<Void>,
         punctuationLanguageToggleEvent: Event<Void>,
-        isCapitalizedSourceEvent: HotEvent<Bool>
+        isCapitalizedSourceEvent: HotEvent<Bool>,
+        advanceToNextInputTypeEvent: Event<Void>
     ) {
         self.rows = rows
         self.design = design
@@ -83,6 +85,7 @@ public final class KeyboardViewModel {
         self.punctuationSetToggleEvent = punctuationSetToggleEvent
         self.punctuationLanguageToggleEvent = punctuationLanguageToggleEvent
         self.isCapitalizedSourceEvent = isCapitalizedSourceEvent
+        self.advanceToNextInputTypeEvent = advanceToNextInputTypeEvent
     }
 
     // TODO: Refactor into many type methods for setup
@@ -90,7 +93,8 @@ public final class KeyboardViewModel {
     // swiftlint:disable cyclomatic_complexity
     public convenience init(
         config: Config,
-        lastUsedLanguageSource: Event<KeyboardType.Language>
+        lastUsedLanguageSource: Event<KeyboardType.Language>,
+        needsNextInputKey: Bool
     ) {
         let maxItemsInRow = max(
             config.firstRowSources.count,
@@ -106,6 +110,7 @@ public final class KeyboardViewModel {
         let languageToggleEvent = Event<Void>()
         let punctuationSetToggleEvent = Event<Void>()
         let punctuationLanguageToggleEvent = Event<Void>()
+        let advanceToNextInputTypeEvent = Event<Void>()
         let isCapitalizedSourceEvent = HotEvent<Bool>(value: false)
 
         // Letters rows setup
@@ -216,10 +221,17 @@ public final class KeyboardViewModel {
         )
         fourthRowItems.append(.button(languageChangeButtonViewModel, languageButtonDesign))
 
+        if needsNextInputKey {
+            let advanceToNextInputButtonVM = AdvanceToNextInputButtonVM(
+                advanceToNextInputEvent: advanceToNextInputTypeEvent
+            )
+            fourthRowItems.append(.button(advanceToNextInputButtonVM, defaultFunctionalButtonDesign))
+        }
+
         let spaceButtonViewModel = LatinSpaceKeyboardButtonVM()
         let spaceAndReturnButtonTotalWidth = design.containerWidth
-            - (3 * design.letterSpacing)
-            - (2 * design.defaultFunctionalButtonWidth)
+        - (CGFloat(fourthRowItems.count + 1) * design.letterSpacing)
+        - (CGFloat(fourthRowItems.count) * design.defaultFunctionalButtonWidth)
         let spaceButtonDesign = buttonDesignBuilder
             .withLayoutWidth(.fixed(width: floor(spaceAndReturnButtonTotalWidth * 2 / 3)))
             .withForegroungColor(Colors.keyboardButtonMain)
@@ -280,7 +292,8 @@ public final class KeyboardViewModel {
             languageToggleEvent: languageToggleEvent,
             punctuationSetToggleEvent: punctuationSetToggleEvent,
             punctuationLanguageToggleEvent: punctuationLanguageToggleEvent,
-            isCapitalizedSourceEvent: isCapitalizedSourceEvent
+            isCapitalizedSourceEvent: isCapitalizedSourceEvent,
+            advanceToNextInputTypeEvent: advanceToNextInputTypeEvent
         )
     }
 }

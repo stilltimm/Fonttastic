@@ -16,6 +16,7 @@ public class Event<T> {
 
     // MARK: - Nested Types
 
+    public typealias Element = T
     public typealias EventHandler = (T) -> Void
 
     public class EventSubscription: Disposable {
@@ -118,5 +119,14 @@ public class HotEvent<T>: Event<T> {
 
     override public func onNext(_ data: T) {
         super.onNext(data)
+    }
+}
+
+extension Event {
+
+    func bind<E: Event<Element>>(to event: E) {
+        self.subscribe(event) { [weak event] element in
+            event?.onNext(element)
+        }
     }
 }

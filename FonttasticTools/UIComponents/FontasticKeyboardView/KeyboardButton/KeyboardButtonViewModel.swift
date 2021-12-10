@@ -104,6 +104,17 @@ public class BackspaceKeyboardButtonVM: DefaultKeyboardButtonVM {
     }
 }
 
+public class AdvanceToNextInputButtonVM: DefaultKeyboardButtonVM {
+
+    public init(advanceToNextInputEvent: Event<Void>) {
+        super.init(normalIconName: "globe", highlightedIconName: "globe")
+
+        self.didTapEvent.subscribe(advanceToNextInputEvent) { [weak advanceToNextInputEvent] _ in
+            advanceToNextInputEvent?.onNext(())
+        }
+    }
+}
+
 public class CaseChangeKeyboardButtonVM: KeyboardButtonViewModelProtocol {
 
     // MARK: - Nested Types

@@ -42,7 +42,8 @@ class KeyboardViewTestViewController: UIViewController {
     init() {
         self.fontasticKeyboardView = FontasticKeyboardView(
             insertedText: "Test string".map { String($0) },
-            initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign
+            initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign,
+            needsNextInputKey: true
         )
 
         super.init(nibName: nil, bundle: nil)
