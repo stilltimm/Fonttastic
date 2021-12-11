@@ -23,6 +23,9 @@
 		2D1E3A3D274A8EC100822F05 /* SubscriptionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A3C274A8EC100822F05 /* SubscriptionItemView.swift */; };
 		2D1E3A41274A8ED900822F05 /* SubscriptionItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1E3A40274A8ED900822F05 /* SubscriptionItemModel.swift */; };
 		2D24C46A271C999A00BB5C17 /* AddFontButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C469271C999A00BB5C17 /* AddFontButton.swift */; };
+		2D28A2CB2762560B00149A36 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D28A2CA2762560B00149A36 /* StoreKit.framework */; };
+		2D28A2CD2762562500149A36 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D28A2CC2762562500149A36 /* SubscriptionService.swift */; };
+		2D28A2D02762568400149A36 /* SubscriptionItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D28A2CF2762568400149A36 /* SubscriptionItemModel.swift */; };
 		2D2A0C7926FF81DD0006E27B /* FontDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */; };
 		2D2A0C92270210A70006E27B /* FonttasticKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2D2A0C8A270210A70006E27B /* FonttasticKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2D336E4727451B51006AD631 /* PhotosAccessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */; };
@@ -302,6 +305,9 @@
 		2D1E3A40274A8ED900822F05 /* SubscriptionItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionItemModel.swift; sourceTree = "<group>"; };
 		2D24C469271C999A00BB5C17 /* AddFontButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFontButton.swift; sourceTree = "<group>"; };
 		2D24C46C271C9BE400BB5C17 /* PhotosAccessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosAccessService.swift; sourceTree = "<group>"; };
+		2D28A2CA2762560B00149A36 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		2D28A2CC2762562500149A36 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
+		2D28A2CF2762568400149A36 /* SubscriptionItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionItemModel.swift; sourceTree = "<group>"; };
 		2D2A0C7826FF81DD0006E27B /* FontDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontDetailsViewController.swift; sourceTree = "<group>"; };
 		2D2A0C7A26FF83370006E27B /* FontStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStatus.swift; sourceTree = "<group>"; };
 		2D2A0C7C26FF86D20006E27B /* FontModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModelFactory.swift; sourceTree = "<group>"; };
@@ -517,6 +523,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D28A2CB2762560B00149A36 /* StoreKit.framework in Frameworks */,
 				2DEDBEAB274333F5009C2347 /* FonttasticTools.framework in Frameworks */,
 				94ECF605EE244714D846C11C /* Pods_Fonttastic.framework in Frameworks */,
 			);
@@ -671,6 +678,14 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		2D28A2CE2762567300149A36 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2D28A2CF2762568400149A36 /* SubscriptionItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		2D2A0C7326FF80A40006E27B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,6 +814,8 @@
 		2D5665CC2757FE1200A57AA2 /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
+				2D28A2CE2762567300149A36 /* Models */,
+				2D28A2CC2762562500149A36 /* SubscriptionService.swift */,
 			);
 			path = Subscription;
 			sourceTree = "<group>";
@@ -1139,6 +1156,7 @@
 		F1C8D0397E0C3CAE22529A52 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2D28A2CA2762560B00149A36 /* StoreKit.framework */,
 				63D695E5966B6128263C88E7 /* Pods_Fonttastic.framework */,
 				CA8F97E822390DCDEE3D86F4 /* Pods_FonttasticKeyboard.framework */,
 				A0C803B520657DA52516392A /* Pods_FonttasticTools.framework */,
@@ -1603,6 +1621,7 @@
 				2D872721274336A200D6D6DA /* FontsService.swift in Sources */,
 				2D87270A274336A200D6D6DA /* FontStatus.swift in Sources */,
 				2D19E295275B808E008DB8CE /* LinearGradient.swift in Sources */,
+				2D28A2CD2762562500149A36 /* SubscriptionService.swift in Sources */,
 				2D872708274336A200D6D6DA /* Colors.swift in Sources */,
 				2D87270B274336A200D6D6DA /* KeyboardViewModel+Design.swift in Sources */,
 				2D872703274336A200D6D6DA /* KeyboardButtonDesign.swift in Sources */,
@@ -1628,6 +1647,7 @@
 				2D872717274336A200D6D6DA /* CanvasView.swift in Sources */,
 				2D19E293275B7D97008DB8CE /* LinearGradientView.swift in Sources */,
 				2DEDBFDF27433605009C2347 /* WeakBox.swift in Sources */,
+				2D28A2D02762568400149A36 /* SubscriptionItemModel.swift in Sources */,
 				2D87270C274336A200D6D6DA /* CanvasWithSettingsView.swift in Sources */,
 				2D872712274336A200D6D6DA /* UIFontFactory.swift in Sources */,
 				2D87270D274336A200D6D6DA /* FontListFontCell.swift in Sources */,
@@ -1834,7 +1854,7 @@
 				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.romandegtyarev.fonttastic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic-Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic Development";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1863,7 +1883,7 @@
 				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.romandegtyarev.fonttastic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic-AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic AppStore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
@@ -1891,7 +1911,7 @@
 				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.romandegtyarev.fonttastic.fonttasticKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic-Keyboard-Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic Keyboard Development";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1918,7 +1938,7 @@
 				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.romandegtyarev.fonttastic.fonttasticKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic-Keyboard-AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Fonttastic Keyboard AppStore";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;

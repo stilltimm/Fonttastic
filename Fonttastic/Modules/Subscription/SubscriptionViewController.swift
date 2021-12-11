@@ -105,36 +105,32 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     // MARK: - Private Instance Methods
 
     private func setupNavigationBar() {
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationItem.title = nil
-        self.navigationItem.largeTitleDisplayMode = .never
-        self.navigationItem.setLeftBarButtonItems(
-            [
-                UIBarButtonItem(
-                    title: Strings.subscriptionNavigationItemTermsActionTitle,
-                    style: UIBarButtonItem.Style.plain,
-                    target: self,
-                    action: #selector(self.handleTermsAction)
-                ),
-                UIBarButtonItem(
-                    title: Strings.subscriptionNavigationItemRestoreActionTitle,
-                    style: UIBarButtonItem.Style.plain,
-                    target: self,
-                    action: #selector(self.handleRestoreAction)
-                )
-            ],
-            animated: false
-        )
-        self.navigationItem.setRightBarButton(
-            UIBarButtonItem(
-                image: UIImage(systemName: "xmark"),
-                style: .done,
-                target: self,
-                action: #selector(self.handleCloseAction)
-            ),
-            animated: false
-        )
+//        self.navigationItem.setLeftBarButtonItems(
+//            [
+//                UIBarButtonItem(
+//                    title: Strings.subscriptionNavigationItemTermsActionTitle,
+//                    style: UIBarButtonItem.Style.plain,
+//                    target: self,
+//                    action: #selector(self.handleTermsAction)
+//                ),
+//                UIBarButtonItem(
+//                    title: Strings.subscriptionNavigationItemRestoreActionTitle,
+//                    style: UIBarButtonItem.Style.plain,
+//                    target: self,
+//                    action: #selector(self.handleRestoreAction)
+//                )
+//            ],
+//            animated: false
+//        )
+//        self.navigationItem.setRightBarButton(
+//            UIBarButtonItem(
+//                image: UIImage(systemName: "xmark"),
+//                style: .done,
+//                target: self,
+//                action: #selector(self.handleCloseAction)
+//            ),
+//            animated: false
+//        )
     }
 
     // swiftlint:disable:next function_body_length

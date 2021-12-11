@@ -20,6 +20,7 @@ class DefaultAppConfigurationService: AppConfigurationService {
 
     private lazy var fontsService: FontsService = DefaultFontsService.shared
     private lazy var appStatusService: AppStatusService = DefaultAppStatusService.shared
+    private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
 
     private init() {}
 
@@ -37,6 +38,7 @@ class DefaultAppConfigurationService: AppConfigurationService {
     private func performDefaultConfiguration() {
         configureLogger()
         configureFontsService()
+        fetchAvailableProducts()
     }
 
     private func configureLogger() {
@@ -44,7 +46,11 @@ class DefaultAppConfigurationService: AppConfigurationService {
     }
 
     private func configureFontsService() {
-        fontsService.installFonts { }
+        fontsService.installFonts {}
+    }
+
+    private func fetchAvailableProducts() {
+        subscriptionService.fetchAvailableProducts()
     }
 
     // MARK: - First Launch Setup
