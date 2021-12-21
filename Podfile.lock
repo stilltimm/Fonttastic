@@ -1,38 +1,50 @@
 PODS:
+  - Amplitude-iOS (4.9.3)
   - Cartography (4.0.0)
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
   - KeychainAccess (4.2.2)
+  - Purchases (3.13.1):
+    - PurchasesCoreSwift (= 3.13.1)
+  - PurchasesCoreSwift (3.13.1)
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.44.0)
   - ZIPFoundation (0.9.12)
 
 DEPENDENCIES:
+  - Amplitude-iOS (~> 4.9.3)
   - Cartography
   - KeychainAccess
+  - Purchases
   - SVGKit
   - SwiftLint
   - ZIPFoundation (~> 0.9)
 
 SPEC REPOS:
   trunk:
+    - Amplitude-iOS
     - Cartography
     - CocoaLumberjack
     - KeychainAccess
+    - Purchases
+    - PurchasesCoreSwift
     - SVGKit
     - SwiftLint
     - ZIPFoundation
 
 SPEC CHECKSUMS:
+  Amplitude-iOS: 122e026c44db8460e5efcf84859aa290a0ae9786
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Purchases: 2693d6444609de044ab25fcda9561bef038f24da
+  PurchasesCoreSwift: ca55f9ef671f89abed133775dd9e53f55007828d
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
   ZIPFoundation: e27423c004a5a1410c15933407747374e7c6cb6e
 
-PODFILE CHECKSUM: e32c7085efbcb203ea875e3c5552c60260984a2a
+PODFILE CHECKSUM: f8f0b7037443e3fe2018061a586337370ab43f36
 
 COCOAPODS: 1.11.2

@@ -1,0 +1,33 @@
+/* 
+  Localizable.strings
+  Fonttastic
+
+  Created by Timofey Surkov on 21.11.2021.
+  
+*/
+
+// MARK: - Onboarding
+
+"onboarding.page.first.title" = "Создавайте и отправляйте открытки в соцсетях и мессенджерах прямо из клавиатуры";
+"onboarding.page.second.title" = "Крутая коллекция кастомных шрифтов в вашем распоряжении";
+
+// MARK: - Subscription
+
+"subscription.navigationItem.restoreActionTitle" = "Восстановить";
+"subscription.navigationItem.termsActionTitle" = "Соглашение";
+"subscription.actionButton.title" = "Продолжить";
+
+"subscription.error.title.default" = "Ошибка покупки";
+"subscription.error.title.pendingPayment" = "Покупка стартовала";
+"subscription.error.message.unknownError" = "Что-то пошло не так. Пожалуйста, попробуйте повторить немного позже.";
+"subscription.error.message.alreadyPurchased" = "Подписка уже приобритена. Пожалуйста восстановите покупки чтобы синхронизировать ранее купленную подписку.";
+"subscription.error.message.paymentPending" = "Система требует дополнительного подтверждения покупки. Пожалуйста, следуйте инструкциям Apple, чтобы завершить покупку.";
+"subscription.error.message.insufficientPermissions" = "Проблема с ограничениями доступа. Пожалуйста проверьте, что вы авторизованы с AppleID и можете совершать покупки.";
+"subscription.error.message.ineligibleProduct" = "Выбранная опция более недоступна. Пожалуйста выберите другой вариант.";
+"subscription.error.message.networkError" = "Проблема с подключением к интернету. Пожалуйста подключитесь к сети и попробуйте снова.";
+"subscription.error.message.productUnavailable" = "К сожалению, выбранная опция сейчас недоступна. Пожалуйста выберите другой вариант или попробуйте позже.";
+"subscription.error.message.purchaseInvalid" = "Проблема с вашим методом оплаты. Пожалуйста проверьте выбранный метод оплаты и попробуйте снова.";
+"subscription.error.message.purchaseNotAllowed" = "Покупки недоступны на данном устройстве или для данного пользователя. Пожалуйста проверьте, что вы авторизованы с AppleID и приняли политику приватности Apple для Apple Music.";
+"subscription.error.message.appStoreIsDown" = "Совершение покупок временно недоступно. Пожалуйста попробуйте повторить немного позже.";
+"subscription.error.message.purchaseCancelled" = "Покупка была отменена";
+"subscription.error.okAction.title" = "ОК";

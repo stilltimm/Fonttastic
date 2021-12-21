@@ -1,0 +1,33 @@
+/* 
+  Localizable.strings
+  Fonttastic
+
+  Created by Timofey Surkov on 21.11.2021.
+  
+*/
+
+// MARK: - Onboarding
+
+"onboarding.page.first.title" = "Create and send postcards in messengers and social networks right from keyboard";
+"onboarding.page.second.title" = "Amazing collection of custom typefaces at your service";
+
+// MARK: - Subscription
+
+"subscription.navigationItem.restoreActionTitle" = "Restore";
+"subscription.navigationItem.termsActionTitle" = "Terms";
+"subscription.actionButton.title" = "Continue";
+
+"subscription.error.title.default" = "Purchase failed";
+"subscription.error.title.pendingPayment" = "Payment is Pending";
+"subscription.error.message.unknownError" = "Something went wrong. Please, try again later.";
+"subscription.error.message.alreadyPurchased" = "Product already purchased. Please restore purchases to sync previously purchased subscription.";
+"subscription.error.message.paymentPending" = "The system requires an additional confirmation of purchase. Please, follow Apple's instructions in order to complete the purchase.";
+"subscription.error.message.insufficientPermissions" = "There is a problem with your permissions. Please make sure you are signed in to AppleID and are able to make purchases.";
+"subscription.error.message.ineligibleProduct" = "This product is not available anymore. Please select another option.";
+"subscription.error.message.networkError" = "There is an issue with your internet connection. Please connect to the internet and try again.";
+"subscription.error.message.productUnavailable" = "Unfortunately, product is unavailable right now. Please either select another option or try again later.";
+"subscription.error.message.purchaseInvalid" = "There is probably an issue with your payment. Please make sure that your payment type is valid and try again.";
+"subscription.error.message.purchaseNotAllowed" = "Purhcases not allowed for this device or user. Please make sure you have logged in to AppleID and acknowledged Apple's privacy policy for Apple Music.";
+"subscription.error.message.appStoreIsDown" = "AppStore is probably down. Please, try again later.";
+"subscription.error.message.purchaseCancelled" = "Purchase was cancelled";
+"subscription.error.okAction.title" = "OK";
