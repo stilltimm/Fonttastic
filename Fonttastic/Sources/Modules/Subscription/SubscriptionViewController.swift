@@ -8,34 +8,58 @@
 import UIKit
 import Cartography
 import FonttasticTools
-import RevenueCat
 
 class SubscriptionViewController: UIViewController, OnboardingPageViewControllerProtocol {
+
+    // MARK: - Private Type Methods
+
+    private static func makeDefaultActionAttributedStrings(
+        text: String
+    ) -> (normal: NSAttributedString, highlighted: NSAttributedString) {
+        let attributedTitle = NSAttributedString(
+            string: text,
+            attributes: [
+                .font: Constants.defaultActionFont,
+                .foregroundColor: Colors.blackAndWhite
+            ]
+        )
+        let highlightedAttributedTitle = NSAttributedString(
+            string: text,
+            attributes: [
+                .font: Constants.defaultActionFont,
+                .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.5)
+            ]
+        )
+        return (normal: attributedTitle, highlighted: highlightedAttributedTitle)
+    }
 
     // MARK: - Subviews / Ready State / Top Action Buttons
 
     private let termsActionButton: UIButton = {
         let button = UIButton()
-        let attributedTitle = NSAttributedString(
-            string: FonttasticStrings.Localizable.Subscription.NavigationItem.termsActionTitle,
-            attributes: [
-                .font: UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
-                .foregroundColor: Colors.blackAndWhite
-            ]
+        let (normal, highlighted) = makeDefaultActionAttributedStrings(
+            text: FonttasticStrings.Localizable.Subscription.NavigationItem.termsActionTitle
         )
-        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.setAttributedTitle(normal, for: .normal)
+        button.setAttributedTitle(highlighted, for: .highlighted)
+        return button
+    }()
+    private let promocodeActionButton: UIButton = {
+        let button = UIButton()
+        let (normal, highlighted) = makeDefaultActionAttributedStrings(
+            text: FonttasticStrings.Localizable.Subscription.NavigationItem.promocodeActionTitle
+        )
+        button.setAttributedTitle(normal, for: .normal)
+        button.setAttributedTitle(highlighted, for: .highlighted)
         return button
     }()
     private let restoreActonButton: UIButton = {
         let button = UIButton()
-        let attributedTitle = NSAttributedString(
-            string: FonttasticStrings.Localizable.Subscription.NavigationItem.restoreActionTitle,
-            attributes: [
-                .font: UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
-                .foregroundColor: Colors.blackAndWhite
-            ]
+        let (normal, highlighted) = makeDefaultActionAttributedStrings(
+            text: FonttasticStrings.Localizable.Subscription.NavigationItem.restoreActionTitle
         )
-        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.setAttributedTitle(normal, for: .normal)
+        button.setAttributedTitle(highlighted, for: .highlighted)
         return button
     }()
 
@@ -47,8 +71,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         scrollView.alwaysBounceHorizontal = false
         scrollView.backgroundColor = .clear
         scrollView.canCancelContentTouches = true
-        scrollView.insetsLayoutMarginsFromSafeArea = true
-        scrollView.contentInsetAdjustmentBehavior = .scrollableAxes
+        scrollView.contentInsetAdjustmentBehavior = .never
         return scrollView
     }()
     private let containerView: UIView = {
@@ -144,6 +167,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     // MARK: - Private Instance Properties
 
+    private lazy var onboardingService: OnboardingService = DefaultOnboardingService.shared
     private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
     private var selectedPaywallItem: PaywallItem?
 
@@ -155,7 +179,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.isModalInPresentation = true
         navigationController?.navigationBar.isHidden = true
 
         setupLayout()
@@ -164,7 +187,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         impactFeedbackGenerator.prepare()
 
         if subscriptionService.paywallState.isInvalid {
-            subscriptionService.fetchAvailableProducts()
+            subscriptionService.fetchPaywall()
         }
     }
 
@@ -192,6 +215,15 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     // swiftlint:disable:next function_body_length
     private func setupNormalStateLayout() {
+        if let window = UIApplication.shared.windows.first {
+            scrollView.contentInset = UIEdgeInsets(
+                top: window.safeAreaInsets.top,
+                left: window.safeAreaInsets.left,
+                bottom: window.safeAreaInsets.bottom + Constants.additionalContentInset,
+                right: window.safeAreaInsets.right
+            )
+        }
+
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
         containerView.addSubview(headerImageView)
@@ -199,6 +231,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         containerView.addSubview(headerSubtitle)
         containerView.addSubview(paywallItemsStackView)
         containerView.addSubview(termsActionButton)
+        containerView.addSubview(promocodeActionButton)
         containerView.addSubview(restoreActonButton)
         view.addSubview(actionButton)
 
@@ -220,20 +253,13 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             headerImageView,
             headerTitle,
             headerSubtitle,
-            termsActionButton,
-            restoreActonButton,
             paywallItemsStackView
-        ) { container, headerImage, headerTitle, headerSubtitle, termsButton, restoreButton, itemsStack in
-            termsButton.left == container.left + Constants.edgeInsets.left
-            termsButton.top == container.top + Constants.edgeInsets.top
-
-            restoreButton.right == container.right - Constants.edgeInsets.right
-            restoreButton.top == container.top + Constants.edgeInsets.top
+        ) { container, headerImage, headerTitle, headerSubtitle, itemsStack in
 
             headerImage.left == container.left
             headerImage.right == container.right
             headerImage.top == container.safeAreaLayoutGuide.top
-            headerImage.height == headerImage.width * 3 / 4
+            headerImage.height == headerImage.width * Constants.headerImageAspectRatio
             headerImage.bottom == headerTitle.top
 
             headerTitle.left == container.safeAreaLayoutGuide.left + Constants.edgeInsets.left
@@ -247,6 +273,23 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             itemsStack.bottom <= container.bottom - Constants.edgeInsets.bottom
             itemsStack.left == container.safeAreaLayoutGuide.left + Constants.edgeInsets.left
             itemsStack.right == container.safeAreaLayoutGuide.right - Constants.edgeInsets.right
+        }
+
+        constrain(
+            containerView,
+            termsActionButton,
+            promocodeActionButton,
+            restoreActonButton
+        ) { container, termsButton, promocodeButton, restoreButton in
+
+            termsButton.left == container.left + Constants.edgeInsets.left
+            termsButton.top == container.top + Constants.edgeInsets.top
+
+            restoreButton.right == container.right - Constants.edgeInsets.right
+            restoreButton.top == container.top + Constants.edgeInsets.top
+
+            promocodeButton.right == restoreButton.right
+            promocodeButton.top == restoreButton.bottom + Constants.restoreToPromocodeSpacing
         }
     }
 
@@ -270,6 +313,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private func setupBusinessLogic() {
         termsActionButton.addTarget(self, action: #selector(self.handleTermsAction), for: .touchUpInside)
+        promocodeActionButton.addTarget(self, action: #selector(self.handlePromocodeAction), for: .touchUpInside)
         restoreActonButton.addTarget(self, action: #selector(self.handleRestoreAction), for: .touchUpInside)
         actionButton.addTarget(self, action: #selector(self.handleContinueAction), for: .touchUpInside)
         reloadPaywallButton.addTarget(self, action: #selector(self.handleReloadPaywallAction), for: .touchUpInside)
@@ -392,10 +436,9 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         guard let selectedPaywallItem = self.selectedPaywallItem else { return }
 
-        logger.log(
+        logger.debug(
             "TODO: log continue paywall action",
-            description: "Selected SubscriptionItem: \(selectedPaywallItem)",
-            level: .debug
+            description: "Selected SubscriptionItem: \(selectedPaywallItem)"
         )
 
         self.apply(paywallState: .loading)
@@ -409,14 +452,34 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 self.handlePurchaseError(error)
 
             case .success:
+                self.setOnboardingCompleteIfNeeded()
                 self.dismiss(animated: true)
             }
         }
     }
 
+    @objc private func handleTermsAction() {
+        impactFeedbackGenerator.impactOccurred()
+        logger.debug("TODO: log terms action")
+
+        if
+            let termsURL = Constants.termsURL,
+            UIApplication.shared.canOpenURL(termsURL)
+        {
+            UIApplication.shared.open(termsURL, options: [:])
+        }
+    }
+
+    @objc private func handlePromocodeAction() {
+        impactFeedbackGenerator.impactOccurred()
+        logger.debug("TODO: log promocode action")
+
+        subscriptionService.presentCodeRedemptionSheet()
+    }
+
     @objc private func handleRestoreAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.log("TODO: log restore purchases action", level: .debug)
+        logger.debug("TODO: log restore purchases action")
 
         self.apply(paywallState: .loading)
         subscriptionService.restorePurchases { [weak self] result in
@@ -434,38 +497,29 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         }
     }
 
-    @objc private func handleTermsAction() {
-        impactFeedbackGenerator.impactOccurred()
-        logger.log("TODO: log terms action", level: .debug)
-
-        if
-            let termsURL = Constants.termsURL,
-            UIApplication.shared.canOpenURL(termsURL)
-        {
-            UIApplication.shared.open(termsURL, options: [:])
-        }
-    }
-
     @objc private func handleReloadPaywallAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.log("TODO: log reload paywall action", level: .debug)
+        logger.debug("TODO: log reload paywall action")
 
-        subscriptionService.fetchAvailableProducts()
+        subscriptionService.fetchPaywall()
     }
 
     @objc private func handleCloseAction() {
         self.dismiss(animated: true)
     }
 
+    private func setOnboardingCompleteIfNeeded() {
+        if !onboardingService.hasCompletedOnboarding() {
+            onboardingService.setOnboardingComplete()
+            logger.debug("TODO: log onboarding completion")
+        }
+    }
+
     // MARK: - Error Handling
 
     // swiftlint:disable:next function_body_length
     private func handlePurchaseError(_ error: SubscriptionServiceError) {
-        logger.log(
-            "Purchase failed",
-            description: "Error: \(error)",
-            level: .error
-        )
+        logger.error("Purchase failed", error: error)
 
         let alertController: UIAlertController
         switch error {
@@ -520,7 +574,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 alertController = makeAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.productUnavailable
                 )
-                subscriptionService.fetchAvailableProducts()
+                subscriptionService.fetchPaywall()
 
             case .networkError:
                 alertController = makeAlertController(
@@ -531,7 +585,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 alertController = makeAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.ineligibleProduct
                 )
-                subscriptionService.fetchAvailableProducts()
+                subscriptionService.fetchPaywall()
 
             case .insufficientPermissionsError:
                 alertController = makeAlertController(
@@ -594,6 +648,19 @@ private enum Constants {
     static let actionButtonHeight: CGFloat = 56
 
     static let errorLabelToReloadButtonSpacing: CGFloat = 16
+    static let headerImageAspectRatio: CGFloat = {
+        switch UIScreen.main.sizeClass {
+        case .small, .normal:
+            return 0.75
+
+        default:
+            return 0.85
+        }
+    }()
+
+    static let defaultActionFont: UIFont = UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
+    static let restoreToPromocodeSpacing: CGFloat = 8
+    static let additionalContentInset: CGFloat = actionButtonHeight + edgeInsets.bottom + 16
 
     static let termsURL: URL? = URL(string: "https://google.com")
 }

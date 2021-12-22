@@ -48,8 +48,7 @@ let project = Project(
         .makeFonttasticScheme(
             schemeName: "Fonttastic",
             buildActionTargetReferences: [.app()],
-            executableTargetReference: .app(),
-            storeKitConfigurationPath: "Fonttastic/SupportFiles/Configuration.storeKit"
+            executableTargetReference: .app()
         ),
         .makeFonttasticScheme(
             schemeName: "FonttasticTools",

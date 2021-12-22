@@ -7,7 +7,8 @@ private let targetNames: [String] = [
     "ZIPFoundation",
     "Amplitude",
     "Cartography",
-    "RevenueCat"
+    "RevenueCat",
+    "Bugsnag"
 ]
 let targetSettingsDictionary: SettingsDictionary = [
     "IPHONEOS_DEPLOYMENT_TARGET": "14.0"
@@ -25,7 +26,8 @@ let dependencies = Dependencies(
          .package(url: "https://github.com/weichsel/ZIPFoundation", .upToNextMajor(from: "0.9.0")),
          .package(url: "https://github.com/amplitude/Amplitude-iOS", .upToNextMajor(from: "8.7.0")),
          .package(url: "https://github.com/robb/Cartography", .upToNextMajor(from: "4.0.0")),
-         .package(url: "https://github.com/RevenueCat/purchases-ios", .exact("4.0.0-beta.8"))
+         .package(url: "https://github.com/RevenueCat/purchases-ios", .exact("4.0.0-beta.8")),
+         .package(url: "https://github.com/bugsnag/bugsnag-cocoa", .upToNextMajor(from: "6.5.1"))
         ],
         targetSettings: targetSettings
     ),

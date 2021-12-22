@@ -109,7 +109,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
 
         constrain(view, contentView, titleLabel, actionButton) { view, content, title, actionButton in
             content.left == view.safeAreaLayoutGuide.left
-            content.top == view.top
+            content.top == view.safeAreaLayoutGuide.top
             content.right == view.safeAreaLayoutGuide.right
             content.bottom == title.top
 
@@ -134,7 +134,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
     }
 
     func handleSrollViewDidScroll(_ scrollView: UIScrollView) {
-        logger.log("Subclasses must override this method", level: .debug)
+        logger.debug("Subclasses must override this method")
     }
 }
 
@@ -145,10 +145,10 @@ private enum Constants {
     static let titleToActionButtonSpacing: CGFloat = {
         switch UIScreen.main.sizeClass {
         case .small, .normal:
-            return 20
+            return 16
 
         default:
-            return 44
+            return 24
         }
     }()
 }

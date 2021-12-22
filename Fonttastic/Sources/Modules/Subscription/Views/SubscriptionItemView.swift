@@ -212,7 +212,7 @@ class PaywallItemView: UIControl {
             self.layer.borderWidth = self.isSelected ? 2.0 : 0.0
             self.checkboxContainerView.backgroundColor = self.isSelected ?
                 Colors.brandMainLight :
-            UIColor.white.withAlphaComponent(0.5)
+                UIColor.white
             self.checkboxImageView.alpha = self.isSelected ? 1.0 : 0.0
         }
     }

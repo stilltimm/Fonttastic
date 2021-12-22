@@ -29,13 +29,13 @@ class FontListViewModel {
         fontsService.installFont(from: fontSourceModel) { result in
             switch result {
             case let .success(fontModel):
-                logger.log("Successfully installed font \(fontModel)", level: .debug)
+                logger.debug("Successfully installed font \(fontModel)")
 
             case let .failure(error):
-                logger.log(
+                logger.error(
                     "Failed to installed font",
-                    description: "FontsSource: \(fontSourceModel), Error: \(error)",
-                    level: .error
+                    description: "FontsSource: \(fontSourceModel)",
+                    error: error
                 )
             }
         }

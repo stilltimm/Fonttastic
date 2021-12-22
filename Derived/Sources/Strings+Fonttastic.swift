@@ -73,7 +73,9 @@ public enum FonttasticStrings {
         }
       }
       public enum NavigationItem {
-        /// Restore
+        /// Enter promocode
+        public static let promocodeActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.promocodeActionTitle")
+        /// Restore purchases
         public static let restoreActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.restoreActionTitle")
         /// Terms
         public static let termsActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.termsActionTitle")

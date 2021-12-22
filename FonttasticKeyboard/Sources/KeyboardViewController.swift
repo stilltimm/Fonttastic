@@ -29,12 +29,10 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        FonttasticLogger.shared.setup(with: .default)
+        DefaultConfigurationService.shared.performInitialConfigurations(for: .keyboardExtension)
         DefaultAppStatusService.shared.setHasFullAccess(hasFullAccess: self.hasFullAccess)
-        DefaultSubscriptionService.shared.configurePurchases()
-        DefaultSubscriptionService.shared.fetchPurchaserInfo()
 
-        logger.log("Keyboard hasFullAccess: \(self.hasFullAccess)", level: .debug)
+        logger.debug("Keyboard hasFullAccess: \(self.hasFullAccess)")
 
         setupLayout()
         setupBusinessLogic()
@@ -50,6 +48,10 @@ class KeyboardViewController: UIInputViewController {
         super.viewDidDisappear(animated)
 
         DefaultFontsService.shared.storeLastUsedSettings()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: .shouldUpdateAppStatusNotification, object: nil)
     }
 
     override func viewWillTransition(
@@ -88,7 +90,9 @@ class KeyboardViewController: UIInputViewController {
         if let overlayView = self.lockOverlayView {
             lockOverlayView = overlayView
         } else {
-            lockOverlayView = KeyboardLockOverlayView()
+            lockOverlayView = KeyboardLockOverlayView(
+                isAdvanceToNextInputRequired: self.needsInputModeSwitchKey
+            )
             self.lockOverlayView = lockOverlayView
         }
         if lockOverlayView.superview == nil {
@@ -128,6 +132,10 @@ class KeyboardViewController: UIInputViewController {
             lockOverlayView.didTapEvent.subscribe(self) { [weak self] actionLinkURL in
                 self?.openApp(url: actionLinkURL)
             }
+
+            lockOverlayView.didTapAdvanceToNextInputButton.subscribe(self) { [weak self] in
+                self?.advanceToNextInputMode()
+            }
         }
 
         DefaultAppStatusService.shared.appStatusDidUpdateEvent.subscribe(self) { [weak self] appStatus in
@@ -139,20 +147,12 @@ class KeyboardViewController: UIInputViewController {
 
     private func handleAppStatusChange(appStatus: AppStatus) {
         if let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: appStatus) {
-            logger.log(
-                "Will show lock overlay",
-                description: "AppStatus: \(appStatus)",
-                level: .debug
-            )
+            logger.debug("Will show lock overlay", description: "AppStatus: \(appStatus)")
             lockOverlayView?.isHidden = false
             lockOverlayView?.apply(config: lockOverlayConfig)
             fonttasticKeyboardView?.alpha = 0.1
         } else {
-            logger.log(
-                "Will NOT show lock overlay",
-                description: "AppStatus: \(appStatus)",
-                level: .debug
-            )
+            logger.debug("Will NOT show lock overlay", description: "AppStatus: \(appStatus)")
             lockOverlayView?.isHidden = true
             fonttasticKeyboardView?.alpha = 1.0
         }
@@ -263,11 +263,7 @@ extension KeyboardViewController: FontSelectionControllerDelegate {
     func didFinishFontSelection() {
         guard let fonttasticKeyboardView = self.fonttasticKeyboardView else { return }
         let selectedFontModel = fonttasticKeyboardView.canvasWithSettingsView.canvasFontModel
-        logger.log(
-            "Finished font selection",
-            description: "Selected FontModel: \(selectedFontModel)",
-            level: .info
-        )
+        logger.info("Finished font selection", description: "Selected FontModel: \(selectedFontModel)")
     }
 
     // MARK: - Private Instance Methods
@@ -301,7 +297,7 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
         guard let fonttasticKeyboardView = fonttasticKeyboardView else { return }
 
         guard let result = results.first, let assetIdentifier = result.assetIdentifier else {
-            logger.log("PhotoPicker did finish, but result is empty or has nil assetIdentifier", level: .debug)
+            logger.debug("PhotoPicker did finish, but result is empty or has nil assetIdentifier")
             self.dismiss(animated: true)
             return
         }
@@ -309,7 +305,7 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
         guard
             let phAsset = PHAsset.fetchAssets(withLocalIdentifiers: [assetIdentifier], options: nil).firstObject
         else {
-            logger.log("PhotoPicker did finish, but unable to fetch PHAsset", level: .debug)
+            logger.debug("PhotoPicker did finish, but unable to fetch PHAsset")
             self.dismiss(animated: true)
             return
         }
@@ -328,18 +324,16 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
         ) { [weak self] image, info in
             guard let self = self else { return }
             guard let image = image else {
-                logger.log(
+                logger.debug(
                     "Failed to fetch image with PHAsset",
-                    description: "Info: \(info?.debugDescription ?? "nil")",
-                    level: .debug
+                    description: "Info: \(info?.debugDescription ?? "nil")"
                 )
                 self.dismiss(animated: true)
                 return
             }
-            logger.log(
+            logger.debug(
                 "Did fetch image for backgroundImage",
-                description: "ImageSize: \(image.size)",
-                level: .debug
+                description: "ImageSize: \(image.size)"
             )
             self.fonttasticKeyboardView?.canvasWithSettingsView.canvasBackgroundImage = image
             self.dismiss(animated: true)

@@ -107,7 +107,7 @@ public class DefaultFontsService: FontsService {
             installFileSourcedFont(fileURL: fileURL, completion: completion)
 
         case .userCreated:
-            logger.log("Installing userCreated font in unimplemented", level: .error)
+            logger.debug("Installing userCreated font in unimplemented")
             completion(.failure(.unimplemented))
         }
     }
@@ -130,7 +130,7 @@ public class DefaultFontsService: FontsService {
     }
 
     private func installCustomFonts(completion: @escaping () -> Void) {
-        logger.log("Started installing custom fonts", level: .debug)
+        logger.debug("Started installing custom fonts")
         let bundle = Bundle(for: Self.self)
 
         guard
@@ -139,7 +139,7 @@ public class DefaultFontsService: FontsService {
                 subdirectory: nil
             )
         else {
-            logger.log("Failed to install custom fonts - no font urls", level: .error)
+            logger.error("Failed to install custom fonts", description: "No font URLs")
             return
         }
 
@@ -147,7 +147,7 @@ public class DefaultFontsService: FontsService {
         var installedFontModels: [FontModel] = []
 
         // TODO: FIX MEMORY ISSUE AT KEYBOARD
-        let fontsToInstallURLs = customFontFileURLs.prefix(1)
+        let fontsToInstallURLs = customFontFileURLs.prefix(50)
         for customFontFileURL in fontsToInstallURLs {
             dispatchGroup.enter()
 
@@ -161,11 +161,7 @@ public class DefaultFontsService: FontsService {
                 self.installFont(from: fontSourceModel) { result in
                     switch result {
                     case let .failure(error):
-                        logger.log(
-                            "Failed to install custom font",
-                            description: "Error: \(error)",
-                            level: .error
-                        )
+                        logger.error("Failed to install custom font", error: error)
 
                     case let .success(fontModel):
                         installedFontModels.append(fontModel)
@@ -321,11 +317,7 @@ public class DefaultFontsService: FontsService {
                 return lastUsedLanguage
             }
         } catch {
-            logger.log(
-                "Error restoring last used Language",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Error restoring last used Language", error: error)
         }
 
         return nil
@@ -335,11 +327,7 @@ public class DefaultFontsService: FontsService {
         do {
             try keychainContainer.setString("\(language.rawValue)", for: Constants.lastUsedLanguageKey)
         } catch {
-            logger.log(
-                "Error storing last used Language",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Error storing last used Language", error: error)
         }
     }
 
@@ -351,11 +339,7 @@ public class DefaultFontsService: FontsService {
                 return try JSONDecoder().decode(CanvasViewDesign.self, from: canvasViewDesignData)
             }
         } catch {
-            logger.log(
-                "Error restoring last used CanvasViewDesign",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Error restoring last used CanvasViewDesign", error: error)
         }
 
         return nil
@@ -366,11 +350,7 @@ public class DefaultFontsService: FontsService {
             let canvasViewDesignData = try JSONEncoder().encode(canvasViewDesign)
             try keychainContainer.setData(canvasViewDesignData, for: Constants.lastUsedCanvasViewDesignKey)
         } catch {
-            logger.log(
-                "Error storing last used CanvasViewDesign",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Error storing last used CanvasViewDesign", error: error)
         }
     }
 

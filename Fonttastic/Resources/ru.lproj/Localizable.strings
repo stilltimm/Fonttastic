@@ -13,8 +13,9 @@
 
 // MARK: - Subscription
 
-"subscription.navigationItem.restoreActionTitle" = "Восстановить";
 "subscription.navigationItem.termsActionTitle" = "Соглашение";
+"subscription.navigationItem.promocodeActionTitle" = "Ввести промокод";
+"subscription.navigationItem.restoreActionTitle" = "Восстановить покупки";
 "subscription.actionButton.title" = "Продолжить";
 
 "subscription.error.title.default" = "Ошибка покупки";

@@ -21,9 +21,13 @@ public protocol SubscriptionService {
     var subscriptionStateDidChangeEvent: HotEvent<SubscriptionState> { get }
 
     func configurePurchases()
-    func fetchAvailableProducts()
+
+    func fetchPaywall()
+
     func purchase(paywallItem: PaywallItem, completion: @escaping PaywallItemPurchaseCompletion)
     func restorePurchases(completion: @escaping PaywallItemPurchaseCompletion)
+    func presentCodeRedemptionSheet()
+
     func fetchPurchaserInfo()
 }
 
@@ -75,6 +79,16 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
                 return false
             }
         }
+
+        var isUserInitiated: Bool {
+            switch self {
+            case .productPurchase, .restorePurchases:
+                return true
+
+            case .purchaserInfoUpdate, .updateFromDelegate:
+                return false
+            }
+        }
     }
 
     // MARK: - Public Type Properties
@@ -85,7 +99,7 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
 
     public private(set) var paywallState: PaywallState {
         didSet {
-            logger.log("PaywallState changed to \(paywallState)", level: .debug)
+            logger.debug("PaywallState changed to \(paywallState)")
             paywallStateDidChangeEvent.onNext(paywallState)
         }
     }
@@ -93,7 +107,7 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
 
     public private(set) var subscriptionState: SubscriptionState {
         didSet {
-            logger.log("SubscriptionState changed to \(subscriptionState)", level: .debug)
+            logger.debug("SubscriptionState changed to \(subscriptionState)")
             subscriptionStateDidChangeEvent.onNext(subscriptionState)
         }
     }
@@ -127,10 +141,9 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         #endif
 
         guard let purchasesAPIKey = AppConstants.purchasesAPIKey else {
-            logger.log(
+            logger.error(
                 "Failed to configure Purchases",
-                description: "Purchases API Key not found",
-                level: .error
+                description: "Purchases API Key not found"
             )
             return
         }
@@ -144,9 +157,10 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         self.purchases = purchases
 
         purchases.delegate = self
+        logger.debug("Succesfully configured Purchases")
     }
 
-    public func fetchAvailableProducts() {
+    public func fetchPaywall() {
         guard let purchases = purchases else { return }
 
         purchases.getOfferings { [weak self] offerings, error in
@@ -220,6 +234,12 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         }
     }
 
+    public func presentCodeRedemptionSheet() {
+        guard let purchases = purchases else { return }
+
+        purchases.presentCodeRedemptionSheet()
+    }
+
     public func fetchPurchaserInfo() {
         guard let purchases = purchases else { return }
 
@@ -278,12 +298,12 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         }
 
         if let resolvedError = resolvedError {
-            logger.log(
-                "Failure during \(context.debugDescription)",
-                description: "Error: \(resolvedError)",
-                level: .error
-            )
+            logger.error("Failure during \(context.debugDescription)", error: resolvedError)
             context.completion?(.failure(resolvedError))
+
+            if context.isUserInitiated {
+                self.fetchPurchaserInfo()
+            }
         } else {
             context.completion?(.success(()))
         }
@@ -299,13 +319,13 @@ extension DefaultSubscriptionService: PurchasesDelegate {
         self.handlePurchaserInfoUpdate(purchaserInfo, error: nil, context: .updateFromDelegate)
     }
 
-    public func purchases(
-        _ purchases: Purchases,
-        shouldPurchasePromoProduct product: SKProduct,
-        defermentBlock makeDeferredPurchase: @escaping DeferredPromotionalPurchaseBlock
-    ) {
-        // TODO: Implement promo product deferred purchase
-    }
+    // TODO: Implement promo product deferred purchase
+//    public func purchases(
+//        _ purchases: Purchases,
+//        shouldPurchasePromoProduct product: SKProduct,
+//        defermentBlock makeDeferredPurchase: @escaping DeferredPromotionalPurchaseBlock
+//    ) {
+//    }
 }
 
 private enum Constants {

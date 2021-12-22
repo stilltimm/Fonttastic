@@ -45,6 +45,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private let viewModel: FontListViewModel
     private let appStatusService: AppStatusService = DefaultAppStatusService.shared
     private let onboardingService: OnboardingService = DefaultOnboardingService.shared
+    private let analyticsService: AnalyticsService = DefaultAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -77,13 +78,18 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !onboardingService.hasCompletedOnboarding() {
+        let willShowOnboarding: Bool = !onboardingService.hasCompletedOnboarding()
+        analyticsService.trackEvent(
+            FontListDidAppearAnalyticsEvent(willShowOnboarding: willShowOnboarding)
+        )
+
+        if willShowOnboarding {
             let onboardingViewController = OnboardingViewController()
             let nav = BaseNavigationController(rootViewController: onboardingViewController)
             nav.modalPresentationStyle = .overFullScreen
             navigationController?.present(nav, animated: true)
 
-            logger.log("TODO: log onboarding started", level: .info)
+            logger.debug("TODO: log onboarding started")
         }
     }
 
@@ -149,13 +155,6 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             .subscribe(self) { [weak self] fontViewModel in
                 self?.handleFontViewModelSelection(fontViewModel)
             }
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.handleAppDidBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
         // setupAddFontButtonTapHandling()
     }
 
@@ -166,10 +165,6 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 //            for: .touchUpInside
 //        )
 //    }
-
-    @objc private func handleAppDidBecomeActive() {
-        self.viewModel.reloadData()
-    }
 
     private func openFontDetails(_ fontModel: FontModel) {
         let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)
@@ -198,7 +193,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private func presentSubscription() {
         let subscriptionViewController = SubscriptionViewController()
         let nav = BaseNavigationController(rootViewController: subscriptionViewController)
-        nav.modalPresentationStyle = .overFullScreen
+        nav.modalPresentationStyle = .pageSheet
         self.navigationController?.present(nav, animated: true)
     }
 

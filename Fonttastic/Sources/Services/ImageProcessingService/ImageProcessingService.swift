@@ -122,7 +122,7 @@ class DefaultImageProcessingService: ImageProcessingService {
         function: String = #function
     ) {
         let timePassed = endDate.timeIntervalSince(startDate)
-        logger.log("\(function): \(title) took \(timePassed) seconds", level: .debug)
+        logger.debug("\(function): \(title) took \(timePassed) seconds")
     }
 
     // MARK: - Private Instance Properties
@@ -268,7 +268,7 @@ class DefaultImageProcessingService: ImageProcessingService {
             try fileService.makeZip(of: svgsDirectoryURL, to: archiveURL)
             return archiveURL
         } catch {
-            logger.log("Failed to create archive: \(error)", level: .error)
+            logger.error("Failed to create archive", error: error)
             return nil
         }
     }

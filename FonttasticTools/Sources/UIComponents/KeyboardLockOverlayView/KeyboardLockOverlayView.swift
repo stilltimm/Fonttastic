@@ -55,10 +55,24 @@ public class KeyboardLockOverlayView: UIControl {
         label.isUserInteractionEnabled = false
         return label
     }()
+    private lazy var advanceToNextInputButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Colors.brandMainLight
+        button.contentEdgeInsets = UIEdgeInsets(vertical: 8, horizontal: 8)
+        button.setImage(UIImage(systemName: "globe"), for: .normal)
+        button.contentVerticalAlignment = .fill
+        button.contentHorizontalAlignment = .fill
+        button.tintColor = .white
+        button.layer.cornerRadius = 8
+        button.layer.cornerCurve = .continuous
+        button.layer.maskedCorners = .layerMaxXMinYCorner
+        return button
+    }()
 
     // MARK: - Public Instance Properties
 
     public let didTapEvent = FonttasticTools.Event<URL>()
+    public let didTapAdvanceToNextInputButton = FonttasticTools.Event<Void>()
 
     public override var isHighlighted: Bool {
         didSet {
@@ -81,11 +95,11 @@ public class KeyboardLockOverlayView: UIControl {
 
     // MARK: - Initializers
 
-    public init() {
+    public init(isAdvanceToNextInputRequired: Bool) {
         super.init(frame: .zero)
 
-        configureLayout()
-        setupTapHandling()
+        configureLayout(isAdvanceToNextInputRequired: isAdvanceToNextInputRequired)
+        setupTapHandling(isAdvanceToNextInputRequired: isAdvanceToNextInputRequired)
     }
 
     @available(*, unavailable)
@@ -128,7 +142,7 @@ public class KeyboardLockOverlayView: UIControl {
 
     // MARK: - Private Instance Methods
 
-    private func configureLayout() {
+    private func configureLayout(isAdvanceToNextInputRequired: Bool) {
         addSubview(lockImageView)
         addSubview(titleLabel)
         addSubview(messageLabel)
@@ -177,6 +191,16 @@ public class KeyboardLockOverlayView: UIControl {
             actionButtonLabel.edges == actionButtonContainer.edges.inseted(by: Constants.actionButtonInsets)
         }
 
+        if isAdvanceToNextInputRequired {
+            addSubview(advanceToNextInputButton)
+            constrain(self, advanceToNextInputButton) { view, button in
+                button.width == Constants.adaptToNextInputButtonSize.width
+                button.height == Constants.adaptToNextInputButtonSize.height
+                button.left == view.left
+                button.bottom == view.bottom
+            }
+        }
+
         adaptToOrientationChange(isPortrait: UIScreen.main.isPortrait)
     }
 
@@ -194,8 +218,16 @@ public class KeyboardLockOverlayView: UIControl {
         messageHeightConstraint?.constant = ceil(messageLabel.sizeThatFits(boundingSize).height)
     }
 
-    private func setupTapHandling() {
+    private func setupTapHandling(isAdvanceToNextInputRequired: Bool) {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
+
+        if isAdvanceToNextInputRequired {
+            advanceToNextInputButton.addTarget(
+                self,
+                action: #selector(self.handleAdvanceToNextInputTap),
+                for: .touchUpInside
+            )
+        }
     }
 
     @objc private func handleTap() {
@@ -205,6 +237,10 @@ public class KeyboardLockOverlayView: UIControl {
         else { return }
 
         didTapEvent.onNext(actionLinkURL)
+    }
+
+    @objc private func handleAdvanceToNextInputTap() {
+        didTapAdvanceToNextInputButton.onNext(())
     }
 }
 
@@ -217,4 +253,6 @@ private enum Constants {
     static let lockImageToTitleSpacing: CGFloat = 8
     static let titleToMessageSpacing: CGFloat = 4
     static let messageToButtonSpacing: CGFloat = 16
+
+    static let adaptToNextInputButtonSize: CGSize = CGSize(width: 50, height: 50)
 }

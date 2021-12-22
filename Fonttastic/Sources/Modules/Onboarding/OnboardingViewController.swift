@@ -59,15 +59,6 @@ class OnboardingViewController: UIPageViewController {
             completion: nil
         )
     }
-
-    // MARK: - Private Instance Methods
-
-    private func setOnboardingCompleteIfNeeded() {
-        if !onboardingService.hasCompletedOnboarding() {
-            onboardingService.setOnboardingComplete()
-            logger.log("TODO: log onboarding completion", level: .info)
-        }
-    }
 }
 
 extension OnboardingViewController: UIPageViewControllerDelegate {}
@@ -136,7 +127,6 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
 
         case .paywall:
             onboardingPageViewController = SubscriptionViewController()
-            setOnboardingCompleteIfNeeded()
         }
         configureOnboardingPageViewController(onboardingPageViewController)
 
@@ -157,17 +147,11 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
                 )
             }
 
-            logger.log(
-                "TODO: log action button tapped at onboarding page \"\(onboardingPage)\"",
-                level: .info
-            )
+            logger.debug("TODO: log action button tapped at onboarding page \"\(onboardingPage)\"")
         }
 
         viewController.didAppearEvent.subscribe(self) { [weak self] onboardingPage in
-            logger.log(
-                "TODO: log onboarding page \"\(onboardingPage)\" did appear",
-                level: .info
-            )
+            logger.debug("TODO: log onboarding page \"\(onboardingPage)\" did appear")
         }
     }
 }

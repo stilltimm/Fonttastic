@@ -35,11 +35,7 @@ public class DefaultOnboardingService: OnboardingService {
             let onboardingCompletedString = try keychainContainer.getString(for: Constants.onboardingCompletedKey)
             return onboardingCompletedString == Constants.onboardingCompletedValue
         } catch {
-            logger.log(
-                "Got error checking if onboarding completed",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Got error checking if onboarding completed", error: error)
         }
 
         return false
@@ -49,11 +45,7 @@ public class DefaultOnboardingService: OnboardingService {
         do {
             try keychainContainer.setString(Constants.onboardingCompletedValue, for: Constants.onboardingCompletedKey)
         } catch {
-            logger.log(
-                "Got error setting onboarding completed",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Got error setting onboarding completed", error: error)
         }
     }
 
@@ -61,11 +53,7 @@ public class DefaultOnboardingService: OnboardingService {
         do {
             try keychainContainer.removeItem(for: Constants.onboardingCompletedKey)
         } catch {
-            logger.log(
-                "Got error resetting stored state",
-                description: "Error: \(error)",
-                level: .error
-            )
+            logger.error("Got error resetting stored state", error: error)
         }
     }
 }

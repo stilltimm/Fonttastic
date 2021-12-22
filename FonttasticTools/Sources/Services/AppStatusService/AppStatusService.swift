@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public protocol AppStatusService: AnyObject {
 
@@ -45,7 +46,7 @@ public class DefaultAppStatusService: AppStatusService {
     private static func isKeyboardInstalled() -> Bool {
         let defaultsDictionary = UserDefaults.standard.dictionaryRepresentation()
         guard let keyboardsArray = defaultsDictionary["AppleKeyboards"] as? [String] else {
-            logger.log("Failed to get AppleKeyboards array from UserDefaults", level: .debug)
+            logger.debug("Failed to get AppleKeyboards array from UserDefaults")
             return false
         }
 
@@ -60,7 +61,7 @@ public class DefaultAppStatusService: AppStatusService {
 
     public private(set) var appStatus: AppStatus {
         didSet {
-            logger.log("AppStatus changed to \(appStatus)", level: .debug)
+            logger.debug("AppStatus changed to \(appStatus)")
             appStatusDidUpdateEvent.onNext(appStatus)
         }
     }
@@ -78,13 +79,8 @@ public class DefaultAppStatusService: AppStatusService {
         self.appStatus = initialAppStatus
         self.appStatusDidUpdateEvent = HotEvent<AppStatus>(value: initialAppStatus)
 
-        subscriptionService.subscriptionStateDidChangeEvent.subscribe(self) { [weak self] subscriptionState in
-            guard let self = self else { return }
-            self.appStatus = Self.makeAppStatus(
-                subscriptionState: subscriptionState,
-                hasFullAccess: self.hasFullAccess
-            )
-        }
+        subscribeToAppStateUpdates()
+        subscribeToSubscriptionStateChanges()
     }
 
     // MARK: - Public Instance Properties
@@ -96,6 +92,41 @@ public class DefaultAppStatusService: AppStatusService {
             hasFullAccess: hasFullAccess
         )
     }
+
+    // MARK: - Private Instance Methods
+
+    private func subscribeToSubscriptionStateChanges() {
+        subscriptionService.subscriptionStateDidChangeEvent.subscribe(self) { [weak self] subscriptionState in
+            guard let self = self else { return }
+            self.appStatus = Self.makeAppStatus(
+                subscriptionState: subscriptionState,
+                hasFullAccess: self.hasFullAccess
+            )
+        }
+    }
+
+    private func subscribeToAppStateUpdates() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.handleAppDidBecomeActive),
+            name: .shouldUpdateAppStatusNotification,
+            object: nil
+        )
+    }
+
+    @objc private func handleAppDidBecomeActive() {
+        self.appStatus = Self.makeAppStatus(
+            subscriptionState: subscriptionService.subscriptionState,
+            hasFullAccess: hasFullAccess
+        )
+    }
+}
+
+extension Notification.Name {
+
+    public static let shouldUpdateAppStatusNotification = Notification.Name(
+        rawValue: "com.romandegtyarev.fonttastic.notification.shouldUpdateAppStatusNotification"
+    )
 }
 
 private enum Constants {

@@ -6,8 +6,7 @@ extension Scheme {
         schemeName: String,
         buildActionTargetReferences: [TargetReference],
         executableTargetReference: TargetReference?,
-        arguments: Arguments? = .default(),
-        storeKitConfigurationPath: Path? = nil
+        arguments: Arguments? = .default()
     ) -> Scheme {
         var runAction: RunAction?
         var profileAction: ProfileAction?
@@ -18,7 +17,7 @@ extension Scheme {
                 arguments: arguments,
                 options: .options(
                     language: nil,
-                    storeKitConfigurationPath: storeKitConfigurationPath,
+                    storeKitConfigurationPath: nil,
                     simulatedLocation: nil
                 )
             )

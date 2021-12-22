@@ -30,7 +30,7 @@ class KeyboardViewTestViewController: UIViewController {
         return view
     }()
     private let fontasticKeyboardView: FontasticKeyboardView
-    private let lockOverlayView: KeyboardLockOverlayView = KeyboardLockOverlayView()
+    private let lockOverlayView: KeyboardLockOverlayView = KeyboardLockOverlayView(isAdvanceToNextInputRequired: true)
 
     // MARK: - Private Instance Properties
 
@@ -155,10 +155,9 @@ extension KeyboardViewTestViewController: FontSelectionControllerDelegate {
 
     func didFinishFontSelection() {
         let selectedFontModel = fontasticKeyboardView.canvasWithSettingsView.canvasFontModel
-        logger.log(
+        logger.info(
             "Finished font selection",
-            description: "Selected FontModel: \(selectedFontModel)",
-            level: .info
+            description: "Selected FontModel: \(selectedFontModel)"
         )
     }
 
@@ -173,14 +172,14 @@ extension KeyboardViewTestViewController: PHPickerViewControllerDelegate {
 
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         guard let result = results.first, let assetIdentifier = result.assetIdentifier else {
-            logger.log("PhotoPicker did finish, but result is empty or has nil assetIdentifier", level: .debug)
+            logger.debug("PhotoPicker did finish, but result is empty or has nil assetIdentifier")
             return
         }
 
         guard
             let phAsset = PHAsset.fetchAssets(withLocalIdentifiers: [assetIdentifier], options: nil).firstObject
         else {
-            logger.log("PhotoPicker did finish, but unable to fetch PHAsset", level: .debug)
+            logger.debug("PhotoPicker did finish, but unable to fetch PHAsset")
             return
         }
 
@@ -197,17 +196,15 @@ extension KeyboardViewTestViewController: PHPickerViewControllerDelegate {
                options: options
         ) { [weak self] image, info in
             guard let image = image else {
-                logger.log(
+                logger.debug(
                     "Failed to fetch image with PHAsset",
-                    description: "Info: \(info?.debugDescription ?? "nil")",
-                    level: .debug
+                    description: "Info: \(info?.debugDescription ?? "nil")"
                 )
                 return
             }
-            logger.log(
+            logger.debug(
                 "Did fetch image for backgroundImage",
-                description: "ImageSize: \(image.size)",
-                level: .debug
+                description: "ImageSize: \(image.size)"
             )
             self?.fontasticKeyboardView.canvasWithSettingsView.canvasBackgroundImage = image
             self?.navigationController?.dismiss(animated: true)
