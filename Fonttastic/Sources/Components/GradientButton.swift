@@ -9,13 +9,19 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-class GradientButton: UIButton {
+class GradientButton: ShadowButton {
 
     override var isHighlighted: Bool {
         didSet {
             UIView.animate(withConfig: .fastControl) {
                 self.transform = self.isHighlighted ? CGAffineTransform(scaleX: 0.95, y: 0.95) : .identity
             }
+        }
+    }
+
+    var cornerRadius: CGFloat = 0 {
+        didSet {
+            gradientView.layer.cornerRadius = cornerRadius
         }
     }
 
@@ -32,10 +38,10 @@ class GradientButton: UIButton {
     }
 
     private func setupLayout() {
-        self.clipsToBounds = true
         self.backgroundColor = .clear
 
         addSubview(gradientView)
+        gradientView.clipsToBounds = true
         gradientView.isUserInteractionEnabled = false
         self.sendSubviewToBack(gradientView)
 

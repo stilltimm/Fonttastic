@@ -54,6 +54,8 @@ public class LinearGradientView: UIView {
     // MARK: - Private Instance Methods
 
     private func setupGradientLayer() {
+        gradientLayer?.masksToBounds = false
+        gradientLayer?.cornerCurve = .continuous
         gradientLayer?.type = .axial
         gradientLayer?.startPoint = .zero
     }

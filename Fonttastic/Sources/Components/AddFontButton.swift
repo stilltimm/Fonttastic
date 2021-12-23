@@ -8,7 +8,7 @@
 import UIKit
 import FonttasticTools
 
-class AddFontButton: UIButton {
+class AddFontButton: ShadowButton {
 
     override var isHighlighted: Bool {
         didSet {

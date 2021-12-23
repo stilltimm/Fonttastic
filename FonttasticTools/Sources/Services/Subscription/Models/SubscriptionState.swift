@@ -52,6 +52,9 @@ public struct SubscriptionInfo {
     public let originalPurchaseDate: Date?
     public let latestPurchaseDate: Date?
     public let expirationDate: Date?
+}
+
+extension SubscriptionInfo {
 
     // MARK: - Initializers
 

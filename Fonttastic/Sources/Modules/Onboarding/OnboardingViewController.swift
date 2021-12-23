@@ -97,21 +97,6 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
         return prevOnboardingPageViewController
     }
 
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return OnboardingPage.allCases.count
-    }
-
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        guard
-            let onboardingPageViewController = pageViewController.viewControllers?
-                .first as? OnboardingPageViewControllerType
-        else {
-            return 0
-        }
-
-        return OnboardingPage.allCases.firstIndex(of: onboardingPageViewController.onboardingPage) ?? 0
-    }
-
     // MARK: - Private Instance Methods
 
     private func makeOnboardingPageViewController(

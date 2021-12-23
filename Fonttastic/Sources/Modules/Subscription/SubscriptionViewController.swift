@@ -121,8 +121,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         let button = GradientButton(frame: .zero)
         button.titleLabel?.font = UIFont(name: "Futura-Bold", size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
         button.titleLabel?.textColor = UIColor.white
-        button.layer.cornerRadius = 16
-        button.layer.cornerCurve = .continuous
+        button.cornerRadius = 16
         return button
     }()
     private let actionButtonShadow = CALayer.Shadow(
@@ -154,8 +153,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         button.setTitle("Reload", for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 16)
         button.titleLabel?.textColor = UIColor.white
-        button.layer.cornerRadius = 16
-        button.layer.cornerCurve = .continuous
+        button.cornerRadius = 16
         return button
     }()
 
@@ -189,6 +187,12 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         if subscriptionService.paywallState.isInvalid {
             subscriptionService.fetchPaywall()
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        actionButton.applyShadow(actionButtonShadow)
     }
 
     override func viewDidAppear(_ animated: Bool) {

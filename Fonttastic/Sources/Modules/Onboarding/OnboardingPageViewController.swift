@@ -45,16 +45,23 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         label.textColor = Colors.blackAndWhite
         return label
     }()
-    let actionButton: UIButton = {
+    let actionButton: GradientButton = {
         let button = GradientButton()
         button.setTitle(FonttasticStrings.Localizable.Subscription.ActionButton.title, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 16) ??
             UIFont.systemFont(ofSize: 16, weight: .bold)
         button.titleLabel?.textColor = UIColor.white
-        button.layer.cornerRadius = 16
-        button.layer.cornerCurve = .continuous
+        button.cornerRadius = 16
         return button
     }()
+    private let actionButtonShadow = CALayer.Shadow(
+        color: Colors.brandMainLight,
+        alpha: 0.8,
+        x: 0,
+        y: 8,
+        blur: 16,
+        spread: -8
+    )
 
     // MARK: - Instance Properties
 
@@ -92,12 +99,20 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         impactFeedbackGenerator.prepare()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        actionButton.applyShadow(actionButtonShadow)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         impactFeedbackGenerator.impactOccurred()
         didAppearEvent.onNext(onboardingPage)
     }
+
+    // MARK: - Private Instance Methods
 
     private func setupLayout() {
         view.addSubview(contentView)
