@@ -285,8 +285,6 @@ extension KeyboardViewController: UIColorPickerViewControllerDelegate {
     }
 
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        guard let completion = colorPickerCompletion else { return }
-        completion(viewController.selectedColor)
         colorPickerCompletion = nil
     }
 }
