@@ -341,8 +341,7 @@ extension FonttasticLogger.Config {
         #if DEBUG
         return FonttasticLogger.Config(
             enabledOutputs: [
-                .console: Set(FonttasticLogger.LogLevel.allCases),
-                .bugReports: [.error]
+                .console: Set(FonttasticLogger.LogLevel.allCases)
             ],
             usesFullDateFormatting: false
         )
