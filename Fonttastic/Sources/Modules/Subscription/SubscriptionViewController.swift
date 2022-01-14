@@ -672,5 +672,5 @@ private enum Constants {
     static let restoreToPromocodeSpacing: CGFloat = 8
     static let additionalContentInset: CGFloat = actionButtonHeight + edgeInsets.bottom + 16
 
-    static let termsURL: URL? = URL(string: "https://google.com")
+    static let termsURL: URL? = URL(string: "https://www.fonttastic.net/privacy-policy")
 }
