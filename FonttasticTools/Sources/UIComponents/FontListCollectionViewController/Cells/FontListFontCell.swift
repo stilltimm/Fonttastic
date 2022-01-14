@@ -164,12 +164,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     // MARK: - Public Methods
 
-    public override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-
-        applyShadowIfNeeded()
-    }
-
     public func apply(viewModel: FontListFontViewModel) {
         self.viewModel = viewModel
 
@@ -193,13 +187,6 @@ class FontListFontCell: UICollectionViewCell, Reusable {
         fontDisplayLabel.attributedText = attributedString
 
         detailsTextLabel.text = viewModel.detailsText
-    }
-
-    public func applyShadowIfNeeded() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-//            self.containerView.layer.applyShadow(Constants.containerShadow)
-        }
     }
 
     // MARK: - Private Methods

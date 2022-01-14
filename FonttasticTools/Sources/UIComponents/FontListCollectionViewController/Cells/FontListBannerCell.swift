@@ -13,7 +13,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
     // MARK: - Nested Types
 
     struct ViewModel {
-        let title: String
+        let bannerType: FontListBannerType
         let didTapEvent = Event<Void>()
     }
 
@@ -35,7 +35,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
         design: Design
     ) -> CGFloat {
         let attributedString = NSAttributedString(
-            string: viewModel.title,
+            string: viewModel.bannerType.localizedDescription,
             attributes: [
                 .font: design.font
             ]
@@ -107,18 +107,22 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
 
     // MARK: - Public Instance Methods
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let shadow = self.design?.shadow {
+            self.containerView.layer.applyShadow(shadow)
+        } else {
+            self.containerView.layer.clearShadow()
+        }
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
 
         viewModel = nil
         design = nil
         titleLabel.text = nil
-    }
-
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-
-        applyShadowIfNeeded()
     }
 
     func apply(viewModel: ViewModel, design: Design) {
@@ -129,19 +133,10 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
 
         titleLabel.font = design.font
         titleLabel.textColor = design.textColor
-        titleLabel.text = viewModel.title
+        titleLabel.text = viewModel.bannerType.localizedDescription
 
         titleLeftInsetConstraint?.constant = design.contentInsets.left
         titleRightInsetConstraint?.constant = -design.contentInsets.right
-    }
-
-    func applyShadowIfNeeded() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if let shadow = self.design?.shadow {
-//                self.containerView.layer.applyShadow(shadow)
-            }
-        }
     }
 
     // MARK: - Private Instance Methods

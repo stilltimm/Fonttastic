@@ -135,21 +135,15 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     private func setupBusinessLogic() {
         viewModel.fontListCollectionViewModel.didTapBannerEvent
-            .subscribe(self) { [weak self] in
+            .subscribe(self) { [weak self] bannerType in
                 guard let self = self else { return }
 
-                let appStatus = self.appStatusService.appStatus
-                switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
-                case (_, .notInstalled), (_, .installedWithLimitedAccess):
-                    self.analyticsService.trackEvent(FontListDidTapBannerAnalyticsEvent(bannerType: .keyboardSetup))
+                switch bannerType {
+                case .keyboardSetupBanner:
                     self.openAppSettings()
 
-                case (.noSubscription, _), (.hasInactiveSubscription, _):
-                    self.analyticsService.trackEvent(FontListDidTapBannerAnalyticsEvent(bannerType: .subscription))
+                case .subscriptionBanner:
                     self.presentSubscription()
-
-                default:
-                    break
                 }
             }
 
@@ -157,6 +151,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
             .subscribe(self) { [weak self] fontViewModel in
                 self?.handleFontViewModelSelection(fontViewModel)
             }
+
         // setupAddFontButtonTapHandling()
     }
 

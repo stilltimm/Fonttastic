@@ -57,7 +57,7 @@ public class FontListCollectionViewModel {
     private let mode: Mode
     public var sections: [Section] = []
 
-    public let didTapBannerEvent = Event<Void>()
+    public let didTapBannerEvent = Event<FontListBannerType>()
     public let didTapFontCell = Event<FontListFontViewModel>()
     let shouldReloadDataEvent = Event<Void>()
 
@@ -135,24 +135,10 @@ public class FontListCollectionViewModel {
 
         // Banner
 
-        let bannerViewModel: FontListBannerCell.ViewModel?
-        switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
-        case (_, .notInstalled), (_, .installedWithLimitedAccess):
-            bannerViewModel = FontListBannerCell.ViewModel(
-                title: FonttasticToolsStrings.FontListCollection.BannerTitle.keyboardInstall
-            )
-
-        case (.noSubscription, _), (.hasInactiveSubscription, _):
-            bannerViewModel = FontListBannerCell.ViewModel(
-                title: FonttasticToolsStrings.FontListCollection.BannerTitle.subscriptionPurchase
-            )
-
-        default:
-            bannerViewModel = nil
-        }
-        if let bannerViewModel = bannerViewModel {
+        if let bannerType = FontListBannerType(appStatus: appStatus) {
+            let bannerViewModel = FontListBannerCell.ViewModel(bannerType: bannerType)
             bannerViewModel.didTapEvent.subscribe(self) { [weak self] in
-                self?.didTapBannerEvent.onNext(())
+                self?.didTapBannerEvent.onNext(bannerType)
             }
             let keyboardInstallBannerSection = BannerSection(
                 bannerViewModel: bannerViewModel,
@@ -259,7 +245,7 @@ private extension FontListBannerCell.Design {
         cornerRadius: 16,
         shadow: .init(
             color: Colors.brandMainLight,
-            alpha: 0.8,
+            alpha: 0.5,
             x: 0,
             y: 16,
             blur: 32,

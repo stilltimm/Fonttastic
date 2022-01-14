@@ -10,13 +10,6 @@ import Foundation
 
 public struct FontListDidTapBannerAnalyticsEvent: AnalyticsEvent {
 
-    // MARK: - Nested Types
-
-    public enum BannerType: String {
-        case keyboardSetup
-        case subscription
-    }
-
     // MARK: - Type Properties
 
     public static var group: AnalyticsEventGroup { .fontList }
@@ -24,11 +17,11 @@ public struct FontListDidTapBannerAnalyticsEvent: AnalyticsEvent {
 
     // MARK: - Instance Properties
 
-    public let bannerType: BannerType
+    public let bannerType: FontListBannerType
 
     // MARK: - Initializers
 
-    public init(bannerType: BannerType) {
+    public init(bannerType: FontListBannerType) {
         self.bannerType = bannerType
     }
 

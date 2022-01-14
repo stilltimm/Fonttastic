@@ -264,20 +264,6 @@ extension FontListCollectionViewController: UICollectionViewDelegate, UICollecti
 
     public func collectionView(
         _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-
-        if let fontCell = cell as? FontListFontCell {
-            fontCell.applyShadowIfNeeded()
-        } else if let bannerCell = cell as? FontListBannerCell {
-            bannerCell.applyShadowIfNeeded()
-        }
-    }
-
-    public func collectionView(
-        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {

@@ -393,6 +393,7 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
 
     // MARK: - Loading Image Implementations
 
+    // swifltint:disable:next function_body_length
     private func loadImageWithPHImageManager(
         from pickerResult: PHPickerResult,
         targetSize: CGSize,
