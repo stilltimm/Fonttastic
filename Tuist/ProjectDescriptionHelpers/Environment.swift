@@ -23,22 +23,6 @@ extension Environment {
     // MARK: - Public Type Methods
 
     public static func `default`() -> Environment {
-        guard let environmentValue = getEnvironmentValue() else {
-            return Environment()
-        }
-
-        return Environment(value: environmentValue)
-    }
-
-    private static func getEnvironmentValue() -> [String: String]? {
-        let environmentFileURL = URL(fileURLWithPath: "./.Environment")
-
-        do {
-            let environmentFileData = try Data(contentsOf: environmentFileURL)
-            return try JSONDecoder().decode([String: String].self, from: environmentFileData)
-        } catch {
-            NSLog("Failed to load Environment from .Environment file, error: %@", "\(error)")
-            return nil
-        }
+        return Environment(value: [:])
     }
 }

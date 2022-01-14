@@ -76,6 +76,14 @@ extension CALayer {
         )
     }
 
+    public func clearShadow() {
+        self.shadowPath = nil
+        self.shadowColor = nil
+        self.shadowOffset = .zero
+        self.shadowRadius = .zero
+        self.shadowOpacity = .zero
+    }
+
     public var shadow: Shadow {
         get {
             let spread: CGFloat

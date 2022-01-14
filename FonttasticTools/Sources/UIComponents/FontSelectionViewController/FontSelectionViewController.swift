@@ -62,6 +62,7 @@ public class FontSelectionController: UIViewController {
 
     private func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = FonttasticToolsStrings.FontSelection.title

@@ -43,9 +43,9 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Private Properties
 
     private let viewModel: FontListViewModel
-    private let appStatusService: AppStatusService = DefaultAppStatusService.shared
-    private let onboardingService: OnboardingService = DefaultOnboardingService.shared
-    private let analyticsService: AnalyticsService = DefaultAnalyticsService.shared
+    private lazy var appStatusService: AppStatusService = DefaultAppStatusService.shared
+    private lazy var onboardingService: OnboardingService = DefaultOnboardingService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
 
     // MARK: - Initializers
 
@@ -140,11 +140,11 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
                 let appStatus = self.appStatusService.appStatus
                 switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
-                case (.noSubscription, _), (.undefined, _), (.hasInactiveSubscription, _):
-                    self.presentSubscription()
-
                 case (_, .notInstalled), (_, .installedWithLimitedAccess):
                     self.openAppSettings()
+
+                case (.noSubscription, _), (.hasInactiveSubscription, _):
+                    self.presentSubscription()
 
                 default:
                     break
@@ -193,7 +193,7 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private func presentSubscription() {
         let subscriptionViewController = SubscriptionViewController()
         let nav = BaseNavigationController(rootViewController: subscriptionViewController)
-        nav.modalPresentationStyle = .pageSheet
+        nav.modalPresentationStyle = .fullScreen
         self.navigationController?.present(nav, animated: true)
     }
 

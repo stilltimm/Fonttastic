@@ -11,7 +11,6 @@ import RevenueCat
 public enum SubscriptionState {
 
     /// Initial status when Purchases framework is not configured yet
-    case undefined
     case loading
     case noSubscription
     case hasInactiveSubscription(SubscriptionInfo)
@@ -26,6 +25,32 @@ public enum SubscriptionState {
 
         default:
             return nil
+        }
+    }
+
+    public var isLoading: Bool {
+        switch self {
+        case .loading:
+            return true
+
+        default:
+            return false
+        }
+    }
+
+    public var description: String {
+        switch self {
+        case .loading:
+            return "🌎 Loading..."
+
+        case .noSubscription:
+            return "⭕️ No subscription"
+
+        case .hasInactiveSubscription:
+            return "🚫 Inactive sub"
+
+        case .hasActiveSubscription:
+            return "✅ Active sub"
         }
     }
 }

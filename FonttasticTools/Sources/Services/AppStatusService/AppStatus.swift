@@ -14,6 +14,15 @@ public struct AppStatus {
     public let subscriptionState: SubscriptionState
     public let keyboardInstallationState: KeyboardInstallationState
 
+    // MARK: - Public Instance Properties
+
+    public var description: String {
+        var result: String = "ℹ️ App Status:"
+        result += "\n⌨️ Keyboard [\(keyboardInstallationState.description)]"
+        result += "\n💰 Subscription [\(subscriptionState.description)]"
+        return result
+    }
+
     // MARK: - Initializers
 
     public init(

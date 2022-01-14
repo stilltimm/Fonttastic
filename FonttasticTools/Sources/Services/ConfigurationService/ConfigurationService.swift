@@ -40,34 +40,22 @@ public class DefaultConfigurationService: ConfigurationService {
     // MARK: - Public Instance Methods
 
     public func performInitialConfigurations(for executable: Executable) {
-        performDefaultConfiguration(shouldFetchPaywall: executable == .app)
+        performDefaultConfiguration(for: executable)
 
         if executable == .app, UserDefaults.standard.bool(forKey: Constants.isFirstLaunchKey) != true {
             UserDefaults.standard.set(true, forKey: Constants.isFirstLaunchKey)
-            performFirstLaunchConfiguration()
+            onboardingService.resetStoredState()
         }
     }
 
     // MARK: - Private Instance Methods
 
-    private func performDefaultConfiguration(shouldFetchPaywall: Bool) {
-        configureLogger()
-        configureAnalytics()
-        configureCrashReporting()
-        configureFontsService()
-        configureSubscriptionService(shouldFetchPaywall: shouldFetchPaywall)
-    }
-
-    private func configureLogger() {
+    private func performDefaultConfiguration(for executable: Executable) {
         FonttasticLogger.shared.setup(with: .default)
-    }
-
-    private func configureAnalytics() {
         analyticsService.configureAnalytics()
-    }
-
-    private func configureCrashReporting() {
         crashReportingService.configureCrashReporting()
+        configureFontsService()
+        configureSubscriptionService(shouldFetchPaywall: executable == .app)
     }
 
     private func configureFontsService() {
@@ -83,16 +71,6 @@ public class DefaultConfigurationService: ConfigurationService {
         if shouldFetchPaywall {
             subscriptionService.fetchPaywall()
         }
-    }
-
-    // MARK: - First Launch Setup
-
-    private func performFirstLaunchConfiguration() {
-        resetOnboardingState()
-    }
-
-    private func resetOnboardingState() {
-        onboardingService.resetStoredState()
     }
 }
 

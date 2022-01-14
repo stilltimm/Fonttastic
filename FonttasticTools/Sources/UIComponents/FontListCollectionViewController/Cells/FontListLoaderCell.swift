@@ -24,7 +24,7 @@ class FontListLoaderCell: UICollectionViewCell, Reusable {
 
     // MARK: - Subviews
 
-    private let activityIndicator = UIActivityIndicatorView()
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     // MARK: - Private Instance Properties
 
@@ -48,17 +48,18 @@ class FontListLoaderCell: UICollectionViewCell, Reusable {
         super.prepareForReuse()
 
         design = nil
-        activityIndicator.stopAnimating()
     }
 
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-
-        activityIndicator.startAnimating()
     }
 
     func apply(design: Design) {
         self.design = design
+    }
+
+    func startAnimating() {
+        activityIndicator.startAnimating()
     }
 
     // MARK: - Private Instance Methods

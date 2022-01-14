@@ -120,11 +120,11 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
     // MARK: - Initializers
 
     override init() {
-        let initialPaywallState: PaywallState = .undefined
+        let initialPaywallState: PaywallState = .loading
         self.paywallState = initialPaywallState
         self.paywallStateDidChangeEvent = HotEvent<PaywallState>(value: initialPaywallState)
 
-        let initialSubscriptionState: SubscriptionState = .undefined
+        let initialSubscriptionState: SubscriptionState = .loading
         self.subscriptionState = initialSubscriptionState
         self.subscriptionStateDidChangeEvent = HotEvent<SubscriptionState>(value: initialSubscriptionState)
 
@@ -163,11 +163,12 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
     public func fetchPaywall() {
         guard let purchases = purchases else { return }
 
+        paywallState = .loading
         purchases.getOfferings { [weak self] offerings, error in
             guard let self = self else { return }
 
             if let error = error {
-                self.paywallState = .invalid(error)
+                self.paywallState = .invalid(.purchasesError(error))
                 return
             }
 
@@ -264,7 +265,7 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
     ) {
         let resolvedError: SubscriptionServiceError?
         if let error = error {
-            self.subscriptionState = .undefined
+            self.subscriptionState = .noSubscription
 
             let nsError = error as NSError
             resolvedError = .purchaseError(nsError, error as? RevenueCat.ErrorCode)

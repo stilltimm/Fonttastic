@@ -8,6 +8,27 @@
 import Foundation
 import UIKit
 
+public enum KeyboardLockReason: String {
+
+    case lockedDueToNoActiveSubscription
+    case lockedDueToFullAccessLack
+
+    // MARK: - Initializers
+
+    public init?(appStatus: AppStatus) {
+        switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
+        case (.noSubscription, _), (.hasInactiveSubscription, _):
+            self = .lockedDueToNoActiveSubscription
+
+        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+            self = .lockedDueToFullAccessLack
+
+        default:
+            return nil
+        }
+    }
+}
+
 public struct KeyboardLockOverlayViewConfig {
 
     // MARK: - Instance Properties
@@ -20,16 +41,13 @@ public struct KeyboardLockOverlayViewConfig {
 
 extension KeyboardLockOverlayViewConfig {
 
-    public init?(from appStatus: AppStatus) {
-        switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
-        case (.noSubscription, _), (.hasInactiveSubscription, _):
+    public init(from keyboardLockReason: KeyboardLockReason) {
+        switch keyboardLockReason {
+        case .lockedDueToNoActiveSubscription:
             self = .lockedDueToNoActiveSubscription
 
-        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+        case .lockedDueToFullAccessLack:
             self = .lockedDueToFullAccessLack
-
-        default:
-            return nil
         }
     }
 }

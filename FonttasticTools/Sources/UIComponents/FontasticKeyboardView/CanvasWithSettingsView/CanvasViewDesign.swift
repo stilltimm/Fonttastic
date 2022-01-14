@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct CanvasViewDesign: Codable {
+public class CanvasViewDesign: Codable {
 
     // MARK: - Nested Types
 
@@ -47,7 +47,7 @@ public struct CanvasViewDesign: Codable {
         self.textAlignment = textAlignment
     }
 
-    public init(from decoder: Decoder) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.fontModel = try container.decode(FontModel.self, forKey: .fontModel)
         self.fontSize = try container.decode(CGFloat.self, forKey: .fontSize)

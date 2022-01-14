@@ -115,26 +115,36 @@ public class FontListCollectionViewModel {
         )
         result.append(.title(logoTitleSection))
 
+        #if DEBUG
+        let debugAppStatusSection = TitleSection(
+            titleViewModel: FontListTitleCell.ViewModel(title: appStatus.description),
+            titleDesign: .infoTitle
+        )
+        result.append(.title(debugAppStatusSection))
+        #endif
+
         if let subscriptionInfo = appStatus.subscriptionState.subscriptionInfo {
             let subscriptionInfoSection = TitleSection(
                 titleViewModel: FontListTitleCell.ViewModel(title: subscriptionInfo.localizedDescription),
                 titleDesign: .infoTitle
             )
             result.append(.title(subscriptionInfoSection))
+        } else if appStatus.subscriptionState.isLoading {
+            result.append(.loader(LoaderSection(loaderDesign: .default)))
         }
 
         // Banner
 
         let bannerViewModel: FontListBannerCell.ViewModel?
         switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
+        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+            bannerViewModel = FontListBannerCell.ViewModel(
+                title: FonttasticToolsStrings.FontListCollection.BannerTitle.keyboardInstall
+            )
+
         case (.noSubscription, _), (.hasInactiveSubscription, _):
             bannerViewModel = FontListBannerCell.ViewModel(
                 title: FonttasticToolsStrings.FontListCollection.BannerTitle.subscriptionPurchase
-            )
-
-        case (_, .notInstalled):
-            bannerViewModel = FontListBannerCell.ViewModel(
-                title: FonttasticToolsStrings.FontListCollection.BannerTitle.keyboardInstall
             )
 
         default:
@@ -263,19 +273,22 @@ private extension FontListTitleCell.Design {
     static let logo: FontListTitleCell.Design = FontListTitleCell.Design(
         font: UIFont(name: "Futura-Bold", size: 48) ?? UIFont.systemFont(ofSize: 48, weight: .bold),
         textColor: Colors.blackAndWhite,
-        edgeInsets: UIEdgeInsets(top: 16, left: 16, bottom: 4, right: 16)
+        edgeInsets: UIEdgeInsets(top: 16, left: 16, bottom: 4, right: 16),
+        shadow: nil
     )
 
     static let infoTitle: FontListTitleCell.Design = FontListTitleCell.Design(
         font: UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16),
         textColor: Colors.blackAndWhite,
-        edgeInsets: UIEdgeInsets(top: 0, left: 16, bottom: 4, right: 16)
+        edgeInsets: UIEdgeInsets(top: 0, left: 16, bottom: 4, right: 16),
+        shadow: nil
     )
 
     static let fontListTitle: FontListTitleCell.Design = FontListTitleCell.Design(
         font: UIFont(name: "AvenirNext-DemiBold", size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold),
         textColor: Colors.blackAndWhite,
-        edgeInsets: UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
+        edgeInsets: UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16),
+        shadow: nil
     )
 }
 

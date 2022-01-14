@@ -79,7 +79,7 @@ fastlane/test_output
 iOSInjectionProject/
 
 # Environmental Variables
-.Environment
+FonttasticTools/Resources/Environment.plist
 
 # Xcode Project and Workspace
 *.xcodeproj

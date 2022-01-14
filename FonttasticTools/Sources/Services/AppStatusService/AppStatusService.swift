@@ -69,13 +69,13 @@ public class DefaultAppStatusService: AppStatusService {
 
     // MARK: - Private Instance Properties
 
-    private let subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
+    private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
     private var hasFullAccess: Bool?
 
     // MARK: - Initializers
 
     private init() {
-        let initialAppStatus = Self.makeAppStatus(subscriptionState: .undefined, hasFullAccess: nil)
+        let initialAppStatus = Self.makeAppStatus(subscriptionState: .loading, hasFullAccess: nil)
         self.appStatus = initialAppStatus
         self.appStatusDidUpdateEvent = HotEvent<AppStatus>(value: initialAppStatus)
 

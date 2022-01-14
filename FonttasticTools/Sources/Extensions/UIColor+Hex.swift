@@ -9,7 +9,7 @@ import UIKit
 
 extension UIColor {
 
-    convenience init(red: UInt32, green: UInt32, blue: UInt32) {
+    public convenience init(red: UInt32, green: UInt32, blue: UInt32) {
         self.init(
             red: CGFloat(red) / Constants.conversionMultiplier,
             green: CGFloat(green) / Constants.conversionMultiplier,
@@ -18,14 +18,14 @@ extension UIColor {
         )
     }
 
-    convenience init(hex: UInt32) {
+    public convenience init(hex: UInt32) {
         let red = (hex >> 16) & 0xFF
         let green = (hex >> 8) & 0xFF
         let blue = hex & 0xFF
         self.init(red: red, green: green, blue: blue)
     }
 
-    var hexValue: UInt32 {
+    public var hexValue: UInt32 {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0

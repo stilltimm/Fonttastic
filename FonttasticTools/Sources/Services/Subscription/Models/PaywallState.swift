@@ -9,10 +9,9 @@ import Foundation
 
 public enum PaywallState {
 
-    case undefined
     case loading
     case ready(Paywall)
-    case invalid(Error)
+    case invalid(PaywallFetchError)
 
     // MARK: - Instance Properties
 

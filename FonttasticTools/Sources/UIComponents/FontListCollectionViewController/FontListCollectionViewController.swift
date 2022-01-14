@@ -353,6 +353,7 @@ extension FontListCollectionViewController: UICollectionViewDelegate, UICollecti
     ) -> UICollectionViewCell {
         let cell: FontListLoaderCell = collectionView.registerAndDequeueReusableCell(for: indexPath)
         cell.apply(design: design)
+        cell.startAnimating()
         return cell
     }
 }

@@ -157,7 +157,7 @@ public class FonttasticLogger {
             }
 
             let fileName: String = filePath.split(separator: "/").last.map { String($0)} ?? "undefined"
-            let locationString: String = "[File: \(fileName), Line: #\(line)]"
+            let locationString: String = "\(fileName)#\(line)"
 
             let dateString: String
             if config.usesFullDateFormatting {
@@ -185,9 +185,12 @@ public class FonttasticLogger {
     private func log(_ logMessageContext: LogMessageContext, to logOutput: LogOutput) {
         switch logOutput {
         case .console:
-            var logString = "\(logMessageContext.level.description)"
-            logString += " at \(logMessageContext.location) at \(logMessageContext.dateString)"
-            logString += ": \"\(logMessageContext.title)\", message: \"\(logMessageContext.message)\""
+            var logString = logMessageContext.level.description
+            logString += " at \(logMessageContext.dateString) at \(logMessageContext.location)"
+            logString += ": \"\(logMessageContext.title)\""
+            if !logMessageContext.message.isEmpty {
+                logString += ", message: \"\(logMessageContext.message)\""
+            }
             print(logString)
 
         case .osLog:

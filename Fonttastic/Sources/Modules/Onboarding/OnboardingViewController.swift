@@ -12,8 +12,9 @@ class OnboardingViewController: UIPageViewController {
 
     // MARK: - Private Instance Properties
 
-    private let appStatusService: AppStatusService = DefaultAppStatusService.shared
-    private let onboardingService: OnboardingService = DefaultOnboardingService.shared
+    private lazy var appStatusService: AppStatusService = DefaultAppStatusService.shared
+    private lazy var onboardingService: OnboardingService = DefaultOnboardingService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
 
     private var scrollView: UIScrollView? {
         for subview in view.subviews {

@@ -20,6 +20,7 @@ class FontListTitleCell: UICollectionViewCell, Reusable {
         let font: UIFont
         let textColor: UIColor
         let edgeInsets: UIEdgeInsets
+        let shadow: CALayer.Shadow?
     }
 
     // MARK: - Public Type Methods
@@ -77,6 +78,16 @@ class FontListTitleCell: UICollectionViewCell, Reusable {
         viewModel = nil
         design = nil
         titleLabel.text = nil
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if let shadow = design?.shadow {
+            titleLabel.layer.applyShadow(shadow)
+        } else {
+            titleLabel.layer.clearShadow()
+        }
     }
 
     func apply(viewModel: ViewModel, design: Design) {
