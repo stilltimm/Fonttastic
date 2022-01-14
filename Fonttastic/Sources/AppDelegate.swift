@@ -35,8 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DefaultFontsService.shared.storeLastUsedSettings()
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        analyticsService.trackEvent(AppWillTerminateAnalyticsEvent())
+    }
+
     func applicationDidBecomeActive(_ application: UIApplication) {
         NotificationCenter.default.post(name: .shouldUpdateAppStatusNotification, object: nil)
+        analyticsService.trackEvent(AppDidBecomeActiveAnalyticsEvent())
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        analyticsService.trackEvent(AppDidEnterBackgroundAnalyticsEvent())
     }
 
     // MARK: - Open URL handling

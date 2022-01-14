@@ -53,6 +53,22 @@ public enum SubscriptionState {
             return "✅ Active sub"
         }
     }
+
+    public var debugDescription: String {
+        switch self {
+        case .loading:
+            return "loading"
+
+        case .noSubscription:
+            return "noSubscription"
+
+        case .hasInactiveSubscription:
+            return "hasInactiveSubscription"
+
+        case .hasActiveSubscription:
+            return "hasActiveSubscription"
+        }
+    }
 }
 
 public struct SubscriptionInfo {

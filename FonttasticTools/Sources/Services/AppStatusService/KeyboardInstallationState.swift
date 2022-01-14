@@ -7,9 +7,22 @@
 
 import Foundation
 
-public enum KeyboardInstallationState: UInt8 {
+public enum KeyboardInstallationState: String {
 
     case notInstalled
     case installedWithLimitedAccess
     case installedWithFullAccess
+
+    public var description: String {
+        switch self {
+        case .notInstalled:
+            return "🚫 Not installed"
+
+        case .installedWithLimitedAccess:
+            return "⚠️ Limited access"
+
+        case .installedWithFullAccess:
+            return "✅ Full access"
+        }
+    }
 }

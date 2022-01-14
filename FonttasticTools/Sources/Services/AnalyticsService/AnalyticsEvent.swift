@@ -13,14 +13,16 @@ public protocol AnalyticsEvent {
     static var group: AnalyticsEventGroup { get }
     static var name: String { get }
 
-    var parametersDictionary: [String: AnyHashable]? { get }
+    func makeParametersDictionary() -> [String: AnyHashable]?
 }
 
-extension AnalyticsEvent {
+public extension AnalyticsEvent {
 
-    public var analyticsEventType: String {
-        return "\(Self.group.rawValue).\(Self.name)"
+    func makeAnalyticsEventType() -> String {
+        return "\(Self.group.name).\(Self.name)"
     }
 
-    public var parametersDictionary: [String: AnyHashable]? { nil }
+    func makeParametersDictionary() -> [String: AnyHashable]? {
+        return nil
+    }
 }

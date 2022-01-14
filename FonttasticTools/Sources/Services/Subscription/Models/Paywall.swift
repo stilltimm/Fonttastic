@@ -26,9 +26,17 @@ public struct Paywall {
     public let items: [PaywallItem]
     public let initiallySelectedItem: PaywallItem?
 
+    // MARK: - Internal Instance Properties
+
+    let offeringIdentifier: String
+    let isTrial: Bool
+
     // MARK: - Initializers
 
     init(offering: RevenueCat.Offering, isTrial: Bool) {
+        self.offeringIdentifier = offering.identifier
+        self.isTrial = isTrial
+
         if isTrial {
             self.headerTitle = FonttasticToolsStrings.Subscription.Header.Title.trial
             self.buttonTitle = FonttasticToolsStrings.Subscription.Button.Title.trial

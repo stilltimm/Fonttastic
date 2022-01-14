@@ -1,5 +1,5 @@
 //
-//  ErrorLogAnalyticsEvent.swift
+//  LogsErrorAnalyticsEvent.swift
 //  Fonttastic
 //
 //  Created by Timofey Surkov on 22.12.2021.
@@ -8,16 +8,22 @@
 
 import Foundation
 
-public struct ErrorLogAnalyticsEvent: AnalyticsEvent {
+public struct LogsErrorAnalyticsEvent: AnalyticsEvent {
 
-    public static var group: AnalyticsEventGroup { .log }
+    // MARK: - Type Properties
+
+    public static var group: AnalyticsEventGroup { .logs }
     public static var name: String { "error" }
+
+    // MARK: - Instance Properties
 
     public let title: String
     public let message: String
     public let location: String
     public let dateString: String
     public let error: Error?
+
+    // MARK: - Initializers
 
     public init(
         title: String,
@@ -33,7 +39,9 @@ public struct ErrorLogAnalyticsEvent: AnalyticsEvent {
         self.error = error
     }
 
-    public var parametersDictionary: [String : AnyHashable]? {
+    // MARK: - Instance Methods
+
+    public func makeParametersDictionary() -> [String: AnyHashable]? {
         return [
             "title": title,
             "message": message,

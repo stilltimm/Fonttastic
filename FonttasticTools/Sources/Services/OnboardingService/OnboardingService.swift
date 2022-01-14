@@ -31,6 +31,7 @@ public class DefaultOnboardingService: OnboardingService {
     // MARK: - Public Instance Properties
 
     public func hasCompletedOnboarding() -> Bool {
+        return true
         do {
             let onboardingCompletedString = try keychainContainer.getString(for: Constants.onboardingCompletedKey)
             return onboardingCompletedString == Constants.onboardingCompletedValue

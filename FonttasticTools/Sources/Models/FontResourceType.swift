@@ -23,4 +23,20 @@ public enum FontResourceType: Codable, Hashable {
             return true
         }
     }
+
+    public var description: String {
+        switch self {
+        case .system:
+            return "system"
+
+        case .bundled:
+            return "bundled"
+
+        case .file:
+            return "file"
+
+        case .userCreated:
+            return "userCreated"
+        }
+    }
 }

@@ -37,7 +37,7 @@ public protocol FontsService: AnyObject {
     var lastUsedLanguage: KeyboardType.Language { get set }
     var lastUsedCanvasViewDesign: CanvasViewDesign { get set }
 
-    func installFonts(completion: @escaping () -> Void)
+    func installFonts(completion: (() -> Void)?)
     func installFont(
         from fontSourceModel: FontSourceModel,
         completion: @escaping FontInstallationCompletion
@@ -64,6 +64,8 @@ public class DefaultFontsService: FontsService {
     private let keychainService: KeychainService
     private let keychainContainer: KeychainContainer
     private lazy var fileService: FileService = DefaultFileService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
+
     private let fontModelFactory = FontModelFactory()
 
     // MARK: - Initializers
@@ -112,7 +114,7 @@ public class DefaultFontsService: FontsService {
         }
     }
 
-    public func installFonts(completion: @escaping () -> Void) {
+    public func installFonts(completion: (() -> Void)?) {
         installCustomFonts(completion: completion)
     }
 
@@ -129,8 +131,10 @@ public class DefaultFontsService: FontsService {
         fontModelsRepository.addFonts(systemFontModels)
     }
 
-    private func installCustomFonts(completion: @escaping () -> Void) {
+    private func installCustomFonts(completion: (() -> Void)?) {
         logger.debug("Started installing custom fonts")
+        analyticsService.trackEvent(FontsServiceStartedInstallingFontsAnalyticsEvent())
+
         let bundle = Bundle(for: Self.self)
 
         guard
@@ -178,7 +182,9 @@ public class DefaultFontsService: FontsService {
             self.hasInstalledCustomFonts = true
             self.fontModelsRepository.didUpdateFontsEvent.onNext(())
 
-            completion()
+            completion?()
+
+            self.analyticsService.trackEvent(FontsServiceFinishedInstallingFontsAnalyticsEvent())
         }
     }
 

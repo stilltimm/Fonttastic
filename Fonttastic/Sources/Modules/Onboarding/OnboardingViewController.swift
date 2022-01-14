@@ -60,6 +60,12 @@ class OnboardingViewController: UIPageViewController {
             completion: nil
         )
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analyticsService.trackEvent(OnboardingDidAppearAnalyticsEvent())
+    }
 }
 
 extension OnboardingViewController: UIPageViewControllerDelegate {}
@@ -132,12 +138,10 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
                     completion: nil
                 )
             }
-
-            logger.debug("TODO: log action button tapped at onboarding page \"\(onboardingPage)\"")
         }
 
         viewController.didAppearEvent.subscribe(self) { [weak self] onboardingPage in
-            logger.debug("TODO: log onboarding page \"\(onboardingPage)\" did appear")
+            self?.analyticsService.trackEvent(OnboardingDidChangePageAnalyticsEvent(onboardingPage: onboardingPage))
         }
     }
 }

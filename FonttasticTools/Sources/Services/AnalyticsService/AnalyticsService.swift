@@ -34,25 +34,24 @@ public final class DefaultAnalyticsService: AnalyticsService {
             logger.error("Failed to configure Analytics", description: "API Key not found")
             return
         }
+
         Amplitude.instance().initializeApiKey(amplitudeAPIKey)
-        Amplitude.instance().setServerZone(.EU)
+//        Amplitude.instance().setServerZone(.EU)
 
         logger.debug("Successfully configured Analytics")
     }
 
     public func trackEvent(_ analyticsEvent: AnalyticsEvent) {
+        let analyticsEventType: String = analyticsEvent.makeAnalyticsEventType()
+        let eventProperties: [String: AnyHashable]? = analyticsEvent.makeParametersDictionary()
         Amplitude.instance().logEvent(
-            analyticsEvent.analyticsEventType,
-            withEventProperties: analyticsEvent.parametersDictionary
+            analyticsEventType,
+            withEventProperties: eventProperties
         )
-    }
 
-    public func trackFontListAppeared(willShowOnboarding: Bool) {
-        Amplitude.instance().logEvent(
-            "font_list_appeared",
-            withEventProperties: [
-                "will_show_onboarding": willShowOnboarding
-            ]
+        logger.debug(
+            "Did track event \"\(analyticsEventType)\"",
+            description: eventProperties?.debugDescription
         )
     }
 }

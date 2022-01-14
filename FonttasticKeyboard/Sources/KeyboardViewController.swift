@@ -17,6 +17,11 @@ class KeyboardViewController: UIInputViewController {
 
     // MARK: - Private Instance Properties
 
+    private lazy var fontsService: FontsService = DefaultFontsService.shared
+    private lazy var configurationService: ConfigurationService = DefaultConfigurationService.shared
+    private lazy var appStatusService: AppStatusService = DefaultAppStatusService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
+
     private var fonttasticKeyboardView: FontasticKeyboardView?
     private var lockOverlayView: KeyboardLockOverlayView?
 
@@ -32,8 +37,8 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        DefaultConfigurationService.shared.performInitialConfigurations(for: .keyboardExtension)
-        DefaultAppStatusService.shared.setHasFullAccess(hasFullAccess: self.hasFullAccess)
+        configurationService.performInitialConfigurations(for: .keyboardExtension)
+        appStatusService.setHasFullAccess(hasFullAccess: self.hasFullAccess)
 
         logger.debug("Keyboard hasFullAccess: \(self.hasFullAccess)")
 
@@ -44,13 +49,19 @@ class KeyboardViewController: UIInputViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        DefaultFontsService.shared.storeLastUsedSettings()
+        fontsService.storeLastUsedSettings()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         NotificationCenter.default.post(name: .shouldUpdateAppStatusNotification, object: nil)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analyticsService.trackEvent(KeyboardDidAppearAnalyticsEvent())
     }
 
     override func viewWillTransition(
@@ -73,7 +84,7 @@ class KeyboardViewController: UIInputViewController {
         } else {
             fonttasticKeyboardView = FontasticKeyboardView(
                 insertedText: [],
-                initiallySelectedCanvasViewDesign: DefaultFontsService.shared.lastUsedCanvasViewDesign,
+                initiallySelectedCanvasViewDesign: fontsService.lastUsedCanvasViewDesign,
                 needsNextInputKey: self.needsInputModeSwitchKey
             )
             self.fonttasticKeyboardView = fonttasticKeyboardView
@@ -123,6 +134,18 @@ class KeyboardViewController: UIInputViewController {
                 .subscribe(self) { [weak self] in
                     self?.showColorPickerViewControllerForTextColor()
                 }
+            fonttasticKeyboardView.canvasWithSettingsView.didChangeTextAlignmentEvent
+                .subscribe(self) { [weak self] textAlignment in
+                    self?.analyticsService.trackEvent(
+                        KeyboardDidChangeTextAlignmentAnalyticsEvent(textAlignment: textAlignment)
+                    )
+                }
+            fonttasticKeyboardView.canvasWithSettingsView.didCopyCanvasEvent
+                .subscribe(self) { [weak self] canvasViewDesign in
+                    self?.analyticsService.trackEvent(
+                        KeyboardDidCopyCanvasAnalyticsEvent(canvasViewDesign: canvasViewDesign)
+                    )
+                }
         }
 
         if let lockOverlayView = lockOverlayView {
@@ -135,7 +158,7 @@ class KeyboardViewController: UIInputViewController {
             }
         }
 
-        DefaultAppStatusService.shared.appStatusDidUpdateEvent.subscribe(self) { [weak self] appStatus in
+        appStatusService.appStatusDidUpdateEvent.subscribe(self) { [weak self] appStatus in
             self?.handleAppStatusChange(appStatus: appStatus)
         }
     }
@@ -143,11 +166,16 @@ class KeyboardViewController: UIInputViewController {
     // MARK: - Handling AppStatus
 
     private func handleAppStatusChange(appStatus: AppStatus) {
-        if let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: appStatus) {
+        if let keyboardLockReason = KeyboardLockReason(appStatus: appStatus) {
             logger.debug("Will show lock overlay", description: "AppStatus: \(appStatus)")
+            let lockOverlayConfig = KeyboardLockOverlayViewConfig(from: keyboardLockReason)
             lockOverlayView?.isHidden = false
             lockOverlayView?.apply(config: lockOverlayConfig)
             fonttasticKeyboardView?.alpha = 0.1
+
+            analyticsService.trackEvent(
+                KeyboardDidShowLockOverlayAnalyticsEvent(keyboardLockReason: keyboardLockReason)
+            )
         } else {
             logger.debug("Will NOT show lock overlay", description: "AppStatus: \(appStatus)")
             lockOverlayView?.isHidden = true
@@ -197,6 +225,8 @@ extension KeyboardViewController: FontSelectionControllerDelegate {
     func didSelectFontModel(_ fontModel: FontModel) {
         setFontModelToCanvas(fontModel)
 
+        analyticsService.trackEvent(KeyboardDidChangeFontAnalyticsEvent(fontModel: fontModel))
+
         self.dismiss(animated: true)
     }
 
@@ -229,6 +259,10 @@ extension KeyboardViewController {
             guard let self = self else { return }
             self.fonttasticKeyboardView?.canvasWithSettingsView.canvasBackgroundImage = nil
             self.fonttasticKeyboardView?.canvasWithSettingsView.canvasBackgroundColor = color
+
+            self.analyticsService.trackEvent(
+                KeyboardDidChangeBackgroundColorAnalyticsEvent(colorHEX: "\(color.hexValue)")
+            )
         }
     }
 
@@ -240,6 +274,9 @@ extension KeyboardViewController {
             guard let self = self else { return }
             self.fonttasticKeyboardView?.canvasWithSettingsView.canvasTextColor = color
 
+            self.analyticsService.trackEvent(
+                KeyboardDidChangeTextColorAnalyticsEvent(colorHEX: "\(color.hexValue)")
+            )
         }
     }
 
@@ -338,6 +375,7 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
     private func applyImageAndClearResources(_ image: UIImage?) {
         if let image = image {
             self.fonttasticKeyboardView?.canvasWithSettingsView.canvasBackgroundImage = image
+            self.analyticsService.trackEvent(KeyboardDidSelectBackgroundImageAnaltyticsEvent())
         }
 
         if let imageRequestID = self.imageRequestID {

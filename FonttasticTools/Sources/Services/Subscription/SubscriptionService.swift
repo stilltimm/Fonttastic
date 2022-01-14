@@ -22,7 +22,7 @@ public protocol SubscriptionService {
 
     func configurePurchases()
 
-    func fetchPaywall()
+    func fetchPaywall(context: PaywallDidStartLoadingAnalyticsEvent.Context)
 
     func purchase(paywallItem: PaywallItem, completion: @escaping PaywallItemPurchaseCompletion)
     func restorePurchases(completion: @escaping PaywallItemPurchaseCompletion)
@@ -101,6 +101,17 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         didSet {
             logger.debug("PaywallState changed to \(paywallState)")
             paywallStateDidChangeEvent.onNext(paywallState)
+
+            switch paywallState {
+            case let .ready(paywall):
+                analyticsService.trackEvent(PaywallLoadedAnalyticsEvent(paywall: paywall))
+
+            case let .invalid(error):
+                logger.error("Paywall Fetch Failed", error: error)
+
+            default:
+                break
+            }
         }
     }
     public let paywallStateDidChangeEvent: HotEvent<PaywallState>
@@ -114,6 +125,8 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
     public let subscriptionStateDidChangeEvent: HotEvent<SubscriptionState>
 
     // MARK: - Private Instance Properties
+
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
 
     private var purchases: Purchases?
 
@@ -160,10 +173,12 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         logger.debug("Succesfully configured Purchases")
     }
 
-    public func fetchPaywall() {
+    public func fetchPaywall(context: PaywallDidStartLoadingAnalyticsEvent.Context) {
         guard let purchases = purchases else { return }
 
         paywallState = .loading
+        analyticsService.trackEvent(PaywallDidStartLoadingAnalyticsEvent(context: context))
+
         purchases.getOfferings { [weak self] offerings, error in
             guard let self = self else { return }
 

@@ -59,17 +59,14 @@ public class DefaultConfigurationService: ConfigurationService {
     }
 
     private func configureFontsService() {
-        logger.debug("TODO: log custom fonts started installeing")
-        fontsService.installFonts {
-            logger.debug("TODO: log custom fonts succesfully installed")
-        }
+        fontsService.installFonts {}
     }
 
     private func configureSubscriptionService(shouldFetchPaywall: Bool) {
         subscriptionService.configurePurchases()
         subscriptionService.fetchPurchaserInfo()
         if shouldFetchPaywall {
-            subscriptionService.fetchPaywall()
+            subscriptionService.fetchPaywall(context: .initialAppConfiguration)
         }
     }
 }

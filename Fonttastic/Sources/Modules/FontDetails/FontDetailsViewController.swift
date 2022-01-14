@@ -49,6 +49,8 @@ class FontDetailsViewController: UIViewController {
 
     // MARK: - Private Properties
 
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
+
     private let fontModel: FontModel
 
     private var text: String = ""
@@ -56,6 +58,8 @@ class FontDetailsViewController: UIViewController {
     private var textSize: CGFloat = Constants.initialFontSize
 
     private var textViewHeightConstraint: NSLayoutConstraint?
+
+    private var hasTrackedDidAppear: Bool = false
 
     // MARK: - Initializers
 
@@ -89,6 +93,11 @@ class FontDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
 
         textView.becomeFirstResponder()
+
+        if !hasTrackedDidAppear {
+            hasTrackedDidAppear = true
+            analyticsService.trackEvent(FontDetailsDidAppearAnalyticsEvent(fontModel: fontModel))
+        }
     }
 
     // MARK: - Private Methods

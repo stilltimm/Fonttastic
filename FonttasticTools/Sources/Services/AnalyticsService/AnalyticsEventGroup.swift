@@ -8,21 +8,15 @@
 
 import Foundation
 
-public enum AnalyticsEventGroup: String {
+public struct AnalyticsEventGroup {
 
-    // MARK: - App Related
+    // MARK: - Internal Instance Properties
 
-    case app
-    case onboarding
-    case subscription
-    case fontList
-    case fontDetails
+    let name: String
 
-    // MARK: - Keyboard Related
+    // MARK: - Initializers
 
-    case keyboard
-
-    // MARK: - General
-
-    case log
+    init(name: String) {
+        self.name = name
+    }
 }

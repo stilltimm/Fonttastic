@@ -8,7 +8,7 @@
 import Foundation
 import RevenueCat
 
-public struct PaywallItem {
+public struct PaywallItem: Hashable  {
 
     // MARK: - Public Instance Properties
 

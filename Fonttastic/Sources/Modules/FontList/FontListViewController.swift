@@ -141,9 +141,11 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 let appStatus = self.appStatusService.appStatus
                 switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
                 case (_, .notInstalled), (_, .installedWithLimitedAccess):
+                    self.analyticsService.trackEvent(FontListDidTapBannerAnalyticsEvent(bannerType: .keyboardSetup))
                     self.openAppSettings()
 
                 case (.noSubscription, _), (.hasInactiveSubscription, _):
+                    self.analyticsService.trackEvent(FontListDidTapBannerAnalyticsEvent(bannerType: .subscription))
                     self.presentSubscription()
 
                 default:
@@ -167,6 +169,8 @@ class FontListViewController: UIViewController, UICollectionViewDelegateFlowLayo
 //    }
 
     private func openFontDetails(_ fontModel: FontModel) {
+        analyticsService.trackEvent(FontListDidSelectFontAnalyticsEvent(fontModel: fontModel))
+
         let fontDetailsViewController = FontDetailsViewController(fontModel: fontModel)
         let nav = BaseNavigationController(rootViewController: fontDetailsViewController)
         navigationController?.present(nav, animated: true)

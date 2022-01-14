@@ -63,6 +63,7 @@ public class DefaultAppStatusService: AppStatusService {
         didSet {
             logger.debug("AppStatus changed to \(appStatus)")
             appStatusDidUpdateEvent.onNext(appStatus)
+            analyticsService.trackEvent(AppStatusChangedAnalyticsEvent(appStatus: appStatus))
         }
     }
     public let appStatusDidUpdateEvent: HotEvent<AppStatus>
@@ -70,6 +71,8 @@ public class DefaultAppStatusService: AppStatusService {
     // MARK: - Private Instance Properties
 
     private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
+
     private var hasFullAccess: Bool?
 
     // MARK: - Initializers

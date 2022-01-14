@@ -1,5 +1,5 @@
 //
-//  InfoLogAnalyticsEvent.swift
+//  LogsInfoAnalyticsEvent.swift
 //  FonttasticTools
 //
 //  Created by Timofey Surkov on 22.12.2021.
@@ -8,15 +8,21 @@
 
 import Foundation
 
-public struct InfoLogAnalyticsEvent: AnalyticsEvent {
+public struct LogsInfoAnalyticsEvent: AnalyticsEvent {
 
-    public static var group: AnalyticsEventGroup { .log }
+    // MARK: - Type Properties
+
+    public static var group: AnalyticsEventGroup { .logs }
     public static var name: String { "info" }
+
+    // MARK: - Instance Properties
 
     public let title: String
     public let message: String
     public let location: String
     public let dateString: String
+
+    // MARK: - Initializers
 
     public init(
         title: String,
@@ -30,7 +36,9 @@ public struct InfoLogAnalyticsEvent: AnalyticsEvent {
         self.dateString = dateString
     }
 
-    public var parametersDictionary: [String : AnyHashable]? {
+    // MARK: - Instance Methods
+
+    public var parametersDictionary: [String: AnyHashable]? {
         return [
             "title": title,
             "message": message,

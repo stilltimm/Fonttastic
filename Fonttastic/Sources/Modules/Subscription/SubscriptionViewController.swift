@@ -167,6 +167,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private lazy var onboardingService: OnboardingService = DefaultOnboardingService.shared
     private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared 
+
     private var selectedPaywallItem: PaywallItem?
 
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
@@ -185,7 +187,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         impactFeedbackGenerator.prepare()
 
         if subscriptionService.paywallState.isInvalid {
-            subscriptionService.fetchPaywall()
+            subscriptionService.fetchPaywall(context: .viewControllerLoaded)
         }
     }
 
@@ -200,6 +202,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         didAppearEvent.onNext(onboardingPage)
         impactFeedbackGenerator.impactOccurred()
+
+        analyticsService.trackEvent(PaywallDidAppearAnalyticsEvent())
     }
 
     // MARK: - Private Instance Methods
@@ -330,7 +334,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private func apply(paywallState: PaywallState) {
         switch paywallState {
-        case .undefined, .loading:
+        case .loading:
             scrollView.isHidden = true
             actionButton.isHidden = true
             errorLabel.isHidden = true
@@ -393,6 +397,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         selectedPaywallItem = item
         updateSelectedPaywallItemView()
+
+        analyticsService.trackEvent(PaywallDidChangeSelectionAnalyticsEvent(paywallItem: item))
     }
 
     private func updateSelectedPaywallItemView() {
@@ -440,10 +446,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         guard let selectedPaywallItem = self.selectedPaywallItem else { return }
 
-        logger.debug(
-            "TODO: log continue paywall action",
-            description: "Selected SubscriptionItem: \(selectedPaywallItem)"
-        )
+        analyticsService.trackEvent(PaywallDidTapSubscribeAnalyticsEvent(selectedPaywallItem: selectedPaywallItem))
 
         self.apply(paywallState: .loading)
         subscriptionService.purchase(paywallItem: selectedPaywallItem) { [weak self] result in
@@ -453,9 +456,13 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
             switch result {
             case let .failure(error):
+                // NOTE: Will log error to analytics
+                logger.error("Purchase failed", error: error)
                 self.handlePurchaseError(error)
 
             case .success:
+                self.analyticsService.trackEvent(PaywallDidFinishAnalyticsEvent())
+
                 self.setOnboardingCompleteIfNeeded()
                 self.dismiss(animated: true)
             }
@@ -464,7 +471,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     @objc private func handleTermsAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.debug("TODO: log terms action")
+
+        analyticsService.trackEvent(PaywallDidTapTermsAnalyticsEvent())
 
         if
             let termsURL = Constants.termsURL,
@@ -476,14 +484,16 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     @objc private func handlePromocodeAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.debug("TODO: log promocode action")
+
+        analyticsService.trackEvent(PaywallDidTapPromocodeAnalyticsEvent())
 
         subscriptionService.presentCodeRedemptionSheet()
     }
 
     @objc private func handleRestoreAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.debug("TODO: log restore purchases action")
+
+        analyticsService.trackEvent(PaywallDidTapRestoreAnalyticsEvent())
 
         self.apply(paywallState: .loading)
         subscriptionService.restorePurchases { [weak self] result in
@@ -503,13 +513,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     @objc private func handleReloadPaywallAction() {
         impactFeedbackGenerator.impactOccurred()
-        logger.debug("TODO: log reload paywall action")
 
-        subscriptionService.fetchPaywall()
-    }
-
-    @objc private func handleCloseAction() {
-        self.dismiss(animated: true)
+        subscriptionService.fetchPaywall(context: .viewControllerReloadButtonTap)
     }
 
     private func setOnboardingCompleteIfNeeded() {
@@ -521,10 +526,9 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     // MARK: - Error Handling
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable function_body_length
+    // swiftlint:disable cyclomatic_complexity
     private func handlePurchaseError(_ error: SubscriptionServiceError) {
-        logger.error("Purchase failed", error: error)
-
         let alertController: UIAlertController
         switch error {
         case let .purchaseError(nsError, errorCode):
@@ -578,7 +582,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 alertController = makeAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.productUnavailable
                 )
-                subscriptionService.fetchPaywall()
+                subscriptionService.fetchPaywall(context: .paywallItemPurchaseErrorOccured)
 
             case .networkError:
                 alertController = makeAlertController(
@@ -589,7 +593,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 alertController = makeAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.ineligibleProduct
                 )
-                subscriptionService.fetchPaywall()
+                subscriptionService.fetchPaywall(context: .paywallItemPurchaseErrorOccured)
 
             case .insufficientPermissionsError:
                 alertController = makeAlertController(
@@ -623,6 +627,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             self?.navigationController?.present(alertController, animated: true)
         }
     }
+    // swiftlint:enable function_body_length
+    // swiftlint:enable cyclomatic_complexity
 
     private func makeUnknownErrorAlertController() -> UIAlertController {
         return makeAlertController(message: FonttasticStrings.Localizable.Subscription.Error.Message.unknownError)

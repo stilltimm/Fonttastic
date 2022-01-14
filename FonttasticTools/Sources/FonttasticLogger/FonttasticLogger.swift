@@ -227,7 +227,7 @@ public class FonttasticLogger {
     private func makeAnalyticsEvent(for logMessageContext: LogMessageContext) -> AnalyticsEvent? {
         switch logMessageContext.level {
         case .info:
-            return InfoLogAnalyticsEvent(
+            return LogsInfoAnalyticsEvent(
                 title: logMessageContext.title,
                 message: logMessageContext.message,
                 location: logMessageContext.location,
@@ -235,7 +235,7 @@ public class FonttasticLogger {
             )
 
         case .error:
-            return ErrorLogAnalyticsEvent(
+            return LogsErrorAnalyticsEvent(
                 title: logMessageContext.title,
                 message: logMessageContext.message,
                 location: logMessageContext.location,
