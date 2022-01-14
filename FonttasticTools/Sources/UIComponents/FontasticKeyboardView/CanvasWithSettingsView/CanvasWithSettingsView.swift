@@ -16,6 +16,8 @@ public class CanvasWithSettingsView: UIView {
     public let shouldPresentTextColorPickerEvent = Event<Void>()
     public let shouldPresentBackgroundColorPickerEvent = Event<Void>()
     public let shouldPresentBackgroundImageSelectionEvent = Event<Void>()
+    public let didChangeTextAlignmentEvent = Event<NSTextAlignment>()
+    public let didCopyCanvasEvent = Event<CanvasViewDesign>()
 
     public var canvasFontModel: FontModel {
         get { canvasViewDesign.fontModel }
@@ -35,7 +37,6 @@ public class CanvasWithSettingsView: UIView {
         get { canvasViewDesign.backgroundColor }
         set {
             canvasViewDesign.backgroundColor = newValue
-            canvasViewDesign.backgroundImage = nil
             updateCanvasViewDesign()
         }
     }
@@ -68,6 +69,10 @@ public class CanvasWithSettingsView: UIView {
         scrollView.alwaysBounceHorizontal = false
         scrollView.maximumZoomScale = 1.0
         scrollView.minimumZoomScale = 1.0
+
+        scrollView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        scrollView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
         return scrollView
     }()
     private let canvasContainerButton: UIButton = {
@@ -110,7 +115,7 @@ public class CanvasWithSettingsView: UIView {
         highlightedIconName: nil
     )
     private let textColorChangeViewModel = DefaultKeyboardButtonVM(
-        normalIconName: "character.cursor.ibeam",
+        normalIconName: "textformat",
         highlightedIconName: nil
     )
 
@@ -200,7 +205,7 @@ public class CanvasWithSettingsView: UIView {
     }
 
     public func handleOrientationChange() {
-        canvasView.textView.sizeToFit()
+//        canvasView.textView.sizeToFit()
     }
 
     // MARK: - Private Instance Methods
@@ -208,6 +213,8 @@ public class CanvasWithSettingsView: UIView {
     // swiftlint:disable:next function_body_length
     private func setupSubviews() {
         let buttonsContainerView = UIView()
+        buttonsContainerView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        buttonsContainerView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         let buttonViews = [
             fontChangeButton,
             textAlignmentChangeButton,
@@ -249,18 +256,18 @@ public class CanvasWithSettingsView: UIView {
         constrain(
             self, buttonsContainerView, canvasContainerScrollView, canvasContainerButton, canvasView
         ) { view, buttonsContainer, scrollView, canvasContainer, canvas in
-            scrollView.top == view.top
-            scrollView.left == view.left
-            scrollView.bottom == view.bottom
-
-            buttonsContainer.centerY == scrollView.centerY
+            buttonsContainer.centerY == view.centerY
             buttonsContainer.right == view.right - Constants.edgeInsets.right
-            buttonsContainer.left == scrollView.right + Constants.buttonsToCanvasSpacing
             buttonsContainer.bottom <= view.bottom - Constants.edgeInsets.bottom
             buttonsContainer.top >= view.top + Constants.edgeInsets.top
 
+            scrollView.top == view.top
+            scrollView.left == view.left
+            scrollView.right == buttonsContainer.left - Constants.buttonsToCanvasSpacing
+            scrollView.bottom == view.bottom
+            scrollView.height == CanvasView.minHeight + Constants.edgeInsets.bottom + Constants.edgeInsets.top
+
             canvasContainer.width == scrollView.width
-            canvasContainer.height >= scrollView.height
 
             canvas.top == canvasContainer.top + Constants.edgeInsets.top
             canvas.left == canvasContainer.left + Constants.edgeInsets.left
@@ -294,6 +301,7 @@ public class CanvasWithSettingsView: UIView {
             self.canvasViewDesign.textAlignment = textAlignment
             self.updateCanvasViewDesign()
         }
+        textAlignmentChangeViewModel.didChangeTextAligmentEvent.bind(to: didChangeTextAlignmentEvent)
 
         backgroundColorChangeViewModel.didTapEvent.subscribe(self) { [weak self] _ in
             self?.shouldPresentBackgroundColorPickerEvent.onNext(())
@@ -313,8 +321,8 @@ public class CanvasWithSettingsView: UIView {
             for: .touchUpInside
         )
 
-        canvasView.contentHeightChangedEvent.subscribe(self) { [weak self] in
-            self?.updateScrollViewContent()
+        canvasView.contentHeightChangedEvent.subscribe(self) { [weak self] contentHeight in
+            self?.updateScrollViewContent(contentHeight: contentHeight)
         }
     }
 
@@ -338,16 +346,18 @@ public class CanvasWithSettingsView: UIView {
         }
     }
 
-    private func updateScrollViewContent() {
-        let contentSize = canvasContainerButton.frame.size
-        canvasContainerScrollView.contentSize = contentSize
+    private func updateScrollViewContent(contentHeight: CGFloat) {
+        canvasContainerScrollView.contentSize = CGSize(
+            width: canvasContainerScrollView.bounds.width,
+            height: contentHeight
+        )
 
-        let bottomPointRect = CGRect(origin: CGPoint(x: 0, y: contentSize.height), size: .zero)
-        canvasContainerScrollView.scrollRectToVisible(bottomPointRect, animated: false)
+        let bottomPointRect = CGRect(origin: CGPoint(x: 0, y: contentHeight), size: .zero)
+        canvasContainerScrollView.scrollRectToVisible(bottomPointRect, animated: true)
     }
 
     @objc private func copyCanvasContainerScreenshot() {
-        canvasView.textView.resignFirstResponder()
+        canvasView.canvasTextView.resignFirstResponder()
         canvasView.showWatermark()
         UIPasteboard.general.image = canvasContainerButton.takeScreenshot()
         canvasView.hideWatermark()
@@ -358,6 +368,8 @@ public class CanvasWithSettingsView: UIView {
         }
         self.copiedStatusHideWorkItem = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
+
+        didCopyCanvasEvent.onNext(self.canvasViewDesign)
     }
 
     private func setCopiedStatusLabel(isHidden: Bool, animated: Bool) {

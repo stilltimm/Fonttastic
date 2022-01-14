@@ -8,7 +8,25 @@
 import UIKit
 import Cartography
 
-class StrictCursorTextView: UITextView {
+protocol CanvasTextViewDelegate: AnyObject {
+
+    func intrinsicContentWidthForCanvasTextView() -> CGFloat?
+}
+
+class CanvasTextView: UITextView {
+
+    weak var canvasTextViewDelegate: CanvasTextViewDelegate?
+
+    override var intrinsicContentSize: CGSize {
+        let originalSize = super.intrinsicContentSize
+        let width: CGFloat
+        if let overridenWidth = canvasTextViewDelegate?.intrinsicContentWidthForCanvasTextView() {
+            width = overridenWidth
+        } else {
+            width = originalSize.width
+        }
+        return CGSize(width: width, height: originalSize.height)
+    }
 
     override func closestPosition(to point: CGPoint) -> UITextPosition? {
         let beginning = self.beginningOfDocument
@@ -17,11 +35,15 @@ class StrictCursorTextView: UITextView {
     }
 }
 
-class CanvasView: UIView {
+class CanvasView: UIView, CanvasTextViewDelegate {
 
     // MARK: - Nested Types
 
     typealias Design = CanvasViewDesign
+
+    // MARK: - Type Properties
+
+    static let minHeight: CGFloat = 250
 
     // MARK: - Subviews
 
@@ -35,12 +57,16 @@ class CanvasView: UIView {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-    let textView: UITextView = {
-        let textView = StrictCursorTextView()
+    let canvasTextView: CanvasTextView = {
+        let textView = CanvasTextView()
         textView.backgroundColor = .clear
         textView.isScrollEnabled = false
         textView.textAlignment = .center
         textView.isUserInteractionEnabled = false
+
+        textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
         return textView
     }()
     private let watermwarkView: FonttasticWatermarkView = {
@@ -52,7 +78,11 @@ class CanvasView: UIView {
     // MARK: - Public Instance Properties
 
     let didTapCanvasViewEvent = Event<Void>()
-    let contentHeightChangedEvent = Event<Void>()
+    let contentHeightChangedEvent = Event<CGFloat>()
+
+    // MARK: - Private Instance Properties
+
+    private var heightConstraint: NSLayoutConstraint?
 
     // MARK: -
 
@@ -84,35 +114,28 @@ class CanvasView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-
-            self.backgroundImageView.frame = self.bounds
-            self.layer.applyShadow(self.layerShadow)
-
-            if self.frame.height != self.lastContentHeight {
-                self.lastContentHeight = self.frame.height
-                self.contentHeightChangedEvent.onNext(())
-            }
-        }
+        self.layer.applyShadow(self.layerShadow)
+        canvasTextView.invalidateIntrinsicContentSize()
     }
 
     func setText(_ text: String) {
-        textView.text = text
-        textView.sizeToFit()
-        textView.becomeFirstResponder()
+        canvasTextView.text = text
+        canvasTextView.becomeFirstResponder()
+
+        updateContentHeight()
     }
 
     func applyDesign(_ design: Design) {
         backgroundColor = design.backgroundColor
         backgroundImageView.image = design.backgroundImage
 
-        textView.font = UIFontFactory.makeFont(
+        canvasTextView.font = UIFontFactory.makeFont(
             from: design.fontModel,
             withSize: design.fontSize
         ) ?? .default(withSize: design.fontSize)
-        textView.textColor = design.textColor
-        textView.textAlignment = design.textAlignment
+        canvasTextView.textColor = design.textColor
+        canvasTextView.tintColor = design.textColor
+        canvasTextView.textAlignment = design.textAlignment
     }
 
     func showWatermark() {
@@ -133,28 +156,38 @@ class CanvasView: UIView {
         watermwarkView.image = nil
     }
 
+    func intrinsicContentWidthForCanvasTextView() -> CGFloat? {
+        guard superview != nil else { return nil }
+        return self.bounds.width - Constants.textViewInsets.horizontalSum
+    }
+
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
         addSubview(backgroundImageView)
-        backgroundImageView.frame = self.bounds
-
-        addSubview(textView)
+        addSubview(canvasTextView)
         addSubview(watermwarkView)
 
-        constrain(self, textView, watermwarkView) { view, textView, watermark in
-            textView.center == view.center
-            textView.left >= view.left + 12
-            textView.right <= view.right - 12
-            textView.top >= view.top + 12
-            textView.bottom <= view.bottom - 12
+        backgroundImageView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 249), for: .horizontal)
+        backgroundImageView.setContentHuggingPriority(UILayoutPriority(rawValue: 249), for: .horizontal)
+
+        constrain(self, backgroundImageView, canvasTextView, watermwarkView) { view, background, textView, watermark in
+            background.edges == view.edges
+
+            textView.centerX == view.centerX
+            textView.centerY == view.centerY
+            self.heightConstraint = (view.height == Self.minHeight)
 
             watermark.left == view.left + Constants.watermarkMargins
             watermark.bottom == view.bottom - Constants.watermarkMargins
         }
 
+        self.heightConstraint?.priority = .required
+
         layer.cornerRadius = 8.0
         layer.cornerCurve = .continuous
+
+        canvasTextView.canvasTextViewDelegate = self
     }
 
     private func makeBlurredImage(from image: UIImage, region: CGRect, radius: Double) -> UIImage? {
@@ -162,6 +195,21 @@ class CanvasView: UIView {
             return blurredRegionImage
         }
         return nil
+    }
+
+    private func updateContentHeight() {
+        let contentHeight = max(self.canvasTextView.frame.height + Constants.textViewInsets.verticalSum, Self.minHeight)
+
+        if self.lastContentHeight != contentHeight {
+            self.heightConstraint?.constant = contentHeight
+            setNeedsLayout()
+            layoutIfNeeded()
+
+            self.lastContentHeight = contentHeight
+            DispatchQueue.main.async { [weak self] in
+                self?.contentHeightChangedEvent.onNext(contentHeight)
+            }
+        }
     }
 }
 
@@ -177,39 +225,6 @@ private extension UIFont {
 
 private enum Constants {
 
-    static let maxHeight: CGFloat = 300
-
     static let textViewInsets: UIEdgeInsets = UIEdgeInsets(vertical: 12, horizontal: 12)
     static let watermarkMargins: CGFloat = 4
-}
-
-extension UIImage {
-
-    func blurImage(for rect: CGRect, radius: Double) -> UIImage? {
-        guard let cgImage = self.cgImage else { return nil }
-
-        let context = CIContext(options: nil)
-        let inputImage = CIImage(cgImage: cgImage)
-
-        guard let filter = CIFilter(name: "CIGaussianBlur") else { return nil }
-
-        filter.setValue(inputImage, forKey: kCIInputImageKey)
-        filter.setValue(radius, forKey: kCIInputRadiusKey)
-
-        guard
-            let outputImage = filter.outputImage,
-            let outputCgImage = context.createCGImage(
-                outputImage,
-                from: CGRect(
-                    origin: CGPoint(
-                        x: rect.origin.x,
-                        y: self.size.height - rect.maxY
-                    ),
-                    size: rect.size
-                )
-            )
-        else { return nil }
-
-        return UIImage(cgImage: outputCgImage)
-    }
 }
