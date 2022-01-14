@@ -358,7 +358,7 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
         }
 
         let targeSize: CGSize = fonttasticKeyboardView.canvasWithSettingsView.targetBackgroundImageSize
-        if true {
+        if false {
             loadImageWithNSItemProvider(from: result, targetSize: targeSize) { [weak self] image, error in
                 if let error = error {
                     logger.error("Failed to load item with NSItemProvider", error: error)
