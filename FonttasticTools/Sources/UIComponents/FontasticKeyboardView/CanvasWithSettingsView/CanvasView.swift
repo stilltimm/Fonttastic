@@ -87,7 +87,7 @@ class CanvasView: UIView, CanvasTextViewDelegate {
     // MARK: -
 
     private var lastContentHeight: CGFloat = 0
-    private let layerShadow: CALayer.Shadow = .init(
+    private let layerShadow: Shadow = Shadow(
         color: .black,
         alpha: 0.5,
         x: 0,

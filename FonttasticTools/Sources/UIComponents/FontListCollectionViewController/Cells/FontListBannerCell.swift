@@ -24,7 +24,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
         let textColor: UIColor
         let backgroundColor: UIColor
         let cornerRadius: CGFloat
-        let shadow: CALayer.Shadow?
+        let shadow: Shadow?
     }
 
     // MARK: - Public Type Methods

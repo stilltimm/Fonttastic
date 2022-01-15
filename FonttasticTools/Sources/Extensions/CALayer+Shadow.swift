@@ -7,34 +7,33 @@
 
 import UIKit
 
-extension CALayer {
+public struct Shadow: Equatable {
 
-    // MARK: - Nested Types
+    let color: UIColor
+    let alpha: Float
+    let x: CGFloat // swiftlint:disable:this identifier_name
+    let y: CGFloat // swiftlint:disable:this identifier_name
+    let blur: CGFloat
+    let spread: CGFloat
 
-    public struct Shadow: Equatable {
-        let color: UIColor
-        let alpha: Float
-        let x: CGFloat // swiftlint:disable:this identifier_name
-        let y: CGFloat // swiftlint:disable:this identifier_name
-        let blur: CGFloat
-        let spread: CGFloat
-
-        public init(
-            color: UIColor,
-            alpha: Float,
-            x: CGFloat, // swiftlint:disable:this identifier_name
-            y: CGFloat, // swiftlint:disable:this identifier_name
-            blur: CGFloat,
-            spread: CGFloat
-        ) {
-            self.color = color
-            self.alpha = alpha
-            self.x = x
-            self.y = y
-            self.blur = blur
-            self.spread = spread
-        }
+    public init(
+        color: UIColor,
+        alpha: Float,
+        x: CGFloat, // swiftlint:disable:this identifier_name
+        y: CGFloat, // swiftlint:disable:this identifier_name
+        blur: CGFloat,
+        spread: CGFloat
+    ) {
+        self.color = color
+        self.alpha = alpha
+        self.x = x
+        self.y = y
+        self.blur = blur
+        self.spread = spread
     }
+}
+
+extension CALayer {
 
     // MARK: - Public Instance Methods
 
@@ -107,9 +106,9 @@ extension CALayer {
     }
 }
 
-extension CALayer.Shadow {
+extension Shadow {
 
-    public static let none = CALayer.Shadow(color: .clear, alpha: 0.0, x: 0, y: 0, blur: 0, spread: 0)
+    public static let none = Shadow(color: .clear, alpha: 0.0, x: 0, y: 0, blur: 0, spread: 0)
 }
 
 private enum Constants {

@@ -13,7 +13,7 @@ open class ShadowButton: UIButton {
 
     // MARK: - Private Instance Properties
 
-    private var shadow: CALayer.Shadow? {
+    private var shadow: Shadow? {
         didSet {
             setNeedsLayout()
             layoutIfNeeded()
@@ -40,7 +40,7 @@ open class ShadowButton: UIButton {
 
     // MARK: - Public Instance Methods
 
-    public final func applyShadow(_ shadow: CALayer.Shadow?) {
+    public final func applyShadow(_ shadow: Shadow?) {
         self.shadow = shadow
     }
 

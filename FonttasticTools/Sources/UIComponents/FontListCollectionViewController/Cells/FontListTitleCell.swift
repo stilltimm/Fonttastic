@@ -20,7 +20,7 @@ class FontListTitleCell: UICollectionViewCell, Reusable {
         let font: UIFont
         let textColor: UIColor
         let edgeInsets: UIEdgeInsets
-        let shadow: CALayer.Shadow?
+        let shadow: Shadow?
     }
 
     // MARK: - Public Type Methods

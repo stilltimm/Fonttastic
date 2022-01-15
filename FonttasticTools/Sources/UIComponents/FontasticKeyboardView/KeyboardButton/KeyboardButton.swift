@@ -77,7 +77,7 @@ class KeyboardButton: UIControl {
     fileprivate let design: Design
     fileprivate var updatesHighlightedStateFromNativeControl: Bool { return true }
 
-    private let layerShadow = CALayer.Shadow(color: .black, alpha: 0.75, x: 0, y: 4, blur: 16, spread: -4)
+    private let layerShadow = Shadow(color: .black, alpha: 0.75, x: 0, y: 4, blur: 16, spread: -4)
 
     // MARK: - Initializers
 

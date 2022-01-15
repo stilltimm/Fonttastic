@@ -109,7 +109,15 @@ class FontListFontCell: UICollectionViewCell, Reusable {
 
     // MARK: - Subviews
 
-    private let containerView: UIView = {
+    private let containerShadowView: ShadowView = ShadowView(
+        cornerRadius: Constants.containerCornerRadius,
+        shadowSpread: -8,
+        shadowRadius: 16,
+        shadowOffset: CGSize(width: 0, height: 7),
+        shadowOpacity: 0.5,
+        shadowColor: .black
+    )
+    private let linearGradientView: UIView = {
         let view = LinearGradientView(linearGradient: Constants.backgroundLinearGradient)
         view.layer.cornerRadius = Constants.containerCornerRadius
         view.layer.cornerCurve = .continuous
@@ -192,17 +200,20 @@ class FontListFontCell: UICollectionViewCell, Reusable {
     // MARK: - Private Methods
 
     private func setupLayout() {
-        contentView.addSubview(containerView)
-        containerView.addSubview(fontDisplayLabel)
+        contentView.addSubview(containerShadowView)
+        containerShadowView.contentView.addSubview(linearGradientView)
+        containerShadowView.contentView.addSubview(fontDisplayLabel)
         contentView.addSubview(detailsTextLabel)
 
         constrain(
-            contentView, containerView, fontDisplayLabel, detailsTextLabel
-        ) { contentView, container, fontDisplay, detailsLabel in
+            contentView, containerShadowView, linearGradientView, fontDisplayLabel, detailsTextLabel
+        ) { contentView, container, linearGradient, fontDisplay, detailsLabel in
             container.top == contentView.top
             container.left == contentView.left
             container.right == contentView.right
             (container.height == Constants.containerHeight).priority = .required
+
+            linearGradient.edges == container.edges
 
             fontDisplay.left == container.left
             fontDisplay.right == container.right
@@ -222,7 +233,7 @@ private enum Constants {
 
     static let containerHeight: CGFloat = 104.0
     static let containerCornerRadius: CGFloat = 16.0
-    static let containerShadow: CALayer.Shadow = .init(
+    static let containerShadow: Shadow = Shadow(
         color: .black,
         alpha: 0.5,
         x: 0,

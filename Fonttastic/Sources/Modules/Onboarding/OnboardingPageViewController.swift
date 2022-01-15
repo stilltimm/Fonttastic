@@ -54,7 +54,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
         button.cornerRadius = 16
         return button
     }()
-    private let actionButtonShadow = CALayer.Shadow(
+    private let actionButtonShadow = Shadow(
         color: Colors.brandMainLight,
         alpha: 0.8,
         x: 0,
