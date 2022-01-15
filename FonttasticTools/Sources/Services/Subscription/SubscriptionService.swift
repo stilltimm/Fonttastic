@@ -29,6 +29,10 @@ public protocol SubscriptionService {
     func presentCodeRedemptionSheet()
 
     func fetchPurchaserInfo()
+
+    #if DEBUG || BETA
+    func overrideSubscriptionState(with subscriptionState: SubscriptionState)
+    #endif
 }
 
 public final class DefaultSubscriptionService: NSObject, SubscriptionService {
@@ -41,6 +45,7 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         case restorePurchases(PaywallItemPurchaseCompletion)
         case purchaserInfoUpdate
         case updateFromDelegate
+        case promotedPurchase
 
         // MARK: - Instance Properties
 
@@ -57,6 +62,9 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
 
             case .updateFromDelegate:
                 return "Update from Purchases Delegate"
+
+            case .promotedPurchase:
+                return "AppStore Promoted Purchase"
             }
         }
 
@@ -65,14 +73,14 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
             case let .productPurchase(completion), let .restorePurchases(completion):
                 return completion
 
-            case .purchaserInfoUpdate, .updateFromDelegate:
+            case .purchaserInfoUpdate, .updateFromDelegate, .promotedPurchase:
                 return nil
             }
         }
 
         var isExpectingPurchaserInfo: Bool {
             switch self {
-            case .purchaserInfoUpdate, .updateFromDelegate:
+            case .purchaserInfoUpdate, .updateFromDelegate, .promotedPurchase:
                 return true
 
             case .productPurchase, .restorePurchases:
@@ -85,7 +93,7 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
             case .productPurchase, .restorePurchases:
                 return true
 
-            case .purchaserInfoUpdate, .updateFromDelegate:
+            case .purchaserInfoUpdate, .updateFromDelegate, .promotedPurchase:
                 return false
             }
         }
@@ -271,6 +279,12 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         }
     }
 
+    #if DEBUG || BETA
+    public func overrideSubscriptionState(with subscriptionStateOverride: SubscriptionState) {
+        self.subscriptionState = subscriptionStateOverride
+    }
+    #endif
+
     // MARK: - Private Instance Methods
 
     private func handlePurchaserInfoUpdate(
@@ -280,28 +294,29 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
     ) {
         let resolvedError: SubscriptionServiceError?
         if let error = error {
-            self.subscriptionState = .noSubscription
+            self.subscriptionState = .noSubscriptionInfo
 
             let nsError = error as NSError
             resolvedError = .purchaseError(nsError, error as? RevenueCat.ErrorCode)
         } else if let purchaserInfo = purchaserInfo {
             if let activeSubscriptionEntitlement = purchaserInfo.entitlements.active.values.first {
                 let subscriptionInfo = SubscriptionInfo(entitlement: activeSubscriptionEntitlement)
-                self.subscriptionState = .hasActiveSubscription(subscriptionInfo)
+                self.subscriptionState = .hasSubscriptionInfo(subscriptionInfo)
             } else {
+                let now = Date()
                 let entitlementsSortedByOriginalPurchaseDate = purchaserInfo.entitlements.all.values
-                    .sorted { $1.latestPurchaseDate?.compare($0.latestPurchaseDate ?? Date()) == .orderedAscending }
+                    .sorted { $1.originalPurchaseDate?.compare($0.originalPurchaseDate ?? now) == .orderedAscending }
                 if let lastPurchasedEntitlement = entitlementsSortedByOriginalPurchaseDate.last {
                     let subscriptionInfo = SubscriptionInfo(entitlement: lastPurchasedEntitlement)
-                    self.subscriptionState = .hasInactiveSubscription(subscriptionInfo)
+                    self.subscriptionState = .hasSubscriptionInfo(subscriptionInfo)
                 } else {
-                    self.subscriptionState = .noSubscription
+                    self.subscriptionState = .noSubscriptionInfo
                 }
             }
 
             resolvedError = nil
         } else {
-            self.subscriptionState = .noSubscription
+            self.subscriptionState = .noSubscriptionInfo
 
             if context.isExpectingPurchaserInfo {
                 resolvedError = .noErrorAndPurchaserInfo
@@ -335,13 +350,19 @@ extension DefaultSubscriptionService: PurchasesDelegate {
         self.handlePurchaserInfoUpdate(purchaserInfo, error: nil, context: .updateFromDelegate)
     }
 
-    // TODO: Implement promo product deferred purchase
-//    public func purchases(
-//        _ purchases: Purchases,
-//        shouldPurchasePromoProduct product: SKProduct,
-//        defermentBlock makeDeferredPurchase: @escaping DeferredPromotionalPurchaseBlock
-//    ) {
-//    }
+    public func purchases(
+        _ purchases: Purchases,
+        shouldPurchasePromoProduct product: SKProduct,
+        defermentBlock makeDeferredPurchase: @escaping DeferredPromotionalPurchaseBlock
+    ) {
+        let completion: PurchaseCompletedBlock = { (_, customerInfo, error, _) in
+            DispatchQueue.main.async { [weak self] in
+                self?.handlePurchaserInfoUpdate(customerInfo, error: error, context: .promotedPurchase)
+            }
+        }
+
+        makeDeferredPurchase(completion)
+    }
 }
 
 private enum Constants {

@@ -13,10 +13,13 @@
 
 // MARK: - Subscription
 
-"subscription.navigationItem.termsActionTitle" = "Соглашение";
-"subscription.navigationItem.promocodeActionTitle" = "Ввести промокод";
-"subscription.navigationItem.restoreActionTitle" = "Восстановить покупки";
-"subscription.actionButton.title" = "Продолжить";
+"subscription.paywall.navigationItem.termsActionTitle" = "Соглашение";
+"subscription.paywall.navigationItem.promocodeActionTitle" = "Использовать промокод";
+"subscription.paywall.navigationItem.restoreActionTitle" = "Восстановить покупки";
+"subscription.paywall.actionButtonTitle" = "Продолжить";
+
+"subscription.activeSubscription.header.title" = "Ура! Премиум 💎";
+"subscription.activeSubscription.header.subtitle" = "Теперь вы можете пользоваться кастомной клавиатурой Fonttastic и испрользовать в ней все кастомные шрифты нашего приложения";
 
 "subscription.error.title.default" = "Ошибка покупки";
 "subscription.error.title.pendingPayment" = "Покупка стартовала";

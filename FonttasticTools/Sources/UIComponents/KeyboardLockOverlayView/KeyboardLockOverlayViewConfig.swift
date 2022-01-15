@@ -16,14 +16,16 @@ public enum KeyboardLockReason: String {
     // MARK: - Initializers
 
     public init?(appStatus: AppStatus) {
-        switch (appStatus.subscriptionState, appStatus.keyboardInstallationState) {
-        case (.noSubscription, _), (.hasInactiveSubscription, _):
-            self = .lockedDueToNoActiveSubscription
-
-        case (_, .notInstalled), (_, .installedWithLimitedAccess):
+        let isInstalledWithFullAccess = appStatus.keyboardInstallationState.isInstalledWithFullAccess
+        let isSubscriptionActive = appStatus.subscriptionState.isSubscriptionActive
+        switch (isInstalledWithFullAccess, isSubscriptionActive) {
+        case (false, _):
             self = .lockedDueToFullAccessLack
 
-        default:
+        case (_, false):
+            self = .lockedDueToNoActiveSubscription
+
+        case (true, true):
             return nil
         }
     }
@@ -36,35 +38,23 @@ public struct KeyboardLockOverlayViewConfig {
     public let title: String
     public let message: String
     public let actionButtonTitle: String
-    public let actionLinkURLString: String
+    public let keyboardLockReason: KeyboardLockReason
 }
 
 extension KeyboardLockOverlayViewConfig {
 
     public init(from keyboardLockReason: KeyboardLockReason) {
+        self.keyboardLockReason = keyboardLockReason
+        self.title = FonttasticToolsStrings.Keyboard.LockedState.title
+
         switch keyboardLockReason {
         case .lockedDueToNoActiveSubscription:
-            self = .lockedDueToNoActiveSubscription
+            self.message = FonttasticToolsStrings.Keyboard.LockedState.NoSubscriptionInfo.message
+            self.actionButtonTitle = FonttasticToolsStrings.Keyboard.LockedState.NoSubscriptionInfo.actionTitle
 
         case .lockedDueToFullAccessLack:
-            self = .lockedDueToFullAccessLack
+            self.message = FonttasticToolsStrings.Keyboard.LockedState.LimitedAccess.message
+            self.actionButtonTitle = FonttasticToolsStrings.Keyboard.LockedState.LimitedAccess.actionTitle
         }
     }
-}
-
-extension KeyboardLockOverlayViewConfig {
-
-    static let lockedDueToNoActiveSubscription = KeyboardLockOverlayViewConfig(
-        title: FonttasticToolsStrings.Keyboard.LockedState.title,
-        message: FonttasticToolsStrings.Keyboard.LockedState.NoSubscription.message,
-        actionButtonTitle: FonttasticToolsStrings.Keyboard.LockedState.NoSubscription.actionTitle,
-        actionLinkURLString: "fonttastic://home"
-    )
-
-    static let lockedDueToFullAccessLack = KeyboardLockOverlayViewConfig(
-        title: FonttasticToolsStrings.Keyboard.LockedState.title,
-        message: FonttasticToolsStrings.Keyboard.LockedState.LimitedAccess.message,
-        actionButtonTitle: FonttasticToolsStrings.Keyboard.LockedState.LimitedAccess.actionTitle,
-        actionLinkURLString: UIApplication.openSettingsURLString
-    )
 }

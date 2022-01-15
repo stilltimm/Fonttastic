@@ -25,4 +25,24 @@ public enum KeyboardInstallationState: String {
             return "✅ Full access"
         }
     }
+
+    public var isInstalledWithFullAccess: Bool {
+        switch self {
+        case .installedWithFullAccess:
+            return true
+
+        case .installedWithLimitedAccess, .notInstalled:
+            return false
+        }
+    }
+
+    public var isInstalled: Bool {
+        switch self {
+        case .installedWithFullAccess, .installedWithLimitedAccess:
+            return true
+
+        case .notInstalled:
+            return false
+        }
+    }
 }

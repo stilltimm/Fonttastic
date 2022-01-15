@@ -348,6 +348,13 @@ extension FonttasticLogger.Config {
             ],
             usesFullDateFormatting: false
         )
+        #elseif BETA
+        return FonttasticLogger.Config(
+            enabledOutputs: [
+                .osLog: Set(FonttasticLogger.LogLevel.allCases)
+            ],
+            usesFullDateFormatting: false
+        )
         #else
         return FonttasticLogger.Config(
             enabledOutputs: [

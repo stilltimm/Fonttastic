@@ -13,10 +13,13 @@
 
 // MARK: - Subscription
 
-"subscription.navigationItem.termsActionTitle" = "Terms";
-"subscription.navigationItem.promocodeActionTitle" = "Enter promocode";
-"subscription.navigationItem.restoreActionTitle" = "Restore purchases";
-"subscription.actionButton.title" = "Continue";
+"subscription.paywall.navigationItem.termsActionTitle" = "Terms";
+"subscription.paywall.navigationItem.promocodeActionTitle" = "Redeem code";
+"subscription.paywall.navigationItem.restoreActionTitle" = "Restore purchases";
+"subscription.paywall.actionButtonTitle" = "Continue";
+
+"subscription.activeSubscription.header.title" = "Hooray! You are Premium Member 💎";
+"subscription.activeSubscription.header.subtitle" = "Now you might setup Fonttastic Keyboard and use all custom fonts of our app";
 
 "subscription.error.title.default" = "Purchase failed";
 "subscription.error.title.pendingPayment" = "Payment is Pending";

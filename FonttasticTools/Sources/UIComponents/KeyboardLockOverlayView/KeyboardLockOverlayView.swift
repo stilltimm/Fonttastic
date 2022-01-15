@@ -71,7 +71,7 @@ public class KeyboardLockOverlayView: UIControl {
 
     // MARK: - Public Instance Properties
 
-    public let didTapEvent = FonttasticTools.Event<URL>()
+    public let didTapEvent = FonttasticTools.Event<KeyboardLockReason>()
     public let didTapAdvanceToNextInputButton = FonttasticTools.Event<Void>()
 
     public override var isHighlighted: Bool {
@@ -231,12 +231,9 @@ public class KeyboardLockOverlayView: UIControl {
     }
 
     @objc private func handleTap() {
-        guard
-            let config = self.config,
-            let actionLinkURL = URL(string: config.actionLinkURLString)
-        else { return }
+        guard let config = self.config else { return }
 
-        didTapEvent.onNext(actionLinkURL)
+        didTapEvent.onNext(config.keyboardLockReason)
     }
 
     @objc private func handleAdvanceToNextInputTap() {

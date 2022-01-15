@@ -28,11 +28,11 @@ public enum FontListBannerType: String {
     // MARK: - Initializers
 
     public init?(appStatus: AppStatus) {
-        switch (appStatus.keyboardInstallationState, appStatus.subscriptionState) {
+        switch (appStatus.keyboardInstallationState, appStatus.subscriptionState.isSubscriptionActive) {
         case (.notInstalled, _):
             self = .keyboardSetupBanner
 
-        case (_, .noSubscription), (_, .hasInactiveSubscription):
+        case (_, false):
             self = .subscriptionBanner
 
         default:

@@ -15,16 +15,6 @@ public enum PaywallState {
 
     // MARK: - Instance Properties
 
-    public var isReady: Bool {
-        switch self {
-        case .ready:
-            return true
-
-        default:
-            return false
-        }
-    }
-
     public var isInvalid: Bool {
         switch self {
         case .invalid:

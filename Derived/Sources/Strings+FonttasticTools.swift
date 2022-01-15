@@ -55,11 +55,11 @@ public enum FonttasticToolsStrings {
         /// To use keyboard, please open settings and enable keyboard full access
         public static let message = FonttasticToolsStrings.tr("Localizable", "keyboard.lockedState.limitedAccess.message")
       }
-      public enum NoSubscription {
+      public enum NoSubscriptionInfo {
         /// Open App
-        public static let actionTitle = FonttasticToolsStrings.tr("Localizable", "keyboard.lockedState.noSubscription.actionTitle")
+        public static let actionTitle = FonttasticToolsStrings.tr("Localizable", "keyboard.lockedState.noSubscriptionInfo.actionTitle")
         /// To use keyboard, please open app and purchase subscription
-        public static let message = FonttasticToolsStrings.tr("Localizable", "keyboard.lockedState.noSubscription.message")
+        public static let message = FonttasticToolsStrings.tr("Localizable", "keyboard.lockedState.noSubscriptionInfo.message")
       }
     }
   }

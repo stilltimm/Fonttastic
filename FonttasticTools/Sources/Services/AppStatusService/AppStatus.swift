@@ -37,7 +37,7 @@ public struct AppStatus {
 extension AppStatus {
 
     public static let zero: AppStatus = AppStatus(
-        subscriptionState: .noSubscription,
+        subscriptionState: .noSubscriptionInfo,
         keyboardInstallationState: .notInstalled
     )
 }

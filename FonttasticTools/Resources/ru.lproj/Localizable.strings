@@ -10,8 +10,8 @@
 
 "keyboard.canvas.copied.title" = "✅ Скопировано";
 "keyboard.lockedState.title" = "Клавиатура заблокирована";
-"keyboard.lockedState.noSubscription.message" = "Чтобы использовать клавиатуру, пожалуйста откройте приложение и оформите подписку";
-"keyboard.lockedState.noSubscription.actionTitle" = "Открыть приложение";
+"keyboard.lockedState.noSubscriptionInfo.message" = "Чтобы использовать клавиатуру, пожалуйста откройте приложение и оформите подписку";
+"keyboard.lockedState.noSubscriptionInfo.actionTitle" = "Открыть приложение";
 "keyboard.lockedState.limitedAccess.message" = "Чтобы использовать клавиатуру, пожалуйста откройте настройки приложения и дайте клавиатуре полный доступ";
 "keyboard.lockedState.limitedAccess.actionTitle" = "Открыть Настройки";
 

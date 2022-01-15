@@ -11,6 +11,31 @@ import FonttasticTools
 
 class SubscriptionViewController: UIViewController, OnboardingPageViewControllerProtocol {
 
+    // MARK: - Nested Types
+
+    enum State {
+
+        case loading
+        case ready(Paywall, SubscriptionInfo?)
+        case invalid(Error)
+
+        init(paywallState: PaywallState, subscriptionState: SubscriptionState) {
+            switch (paywallState, subscriptionState) {
+            case (.loading, _), (_, .loading):
+                self = .loading
+
+            case let (.invalid(error), _):
+                self = .invalid(error)
+
+            case let (.ready(paywall), .hasSubscriptionInfo(subscriptionInfo)):
+                self = .ready(paywall, subscriptionInfo)
+
+            case let (.ready(paywall), .noSubscriptionInfo):
+                self = .ready(paywall, nil)
+            }
+        }
+    }
+
     // MARK: - Private Type Methods
 
     private static func makeDefaultActionAttributedStrings(
@@ -38,7 +63,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private let termsActionButton: UIButton = {
         let button = UIButton()
         let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.NavigationItem.termsActionTitle
+            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.termsActionTitle
         )
         button.setAttributedTitle(normal, for: .normal)
         button.setAttributedTitle(highlighted, for: .highlighted)
@@ -47,7 +72,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private let promocodeActionButton: UIButton = {
         let button = UIButton()
         let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.NavigationItem.promocodeActionTitle
+            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.promocodeActionTitle
         )
         button.setAttributedTitle(normal, for: .normal)
         button.setAttributedTitle(highlighted, for: .highlighted)
@@ -56,7 +81,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private let restoreActonButton: UIButton = {
         let button = UIButton()
         let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.NavigationItem.restoreActionTitle
+            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.restoreActionTitle
         )
         button.setAttributedTitle(normal, for: .normal)
         button.setAttributedTitle(highlighted, for: .highlighted)
@@ -167,8 +192,13 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private lazy var onboardingService: OnboardingService = DefaultOnboardingService.shared
     private lazy var subscriptionService: SubscriptionService = DefaultSubscriptionService.shared
-    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared 
+    private lazy var analyticsService: AnalyticsService = DefaultAnalyticsService.shared
 
+    private var state: State = .loading {
+        didSet {
+            self.apply(state: state)
+        }
+    }
     private var selectedPaywallItem: PaywallItem?
 
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
@@ -205,6 +235,18 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         analyticsService.trackEvent(PaywallDidAppearAnalyticsEvent())
     }
+
+    #if DEBUG || BETA
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        super.motionEnded(motion, with: event)
+
+        if motion == .motionShake {
+            subscriptionService.overrideSubscriptionState(
+                with: .hasSubscriptionInfo(.mockActiveSubscriptionInfo())
+            )
+        }
+    }
+    #endif
 
     // MARK: - Private Instance Methods
 
@@ -326,14 +368,26 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         actionButton.addTarget(self, action: #selector(self.handleContinueAction), for: .touchUpInside)
         reloadPaywallButton.addTarget(self, action: #selector(self.handleReloadPaywallAction), for: .touchUpInside)
 
-        apply(paywallState: subscriptionService.paywallState)
+        apply(state: state)
+
         subscriptionService.paywallStateDidChangeEvent.subscribe(self) { [weak self] paywallState in
-            self?.apply(paywallState: paywallState)
+            guard let self = self else { return }
+            self.state = State(
+                paywallState: paywallState,
+                subscriptionState: self.subscriptionService.subscriptionState
+            )
+        }
+        subscriptionService.subscriptionStateDidChangeEvent.subscribe(self) { [weak self] subscriptionState in
+            guard let self = self else { return }
+            self.state = State(
+                paywallState: self.subscriptionService.paywallState,
+                subscriptionState: subscriptionState
+            )
         }
     }
 
-    private func apply(paywallState: PaywallState) {
-        switch paywallState {
+    private func apply(state: State) {
+        switch state {
         case .loading:
             scrollView.isHidden = true
             actionButton.isHidden = true
@@ -343,9 +397,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
             activityIndicator.startAnimating()
 
-        case let .ready(paywall):
-            apply(paywall: paywall)
-
+        case let .ready(paywall, subscriptionInfo):
             scrollView.isHidden = false
             actionButton.isHidden = false
             errorLabel.isHidden = true
@@ -353,6 +405,36 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             activityIndicator.isHidden = true
 
             activityIndicator.stopAnimating()
+
+            if
+                let subscriptionInfo = subscriptionInfo,
+                subscriptionInfo.isActive
+            {
+                restoreActonButton.isHidden = true
+                promocodeActionButton.isHidden = true
+                termsActionButton.isHidden = true
+
+                applyActiveSubscriptionInfo()
+            } else {
+                restoreActonButton.isHidden = false
+                promocodeActionButton.isHidden = false
+                termsActionButton.isHidden = false
+
+                applyPaywall(paywall)
+
+                if
+                    let subscriptionInfo = subscriptionInfo,
+                    !subscriptionInfo.isActive
+                {
+                    let inactiveSubscriptionAlert = makeAlertController(
+                        title: "",
+                        message: subscriptionInfo.localizedDescription
+                    )
+                    DispatchQueue.main.async { [weak self] in
+                        self?.present(inactiveSubscriptionAlert, animated: true)
+                    }
+                }
+            }
 
         case .invalid:
             scrollView.isHidden = true
@@ -365,7 +447,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         }
     }
 
-    private func apply(paywall: Paywall) {
+    private func applyPaywall(_ paywall: Paywall) {
         headerTitle.text = paywall.headerTitle
         headerSubtitle.text = paywall.headerSubtitle
         actionButton.setTitle(paywall.buttonTitle, for: .normal)
@@ -390,6 +472,19 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         selectedPaywallItem = paywall.initiallySelectedItem
         updateSelectedPaywallItemView()
+    }
+
+    private func applyActiveSubscriptionInfo() {
+        headerTitle.text = FonttasticStrings.Localizable.Subscription.ActiveSubscription.Header.title
+        headerSubtitle.text = FonttasticStrings.Localizable.Subscription.ActiveSubscription.Header.subtitle
+        actionButton.setTitle(FonttasticStrings.Localizable.Subscription.Paywall.actionButtonTitle, for: .normal)
+
+        self.paywallItemsStackView.arrangedSubviews.forEach { subview in
+            paywallItemsStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+
+        selectedPaywallItem = nil
     }
 
     private func setSelectedPaywallItem(_ item: PaywallItem) {
@@ -444,28 +539,13 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         rigidImpactFeedbackGenerator.impactOccurred()
         didTapActionButtonEvent.onNext(onboardingPage)
 
-        guard let selectedPaywallItem = self.selectedPaywallItem else { return }
+        if subscriptionService.subscriptionState.isSubscriptionActive {
+            self.analyticsService.trackEvent(PaywallDidFinishAnalyticsEvent())
 
-        analyticsService.trackEvent(PaywallDidTapSubscribeAnalyticsEvent(selectedPaywallItem: selectedPaywallItem))
-
-        self.apply(paywallState: .loading)
-        subscriptionService.purchase(paywallItem: selectedPaywallItem) { [weak self] result in
-            guard let self = self else { return }
-
-            self.apply(paywallState: self.subscriptionService.paywallState)
-
-            switch result {
-            case let .failure(error):
-                // NOTE: Will log error to analytics
-                logger.error("Purchase failed", error: error)
-                self.handlePurchaseError(error)
-
-            case .success:
-                self.analyticsService.trackEvent(PaywallDidFinishAnalyticsEvent())
-
-                self.setOnboardingCompleteIfNeeded()
-                self.dismiss(animated: true)
-            }
+            self.setOnboardingCompleteIfNeeded()
+            self.dismiss(animated: true)
+        } else {
+            purchaseSelectedPaywallItem()
         }
     }
 
@@ -473,7 +553,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         impactFeedbackGenerator.impactOccurred()
 
         analyticsService.trackEvent(PaywallDidTapTermsAnalyticsEvent())
-
         if
             let termsURL = Constants.termsURL,
             UIApplication.shared.canOpenURL(termsURL)
@@ -486,7 +565,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         impactFeedbackGenerator.impactOccurred()
 
         analyticsService.trackEvent(PaywallDidTapPromocodeAnalyticsEvent())
-
         subscriptionService.presentCodeRedemptionSheet()
     }
 
@@ -494,19 +572,16 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         impactFeedbackGenerator.impactOccurred()
 
         analyticsService.trackEvent(PaywallDidTapRestoreAnalyticsEvent())
-
-        self.apply(paywallState: .loading)
         subscriptionService.restorePurchases { [weak self] result in
             guard let self = self else { return }
-
-            self.apply(paywallState: self.subscriptionService.paywallState)
 
             switch result {
             case let .failure(error):
                 self.handlePurchaseError(error)
 
             case .success:
-                self.dismiss(animated: true)
+                // NOTE: successfull result does NOT guarantee active subscription
+                break
             }
         }
     }
@@ -517,10 +592,31 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         subscriptionService.fetchPaywall(context: .viewControllerReloadButtonTap)
     }
 
+    // MARK: - Actions Business Logic
+
     private func setOnboardingCompleteIfNeeded() {
         if !onboardingService.hasCompletedOnboarding() {
             onboardingService.setOnboardingComplete()
             logger.debug("TODO: log onboarding completion")
+        }
+    }
+
+    private func purchaseSelectedPaywallItem() {
+        guard let selectedPaywallItem = self.selectedPaywallItem else { return }
+
+        analyticsService.trackEvent(PaywallDidTapSubscribeAnalyticsEvent(selectedPaywallItem: selectedPaywallItem))
+        subscriptionService.purchase(paywallItem: selectedPaywallItem) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case let .failure(error):
+                // NOTE: Will log error to analytics
+                logger.error("Purchase failed", error: error)
+                self.handlePurchaseError(error)
+
+            case .success:
+                self.subscriptionService.fetchPurchaserInfo()
+            }
         }
     }
 
@@ -533,11 +629,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         switch error {
         case let .purchaseError(nsError, errorCode):
             switch errorCode {
-            case .receiptAlreadyInUseError, .productAlreadyPurchasedError:
-                alertController = makeAlertController(
-                    message: FonttasticStrings.Localizable.Subscription.Error.Message.alreadyPurchased
-                )
-
             case .configurationError,
                 .unexpectedBackendResponseError,
                 .unknownBackendError,
@@ -558,57 +649,62 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
                 nil:
                 alertController = makeUnknownErrorAlertController()
 
+            case .receiptAlreadyInUseError, .productAlreadyPurchasedError:
+                alertController = makeErrorAlertController(
+                    message: FonttasticStrings.Localizable.Subscription.Error.Message.alreadyPurchased
+                )
+
             case .purchaseCancelledError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.purchaseCancelled
                 )
 
             case .storeProblemError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.appStoreIsDown
                 )
 
             case .purchaseNotAllowedError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.purchaseNotAllowed
                 )
 
             case .purchaseInvalidError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.purchaseInvalid
                 )
 
             case .productNotAvailableForPurchaseError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.productUnavailable
                 )
                 subscriptionService.fetchPaywall(context: .paywallItemPurchaseErrorOccured)
 
             case .networkError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.networkError
                 )
 
             case .ineligibleError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.ineligibleProduct
                 )
                 subscriptionService.fetchPaywall(context: .paywallItemPurchaseErrorOccured)
 
             case .insufficientPermissionsError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.insufficientPermissions
                 )
 
             case .paymentPendingError:
-                alertController = makeAlertController(
+                alertController = makeErrorAlertController(
                     title: FonttasticStrings.Localizable.Subscription.Error.Title.pendingPayment,
                     message: FonttasticStrings.Localizable.Subscription.Error.Message.paymentPending
                 )
 
             case .unknownError:
                 if nsError.domain == "apple", nsError.code == 1 {
-                    alertController = makeAlertController(
+                    alertController = makeErrorAlertController(
                         message: FonttasticStrings.Localizable.Subscription.Error.Message.alreadyPurchased
                     )
                 } else {
@@ -631,11 +727,20 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     // swiftlint:enable cyclomatic_complexity
 
     private func makeUnknownErrorAlertController() -> UIAlertController {
-        return makeAlertController(message: FonttasticStrings.Localizable.Subscription.Error.Message.unknownError)
+        return makeErrorAlertController(
+            message: FonttasticStrings.Localizable.Subscription.Error.Message.unknownError
+        )
+    }
+
+    private func makeErrorAlertController(
+        title: String = FonttasticStrings.Localizable.Subscription.Error.Title.default,
+        message: String
+    ) -> UIAlertController {
+        return makeAlertController(title: title, message: message)
     }
 
     private func makeAlertController(
-        title: String = FonttasticStrings.Localizable.Subscription.Error.Title.default,
+        title: String,
         message: String
     ) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)

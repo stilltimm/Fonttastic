@@ -149,8 +149,8 @@ class KeyboardViewController: UIInputViewController {
         }
 
         if let lockOverlayView = lockOverlayView {
-            lockOverlayView.didTapEvent.subscribe(self) { [weak self] actionLinkURL in
-                self?.openApp(url: actionLinkURL)
+            lockOverlayView.didTapEvent.subscribe(self) { [weak self] keyboardLockReason in
+                self?.handleLockOverlayTap(keyboardLockReason: keyboardLockReason)
             }
 
             lockOverlayView.didTapAdvanceToNextInputButton.subscribe(self) { [weak self] in
@@ -197,6 +197,38 @@ class KeyboardViewController: UIInputViewController {
                 return
             }
             responder = responder?.next
+        }
+    }
+
+    // MARK: - Handling Lock Overlay Tap
+
+    private func handleLockOverlayTap(keyboardLockReason: KeyboardLockReason) {
+        switch keyboardLockReason {
+        case .lockedDueToNoActiveSubscription:
+            #if DEBUG || BETA
+            DefaultSubscriptionService.shared.overrideSubscriptionState(
+                with: .hasSubscriptionInfo(.mockActiveSubscriptionInfo())
+            )
+            #else
+            if let openAppURL = Constants.openAppURL {
+                self.openApp(url: openAppURL)
+            } else {
+                logger.error(
+                    "Failed to open app from keyboard",
+                    description: "Incorrect URL string: \"\(Constants.openAppURLString)\""
+                )
+            }
+            #endif
+
+        case .lockedDueToFullAccessLack:
+            if let openSettingsURL = Constants.openSettingsURL {
+                self.openApp(url: openSettingsURL)
+            } else {
+                logger.error(
+                    "Failed to open settings from keyboard",
+                    description: "Incorrect URL string: \"\(Constants.openSettingsURLString)\""
+                )
+            }
         }
     }
 }
@@ -521,5 +553,9 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
 
 private enum Constants {
 
-    static let openAppUrlString: String = "fonttastic://home"
+    static let openAppURLString: String = "fonttastic://home"
+    static let openAppURL: URL? = URL(string: openAppURLString)
+
+    static let openSettingsURLString: String = UIApplication.openSettingsURLString
+    static let openSettingsURL: URL? = URL(string: openSettingsURLString)
 }

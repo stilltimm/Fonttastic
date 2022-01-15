@@ -32,9 +32,13 @@ public enum FonttasticStrings {
       }
     }
     public enum Subscription {
-      public enum ActionButton {
-        /// Continue
-        public static let title = FonttasticStrings.tr("Localizable", "subscription.actionButton.title")
+      public enum ActiveSubscription {
+        public enum Header {
+          /// Now you might setup Fonttastic Keyboard and use all custom fonts of our app
+          public static let subtitle = FonttasticStrings.tr("Localizable", "subscription.activeSubscription.header.subtitle")
+          /// Hooray! You are Premium Member 💎
+          public static let title = FonttasticStrings.tr("Localizable", "subscription.activeSubscription.header.title")
+        }
       }
       public enum Error {
         public enum Message {
@@ -72,13 +76,17 @@ public enum FonttasticStrings {
           public static let pendingPayment = FonttasticStrings.tr("Localizable", "subscription.error.title.pendingPayment")
         }
       }
-      public enum NavigationItem {
-        /// Enter promocode
-        public static let promocodeActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.promocodeActionTitle")
-        /// Restore purchases
-        public static let restoreActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.restoreActionTitle")
-        /// Terms
-        public static let termsActionTitle = FonttasticStrings.tr("Localizable", "subscription.navigationItem.termsActionTitle")
+      public enum Paywall {
+        /// Continue
+        public static let actionButtonTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.actionButtonTitle")
+        public enum NavigationItem {
+          /// Redeem code
+          public static let promocodeActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.promocodeActionTitle")
+          /// Restore purchases
+          public static let restoreActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.restoreActionTitle")
+          /// Terms
+          public static let termsActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.termsActionTitle")
+        }
       }
     }
   }
