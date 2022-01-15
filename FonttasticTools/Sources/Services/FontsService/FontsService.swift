@@ -43,6 +43,7 @@ public protocol FontsService: AnyObject {
         completion: @escaping FontInstallationCompletion
     )
     func storeLastUsedSettings()
+    func resetStoredSettings()
 }
 
 public class DefaultFontsService: FontsService {
@@ -121,6 +122,11 @@ public class DefaultFontsService: FontsService {
     public func storeLastUsedSettings() {
         storeLastUsedLanguage(lastUsedLanguage)
         storeLastUsedCanvasViewDesign(lastUsedCanvasViewDesign)
+    }
+
+    public func resetStoredSettings() {
+        storeLastUsedLanguage(Constants.defaultLastUsedLanguage)
+        storeLastUsedCanvasViewDesign(.default(fontModel: Constants.defaultLastUsedFontModel))
     }
 
     // MARK: - Private Instance Methods

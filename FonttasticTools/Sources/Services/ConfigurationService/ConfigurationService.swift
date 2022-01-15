@@ -45,6 +45,7 @@ public class DefaultConfigurationService: ConfigurationService {
         if executable == .app, UserDefaults.standard.bool(forKey: Constants.isFirstLaunchKey) != true {
             UserDefaults.standard.set(true, forKey: Constants.isFirstLaunchKey)
             onboardingService.resetStoredState()
+            fontsService.resetStoredSettings()
         }
     }
 
