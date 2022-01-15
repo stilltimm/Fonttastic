@@ -59,12 +59,7 @@ public class CanvasViewDesign: Codable {
 
         let textAlignmentRawValue = try container.decode(NSTextAlignment.RawValue.self, forKey: .textAlignmentRawValue)
         self.textAlignment = NSTextAlignment(rawValue: textAlignmentRawValue) ?? Constants.defaultTextAlignment
-
-        if let backgroundImagePngData = try container.decodeIfPresent(Data.self, forKey: .backgroundImagePngData) {
-            self.backgroundImage = UIImage(data: backgroundImagePngData)
-        } else {
-            self.backgroundImage = nil
-        }
+        self.backgroundImage = nil
     }
 
     // MARK: - Public Instance Methods
@@ -76,9 +71,6 @@ public class CanvasViewDesign: Codable {
         try container.encode(backgroundColor.hexValue, forKey: .backgroundColorHex)
         try container.encode(textColor.hexValue, forKey: .textColorHex)
         try container.encode(textAlignment.rawValue, forKey: .textAlignmentRawValue)
-        if let backgroundImagePngData = backgroundImage?.jpegData(compressionQuality: 0.9) {
-            try container.encode(backgroundImagePngData, forKey: .backgroundImagePngData)
-        }
     }
 }
 
