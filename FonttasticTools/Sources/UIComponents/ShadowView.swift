@@ -54,28 +54,28 @@ public final class ShadowView: UIView {
 
     public var cornerRadius: CGFloat {
         didSet {
-            guard superview != nil else { return }
+            guard !isPerformingUpdatesBatch, superview != nil else { return }
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
     public var shadowSpread: CGFloat {
         didSet {
-            guard superview != nil else { return }
+            guard !isPerformingUpdatesBatch, superview != nil else { return }
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
     public var shadowRadius: CGFloat {
         didSet {
-            guard superview != nil else { return }
+            guard !isPerformingUpdatesBatch, superview != nil else { return }
             setNeedsLayout()
             layoutIfNeeded()
         }
     }
     public var shadowOffset: CGSize {
         didSet {
-            guard superview != nil else { return }
+            guard !isPerformingUpdatesBatch, superview != nil else { return }
             setNeedsLayout()
             layoutIfNeeded()
         }
@@ -103,6 +103,8 @@ public final class ShadowView: UIView {
     private var lastShadowRadius: CGFloat = .zero
     private var lastShadowOffset: CGSize = .zero
     private var lastCornerRadius: CGFloat = .zero
+
+    private var isPerformingUpdatesBatch: Bool = false
 
     // MARK: - Init
 
@@ -162,6 +164,7 @@ public final class ShadowView: UIView {
 
     // MARK: - Instance Methods
 
+    // swiftlint:disable:next function_body_length
     public override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -188,10 +191,10 @@ public final class ShadowView: UIView {
         let _shadowSpread = shadowSpread
         let _shadowRadius = shadowRadius
         let _cornerRadius = cornerRadius
-        let _screenScale = UIScreen.main.scale
+        let _cornerRadiusMultiplier = 3.0
 
         Self.shadowCalculationsQueue.async {
-            let convertedShadowRadius = _shadowRadius * _screenScale
+            let convertedShadowRadius = _shadowRadius * _cornerRadiusMultiplier
             let shadowContainerViewXOffset = -(_shadowSpread + convertedShadowRadius) + _shadowOffset.width
             let shadowContainerViewYOffset = -(_shadowSpread + convertedShadowRadius) + _shadowOffset.height
             let shadowContainerViewWidth = _bounds.width + 2 * (_shadowSpread + convertedShadowRadius)
@@ -245,5 +248,21 @@ public final class ShadowView: UIView {
                 self.shadowView.layer.shadowOpacity = self.shadowOpacity
             }
         }
+    }
+
+    public func apply(cornerRadius: CGFloat, shadow: Shadow?) {
+        self.isPerformingUpdatesBatch = true
+
+        let _shadow: Shadow = shadow ?? .none
+        self.cornerRadius = cornerRadius
+        self.shadowSpread = _shadow.spread
+        self.shadowRadius = _shadow.blur
+        self.shadowOffset = CGSize(width: _shadow.x, height: _shadow.y)
+        self.shadowOpacity = _shadow.alpha
+        self.shadowColor = _shadow.color
+
+        self.isPerformingUpdatesBatch = false
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
     }
 }

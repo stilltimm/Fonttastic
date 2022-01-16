@@ -14,24 +14,20 @@ class FonttasticWatermarkView: UIImageView {
 
     private let backgroundOverlayImageView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(white: 1.0, alpha: 0.2)
+        view.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
         return view
     }()
     private let watermarkImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(
-            named: Constants.watermarkIconName,
-            in: Bundle(for: FonttasticWatermarkView.self),
-            compatibleWith: nil
-        )
+        imageView.image = FonttasticToolsAsset.watermark.image
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     private let watermarkLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "AvenirNext-Medium", size: 12) ?? UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "Futura-Bold", size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
         label.text = Constants.watermarkLabelText
-        label.textColor = UIColor(white: 0.0, alpha: 0.2)
+        label.textColor = UIColor.white
         return label
     }()
 
@@ -66,8 +62,7 @@ class FonttasticWatermarkView: UIImageView {
     private func setupLayout() {
         self.contentMode = .center
         self.layer.masksToBounds = true
-        self.layer.cornerCurve = .continuous
-        self.layer.cornerRadius = 6
+        self.layer.cornerRadius = 8
 
         addSubview(backgroundOverlayImageView)
         addSubview(watermarkImageView)
@@ -94,9 +89,9 @@ class FonttasticWatermarkView: UIImageView {
 private enum Constants {
 
     static let watermarkIconName: String = "fonttastic-watermark-icon"
-    static let watermarkLabelText: String = "Made with Fonttastic"
+    static let watermarkLabelText: String = "Fonttastic"
 
-    static let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 4)
+    static let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 6)
     static let iconToLabelSpacing: CGFloat = 4
     static let iconSize: CGSize = CGSize(width: 20, height: 20)
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 
+// swiftlint:disable:next type_name
 public struct FontsServiceStartedInstallingFontsAnalyticsEvent: AnalyticsEvent {
 
     // MARK: - Type Properties

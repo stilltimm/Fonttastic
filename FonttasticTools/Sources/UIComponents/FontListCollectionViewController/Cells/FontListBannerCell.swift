@@ -61,7 +61,8 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
 
     // MARK: - Subviews
 
-    private let containerView: UIView = {
+    private let containerView: ShadowView = ShadowView()
+    private let linearGradientView: UIView = {
         let view = LinearGradientView(linearGradient: Constants.bannerLinearGradient)
         view.layer.cornerCurve = .continuous
         return view
@@ -107,16 +108,6 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
 
     // MARK: - Public Instance Methods
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if let shadow = self.design?.shadow {
-            self.containerView.layer.applyShadow(shadow)
-        } else {
-            self.containerView.layer.clearShadow()
-        }
-    }
-
     override func prepareForReuse() {
         super.prepareForReuse()
 
@@ -129,7 +120,7 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
         self.viewModel = viewModel
         self.design = design
 
-        containerView.layer.cornerRadius = design.cornerRadius
+        self.containerView.apply(cornerRadius: design.cornerRadius, shadow: design.shadow)
 
         titleLabel.font = design.font
         titleLabel.textColor = design.textColor
@@ -142,11 +133,14 @@ class FontListBannerCell: UICollectionViewCell, Reusable {
     // MARK: - Private Instance Methods
 
     private func setupLayout() {
-        containerView.backgroundColor = .clear
         contentView.addSubview(containerView)
-        containerView.addSubview(titleLabel)
-        constrain(contentView, containerView, titleLabel) { contentView, container, titleLabel in
+        containerView.contentView.addSubview(linearGradientView)
+        containerView.contentView.addSubview(titleLabel)
+        constrain(
+            contentView, containerView, linearGradientView, titleLabel
+        ) { contentView, container, linearGradient, titleLabel in
             container.edges == contentView.edges.inseted(by: Constants.edgeInsets)
+            linearGradient.edges == container.edges
             self.titleLeftInsetConstraint = (titleLabel.left == container.left)
             self.titleRightInsetConstraint = (titleLabel.right == container.right)
             titleLabel.centerY == container.centerY

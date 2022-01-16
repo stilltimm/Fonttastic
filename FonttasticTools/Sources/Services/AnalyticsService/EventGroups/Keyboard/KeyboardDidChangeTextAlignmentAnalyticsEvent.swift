@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+// swiftlint:disable:next type_name
 public struct KeyboardDidChangeTextAlignmentAnalyticsEvent: AnalyticsEvent {
 
     // MARK: - Type Properties

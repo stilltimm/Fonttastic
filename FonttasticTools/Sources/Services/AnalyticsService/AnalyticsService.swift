@@ -36,7 +36,7 @@ public final class DefaultAnalyticsService: AnalyticsService {
         }
 
         Amplitude.instance().initializeApiKey(amplitudeAPIKey)
-//        Amplitude.instance().setServerZone(.EU)
+        Amplitude.instance().setServerZone(.EU)
 
         logger.debug("Successfully configured Analytics")
     }

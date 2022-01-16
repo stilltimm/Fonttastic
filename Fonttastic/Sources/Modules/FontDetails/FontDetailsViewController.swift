@@ -34,10 +34,19 @@ class FontDetailsViewController: UIViewController {
         label.textColor = Colors.blackAndWhite
         return label
     }()
-    private let textContainerView: UIView = {
+    private let textContainerView: ShadowView = ShadowView(
+        cornerRadius: Constants.containerCornerRadius,
+        shadow: Shadow(
+            color: .black,
+            alpha: 0.5,
+            x: 0,
+            y: 7,
+            blur: 16,
+            spread: -8
+        )
+    )
+    private let linearGradientView: UIView = {
         let view = LinearGradientView(linearGradient: .glass)
-        view.layer.cornerRadius = Constants.containerCornerRadius
-        view.layer.cornerCurve = .continuous
         return view
     }()
     private let textView: UITextView = {
@@ -107,11 +116,12 @@ class FontDetailsViewController: UIViewController {
         scrollView.addSubview(containerView)
         containerView.addSubview(fontNameLabel)
         containerView.addSubview(textContainerView)
-        textContainerView.addSubview(textView)
+        textContainerView.contentView.addSubview(linearGradientView)
+        textContainerView.contentView.addSubview(textView)
 
         constrain(
-            view, scrollView, containerView, fontNameLabel, textContainerView, textView
-        ) { (view, scrollView, container, fontName, textContainer, textView) in
+            view, scrollView, containerView, fontNameLabel, textContainerView, linearGradientView, textView
+        ) { (view, scrollView, container, fontName, textContainer, linearGradient, textView) in
             scrollView.edges == view.edges
 
             textView.edges == textContainer.edges.inseted(by: Constants.textInsets)
@@ -126,6 +136,8 @@ class FontDetailsViewController: UIViewController {
             textContainer.left == container.left + Constants.contentInsets.left
             textContainer.right == container.right - Constants.contentInsets.right
             textContainer.bottom == container.bottom - Constants.contentInsets.bottom
+
+            linearGradient.edges == textContainer.edges
 
             container.width == view.width
         }

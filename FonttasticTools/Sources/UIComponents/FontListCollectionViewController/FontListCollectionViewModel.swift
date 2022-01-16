@@ -245,11 +245,11 @@ private extension FontListBannerCell.Design {
         cornerRadius: 16,
         shadow: .init(
             color: Colors.brandMainLight,
-            alpha: 0.5,
+            alpha: 0.75,
             x: 0,
-            y: 16,
-            blur: 32,
-            spread: -16
+            y: 7,
+            blur: 16,
+            spread: -8
         )
     )
 }

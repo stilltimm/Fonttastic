@@ -8,6 +8,7 @@
 
 import Foundation
 
+// swiftlint:disable:next type_name
 public struct KeyboardDidChangeBackgroundColorAnalyticsEvent: AnalyticsEvent {
 
     // MARK: - Type Properties

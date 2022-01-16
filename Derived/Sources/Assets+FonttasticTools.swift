@@ -18,7 +18,7 @@
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum FonttasticToolsAsset {
   public static let bg = FonttasticToolsImages(name: "bg")
-  public static let fonttasticWatermarkIcon = FonttasticToolsImages(name: "fonttastic-watermark-icon")
+  public static let watermark = FonttasticToolsImages(name: "watermark")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
