@@ -31,7 +31,8 @@ public struct FontDetailsDidAppearAnalyticsEvent: AnalyticsEvent {
         return [
             "fontName": fontModel.name,
             "fontDisplayName": fontModel.displayName,
-            "fontType": fontModel.resourceType.description
+            "fontType": fontModel.resourceType.typeName,
+            "fontTypeDebugDescription": fontModel.resourceType.debugDescription
         ]
     }
 }

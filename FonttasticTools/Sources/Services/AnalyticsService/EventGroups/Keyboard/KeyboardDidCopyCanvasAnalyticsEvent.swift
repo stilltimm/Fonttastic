@@ -31,7 +31,8 @@ public struct KeyboardDidCopyCanvasAnalyticsEvent: AnalyticsEvent {
         return [
             "fontName": canvasViewDesign.fontModel.name,
             "fontDisplayName": canvasViewDesign.fontModel.displayName,
-            "fontType": canvasViewDesign.fontModel.resourceType.description,
+            "fontType": canvasViewDesign.fontModel.resourceType.typeName,
+            "fontTypeDebugDescription": canvasViewDesign.fontModel.resourceType.debugDescription,
             "backgroundColor": "\(canvasViewDesign.backgroundColor.hexValue)",
             "textColor": "\(canvasViewDesign.textColor.hexValue)",
             "hasBackgroundImage": canvasViewDesign.backgroundImage != nil,

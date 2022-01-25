@@ -47,7 +47,7 @@ class OnboardingPageViewController: UIViewController, OnboardingPageViewControll
     }()
     let actionButton: GradientButton = {
         let button = GradientButton()
-        button.setTitle(FonttasticStrings.Localizable.Subscription.Paywall.actionButtonTitle, for: .normal)
+        button.setTitle(FonttasticStrings.Localizable.Subscription.Paywall.Action.continue, for: .normal)
         button.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 16) ??
             UIFont.systemFont(ofSize: 16, weight: .bold)
         button.titleLabel?.textColor = UIColor.white

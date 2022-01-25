@@ -13,12 +13,17 @@
 
 // MARK: - Subscription
 
-"subscription.paywall.navigationItem.termsActionTitle" = "Соглашение";
-"subscription.paywall.navigationItem.promocodeActionTitle" = "Использовать промокод";
-"subscription.paywall.navigationItem.restoreActionTitle" = "Восстановить покупки";
-"subscription.paywall.actionButtonTitle" = "Продолжить";
 
-"subscription.activeSubscription.header.title" = "Ура! Премиум 💎";
+"subscription.paywall.action.redeemCode" = "Использовать код";
+"subscription.paywall.action.restorePurchases" = "Восстановить покупки";
+"subscription.paywall.action.continue" = "Продолжить";
+
+"subscription.paywall.termsAndPrivacy.start" = "Продолжая, вы соглашаетесь с нашей ";
+"subscription.paywall.termsAndPrivacy.terms" = "Политикой использования";
+"subscription.paywall.termsAndPrivacy.and" = " и ";
+"subscription.paywall.termsAndPrivacy.privacyPolicy" = "Политикой приватности";
+
+"subscription.activeSubscription.header.title" = "Ура!\nВы в Премиум 💎";
 "subscription.activeSubscription.header.subtitle" = "Теперь вы можете пользоваться кастомной клавиатурой Fonttastic и испрользовать в ней все кастомные шрифты нашего приложения";
 
 "subscription.error.title.default" = "Ошибка покупки";

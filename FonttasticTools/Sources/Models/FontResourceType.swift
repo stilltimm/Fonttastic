@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum FontResourceType: Codable, Hashable {
+public enum FontResourceType: Codable, Hashable, CustomDebugStringConvertible {
 
-    case system
+    case system(fontName: String)
     case bundled(fileName: String)
     case file(fileURL: URL)
     case userCreated
@@ -24,7 +24,17 @@ public enum FontResourceType: Codable, Hashable {
         }
     }
 
-    public var description: String {
+    public var isSystem: Bool {
+        switch self {
+        case .system:
+            return true
+
+        case .bundled, .file, .userCreated:
+            return false
+        }
+    }
+
+    public var typeName: String {
         switch self {
         case .system:
             return "system"
@@ -37,6 +47,22 @@ public enum FontResourceType: Codable, Hashable {
 
         case .userCreated:
             return "userCreated"
+        }
+    }
+
+    public var debugDescription: String {
+        switch self {
+        case let .system(fontName):
+            return "System font with name [\(fontName)]"
+
+        case let .bundled(fileName):
+            return "Bundled font with fileName [\(fileName)]"
+
+        case let .file(fileURL):
+            return "File-based font with fileURL [\(fileURL.absoluteString)]"
+
+        case .userCreated:
+            return "User Created font"
         }
     }
 }

@@ -9,18 +9,27 @@ import UIKit
 import Cartography
 import FonttasticTools
 
-enum FontListError: Error {
+enum FontListError: Int, Error, CustomNSError {
 
-    case failedToGrantPhotoLibraryAccess
+    case failedToGrantPhotoLibraryAccess = 0
     case noImageWasSelected
 
-    var localizedDescription: String {
+    // MARK: - Instance Properties
+
+    static var errorDomain: String { "com.fonttastic.font-list-error" }
+
+    var errorCode: Int { self.rawValue }
+    var errorUserInfo: [String: Any] {
         switch self {
         case .failedToGrantPhotoLibraryAccess:
-            return "Failed to access Photo Library"
+            return [
+                NSLocalizedDescriptionKey: "Failed to grant Photo Library access"
+            ]
 
         case .noImageWasSelected:
-            return "No image was selected"
+            return [
+                NSLocalizedDescriptionKey: "No image was selected"
+            ]
         }
     }
 }

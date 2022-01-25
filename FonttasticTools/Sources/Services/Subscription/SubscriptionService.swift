@@ -9,7 +9,7 @@ import Foundation
 import RevenueCat
 import StoreKit
 
-public typealias PaywallItemPurchaseResult = Result<Void, SubscriptionServiceError>
+public typealias PaywallItemPurchaseResult = Result<SubscriptionState, SubscriptionServiceError>
 public typealias PaywallItemPurchaseCompletion = (PaywallItemPurchaseResult) -> Void
 
 public protocol SubscriptionService {
@@ -292,31 +292,32 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
         error: Error?,
         context: PurchaserInfoUpdateContext
     ) {
+        let updatedSubscriptionState: SubscriptionState
         let resolvedError: SubscriptionServiceError?
         if let error = error {
-            self.subscriptionState = .noSubscriptionInfo
+            updatedSubscriptionState = .noSubscriptionInfo
 
             let nsError = error as NSError
             resolvedError = .purchaseError(nsError, error as? RevenueCat.ErrorCode)
         } else if let purchaserInfo = purchaserInfo {
             if let activeSubscriptionEntitlement = purchaserInfo.entitlements.active.values.first {
                 let subscriptionInfo = SubscriptionInfo(entitlement: activeSubscriptionEntitlement)
-                self.subscriptionState = .hasSubscriptionInfo(subscriptionInfo)
+                updatedSubscriptionState = .hasSubscriptionInfo(subscriptionInfo)
             } else {
                 let now = Date()
                 let entitlementsSortedByOriginalPurchaseDate = purchaserInfo.entitlements.all.values
                     .sorted { $1.originalPurchaseDate?.compare($0.originalPurchaseDate ?? now) == .orderedAscending }
                 if let lastPurchasedEntitlement = entitlementsSortedByOriginalPurchaseDate.last {
                     let subscriptionInfo = SubscriptionInfo(entitlement: lastPurchasedEntitlement)
-                    self.subscriptionState = .hasSubscriptionInfo(subscriptionInfo)
+                    updatedSubscriptionState = .hasSubscriptionInfo(subscriptionInfo)
                 } else {
-                    self.subscriptionState = .noSubscriptionInfo
+                    updatedSubscriptionState = .noSubscriptionInfo
                 }
             }
 
             resolvedError = nil
         } else {
-            self.subscriptionState = .noSubscriptionInfo
+            updatedSubscriptionState = .noSubscriptionInfo
 
             if context.isExpectingPurchaserInfo {
                 resolvedError = .noErrorAndPurchaserInfo
@@ -336,8 +337,10 @@ public final class DefaultSubscriptionService: NSObject, SubscriptionService {
                 self.fetchPurchaserInfo()
             }
         } else {
-            context.completion?(.success(()))
+            context.completion?(.success(self.subscriptionState))
         }
+
+        self.subscriptionState = updatedSubscriptionState
     }
 }
 

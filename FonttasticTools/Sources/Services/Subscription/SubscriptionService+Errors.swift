@@ -14,18 +14,20 @@ public enum PaywallFetchError: Error, CustomNSError {
     case noCurrentOffering
     case purchasesError(Error)
 
-    // MARK: - Debug Description
+    // MARK: - Public
+
+    // MARK: - Public Instance Properties
 
     public var errorCode: Int {
         switch self {
         case .noOfferingsOrError:
-            return 10001
+            return 0
 
         case .noCurrentOffering:
-            return 10002
+            return 1
 
-        case let .purchasesError(error):
-            return (error as NSError).code
+        case .purchasesError:
+            return 2
         }
     }
 
@@ -42,15 +44,73 @@ public enum PaywallFetchError: Error, CustomNSError {
             ]
 
         case let .purchasesError(error):
-            return (error as NSError).userInfo
+            return [
+                NSLocalizedDescriptionKey: """
+                Purchases service error [Domain: \((error as NSError).domain), code: \((error as NSError).code)]
+                """,
+                NSLocalizedFailureErrorKey: "Underlying error's userInfo is \((error as NSError).userInfo)",
+            ]
         }
     }
 }
 
-public enum SubscriptionServiceError: Error {
+public enum SubscriptionServiceError: Error, CustomNSError {
 
     case serviceDeallocated
     case purchasesServiceDeallocated
     case noErrorAndPurchaserInfo
     case purchaseError(NSError, RevenueCat.ErrorCode?)
+
+    // MARK: - Public Type Properties
+
+    public static var errorDomain: String { "com.romandegtyarev.fonttastic.subscription-service" }
+
+    // MARK: - Public Instance Properties
+
+    public var errorCode: Int {
+        switch self {
+        case .serviceDeallocated:
+            return 0
+
+        case .purchasesServiceDeallocated:
+            return 1
+
+        case .noErrorAndPurchaserInfo:
+            return 2
+
+        case .purchaseError:
+            return 3
+        }
+    }
+
+    public var errorUserInfo: [String: Any] {
+        switch self {
+        case .serviceDeallocated:
+            return [
+                NSLocalizedDescriptionKey: "Service deallocated"
+            ]
+
+        case .purchasesServiceDeallocated:
+            return [
+                NSLocalizedDescriptionKey: "Purchases service deallocated"
+            ]
+
+        case .noErrorAndPurchaserInfo:
+            return [
+                NSLocalizedDescriptionKey: "No error and purchaser info"
+            ]
+
+        case let .purchaseError(error, errorCode):
+            var result: [String: Any] = [
+                NSLocalizedDescriptionKey: """
+                Purchases service error [Domain: \((error as NSError).domain), code: \((error as NSError).code)]
+                """,
+                NSLocalizedFailureErrorKey: "Underlying error's userInfo is \((error as NSError).userInfo)"
+            ]
+            if let errorCode = errorCode {
+                result[NSHelpAnchorErrorKey] = "Normalized error code is \(errorCode)"
+            }
+            return result
+        }
+    }
 }

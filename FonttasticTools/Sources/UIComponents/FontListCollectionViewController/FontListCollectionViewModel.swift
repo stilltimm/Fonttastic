@@ -156,7 +156,7 @@ public class FontListCollectionViewModel {
         result.append(.title(customFontsTitleSection))
         if fontsService.hasInstalledCustomFonts {
             let customFontViewModels = fontModelsRepository.fonts
-                .filter { $0.resourceType != .system }
+                .filter { !$0.resourceType.isSystem }
                 .map { FontListFontViewModel(withModel: $0) }
             result.append(.fontList(FontListSection(fontViewModels: customFontViewModels)))
         } else {
@@ -172,7 +172,7 @@ public class FontListCollectionViewModel {
         result.append(.title(fontListTitleSection))
 
         let systemFontViewModels = fontModelsRepository.fonts
-            .filter { $0.resourceType == .system }
+            .filter { $0.resourceType.isSystem }
             .map { FontListFontViewModel(withModel: $0) }
         result.append(.fontList(FontListSection(fontViewModels: systemFontViewModels)))
 
@@ -192,7 +192,7 @@ public class FontListCollectionViewModel {
         result.append(.title(customFontsTitleSection))
         if fontsService.hasInstalledCustomFonts {
             let customFontViewModels = availableFontModels
-                .filter { $0.resourceType != .system }
+                .filter { !$0.resourceType.isSystem }
                 .map { FontListFontViewModel(withModel: $0) }
             result.append(.fontList(FontListSection(fontViewModels: customFontViewModels)))
         } else {
@@ -208,7 +208,7 @@ public class FontListCollectionViewModel {
         result.append(.title(fontListTitleSection))
 
         let systemFontViewModels = availableFontModels
-            .filter { $0.resourceType == .system }
+            .filter { $0.resourceType.isSystem }
             .map { FontListFontViewModel(withModel: $0) }
         result.append(.fontList(FontListSection(fontViewModels: systemFontViewModels)))
 

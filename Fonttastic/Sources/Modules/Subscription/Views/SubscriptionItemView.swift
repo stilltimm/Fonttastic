@@ -33,14 +33,29 @@ class PaywallItemView: UIControl {
 
     // MARK: - Subviews
 
-    private let backgroundView: UIView = {
+    private let containerView: ShadowView = {
+         let shadowView =  ShadowView(
+            cornerRadius: 16,
+            shadow: Shadow(
+                color: .black,
+                alpha: 0.5,
+                x: 0,
+                y: 7,
+                blur: 16,
+                spread: -8
+            )
+        )
+        shadowView.isUserInteractionEnabled = false
+        return shadowView
+    }()
+    private let linearGradientView: UIView = {
         let view = LinearGradientView(linearGradient: .glass)
         view.isUserInteractionEnabled = false
         return view
     }()
     private let checkboxContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = Colors.brandMainLight.withAlphaComponent(0.3)
         view.layer.masksToBounds = true
         view.layer.cornerRadius = Constants.checkboxSize.height / 2
         view.layer.cornerCurve = .circular
@@ -102,19 +117,17 @@ class PaywallItemView: UIControl {
 
     // swiftlint:disable:next function_body_length
     private func setupLayout() {
-        self.clipsToBounds = true
-        self.layer.borderColor = Colors.brandMainLight.cgColor
-        self.layer.borderWidth = 0
-        self.layer.cornerRadius = 16
-        self.layer.cornerCurve = .continuous
+        self.containerView.contentView.layer.borderColor = Colors.brandMainLight.cgColor
+        self.containerView.contentView.layer.borderWidth = 0
         self.backgroundColor = .clear
 
-        addSubview(backgroundView)
-        addSubview(checkboxContainerView)
+        addSubview(containerView)
+        containerView.contentView.addSubview(linearGradientView)
+        containerView.contentView.addSubview(checkboxContainerView)
         checkboxContainerView.addSubview(checkboxImageView)
-        addSubview(titleLabel)
-        addSubview(subtitleLabel)
-        addSubview(priceLabel)
+        containerView.contentView.addSubview(titleLabel)
+        containerView.contentView.addSubview(subtitleLabel)
+        containerView.contentView.addSubview(priceLabel)
 
         titleLabel.setContentCompressionResistancePriority(
             UILayoutPriority(rawValue: 249),
@@ -135,30 +148,32 @@ class PaywallItemView: UIControl {
 
         constrain(
             self,
-            backgroundView,
+            containerView,
+            linearGradientView,
             checkboxContainerView,
             checkboxImageView,
             titleLabel,
             subtitleLabel,
             priceLabel
-        ) { view, background, checkboxContainer, checkboxImage, title, subtitle, price in
-            background.edges == view.edges
+        ) { view, container, linearGradient, checkboxContainer, checkboxImage, title, subtitle, price in
+            container.edges == view.edges
+            linearGradient.edges == container.edges
 
             checkboxContainer.width == Constants.checkboxSize.width
             checkboxContainer.height == Constants.checkboxSize.height
-            checkboxContainer.centerY == view.centerY
-            checkboxContainer.left == view.left + Constants.edgeInsets.left
+            checkboxContainer.centerY == container.centerY
+            checkboxContainer.left == container.left + Constants.edgeInsets.left
 
             checkboxImage.edges == checkboxContainer.edges.inseted(by: 4)
 
             title.left == checkboxContainer.right + Constants.checkboxToTitleSpacing
-            title.top == view.top + Constants.edgeInsets.top
+            title.top == container.top + Constants.edgeInsets.top
 
             subtitle.left == title.left
             subtitle.right == title.right
 
-            price.right == view.right - Constants.edgeInsets.right
-            price.centerY == view.centerY
+            price.right == container.right - Constants.edgeInsets.right
+            price.centerY == container.centerY
         }
 
         titleLabel.text = model.title
@@ -209,10 +224,10 @@ class PaywallItemView: UIControl {
 
     private func updateSelectedState() {
         UIView.animate(withConfig: .fastControl) {
-            self.layer.borderWidth = self.isSelected ? 2.0 : 0.0
+            self.containerView.contentView.layer.borderWidth = self.isSelected ? 2.0 : 0.0
             self.checkboxContainerView.backgroundColor = self.isSelected ?
                 Colors.brandMainLight :
-                UIColor.white
+                Colors.brandMainLight.withAlphaComponent(0.3)
             self.checkboxImageView.alpha = self.isSelected ? 1.0 : 0.0
         }
     }

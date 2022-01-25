@@ -8,10 +8,51 @@
 import Foundation
 import ZIPFoundation
 
-public enum FileServiceError: Error {
+public enum FileServiceError: Error, CustomNSError {
+
     case failedToGetDocumentsDirectoryURL
     case zippedFilesButFileDoesNotExistAnymore(fileURL: URL)
     case unzippedArchiveButFileDoesNotExistAnymore(directoryURL: URL)
+
+    // MARK: - Public Type Properties
+
+    public static var errorDomain: String { "com.romandegtyarev.fonttastic.file-service" }
+
+    // MARK: - Instance Properties
+
+    public var errorCode: Int {
+        switch self {
+        case .failedToGetDocumentsDirectoryURL:
+            return 0
+
+        case .zippedFilesButFileDoesNotExistAnymore:
+            return 1
+
+        case .unzippedArchiveButFileDoesNotExistAnymore:
+            return 2
+        }
+    }
+
+    public var errorUserInfo: [String: Any] {
+        switch self {
+        case .failedToGetDocumentsDirectoryURL:
+            return [
+                NSLocalizedDescriptionKey: "Failed to get documents directory URL"
+            ]
+
+        case let .zippedFilesButFileDoesNotExistAnymore(fileURL):
+            return [
+                NSLocalizedDescriptionKey: "Zipped files, but file does not exist anymore",
+                NSHelpAnchorErrorKey: fileURL.absoluteString
+            ]
+
+        case let .unzippedArchiveButFileDoesNotExistAnymore(directoryURL):
+            return [
+                NSLocalizedDescriptionKey: "Unzipped archive, but file does not exist anymore",
+                NSHelpAnchorErrorKey: directoryURL.absoluteString
+            ]
+        }
+    }
 }
 
 public protocol FileService {

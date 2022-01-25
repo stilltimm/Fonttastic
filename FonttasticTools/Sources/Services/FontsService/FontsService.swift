@@ -12,17 +12,117 @@ import UIKit
 
 // MARK: - Supporting Types
 
-public enum FontInstallationError: Error {
-    case notPresentInSystem
+public enum FontInstallationError: Error, CustomNSError {
+
+    case notPresentInSystem(fontName: String)
     case failedToGetFilePath(resourceName: String)
     case failedToLoadFontFile(path: String, error: Error)
-    case failedToCreateCGDataProvider
-    case failedToCreateCGFont
+    case failedToCreateCGDataProvider(FontResourceType)
+    case failedToCreateCGFont(FontResourceType)
     case failedToRegisterFont(errorString: String?, resourceType: FontResourceType)
     case fontAlreadyInstalled(FontResourceType)
-    case missingFontName
-    case networkError
-    case unimplemented
+    case missingFontName(FontResourceType)
+    case unimplemented(FontResourceType)
+
+    // MARK: - Public Type Properties
+
+    public static var errorDomain: String { "com.romandegtyarev.fonttastic.font-installation" }
+
+    // MARK: - Public Instance Properties
+
+    public var errorCode: Int {
+        switch self {
+        case .notPresentInSystem:
+            return 0
+
+        case .failedToGetFilePath:
+            return 1
+
+        case .failedToLoadFontFile:
+            return 2
+
+        case .failedToCreateCGDataProvider:
+            return 3
+
+        case .failedToCreateCGFont:
+            return 4
+
+        case .failedToRegisterFont:
+            return 5
+
+        case .fontAlreadyInstalled:
+            return 6
+
+        case .missingFontName:
+            return 7
+
+        case .unimplemented:
+            return 8
+        }
+    }
+
+    public var errorUserInfo: [String: Any] {
+        switch self {
+        case let .notPresentInSystem(fontName):
+            return [
+                NSLocalizedDescriptionKey: "Font not present in system",
+                NSHelpAnchorErrorKey: "Font name is [\(fontName)]"
+            ]
+
+        case let .failedToGetFilePath(resourceName):
+            return [
+                NSLocalizedDescriptionKey: "Failed to get file path for resource name",
+                NSHelpAnchorErrorKey: "Resource name is [\(resourceName)]"
+            ]
+
+        case let .failedToLoadFontFile(path, error):
+            return [
+                NSLocalizedDescriptionKey: "Failed to load file path for resource name",
+                NSLocalizedFailureReasonErrorKey: (error as NSError).userInfo,
+                NSHelpAnchorErrorKey: "Path is [\(path)]",
+            ]
+
+        case let .failedToCreateCGDataProvider(resourceType):
+            return [
+                NSLocalizedDescriptionKey: "Failed to create CGDataProvider",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+
+        case let .failedToCreateCGFont(resourceType):
+            return [
+                NSLocalizedDescriptionKey: "Failed to create CGFont",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+
+        case let .failedToRegisterFont(errorString, resourceType):
+            var result: [String: Any] = [
+                NSLocalizedDescriptionKey: "Failed to load file path for resource name",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+            if let errorString = errorString {
+                result[NSLocalizedFailureReasonErrorKey] = errorString
+            }
+            return result
+
+        case let .fontAlreadyInstalled(resourceType):
+            return [
+                NSLocalizedDescriptionKey: "Font already installed",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+
+        case let .missingFontName(resourceType):
+            return [
+                NSLocalizedDescriptionKey: "Missing font name",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+
+        case let .unimplemented(resourceType):
+            return [
+                NSLocalizedDescriptionKey: "Font installation of such type is unimplemented",
+                NSHelpAnchorErrorKey: "FontResourceType is [\(resourceType.debugDescription)]"
+            ]
+        }
+    }
 }
 public typealias FontInstallationResult = Result<FontModel, FontInstallationError>
 public typealias FontInstallationCompletion = (FontInstallationResult) -> Void
@@ -111,7 +211,7 @@ public class DefaultFontsService: FontsService {
 
         case .userCreated:
             logger.debug("Installing userCreated font in unimplemented")
-            completion(.failure(.unimplemented))
+            completion(.failure(.unimplemented(fontSourceModel.resourceType)))
         }
     }
 
@@ -201,11 +301,11 @@ public class DefaultFontsService: FontsService {
         completion: @escaping FontInstallationCompletion
     ) {
         guard UIFont.familyNames.contains(name) else {
-            completion(.failure(.notPresentInSystem))
+            completion(.failure(.notPresentInSystem(fontName: name)))
             return
         }
 
-        let fontModel = FontModel(name: name, resourceType: .system, status: .ready)
+        let fontModel = FontModel(name: name, resourceType: .system(fontName: name), status: .ready)
         fontModelsRepository.addFont(fontModel)
 
         completion(.success(fontModel))
@@ -278,11 +378,11 @@ public class DefaultFontsService: FontsService {
 
         let nsData = NSData(data: data)
         guard let dataProvider = CGDataProvider(data: nsData) else {
-            complete(with: .failure(.failedToCreateCGDataProvider))
+            complete(with: .failure(.failedToCreateCGDataProvider(resourceType)))
             return
         }
         guard let cgFont = CGFont(dataProvider) else {
-            complete(with: .failure(.failedToCreateCGFont))
+            complete(with: .failure(.failedToCreateCGFont(resourceType)))
             return
         }
 
@@ -299,7 +399,7 @@ public class DefaultFontsService: FontsService {
         }
 
         guard let cfFontName = cgFont.postScriptName else {
-            complete(with: .failure(.missingFontName))
+            complete(with: .failure(.missingFontName(resourceType)))
             return
         }
 
@@ -369,7 +469,7 @@ public class DefaultFontsService: FontsService {
     private func systemFontSources() -> [FontSourceModel] {
         let systemFonts = UIFont.familyNames.compactMap { fontName -> FontSourceModel? in
             guard !fontName.lowercased().contains("system") else { return nil }
-            return FontSourceModel(name: fontName, resourceType: .system)
+            return FontSourceModel(name: fontName, resourceType: .system(fontName: fontName))
         }
 
         return systemFonts
@@ -391,10 +491,13 @@ private enum Constants {
         return KeyboardType.Language.latin
     }()
 
-    static let defaultLastUsedFontModel: FontModel = FontModel(
-        name: "Georgia-Bold",
-        resourceType: .system,
-        status: .ready
-    )
+    static let defaultLastUsedFontModel: FontModel = {
+        let fontName: String = "Georgia-Bold"
+        return FontModel(
+            name: fontName,
+            resourceType: .system(fontName: fontName),
+            status: .ready
+        )
+    }()
     static let defaultCanvasViewDesign: CanvasViewDesign = .default(fontModel: defaultLastUsedFontModel)
 }

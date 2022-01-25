@@ -16,10 +16,6 @@ public protocol AppStatusService: AnyObject {
     func setHasFullAccess(hasFullAccess: Bool)
 }
 
-enum AppStatusServiceError: Error {
-    case appStatusDataNotFound
-}
-
 public class DefaultAppStatusService: AppStatusService {
 
     // MARK: - Private Type Methods

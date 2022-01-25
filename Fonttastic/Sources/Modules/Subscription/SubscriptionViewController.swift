@@ -38,54 +38,112 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     // MARK: - Private Type Methods
 
-    private static func makeDefaultActionAttributedStrings(
-        text: String
+    private static func makeActionAttributedStrings(
+        text: String,
+        isSecondary: Bool
     ) -> (normal: NSAttributedString, highlighted: NSAttributedString) {
+        let font: UIFont = isSecondary ? Constants.smallActionFont : Constants.defaultActionFont
         let attributedTitle = NSAttributedString(
             string: text,
             attributes: [
-                .font: Constants.defaultActionFont,
-                .foregroundColor: Colors.blackAndWhite
+                .font: font,
+                .foregroundColor: Colors.blackAndWhite.withAlphaComponent(isSecondary ? 0.5 : 1.0)
             ]
         )
         let highlightedAttributedTitle = NSAttributedString(
             string: text,
             attributes: [
-                .font: Constants.defaultActionFont,
-                .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.5)
+                .font: font,
+                .foregroundColor: Colors.blackAndWhite.withAlphaComponent(isSecondary ? 0.25 : 0.5)
             ]
         )
         return (normal: attributedTitle, highlighted: highlightedAttributedTitle)
     }
 
-    // MARK: - Subviews / Ready State / Top Action Buttons
+    // MARK: - Subviews / Ready State / Action Buttons
 
-    private let termsActionButton: UIButton = {
+    private let redeemCodeActionButton: UIButton = {
         let button = UIButton()
-        let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.termsActionTitle
+        let (normal, highlighted) = makeActionAttributedStrings(
+            text: FonttasticStrings.Localizable.Subscription.Paywall.Action.redeemCode,
+            isSecondary: false
         )
         button.setAttributedTitle(normal, for: .normal)
         button.setAttributedTitle(highlighted, for: .highlighted)
         return button
     }()
-    private let promocodeActionButton: UIButton = {
+    private let restorePurchasesActonButton: UIButton = {
         let button = UIButton()
-        let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.promocodeActionTitle
+        let (normal, highlighted) = makeActionAttributedStrings(
+            text: FonttasticStrings.Localizable.Subscription.Paywall.Action.restorePurchases,
+            isSecondary: false
         )
         button.setAttributedTitle(normal, for: .normal)
         button.setAttributedTitle(highlighted, for: .highlighted)
         return button
     }()
-    private let restoreActonButton: UIButton = {
-        let button = UIButton()
-        let (normal, highlighted) = makeDefaultActionAttributedStrings(
-            text: FonttasticStrings.Localizable.Subscription.Paywall.NavigationItem.restoreActionTitle
-        )
-        button.setAttributedTitle(normal, for: .normal)
-        button.setAttributedTitle(highlighted, for: .highlighted)
+
+    private let continueActionButton: GradientButton = {
+        let button = GradientButton(frame: .zero)
+        button.titleLabel?.font = UIFont(name: "Futura-Bold", size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
+        button.titleLabel?.textColor = UIColor.white
+        button.cornerRadius = 16
         return button
+    }()
+    private let actionButtonShadow = Shadow(
+        color: Colors.brandMainLight,
+        alpha: 0.8,
+        x: 0,
+        y: 8,
+        blur: 16,
+        spread: -8
+    )
+
+    private let termsAndPrivacyTextView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.isSelectable = true
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+
+        let mutableAttributedString = NSMutableAttributedString()
+        let defaultAttributes: [NSAttributedString.Key: Any] = [
+            .font: Constants.smallActionFont,
+            .foregroundColor: Colors.blackAndWhite.withAlphaComponent(0.5)
+        ]
+        let actionAttributes: [NSAttributedString.Key: Any] = [
+            .font: Constants.smallActionFont,
+            .foregroundColor: Colors.blackAndWhite
+        ]
+        mutableAttributedString.append(
+            NSAttributedString(
+                string: FonttasticStrings.Localizable.Subscription.Paywall.TermsAndPrivacy.start,
+                attributes: defaultAttributes
+            )
+        )
+        mutableAttributedString.append(
+            NSAttributedString(
+                string: FonttasticStrings.Localizable.Subscription.Paywall.TermsAndPrivacy.terms,
+                attributes: actionAttributes.merging([.link: Constants.termsURLString]) { $1 }
+            )
+        )
+        mutableAttributedString.append(
+            NSAttributedString(
+                string: FonttasticStrings.Localizable.Subscription.Paywall.TermsAndPrivacy.and,
+                attributes: defaultAttributes
+            )
+        )
+        mutableAttributedString.append(
+            NSAttributedString(
+                string: FonttasticStrings.Localizable.Subscription.Paywall.TermsAndPrivacy.privacyPolicy,
+                attributes: actionAttributes.merging([.link: Constants.privacyPolicyURLString]) { $1 }
+            )
+        )
+
+        textView.attributedText = mutableAttributedString
+        textView.tintColor = Colors.blackAndWhite
+
+        return textView
     }()
 
     // MARK: - Subviews / Ready State / Scroll View And Container
@@ -140,27 +198,18 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     }()
     private var paywallItemViews: [PaywallItemView] = []
 
-    // MARK: - Subviews / Ready State / Purchase Action Button
-
-    private let actionButton: GradientButton = {
-        let button = GradientButton(frame: .zero)
-        button.titleLabel?.font = UIFont(name: "Futura-Bold", size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.titleLabel?.textColor = UIColor.white
-        button.cornerRadius = 16
-        return button
-    }()
-    private let actionButtonShadow = Shadow(
-        color: Colors.brandMainLight,
-        alpha: 0.8,
-        x: 0,
-        y: 8,
-        blur: 16,
-        spread: -8
-    )
-
     // MARK: - Subviews / Loading State
 
-    private let activityIndicator = UIActivityIndicatorView(style: .large)
+    private let loadingStateOverlay: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
+        return view
+    }()
+    private let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = UIColor.white
+        return view
+    }()
 
     // MARK: - Subviews / Invalid State
 
@@ -204,6 +253,8 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private let impactFeedbackGenerator = UIImpactFeedbackGenerator(style: .soft)
     private let rigidImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .rigid)
 
+    private var shouldPresentAlertForInactiveSubscription: Bool = false
+
     // MARK: - Internal Instance Methods
 
     override func viewDidLoad() {
@@ -224,7 +275,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        actionButton.applyShadow(actionButtonShadow)
+        continueActionButton.applyShadow(actionButtonShadow)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -252,15 +303,19 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
     private func setupLayout() {
         setupNormalStateLayout()
-        setupLoadingStateLayout()
         setupInvalidStateLayout()
+        setupLoadingStateLayout()
     }
 
     private func setupLoadingStateLayout() {
-        view.addSubview(activityIndicator)
-        constrain(view, activityIndicator) { view, indicator in
-            indicator.center == view.center
+        view.addSubview(loadingStateOverlay)
+        loadingStateOverlay.addSubview(activityIndicator)
+        constrain(view, loadingStateOverlay, activityIndicator) { view, overlay, indicator in
+            overlay.edges == view.edges
+            indicator.center == overlay.center
         }
+
+        loadingStateOverlay.isHidden = true
     }
 
     // swiftlint:disable:next function_body_length
@@ -276,14 +331,14 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         view.addSubview(scrollView)
         scrollView.addSubview(containerView)
+        containerView.addSubview(redeemCodeActionButton)
+        containerView.addSubview(restorePurchasesActonButton)
         containerView.addSubview(headerImageView)
         containerView.addSubview(headerTitle)
         containerView.addSubview(headerSubtitle)
         containerView.addSubview(paywallItemsStackView)
-        containerView.addSubview(termsActionButton)
-        containerView.addSubview(promocodeActionButton)
-        containerView.addSubview(restoreActonButton)
-        view.addSubview(actionButton)
+        containerView.addSubview(termsAndPrivacyTextView)
+        view.addSubview(continueActionButton)
 
         constrain(view, scrollView, containerView) { view, scrollView, container in
             scrollView.edges == view.edges
@@ -291,7 +346,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             (container.height >= view.height).priority = .required
         }
 
-        constrain(view, actionButton) { view, actionButton in
+        constrain(view, continueActionButton) { view, actionButton in
             actionButton.left == view.safeAreaLayoutGuide.left + Constants.edgeInsets.left
             actionButton.right == view.safeAreaLayoutGuide.right - Constants.edgeInsets.right
             actionButton.bottom == view.safeAreaLayoutGuide.bottom - Constants.edgeInsets.bottom
@@ -305,7 +360,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             headerSubtitle,
             paywallItemsStackView
         ) { container, headerImage, headerTitle, headerSubtitle, itemsStack in
-
             headerImage.left == container.left
             headerImage.right == container.right
             headerImage.top == container.safeAreaLayoutGuide.top
@@ -327,20 +381,26 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
 
         constrain(
             containerView,
-            termsActionButton,
-            promocodeActionButton,
-            restoreActonButton
-        ) { container, termsButton, promocodeButton, restoreButton in
+            redeemCodeActionButton,
+            restorePurchasesActonButton
+        ) { container, redeemCode, restorePurchases in
+            restorePurchases.right == container.right - Constants.edgeInsets.right
+            restorePurchases.top == container.top + Constants.edgeInsets.top
 
-            termsButton.left == container.left + Constants.edgeInsets.left
-            termsButton.top == container.top + Constants.edgeInsets.top
-
-            restoreButton.right == container.right - Constants.edgeInsets.right
-            restoreButton.top == container.top + Constants.edgeInsets.top
-
-            promocodeButton.right == restoreButton.right
-            promocodeButton.top == restoreButton.bottom + Constants.restoreToPromocodeSpacing
+            redeemCode.left == container.left + Constants.edgeInsets.left
+            redeemCode.top == container.top + Constants.edgeInsets.top
         }
+
+        constrain(
+            containerView, paywallItemsStackView, termsAndPrivacyTextView
+        ) { container, itemsStack, termsAndPrivacyPolicy in
+            termsAndPrivacyPolicy.left == container.left + Constants.edgeInsets.left
+            termsAndPrivacyPolicy.right == container.right - Constants.edgeInsets.right
+            termsAndPrivacyPolicy.top == itemsStack.bottom + Constants.itemsToTermsAndPrivacyPolicySpacing
+        }
+
+        scrollView.isHidden = true
+        continueActionButton.isHidden = true
     }
 
     private func setupInvalidStateLayout() {
@@ -357,16 +417,20 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             reloadButton.width == view.width / 2
             reloadButton.height == Constants.actionButtonHeight
         }
+
+        errorLabel.isHidden = true
+        reloadPaywallButton.isHidden = true
     }
 
     // MARK: - Business Logic
 
     private func setupBusinessLogic() {
-        termsActionButton.addTarget(self, action: #selector(self.handleTermsAction), for: .touchUpInside)
-        promocodeActionButton.addTarget(self, action: #selector(self.handlePromocodeAction), for: .touchUpInside)
-        restoreActonButton.addTarget(self, action: #selector(self.handleRestoreAction), for: .touchUpInside)
-        actionButton.addTarget(self, action: #selector(self.handleContinueAction), for: .touchUpInside)
+        redeemCodeActionButton.addTarget(self, action: #selector(self.handlePromocodeAction), for: .touchUpInside)
+        restorePurchasesActonButton.addTarget(self, action: #selector(self.handleRestoreAction), for: .touchUpInside)
+        continueActionButton.addTarget(self, action: #selector(self.handleContinueAction), for: .touchUpInside)
         reloadPaywallButton.addTarget(self, action: #selector(self.handleReloadPaywallAction), for: .touchUpInside)
+
+        termsAndPrivacyTextView.delegate = self
 
         apply(state: state)
 
@@ -386,63 +450,66 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         }
     }
 
+    // swiftlint:disable:next function_body_length
     private func apply(state: State) {
         switch state {
         case .loading:
-            scrollView.isHidden = true
-            actionButton.isHidden = true
-            errorLabel.isHidden = true
-            reloadPaywallButton.isHidden = true
-            activityIndicator.isHidden = false
-
+            loadingStateOverlay.isHidden = false
             activityIndicator.startAnimating()
 
         case let .ready(paywall, subscriptionInfo):
             scrollView.isHidden = false
-            actionButton.isHidden = false
+            continueActionButton.isHidden = false
+
             errorLabel.isHidden = true
             reloadPaywallButton.isHidden = true
-            activityIndicator.isHidden = true
 
+            loadingStateOverlay.isHidden = true
             activityIndicator.stopAnimating()
 
             if
                 let subscriptionInfo = subscriptionInfo,
                 subscriptionInfo.isActive
             {
-                restoreActonButton.isHidden = true
-                promocodeActionButton.isHidden = true
-                termsActionButton.isHidden = true
+                restorePurchasesActonButton.isHidden = true
+                redeemCodeActionButton.isHidden = true
+                termsAndPrivacyTextView.isHidden = true
 
                 applyActiveSubscriptionInfo()
             } else {
-                restoreActonButton.isHidden = false
-                promocodeActionButton.isHidden = false
-                termsActionButton.isHidden = false
+                restorePurchasesActonButton.isHidden = false
+                redeemCodeActionButton.isHidden = false
+                termsAndPrivacyTextView.isHidden = false
 
                 applyPaywall(paywall)
 
-                if
-                    let subscriptionInfo = subscriptionInfo,
-                    !subscriptionInfo.isActive
-                {
-                    let inactiveSubscriptionAlert = makeAlertController(
-                        title: "",
-                        message: subscriptionInfo.localizedDescription
-                    )
-                    DispatchQueue.main.async { [weak self] in
-                        self?.present(inactiveSubscriptionAlert, animated: true)
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if
+                        self.shouldPresentAlertForInactiveSubscription,
+                        let subscriptionInfo = subscriptionInfo,
+                        !subscriptionInfo.isActive
+                    {
+                        self.shouldPresentAlertForInactiveSubscription = false
+                        let inactiveSubscriptionAlert = self.makeAlertController(
+                            title: "",
+                            message: subscriptionInfo.localizedDescription.unicodeScalars
+                                .filter { !$0.properties.isEmojiPresentation }
+                                .reduce("") { $0 + String($1) }
+                        )
+                        self.present(inactiveSubscriptionAlert, animated: true)
                     }
                 }
             }
 
         case .invalid:
             scrollView.isHidden = true
-            actionButton.isHidden = true
+            continueActionButton.isHidden = true
+
             errorLabel.isHidden = false
             reloadPaywallButton.isHidden = false
-            activityIndicator.isHidden = true
 
+            loadingStateOverlay.isHidden = true
             activityIndicator.stopAnimating()
         }
     }
@@ -450,7 +517,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private func applyPaywall(_ paywall: Paywall) {
         headerTitle.text = paywall.headerTitle
         headerSubtitle.text = paywall.headerSubtitle
-        actionButton.setTitle(paywall.buttonTitle, for: .normal)
+        continueActionButton.setTitle(paywall.buttonTitle, for: .normal)
 
         self.paywallItemsStackView.arrangedSubviews.forEach { subview in
             paywallItemsStackView.removeArrangedSubview(subview)
@@ -477,7 +544,7 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     private func applyActiveSubscriptionInfo() {
         headerTitle.text = FonttasticStrings.Localizable.Subscription.ActiveSubscription.Header.title
         headerSubtitle.text = FonttasticStrings.Localizable.Subscription.ActiveSubscription.Header.subtitle
-        actionButton.setTitle(FonttasticStrings.Localizable.Subscription.Paywall.actionButtonTitle, for: .normal)
+        continueActionButton.setTitle(FonttasticStrings.Localizable.Subscription.Paywall.Action.continue, for: .normal)
 
         self.paywallItemsStackView.arrangedSubviews.forEach { subview in
             paywallItemsStackView.removeArrangedSubview(subview)
@@ -549,18 +616,6 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
         }
     }
 
-    @objc private func handleTermsAction() {
-        impactFeedbackGenerator.impactOccurred()
-
-        analyticsService.trackEvent(PaywallDidTapTermsAnalyticsEvent())
-        if
-            let termsURL = Constants.termsURL,
-            UIApplication.shared.canOpenURL(termsURL)
-        {
-            UIApplication.shared.open(termsURL, options: [:])
-        }
-    }
-
     @objc private func handlePromocodeAction() {
         impactFeedbackGenerator.impactOccurred()
 
@@ -579,9 +634,14 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
             case let .failure(error):
                 self.handlePurchaseError(error)
 
-            case .success:
+            case let .success(subscriptionState):
                 // NOTE: successfull result does NOT guarantee active subscription
-                break
+                if
+                    let subscriptionInfo = subscriptionState.subscriptionInfo,
+                    !subscriptionInfo.isActive
+                {
+                    self.shouldPresentAlertForInactiveSubscription = true
+                }
             }
         }
     }
@@ -754,12 +814,40 @@ class SubscriptionViewController: UIViewController, OnboardingPageViewController
     }
 }
 
+extension SubscriptionViewController: UITextViewDelegate {
+
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        var shouldInteract: Bool = false
+        if URL.absoluteString == Constants.termsURLString {
+            shouldInteract = true
+            analyticsService.trackEvent(PaywallDidTapTermsAnalyticsEvent())
+        } else if URL.absoluteString == Constants.privacyPolicyURLString {
+            shouldInteract = true
+            analyticsService.trackEvent(PaywallDidTapPrivacyPolicyAnalyticsEvent())
+        }
+
+        if shouldInteract, UIApplication.shared.canOpenURL(URL) {
+            impactFeedbackGenerator.impactOccurred()
+            UIApplication.shared.open(URL, options: [:])
+        }
+
+        return shouldInteract
+    }
+}
+
 private enum Constants {
 
     static let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
     static let titleToSubtitleSpacing: CGFloat = 4
     static let subtitleToItemsSpacing: CGFloat = 16
     static let itemSpacing: CGFloat = 12
+    static let itemsToTermsAndPrivacyPolicySpacing: CGFloat = 16
+    static let termsToPrivacyPolicySpacing: CGFloat = 4
     static let actionButtonHeight: CGFloat = 56
 
     static let errorLabelToReloadButtonSpacing: CGFloat = 16
@@ -774,8 +862,12 @@ private enum Constants {
     }()
 
     static let defaultActionFont: UIFont = UIFont(name: "AvenirNext-Medium", size: 16) ?? UIFont.systemFont(ofSize: 16)
+    static let smallActionFont: UIFont = UIFont(name: "AvenirNext-Medium", size: 12) ?? UIFont.systemFont(ofSize: 12)
     static let restoreToPromocodeSpacing: CGFloat = 8
-    static let additionalContentInset: CGFloat = actionButtonHeight + edgeInsets.bottom + 16
+    static let additionalContentInset: CGFloat = actionButtonHeight + edgeInsets.bottom + 32
 
-    static let termsURL: URL? = URL(string: "https://www.fonttastic.net/privacy-policy")
+    static let termsURLString: String = "https://www.fonttastic.net/terms-conditions"
+    static let termsURL: URL? = URL(string: termsURLString)
+    static let privacyPolicyURLString: String = "https://www.fonttastic.net/privacy-policy"
+    static let privacyPolicyURL: URL? = URL(string: privacyPolicyURLString)
 }

@@ -71,7 +71,7 @@ public class DefaultFontModelsRepository: FontModelsRepository {
     private func systemFonts() -> [FontSourceModel] {
         let systemFonts = UIFont.familyNames.compactMap { fontName -> FontSourceModel? in
             guard !fontName.lowercased().contains("system") else { return nil }
-            return FontSourceModel(name: fontName, resourceType: .system)
+            return FontSourceModel(name: fontName, resourceType: .system(fontName: fontName))
         }
 
         return systemFonts

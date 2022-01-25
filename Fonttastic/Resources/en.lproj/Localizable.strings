@@ -13,12 +13,16 @@
 
 // MARK: - Subscription
 
-"subscription.paywall.navigationItem.termsActionTitle" = "Terms";
-"subscription.paywall.navigationItem.promocodeActionTitle" = "Redeem code";
-"subscription.paywall.navigationItem.restoreActionTitle" = "Restore purchases";
-"subscription.paywall.actionButtonTitle" = "Continue";
+"subscription.paywall.action.redeemCode" = "Redeem code";
+"subscription.paywall.action.restorePurchases" = "Restore purchases";
+"subscription.paywall.action.continue" = "Continue";
 
-"subscription.activeSubscription.header.title" = "Hooray! You are Premium Member 💎";
+"subscription.paywall.termsAndPrivacy.start" = "By continuing, you accept our ";
+"subscription.paywall.termsAndPrivacy.terms" = "Terms of use";
+"subscription.paywall.termsAndPrivacy.and" = " and ";
+"subscription.paywall.termsAndPrivacy.privacyPolicy" = "Privacy policy";
+
+"subscription.activeSubscription.header.title" = "Hooray!\nYou are Premium Member 💎";
 "subscription.activeSubscription.header.subtitle" = "Now you might setup Fonttastic Keyboard and use all custom fonts of our app";
 
 "subscription.error.title.default" = "Purchase failed";

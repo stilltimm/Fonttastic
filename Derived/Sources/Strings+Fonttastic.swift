@@ -36,7 +36,7 @@ public enum FonttasticStrings {
         public enum Header {
           /// Now you might setup Fonttastic Keyboard and use all custom fonts of our app
           public static let subtitle = FonttasticStrings.tr("Localizable", "subscription.activeSubscription.header.subtitle")
-          /// Hooray! You are Premium Member 💎
+          /// Hooray!\nYou are Premium Member 💎
           public static let title = FonttasticStrings.tr("Localizable", "subscription.activeSubscription.header.title")
         }
       }
@@ -77,15 +77,23 @@ public enum FonttasticStrings {
         }
       }
       public enum Paywall {
-        /// Continue
-        public static let actionButtonTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.actionButtonTitle")
-        public enum NavigationItem {
+        public enum Action {
+          /// Continue
+          public static let `continue` = FonttasticStrings.tr("Localizable", "subscription.paywall.action.continue")
           /// Redeem code
-          public static let promocodeActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.promocodeActionTitle")
+          public static let redeemCode = FonttasticStrings.tr("Localizable", "subscription.paywall.action.redeemCode")
           /// Restore purchases
-          public static let restoreActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.restoreActionTitle")
-          /// Terms
-          public static let termsActionTitle = FonttasticStrings.tr("Localizable", "subscription.paywall.navigationItem.termsActionTitle")
+          public static let restorePurchases = FonttasticStrings.tr("Localizable", "subscription.paywall.action.restorePurchases")
+        }
+        public enum TermsAndPrivacy {
+          ///  and 
+          public static let and = FonttasticStrings.tr("Localizable", "subscription.paywall.termsAndPrivacy.and")
+          /// Privacy policy
+          public static let privacyPolicy = FonttasticStrings.tr("Localizable", "subscription.paywall.termsAndPrivacy.privacyPolicy")
+          /// By continuing, you accept our 
+          public static let start = FonttasticStrings.tr("Localizable", "subscription.paywall.termsAndPrivacy.start")
+          /// Terms of use
+          public static let terms = FonttasticStrings.tr("Localizable", "subscription.paywall.termsAndPrivacy.terms")
         }
       }
     }

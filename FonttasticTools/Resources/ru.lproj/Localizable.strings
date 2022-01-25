@@ -34,7 +34,7 @@
 "subscription.header.title.trial" = "Начните пробный период Премиум-доступа";
 "subscription.header.subtitle" = "И начните пользовать кастомными шрифтами где угодно";
 
-"subscription.item.subtitle.trial.days.3" = "Первые 3 дня бесплатно";
+"subscription.item.subtitle.trial.days.3" = "3 дня бесплатно";
 
 "subscription.button.title.default" = "Подписаться";
 "subscription.button.title.trial" = "Начать пробный период";
