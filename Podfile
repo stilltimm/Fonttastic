@@ -6,6 +6,8 @@ inhibit_all_warnings!
 def default_pods
 
   pod 'Cartography'
+  pod 'Purchases'
+  pod 'Amplitude-iOS', '~> 4.9.3'
 
   pod 'SwiftLint', :configurations => ['Debug']
   # pod 'Reveal-SDK', :configurations => ['Debug']
