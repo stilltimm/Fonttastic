@@ -18,10 +18,11 @@ extension Target {
 
         var headers: Headers?
         if hasHeaders {
-            headers = Headers(
+            headers = .headers(
                 public: "\(name)/Headers/Public/**",
                 private: "\(name)/Headers/Private/**",
-                project: nil
+                project: nil,
+                exclusionRule: .publicExcludesPrivateAndProject
             )
         }
 

@@ -14,21 +14,30 @@ extension SettingsDictionary {
         result["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] = .array(conditions)
         return result
     }
+
+    public func gccPreprocessorDefinitions(_ conditions: String...) -> SettingsDictionary {
+        var result = self
+        result["GCC_PREPROCESSOR_DEFINITIONS"] = .array(conditions)
+        return result
+    }
 }
 
 extension Settings {
 
     fileprivate static func fonttasticSettings(
         base baseSettings: SettingsDictionary = SettingsDictionary(),
-        debug debugSettings: SettingsDictionary = SettingsDictionary(),
-        release releaseSettings: SettingsDictionary = SettingsDictionary()
+        debug debugSettings: SettingsDictionary,
+        beta betaSettings: SettingsDictionary,
+        release releaseSettings: SettingsDictionary
     ) -> Settings {
         let debugConfiguration = Configuration.debug(name: .debug, settings: debugSettings)
+        let betaConfiguration = Configuration.release(name: .beta, settings: betaSettings)
         let releaseConfiguration = Configuration.release(name: .release, settings: releaseSettings)
         return .settings(
             base: baseSettings,
             configurations: [
                 debugConfiguration,
+                betaConfiguration,
                 releaseConfiguration
             ]
         )
@@ -41,13 +50,21 @@ extension Settings {
             .appleGenericVersioningSystem()
         let debugSettings = SettingsDictionary()
             .activeCompilationConditions("DEBUG")
+            .gccPreprocessorDefinitions("DEBUG=1")
+        let betaSettings = SettingsDictionary()
+            .swiftOptimizationLevel(.o)
+            .swiftCompilationMode(.wholemodule)
+            .activeCompilationConditions("BETA")
+            .gccPreprocessorDefinitions("BETA=1")
         let releaseSettings = SettingsDictionary()
             .swiftOptimizationLevel(.o)
             .swiftCompilationMode(.wholemodule)
             .activeCompilationConditions("RELEASE")
+            .gccPreprocessorDefinitions("RELEASE=1")
         return .fonttasticSettings(
             base: baseSettings,
             debug: debugSettings,
+            beta: betaSettings,
             release: releaseSettings
         )
     }
@@ -58,14 +75,15 @@ extension Settings {
                 identity: "iPhone Developer",
                 provisioningProfileSpecifier: "Fonttastic Development"
             )
-        let releaseSettings = SettingsDictionary()
+        let betaAndReleaseSettings = SettingsDictionary()
             .manualCodeSigning(
                 identity: "iPhone Distribution",
                 provisioningProfileSpecifier: "Fonttastic AppStore"
             )
         return .fonttasticSettings(
             debug: debugSettings,
-            release: releaseSettings
+            beta: betaAndReleaseSettings,
+            release: betaAndReleaseSettings
         )
     }
 
@@ -75,14 +93,15 @@ extension Settings {
                 identity: "Apple Development",
                 provisioningProfileSpecifier: nil
             )
-        let releaseSettings = SettingsDictionary()
+        let betaAndReleaseSettings = SettingsDictionary()
             .manualCodeSigning(
                 identity: "Apple Distribution",
                 provisioningProfileSpecifier: nil
             )
         return .fonttasticSettings(
             debug: debugSettings,
-            release: releaseSettings
+            beta: betaAndReleaseSettings,
+            release: betaAndReleaseSettings
         )
     }
 
@@ -92,14 +111,15 @@ extension Settings {
                 identity: "iPhone Developer",
                 provisioningProfileSpecifier: "Fonttastic Keyboard Development"
             )
-        let releaseSettings = SettingsDictionary()
+        let betaAndReleaseSettings = SettingsDictionary()
             .manualCodeSigning(
                 identity: "iPhone Distribution",
                 provisioningProfileSpecifier: "Fonttastic Keyboard AppStore"
             )
         return .fonttasticSettings(
             debug: debugSettings,
-            release: releaseSettings
+            beta: betaAndReleaseSettings,
+            release: betaAndReleaseSettings
         )
     }
 }

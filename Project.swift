@@ -4,8 +4,8 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project(
-    name: "Fonttastic",
-    organizationName: "com.romandegtyarev",
+    name: ProjectConstants.projectName,
+    organizationName: ProjectConstants.organizationName,
     options: [
         .textSettings(
             usesTabs: false,
@@ -17,27 +17,27 @@ let project = Project(
     settings: .projectSettings(),
     targets: [
         .makeFonttasticTarget(
-            name: "Fonttastic",
+            name: ProjectConstants.appTargetName,
             product: .app,
-            bundleId: "com.romandegtyarev.fonttastic",
+            bundleId: ProjectConstants.appBundleIdentifier,
             hasEntitlements: true,
             hasHeaders: false,
             dependencies: .appDependencies(),
             settings: .appSettings()
         ),
         .makeFonttasticTarget(
-            name: "FonttasticTools",
+            name: ProjectConstants.toolsTargetName,
             product: .framework,
-            bundleId: "com.romandegtyarev.fonttasticTools",
+            bundleId: ProjectConstants.toolsBundleIdentifier,
             hasEntitlements: false,
             hasHeaders: true,
             dependencies: .toolsDependencies(),
             settings: .toolsSettings()
         ),
         .makeFonttasticTarget(
-            name: "FonttasticKeyboard",
+            name: ProjectConstants.keyboardTargetName,
             product: .appExtension,
-            bundleId: "com.romandegtyarev.fonttastic.fonttasticKeyboard",
+            bundleId: ProjectConstants.keyboardBundleIdentifier,
             hasEntitlements: true,
             hasHeaders: false,
             dependencies: .keyboardExtensionDependencies(),
@@ -45,22 +45,10 @@ let project = Project(
         )
     ],
     schemes: [
-        .makeFonttasticScheme(
-            schemeName: "Fonttastic",
-            buildActionTargetReferences: [.app()],
-            executableTargetReference: .app()
-        ),
-        .makeFonttasticScheme(
-            schemeName: "FonttasticTools",
-            buildActionTargetReferences: [.tools()],
-            executableTargetReference: nil
-        ),
-        .makeFonttasticScheme(
-            schemeName: "FonttasticKeyboard",
-            buildActionTargetReferences: [.app(), .keyboardExtension()],
-            executableTargetReference: .keyboardExtension()
-        )
-    ],
+        FonttasticConfiguration.allCases.map { Scheme.makeFonttasticAppScheme(configuration: $0) },
+        [Scheme.makeFonttasticToolsDebugScheme()],
+        [Scheme.makeFonttasticKeyboardDebugScheme()]
+    ].flatMap { $0 },
     resourceSynthesizers: [
         .assets(),
         .strings()
