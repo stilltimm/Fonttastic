@@ -86,4 +86,5 @@ FonttasticTools/Resources/Environment.plist
 *.xcworkspace
 
 # Tuist
-/Tuist/Dependencies/SwiftPackageManager
+Tuist/Dependencies/SwiftPackageManager
+Derived/
