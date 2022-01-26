@@ -38,7 +38,7 @@ extension Settings {
         let baseSettings = SettingsDictionary()
             .developmentTeam(ProjectConstants.developmentTeam)
             .swiftVersion("5.5")
-            .currentProjectVersion(ProjectConstants.currentAppVersion)
+            .appleGenericVersioningSystem()
         let debugSettings = SettingsDictionary()
             .activeCompilationConditions("DEBUG")
         let releaseSettings = SettingsDictionary()
