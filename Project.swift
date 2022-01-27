@@ -22,6 +22,7 @@ let project = Project(
             bundleId: ProjectConstants.appBundleIdentifier,
             hasEntitlements: true,
             hasHeaders: false,
+            scripts: [.tuistLint()],
             dependencies: .appDependencies(),
             settings: .appSettings()
         ),
@@ -31,6 +32,7 @@ let project = Project(
             bundleId: ProjectConstants.toolsBundleIdentifier,
             hasEntitlements: false,
             hasHeaders: true,
+            scripts: [.fixSPM(), .tuistLint()],
             dependencies: .toolsDependencies(),
             settings: .toolsSettings()
         ),
@@ -40,14 +42,15 @@ let project = Project(
             bundleId: ProjectConstants.keyboardBundleIdentifier,
             hasEntitlements: true,
             hasHeaders: false,
+            scripts: [.tuistLint()],
             dependencies: .keyboardExtensionDependencies(),
             settings: .keyboardExtensionSettings()
         )
     ],
     schemes: [
-        FonttasticConfiguration.allCases.map { Scheme.makeFonttasticAppScheme(configuration: $0) },
-        [Scheme.makeFonttasticToolsDebugScheme()],
-        [Scheme.makeFonttasticKeyboardDebugScheme()]
+        .makeFonttasticAppScheme(),
+        .makeFonttasticToolsDebugScheme(),
+        .makeFonttasticKeyboardDebugScheme()
     ].flatMap { $0 },
     resourceSynthesizers: [
         .assets(),

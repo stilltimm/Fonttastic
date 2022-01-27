@@ -8,6 +8,7 @@ extension Target {
         bundleId: String,
         hasEntitlements: Bool,
         hasHeaders: Bool,
+        scripts: [TargetScript],
         dependencies: [TargetDependency],
         settings: Settings
     ) -> Target {
@@ -37,7 +38,7 @@ extension Target {
             resources: ["\(name)/Resources/**"],
             headers: headers,
             entitlements: entitlementsPath,
-            scripts: [.tuistLint()],
+            scripts: scripts,
             dependencies: dependencies,
             settings: settings
         )

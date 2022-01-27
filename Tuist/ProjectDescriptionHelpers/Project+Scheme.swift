@@ -1,127 +1,30 @@
 import ProjectDescription
 
-public enum FonttasticConfiguration: Int, CaseIterable {
-
-    case debug
-    case beta
-    case release
-
-    // MARK: - Public Type Properties
-
-    public static let allCases: [FonttasticConfiguration] = [
-        .debug,
-        .beta,
-        .release
-    ]
-
-    // MARK: - Public Instance Properties
-
-    public var displayName: String {
-        switch self {
-        case .debug:
-            return "Debug"
-
-        case .beta:
-            return "Beta"
-
-        case .release:
-            return "Release"
-        }
-    }
-
-    public var configurationName: ConfigurationName {
-        switch self {
-        case .debug:
-            return .debug
-
-        case .beta:
-            return .beta
-
-        case .release:
-            return .release
-        }
-    }
-
-    public var isDebug: Bool {
-        switch self {
-        case .debug:
-            return true
-
-        default:
-            return false
-        }
-    }
-
-    public var isBeta: Bool {
-        switch self {
-        case .beta:
-            return true
-
-        default:
-            return false
-        }
-    }
-
-    public var isRelease: Bool {
-        switch self {
-        case .release:
-            return true
-
-        default:
-            return false
-        }
-    }
-}
-
 extension Scheme {
 
     // MARK: - Public Type Methods
 
-    public static func makeFonttasticAppScheme(
-        configuration: FonttasticConfiguration
-    ) -> Scheme {
-        var preBuildActions: [ExecutionAction] = []
-        if configuration.isBeta {
-            preBuildActions.append(
-                ExecutionAction(
-                    title: "Fix SPM",
-                    scriptText: Constants.fixSPMScriptText,
-                    target: .app()
-                )
-            )
-        }
+    public static func makeFonttasticAppScheme() -> Scheme {
         return makeFonttasticScheme(
-            schemeName: "\(ProjectConstants.appTargetName)-\(configuration.displayName)",
-            configurationName: configuration.configurationName,
+            schemeName: ProjectConstants.appTargetName,
             buildActionTargetReferences: [.app()],
-            buildPreActions: preBuildActions,
-            executableTargetReference: .app(),
-            includeAnalyzeAction: configuration.isDebug,
-            includeArchiveAction: !configuration.isDebug
+            executableTargetReference: .app()
         )
     }
 
     public static func makeFonttasticToolsDebugScheme() -> Scheme {
         return makeFonttasticScheme(
             schemeName: ProjectConstants.toolsTargetName,
-            configurationName: .debug,
             buildActionTargetReferences: [.tools()],
-            buildPreActions: [],
-            executableTargetReference: nil,
-            includeAnalyzeAction: true,
-            includeArchiveAction: false
+            executableTargetReference: nil
         )
     }
 
     public static func makeFonttasticKeyboardDebugScheme() -> Scheme {
         return makeFonttasticScheme(
             schemeName: ProjectConstants.keyboardTargetName,
-            configurationName: .debug,
             buildActionTargetReferences: [.app(), .keyboardExtension()],
-            buildPreActions: [],
-            executableTargetReference: nil,
-            includeAnalyzeAction: true,
-            includeArchiveAction: false
+            executableTargetReference: nil
         )
     }
 
@@ -129,12 +32,8 @@ extension Scheme {
 
     static func makeFonttasticScheme(
         schemeName: String,
-        configurationName: ConfigurationName,
         buildActionTargetReferences: [TargetReference],
-        buildPreActions: [ExecutionAction],
-        executableTargetReference: TargetReference?,
-        includeAnalyzeAction: Bool,
-        includeArchiveAction: Bool
+        executableTargetReference: TargetReference?
     ) -> Scheme {
         let arguments: Arguments = .default()
 
@@ -142,7 +41,7 @@ extension Scheme {
         var profileAction: ProfileAction?
         if let executableTargetReference = executableTargetReference {
             runAction = .runAction(
-                configuration: configurationName,
+                configuration: .debug,
                 executable: executableTargetReference,
                 arguments: arguments,
                 options: .options(
@@ -152,27 +51,20 @@ extension Scheme {
                 )
             )
             profileAction = .profileAction(
-                configuration: configurationName,
+                configuration: .release,
                 executable: executableTargetReference,
                 arguments: arguments
             )
         }
 
-        var analyzeAction: AnalyzeAction?
-        if includeAnalyzeAction {
-            analyzeAction = .analyzeAction(configuration: configurationName)
-        }
-
-        var archiveAction: ArchiveAction?
-        if includeArchiveAction {
-            archiveAction = .archiveAction(
-                configuration: configurationName,
-                revealArchiveInOrganizer: true,
-                customArchiveName: nil,
-                preActions: [],
-                postActions: []
-            )
-        }
+        let analyzeAction: AnalyzeAction = .analyzeAction(configuration: .debug)
+        let archiveAction: ArchiveAction = .archiveAction(
+            configuration: .release,
+            revealArchiveInOrganizer: true,
+            customArchiveName: nil,
+            preActions: [],
+            postActions: []
+        )
 
         return Scheme(
             name: schemeName,
@@ -180,7 +72,7 @@ extension Scheme {
             hidden: false,
             buildAction: .buildAction(
                 targets: buildActionTargetReferences,
-                preActions: buildPreActions,
+                preActions: [],
                 postActions: [],
                 runPostActionsOnFailure: false
             ),
