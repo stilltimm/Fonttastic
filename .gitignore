@@ -88,3 +88,6 @@ FonttasticTools/Resources/Environment.plist
 # Tuist
 Tuist/Dependencies/SwiftPackageManager
 Derived/
+
+# CI
+artifacts/

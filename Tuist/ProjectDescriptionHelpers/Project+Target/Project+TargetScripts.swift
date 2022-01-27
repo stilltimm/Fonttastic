@@ -3,7 +3,11 @@ import ProjectDescription
 extension TargetScript {
 
     public static func tuistLint() -> TargetScript {
-        return .post(script: "tuist lint code", name: "Tuist Lint")
+        return .post(
+            script: "tuist lint code",
+            name: "Tuist Lint",
+            runForInstallBuildsOnly: true
+        )
     }
 
     public static func fixSPM() -> TargetScript {
@@ -22,7 +26,8 @@ extension TargetScript {
               echo "Building for '${CONFIGURATION}' config which is considered Debug or Release, no need to fix SPM"
             fi
             """,
-            name: "Fix SPM"
+            name: "Fix SPM",
+            runForInstallBuildsOnly: false
         )
     }
 }
