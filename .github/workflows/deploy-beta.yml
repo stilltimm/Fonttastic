@@ -8,7 +8,7 @@ on:
 # Environment
 env:
   # XC setup
-  XC_VERSION: ${{ '13.0' }}
+  XC_VERSION: ${{ '13.2.1' }}
   XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
   XC_SCHEME: ${{ 'Fonttastic' }}
   # Version Formats
