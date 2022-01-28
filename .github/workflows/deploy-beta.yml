@@ -35,7 +35,7 @@ jobs:
     runs-on: [ macos-latest ]
     env:
       XC_CONFIG: ${{ 'Beta' }}
-      XC_ARCHIVE_PATH: ${{ '$ARTIFACTS_DIR/Fonttastic-Beta.xcarchive' }}
+      XC_ARCHIVE_PATH: ${{ './artifacts/Fonttastic-Beta.xcarchive' }}
     steps:
       # Select latest Xcode
       - name: Select latest Xcode
