@@ -64,9 +64,11 @@ jobs:
         id: versions
         run: |
           echo "Getting marketing version..."
+          /usr/bin/xcrun agvtool what-marketing-version
           /usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1
           echo "::set-output name=MARKETING_VERSION::$(/usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1)"
           echo "Getting project version..."
+          /usr/bin/xcrun agvtool what-version
           /usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1
           echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1)"
           echo "Archive version would be ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
