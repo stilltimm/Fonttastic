@@ -27,6 +27,10 @@ env:
   PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
   # Artifacts
   ARTIFACTS_DIR: ${{ './artifacts' }}
+  # AppStoreConnect API
+  APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+  APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+  APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
 # Jobs
 jobs:
@@ -36,6 +40,7 @@ jobs:
     env:
       XC_CONFIG: ${{ 'Beta' }}
       XC_ARCHIVE_PATH: ${{ './artifacts/Fonttastic-Beta.xcarchive' }}
+      XC_EXPORT_PATH: ${{ './artifacts/Fonttastic-Beta' }}
     steps:
       # Select latest Xcode
       - name: Select latest Xcode
@@ -123,4 +128,13 @@ jobs:
         with:
           name: "Fonttastic-Beta-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
           path: "$ARTIFACTS_DIR"
+
+      # Publish to TestFlight
+      - name: Publish to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with: 
+          app-path: "$XC_EXPORT_PATH/Fonttastic.ipa"
+          issuer-id: "$APPSTORE_ISSUER_ID"
+          api-key-id: "$APPSTORE_API_KEY_ID"
+          api-private-key: "$APPSTORE_API_PRIVATE_KEY"
       
