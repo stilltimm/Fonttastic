@@ -11,6 +11,7 @@ env:
   XC_VERSION: ${{ '13.2.1' }}
   XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
   XC_SCHEME: ${{ 'Fonttastic' }}
+  XC_EXPORT_OPTIONS_FILE_PATH: ${{ './CI/ExportOptions.plist' }}
   # Version Formats
   MARKETING_VERSION_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
   PROJECT_VERSION_FORMAT: ${{ '[0-9\.]{1,}' }}
