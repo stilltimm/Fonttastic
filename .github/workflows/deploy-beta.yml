@@ -12,9 +12,10 @@ env:
   XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
   XC_SCHEME: ${{ 'Fonttastic' }}
   # Version Formats
-  SEMVER_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
+  MARKETING_VERSION_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
+  PROJECT_VERSION_FORMAT: ${{ '[0-9\.]{1,}' }}
   # Keychain
-  KEYCHAIN: ${{ 'login.keychain' }}
+  KEYCHAIN: ${{ 'fonttastic-ios.keychain' }}
   # Certificates
   ENCRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12.gpg' }}
   DECRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12' }}
@@ -63,17 +64,18 @@ jobs:
         id: versions
         run: |
           echo "Getting marketing version..."
-          /usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$SEMVER_FORMAT" | head -1
-          echo "::set-output name=MARKETING_VERSION::$(/usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$SEMVER_FORMAT" | head -1)"
+          /usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1
+          echo "::set-output name=MARKETING_VERSION::$(/usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1)"
           echo "Getting project version..."
-          /usr/bin/xcrun agvtool what-version | grep -Eo "$SEMVER_FORMAT" | head -1
-          echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo "$SEMVER_FORMAT" | head -1)"
-          echo "Archive version would be $MARKETING_VERSION($PROJECT_VERSION)"
+          /usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1
+          echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1)"
+          echo "Archive version would be ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
 
       # Configure Keychain
       - name: Configure Keychain
         run: |
-          security create-keychain -p "" "$KEYCHAIN"
+          security delete-keychain "$KEYCHAIN" || true
+          security create-keychain -p "" "$KEYCHAIN" || true
           security list-keychains -s "$KEYCHAIN"
           security default-keychain -s "$KEYCHAIN"
           security unlock-keychain -p "" "$KEYCHAIN"
@@ -117,6 +119,6 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: "Fonttastic ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
+          name: "Fonttastic-Beta-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
           path: "$ARTIFACTS_DIR"
       
