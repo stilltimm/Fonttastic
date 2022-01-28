@@ -15,7 +15,7 @@ extension Array where Element == TargetDependency {
 
     public static func keyboardExtensionDependencies() -> [TargetDependency] {
         return [
-            .target(name: "FonttasticTools"),
+            .target(name: "FonttasticTools")
         ]
     }
 
@@ -23,7 +23,7 @@ extension Array where Element == TargetDependency {
         return [
             .target(name: "FonttasticTools"),
             .target(name: "FonttasticKeyboard"),
-            .external(name: "SVGKit"),
+            .external(name: "SVGKit")
         ]
     }
 }

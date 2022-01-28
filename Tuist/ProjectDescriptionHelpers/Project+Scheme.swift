@@ -2,12 +2,41 @@ import ProjectDescription
 
 extension Scheme {
 
-    public static func makeFonttasticScheme(
+    // MARK: - Public Type Methods
+
+    public static func makeFonttasticAppScheme() -> Scheme {
+        return makeFonttasticScheme(
+            schemeName: ProjectConstants.appTargetName,
+            buildActionTargetReferences: [.app()],
+            executableTargetReference: .app()
+        )
+    }
+
+    public static func makeFonttasticToolsDebugScheme() -> Scheme {
+        return makeFonttasticScheme(
+            schemeName: ProjectConstants.toolsTargetName,
+            buildActionTargetReferences: [.tools()],
+            executableTargetReference: nil
+        )
+    }
+
+    public static func makeFonttasticKeyboardDebugScheme() -> Scheme {
+        return makeFonttasticScheme(
+            schemeName: ProjectConstants.keyboardTargetName,
+            buildActionTargetReferences: [.app(), .keyboardExtension()],
+            executableTargetReference: nil
+        )
+    }
+
+    // MARK: - Internal Type Methods
+
+    static func makeFonttasticScheme(
         schemeName: String,
         buildActionTargetReferences: [TargetReference],
-        executableTargetReference: TargetReference?,
-        arguments: Arguments? = .default()
+        executableTargetReference: TargetReference?
     ) -> Scheme {
+        let arguments: Arguments = .default()
+
         var runAction: RunAction?
         var profileAction: ProfileAction?
         if let executableTargetReference = executableTargetReference {
@@ -27,6 +56,16 @@ extension Scheme {
                 arguments: arguments
             )
         }
+
+        let analyzeAction: AnalyzeAction = .analyzeAction(configuration: .debug)
+        let archiveAction: ArchiveAction = .archiveAction(
+            configuration: .release,
+            revealArchiveInOrganizer: true,
+            customArchiveName: nil,
+            preActions: [],
+            postActions: []
+        )
+
         return Scheme(
             name: schemeName,
             shared: true,
@@ -39,15 +78,19 @@ extension Scheme {
             ),
             testAction: nil,
             runAction: runAction,
-            archiveAction: .archiveAction(
-                configuration: .release,
-                revealArchiveInOrganizer: true,
-                customArchiveName: nil,
-                preActions: [],
-                postActions: []
-            ),
+            archiveAction: archiveAction,
             profileAction: profileAction,
-            analyzeAction: .analyzeAction(configuration: .debug)
+            analyzeAction: analyzeAction
         )
     }
+}
+
+private enum Constants {
+
+    static let fixSPMScriptText: String = """
+    if [ -d "${SYMROOT}/Release${EFFECTIVE_PLATFORM_NAME}/" ] && [ "${SYMROOT}/Release${EFFECTIVE_PLATFORM_NAME}/" != "${SYMROOT}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/" ]
+    then
+    cp -f -R "${SYMROOT}/Release${EFFECTIVE_PLATFORM_NAME}/" "${SYMROOT}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/"
+    fi
+    """
 }

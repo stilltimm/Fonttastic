@@ -8,6 +8,7 @@ extension Target {
         bundleId: String,
         hasEntitlements: Bool,
         hasHeaders: Bool,
+        scripts: [TargetScript],
         dependencies: [TargetDependency],
         settings: Settings
     ) -> Target {
@@ -18,10 +19,11 @@ extension Target {
 
         var headers: Headers?
         if hasHeaders {
-            headers = Headers(
+            headers = .headers(
                 public: "\(name)/Headers/Public/**",
                 private: "\(name)/Headers/Private/**",
-                project: nil
+                project: nil,
+                exclusionRule: .publicExcludesPrivateAndProject
             )
         }
 
@@ -36,7 +38,7 @@ extension Target {
             resources: ["\(name)/Resources/**"],
             headers: headers,
             entitlements: entitlementsPath,
-            scripts: [.tuistLint()],
+            scripts: scripts,
             dependencies: dependencies,
             settings: settings
         )
