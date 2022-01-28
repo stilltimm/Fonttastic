@@ -3,21 +3,28 @@ import ProjectDescription
 
 extension SettingsDictionary {
 
-    public func developmentTeam(_ developmentTeam: String) -> SettingsDictionary {
+    func developmentTeam(_ developmentTeam: String) -> SettingsDictionary {
         var result = self
         result["DEVELOPMENT_TEAM"] = .string(developmentTeam)
         return result
     }
 
-    public func activeCompilationConditions(_ conditions: String...) -> SettingsDictionary {
+    func activeCompilationConditions(_ conditions: String...) -> SettingsDictionary {
         var result = self
         result["SWIFT_ACTIVE_COMPILATION_CONDITIONS"] = .array(conditions)
         return result
     }
 
-    public func gccPreprocessorDefinitions(_ conditions: String...) -> SettingsDictionary {
+    func gccPreprocessorDefinitions(_ conditions: String...) -> SettingsDictionary {
         var result = self
         result["GCC_PREPROCESSOR_DEFINITIONS"] = .array(conditions)
+        return result
+    }
+
+    func currentLibraryVersion(_ version: String) -> SettingsDictionary {
+        var result = self
+        result["DYLIB_CURRENT_VERSION"] = .string(version)
+        result["DYLIB_COMPATIBILITY_VERSION"] = .string(version)
         return result
     }
 }
@@ -48,6 +55,7 @@ extension Settings {
             .developmentTeam(ProjectConstants.developmentTeam)
             .swiftVersion("5.5")
             .appleGenericVersioningSystem()
+            .currentProjectVersion(ProjectConstants.currentProjectVersion)
         let debugSettings = SettingsDictionary()
             .activeCompilationConditions("DEBUG")
             .gccPreprocessorDefinitions("DEBUG=1")
@@ -88,6 +96,9 @@ extension Settings {
     }
 
     public static func toolsSettings() -> Settings {
+        let baseSettings = SettingsDictionary()
+            .currentProjectVersion(ProjectConstants.currentProjectVersion)
+            .currentLibraryVersion(ProjectConstants.currentProjectVersion)
         let debugSettings = SettingsDictionary()
             .manualCodeSigning(
                 identity: "Apple Development",
@@ -99,6 +110,7 @@ extension Settings {
                 provisioningProfileSpecifier: nil
             )
         return .fonttasticSettings(
+            base: baseSettings,
             debug: debugSettings,
             beta: betaAndReleaseSettings,
             release: betaAndReleaseSettings
