@@ -76,7 +76,11 @@ jobs:
           /usr/bin/xcrun agvtool what-version
           /usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1
           echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1)"
-          echo "Archive version would be ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
+
+      # Print App Version
+      - name: Print App Version
+        run: |
+          echo "App version would be ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
 
       # Configure Keychain
       - name: Configure Keychain
@@ -120,7 +124,7 @@ jobs:
       # Export Archive
       - name: Export Archive
         run: |
-          /usr/bin/xcodebuild -exportArchive -archivePath "$XC_ARCHIVE_PATH" -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -exportPath "$XC_EXPORT_PATH"
+          /usr/bin/xcodebuild -exportArchive -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -archivePath "$XC_ARCHIVE_PATH" -exportPath "$XC_EXPORT_PATH"
 
       # Upload Artifacts
       - name: Upload Artifacts
