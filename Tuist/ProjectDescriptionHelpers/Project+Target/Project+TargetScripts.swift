@@ -4,8 +4,16 @@ extension TargetScript {
 
     public static func tuistLint() -> TargetScript {
         return .post(
-            script: "tuist lint code",
-            name: "Tuist Lint",
+            script: """
+            if command -v tuist &> /dev/null
+            then
+              echo "Tuist found, will lint project"
+              tuist lint code
+            else
+              echo "Tuist could not be found, will skip linting project"
+            fi
+            """,
+            name: "Tuist Lint If Available",
             runForInstallBuildsOnly: true
         )
     }
