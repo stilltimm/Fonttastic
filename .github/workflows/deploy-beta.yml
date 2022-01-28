@@ -1,0 +1,118 @@
+# Name
+name: Deploy Beta
+
+# Triggers
+on:
+  workflow_dispatch:
+
+# Environment
+env:
+  # XC setup
+  XC_VERSION: ${{ '13.0' }}
+  XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
+  XC_SCHEME: ${{ 'Fonttastic' }}
+  # Version Formats
+  SEMVER_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
+  # Keychain
+  KEYCHAIN: ${{ 'login.keychain' }}
+  # Certificates
+  ENCRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12.gpg' }}
+  DECRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12' }}
+  CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+  CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
+  # Provisioning Profiles
+  ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
+  DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
+  PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
+  # Artifacts
+  ARTIFACTS_DIR: ${{ './artifacts' }}
+
+# Jobs
+jobs:
+  beta:
+    name: Beta
+    runs-on: [ macos-latest ]
+    env:
+      XC_CONFIG: ${{ 'Beta' }}
+      XC_ARCHIVE_PATH: ${{ '$ARTIFACTS_DIR/Fonttastic-Beta.xcarchive' }}
+    steps:
+      # Select latest Xcode
+      - name: Select latest Xcode
+        run: sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app
+
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Tuist Fetch Dependencies
+      - name: Tuist Fetch Dependencies
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'dependencies fetch'
+          arguments: ''
+
+      # Tuist Generate Project
+      - name: Tuist Generate Project
+        uses: tuist/tuist-action@0.13.0
+        with:
+          command: 'generate'
+          arguments: ''
+
+      # Get Version Numbers
+      - name: Get Version Numbers
+        id: versions
+        run: |
+          echo "::set-output name=MARKETING_VERSION::$(/usr/bin/xcrun agvtool what-marketing-version | grep -Eo $SEMVER_FORMAT | head -1)"
+          echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo $SEMVER_FORMAT | head -1)"
+          echo "Archive version would be $MARKETING_VERSION($PROJECT_VERSION)"
+
+      # Configure Keychain
+      - name: Configure Keychain
+        run: |
+          security create-keychain -p '' '$KEYCHAIN'
+          security list-keychains -s '$KEYCHAIN'
+          security default-keychain -s '$KEYCHAIN'
+          security unlock-keychain -p '' '$KEYCHAIN'
+          security set-keychain-settings
+
+      # Decrypt Certificates and Provisioning Profiles
+      - name: Decrypt Certificates and Provisioning Profiles
+        run: |
+          gpg -d -o '$DECRYPTED_CERTS_FILE_PATH' --pinentry-mode=loopback --passphrase '$CERTS_ENCRYPTION_PWD' '$ENCRYPTED_CERTS_FILE_PATH'
+          gpg -d -o '$DECRYPTED_PROVISION_FILE_PATH' --pinentry-mode=loopback --passphrase '$PROVISION_ENCRYPTION_PWD' '$ENCRYPTED_PROVISION_FILE_PATH'
+
+      # Import Cetificates to Keychain
+      - name: Import Cetificates to Keychain
+        run: |
+          security import '$DECRYPTED_CERTS_FILE_PATH' -k '$KEYCHAIN' -P '$CERTS_EXPORT_PWD' -A
+          security set-key-partition-list -S apple-tool:,apple: -s -k '' '$KEYCHAIN'
+
+      # Install Provisioning Profiles
+      - name: Install Provisioning Profiles
+        run: |
+          tar xzvf $DECRYPTED_PROVISION_FILE_PATH
+          mkdir -p '$HOME/Library/MobileDevice/Provisioning Profiles'
+          for PROVISION in `ls ./*.mobileprovision`
+          do
+            UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+            cp './$PROVISION' '$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision'
+          done
+
+      # Archive
+      - name: Archive
+        run: |
+          mkdir -p artifacts
+          /usr/bin/xcodebuild archive -workspace '$XC_WORKSPACE' -scheme '$XC_SCHEME' -configuration '$XC_CONFIGURATION' -archivePath '$XC_ARCHIVE_PATH' 'OTHER_CODE_SIGN_FLAGS=--keychain "$KEYCHAIN"'
+
+      # Export Archive
+      - name: Export Archive
+        run: |
+          /usr/bin/xcodebuild -exportArchive -archivePath '$XC_ARCHIVE_PATH' -exportOptionsPlist '$XC_EXPORT_OPTIONS_FILE_PATH' -exportPath '$XC_EXPORT_PATH'
+
+      # Upload Artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'Fonttastic ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})'
+          path: '$ARTIFACTS_DIR'
+      
