@@ -44,7 +44,6 @@ jobs:
       XC_ARCHIVE_PATH: ${{ './artifacts/Fonttastic-Beta.xcarchive' }}
       XC_EXPORT_PATH: ${{ './artifacts/Fonttastic-Beta' }}
       # Beta Postfix
-      CURRENT_PROJECT_VERSION_PATH: $${ './.current-project-version' }
       BETA_PROJECT_VERSION_SUFFIX: ${{ '.9.41' }}
     steps:
       # Select latest Xcode
@@ -58,9 +57,9 @@ jobs:
       # Add Beta Project Version Suffix
       - name: Add Beta Project Version Suffix
         run: |
-          echo "$CURRENT_PROJECT_VERSION_PATH contents is '$(cat ./.current-project-version)', will append '$BETA_PROJECT_VERSION_SUFFIX'"
-          echo "$BETA_PROJECT_VERSION_SUFFIX" >> $CURRENT_PROJECT_VERSION_PATH
-          echo "$CURRENT_PROJECT_VERSION_PATH contents is now '$(cat $CURRENT_PROJECT_VERSION_PATH)'"
+          echo "$./.current-project-version contents is '$(cat ./.current-project-version)', will append '$BETA_PROJECT_VERSION_SUFFIX'"
+          echo "$BETA_PROJECT_VERSION_SUFFIX" >> ./.current-project-version'
+          echo "$./.current-project-version contents is now '$(cat ./.current-project-version')'"
 
       # Tuist Fetch Dependencies
       - name: Tuist Fetch Dependencies
