@@ -39,9 +39,13 @@ jobs:
     name: Beta
     runs-on: [ macos-latest ]
     env:
+      # XC Setup
       XC_CONFIG: ${{ 'Beta' }}
       XC_ARCHIVE_PATH: ${{ './artifacts/Fonttastic-Beta.xcarchive' }}
       XC_EXPORT_PATH: ${{ './artifacts/Fonttastic-Beta' }}
+      # Beta Postfix
+      CURRENT_PROJECT_VERSION_PATH: $${ './.current-project-version' }
+      BETA_PROJECT_VERSION_SUFFIX: ${{ '.9.41' }}
     steps:
       # Select latest Xcode
       - name: Select latest Xcode
@@ -50,6 +54,13 @@ jobs:
       # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      # Add Beta Project Version Suffix
+      - name: Add Beta Project Version Suffix
+        run: |
+          echo "$CURRENT_PROJECT_VERSION_PATH contents is '$(cat ./.current-project-version)', will append '$BETA_PROJECT_VERSION_SUFFIX'"
+          echo "$BETA_PROJECT_VERSION_SUFFIX" >> $CURRENT_PROJECT_VERSION_PATH
+          echo "$CURRENT_PROJECT_VERSION_PATH contents is now '$(cat $CURRENT_PROJECT_VERSION_PATH)'"
 
       # Tuist Fetch Dependencies
       - name: Tuist Fetch Dependencies
