@@ -26,10 +26,6 @@ env:
   ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
   DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
   PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
-  # AppStoreConnect API
-  APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
-  APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
-  APPSTORE_API_PRIVATE_KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
 # Jobs
 jobs:
@@ -149,7 +145,7 @@ jobs:
       - name: Publish to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: $XC_EXPORT_PATH/Fonttastic.ipa
-          issuer-id: $APPSTORE_ISSUER_ID
-          api-key-id: $APPSTORE_API_KEY_ID
-          api-private-key: $APPSTORE_API_PRIVATE_KEY
+          app-path: "./artifacts/Fonttastic-Beta/Fonttastic.ipa"
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
