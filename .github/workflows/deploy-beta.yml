@@ -54,6 +54,12 @@ jobs:
       # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      # Checkout LFS objects
+      - name: Checkout LFS objects
+        run: git lfs checkout
 
       # Add Beta Project Version Suffix
       - name: Add Beta Project Version Suffix
