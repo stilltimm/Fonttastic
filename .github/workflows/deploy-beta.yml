@@ -149,4 +149,3 @@ jobs:
           issuer-id: "$APPSTORE_ISSUER_ID"
           api-key-id: "$APPSTORE_API_KEY_ID"
           api-private-key: "$APPSTORE_API_PRIVATE_KEY"
-      
