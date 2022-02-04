@@ -63,18 +63,14 @@ jobs:
           echo "$CURRENT_PROJECT_VERSION_PATH contents is now '$(cat $CURRENT_PROJECT_VERSION_PATH)'"
 
       # Tuist Fetch Dependencies
-      - name: Tuist Fetch Dependencies
-        uses: tuist/tuist-action@0.13.0
-        with:
-          command: "dependencies fetch"
-          arguments: ""
+      - name: Fetch Dependencies
+        run: |
+          ./.tuist-bin/tuist dependencies fetch
 
       # Tuist Generate Project
       - name: Tuist Generate Project
-        uses: tuist/tuist-action@0.13.0
-        with:
-          command: "generate"
-          arguments: ""
+        run: |
+          TUIST_PROJECT_VERSION=$( cat $CURRENT_PROJECT_VERSION_PATH ) ./.tuist-bin/tuist generate
 
       # Get Version Numbers
       - name: Get Version Numbers

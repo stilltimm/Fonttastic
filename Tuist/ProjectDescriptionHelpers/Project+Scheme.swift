@@ -35,7 +35,7 @@ extension Scheme {
         buildActionTargetReferences: [TargetReference],
         executableTargetReference: TargetReference?
     ) -> Scheme {
-        let arguments: Arguments = .default()
+        let arguments: Arguments = Arguments()
 
         var runAction: RunAction?
         var profileAction: ProfileAction?
