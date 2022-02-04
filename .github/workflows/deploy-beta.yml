@@ -26,8 +26,6 @@ env:
   ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
   DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
   PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
-  # Artifacts
-  ARTIFACTS_DIR: ${{ './artifacts' }}
   # AppStoreConnect API
   APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
   APPSTORE_API_KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
@@ -74,7 +72,7 @@ jobs:
           ./.tuist-bin/tuist dependencies fetch
 
       # Tuist Generate Project
-      - name: Tuist Generate Project
+      - name: Generate Project
         run: |
           TUIST_PROJECT_VERSION=$( cat $CURRENT_PROJECT_VERSION_PATH ) ./.tuist-bin/tuist generate
 
@@ -145,13 +143,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "Fonttastic-Beta-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
-          path: "$ARTIFACTS_DIR"
+          path: "./artifacts/"
 
       # Publish to TestFlight
       - name: Publish to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: "$XC_EXPORT_PATH/Fonttastic.ipa"
-          issuer-id: "$APPSTORE_ISSUER_ID"
-          api-key-id: "$APPSTORE_API_KEY_ID"
-          api-private-key: "$APPSTORE_API_PRIVATE_KEY"
+          app-path: $XC_EXPORT_PATH/Fonttastic.ipa
+          issuer-id: $APPSTORE_ISSUER_ID
+          api-key-id: $APPSTORE_API_KEY_ID
+          api-private-key: $APPSTORE_API_PRIVATE_KEY
