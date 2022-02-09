@@ -1,5 +1,5 @@
 # Name
-name: Deploy Beta
+name: Publish Beta & Release 
 
 # Triggers
 on:
@@ -26,21 +26,33 @@ env:
   ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
   DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
   PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
+  # Project Versioning
+  CURRENT_PROJECT_VERSION_PATH: ${{ './.current-project-version' }}
 
 # Jobs
 jobs:
-  beta:
-    name: Beta
-    runs-on: [ macos-latest ]
+  archiveAndPublish:
+    name: Archive and Publish
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        xcConfig: ['Beta', 'Release']
+        xcArchivePath: ['./artifacts/Fonttastic-Beta.xcarchive', './artifacts/Fonttastic-Release.xcarchive']
+        xcExportPath: ['./artifacts/Fonttastic-Beta', './artifacts/Fonttastic-Release']
+        appPath: ['./artifacts/Fonttastic-Beta/Fonttastic.ipa', './artifacts/Fonttastic-Release/Fonttastic.ipa']
+        projectVersionSuffix: ['.9.41', '']
     env:
       # XC Setup
-      XC_CONFIG: ${{ 'Beta' }}
-      XC_ARCHIVE_PATH: ${{ './artifacts/Fonttastic-Beta.xcarchive' }}
-      XC_EXPORT_PATH: ${{ './artifacts/Fonttastic-Beta' }}
-      # Beta Postfix
-      CURRENT_PROJECT_VERSION_PATH: ${{ './.current-project-version' }}
-      BETA_PROJECT_VERSION_SUFFIX: ${{ '.9.41' }}
+      XC_CONFIG: ${{ matrix.xcConfig }}
+      XC_ARCHIVE_PATH: ${{ matrix.xcArchivePath }}
+      XC_EXPORT_PATH: ${{ matrix.xcExportPath }}
+      # Versioning
+      PROJECT_VERSION_SUFFIX: ${{ matrix.projectVersionSuffix }}
     steps:
+      # Echo Run
+      - name: Echo Run
+        run: echo "Running job with '$XC_CONFIG' configuration"
+
       # Select latest Xcode
       - name: Select latest Xcode
         run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
@@ -55,22 +67,18 @@ jobs:
       - name: Checkout LFS objects
         run: git lfs checkout
 
-      # Add Beta Project Version Suffix
-      - name: Add Beta Project Version Suffix
+      # Add Project Version Suffix If Needed
+      - name: Add Project Version Suffix If Needed
         run: |
-          echo "$CURRENT_PROJECT_VERSION_PATH contents is '$(cat $CURRENT_PROJECT_VERSION_PATH)', will append '$BETA_PROJECT_VERSION_SUFFIX'"
-          echo "$BETA_PROJECT_VERSION_SUFFIX" >> $CURRENT_PROJECT_VERSION_PATH
+          echo "$CURRENT_PROJECT_VERSION_PATH contents is '$(cat $CURRENT_PROJECT_VERSION_PATH)', will append '$PROJECT_VERSION_SUFFIX'"
+          echo "$PROJECT_VERSION_SUFFIX" >> $CURRENT_PROJECT_VERSION_PATH
           echo "$CURRENT_PROJECT_VERSION_PATH contents is now '$(cat $CURRENT_PROJECT_VERSION_PATH)'"
 
-      # Tuist Fetch Dependencies
-      - name: Fetch Dependencies
+      # Fetch Dependencies & Generate Project
+      - name: Fetch Dependencies & Generate Project
         run: |
-          ./.tuist-bin/tuist dependencies fetch
-
-      # Tuist Generate Project
-      - name: Generate Project
-        run: |
-          TUIST_PROJECT_VERSION=$( cat $CURRENT_PROJECT_VERSION_PATH ) ./.tuist-bin/tuist generate
+          sudo chmod +x ./generate-project.sh
+          ./generate-project.sh
 
       # Get Version Numbers
       - name: Get Version Numbers
@@ -79,7 +87,7 @@ jobs:
           echo "Getting marketing version..."
           /usr/bin/xcrun agvtool what-marketing-version
           /usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1
-          echo "::set-output name=MARKETING_VERSION::$(/usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1)"
+          echo "::set-output name=MARKETING_VERSION::$( /usr/bin/xcrun agvtool what-marketing-version | grep -Eo "$MARKETING_VERSION_FORMAT" | head -1 )"
           echo "Getting project version..."
           /usr/bin/xcrun agvtool what-version
           /usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1
@@ -123,8 +131,8 @@ jobs:
             cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
           done
 
-      # Archive
-      - name: Archive
+      # Archive Project
+      - name: Archive Project
         run: |
           mkdir -p artifacts
           /usr/bin/xcodebuild archive -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -configuration "$XC_CONFIGURATION" -archivePath "$XC_ARCHIVE_PATH" "OTHER_CODE_SIGN_FLAGS=--keychain '$KEYCHAIN'"
@@ -134,18 +142,58 @@ jobs:
         run: |
           /usr/bin/xcodebuild -exportArchive -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -archivePath "$XC_ARCHIVE_PATH" -exportPath "$XC_EXPORT_PATH"
 
-      # Upload Artifacts
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: "Fonttastic-Beta-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
-          path: "./artifacts/"
-
       # Publish to TestFlight
       - name: Publish to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: "./artifacts/Fonttastic-Beta/Fonttastic.ipa"
+          app-path: ${{ matrix.appPath }}
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+      # Upload Artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: "Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
+          path: "./artifacts/"
+
+  bumpProjectVersion:
+    name: Bump Project Version
+    needs: archiveAndPublish
+    runs-on: macos-latest
+    env:
+      GITHUB_SECRET: ${{ 'TBD' }}
+    steps:
+      # Select latest Xcode
+      - name: Select latest Xcode
+        run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
+
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Fetch Dependencies & Generate Project
+      - name: Fetch Dependencies & Generate Project
+        run: |
+          sudo chmod +x ./bump-project-version.sh
+          ./bump-project-version.sh
+
+      # Get Bumped Version
+      - name: Get Bumped Version
+        id: version
+        run: |
+          echo "::set-output name=PROJECT_VERSION::$( cat $CURRENT_PROJECT_VERSION_PATH )"
+
+      # Add & Commit Changes & Open PR
+      - name: Commit Changes & Open PR
+        env:
+          BRANCH: "feature/version-bump-${{ steps.version.outputs.PROJECT_VERSION }}"
+        run: |
+          git config --global user.name 'Fonttastic Bot'
+          git config --global user.email 'fonttastic-bot@users.noreply.github.com'
+          git checkout -b $BRANCH
+          git add $CURRENT_PROJECT_VERSION_PATH
+          git commit -m "Bumped current project version to ${{ steps.version.outputs.PROJECT_VERSION }}"
+          git push -u origin $BRANCH
+          hub pull-request --no-edit
