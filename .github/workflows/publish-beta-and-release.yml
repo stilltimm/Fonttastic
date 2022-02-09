@@ -158,7 +158,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.setup-outputs.outputs.artifactsName${{ matrix.xcConfig }} }}
+          name: "Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
           path: artifacts/
           retention-days: 3
 
@@ -167,10 +167,13 @@ jobs:
     runs-on: macos-latest
     needs: archiveAndExport
     steps:
+      # Debug Needs Outputs
+      - name: Debug Needs Outputs
+        run: echo "${{ needs.archiveAndExport.outputs }}"
+      
       # Make Artifacts Directory
       - name: Make Artifacts Directory
-        run: |
-          mkdir -p artifacts
+        run: mkdir -p artifacts
 
       # Download Release Artifacts
       - name: Download Release Artifacts
@@ -178,6 +181,10 @@ jobs:
         with:
           name: "${{ needs.archiveAndExport.outputs.artifactsNameRelease }}"
           path: artifacts
+
+      # Debug Downloaded Release Artifacts
+      - name: Debug Downloaded Release Artifacts
+        run: ls -R
 
       # Publish Release to TestFlight
       - name: Publish Release to TestFlight
@@ -201,6 +208,10 @@ jobs:
           name: "${{ needs.archiveAndExport.outputs.artifacts_name_beta }}"
           path: artifacts
 
+      # Debug Downloaded Beta Artifacts
+      - name: Debug Downloaded Beta Artifacts
+        run: ls -R
+
       # Publish Beta to TestFlight
       - name: Publish Beta to TestFlight
         uses: apple-actions/upload-testflight-build@v1
@@ -214,8 +225,6 @@ jobs:
     name: Bump Project Version
     needs: publish
     runs-on: macos-latest
-    env:
-      GITHUB_SECRET: ${{ 'TBD' }}
     steps:
       # Select latest Xcode
       - name: Select latest Xcode
