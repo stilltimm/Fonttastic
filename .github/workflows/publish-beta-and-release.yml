@@ -31,22 +31,22 @@ env:
 
 # Jobs
 jobs:
-  archiveAndPublish:
+  archiveAndExport:
     name: Archive and Publish
     runs-on: macos-latest
     strategy:
       matrix:
         include:
-          - xcConfig: 'Beta'
-            xcArchivePath: './artifacts/Fonttastic-Beta.xcarchive'
-            xcExportPath: './artifacts/Fonttastic-Beta'
-            appPath: './artifacts/Fonttastic-Beta/Fonttastic.ipa'
-            projectVersionSuffix: '.9.41'
           - xcConfig: 'Release'
             xcArchivePath: './artifacts/Fonttastic-Release.xcarchive'
             xcExportPath: './artifacts/Fonttastic-Release'
             appPath: './artifacts/Fonttastic-Release/Fonttastic.ipa'
             projectVersionSuffix: ''
+          - xcConfig: 'Beta'
+            xcArchivePath: './artifacts/Fonttastic-Beta.xcarchive'
+            xcExportPath: './artifacts/Fonttastic-Beta'
+            appPath: './artifacts/Fonttastic-Beta/Fonttastic.ipa'
+            projectVersionSuffix: '.9.41'
     env:
       # XC Setup
       XC_CONFIG: ${{ matrix.xcConfig }}
@@ -148,25 +148,71 @@ jobs:
         run: |
           /usr/bin/xcodebuild -exportArchive -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -archivePath "$XC_ARCHIVE_PATH" -exportPath "$XC_EXPORT_PATH"
 
-      # Publish to TestFlight
-      - name: Publish to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
-        with: 
-          app-path: ${{ matrix.appPath }}
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+      - name: Setup Outputs
+        id: setup-outputs
+        run: |
+          echo "::set-output name=artifactsName${{ matrix.xcConfig }}::Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
+          echo "::set-output name=appPath${{ matrix.xcConfig }}::${{ matrix.appPath }}"
 
       # Upload Artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: "Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
-          path: "./artifacts/"
+          name: ${{ steps.setup-outputs.outputs.artifactsName${{ matrix.xcConfig }} }}
+          path: artifacts/
+          retention-days: 3
+
+  publish:
+    name: Publish
+    runs-on: macos-latest
+    needs: archiveAndExport
+    steps:
+      # Make Artifacts Directory
+      - name: Make Artifacts Directory
+        run: |
+          mkdir -p artifacts
+
+      # Download Release Artifacts
+      - name: Download Release Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: "${{ needs.archiveAndExport.outputs.artifactsNameRelease }}"
+          path: artifacts
+
+      # Publish Release to TestFlight
+      - name: Publish Release to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with: 
+          app-path: ${{ needs.archiveAndExport.outputs.appPathRelease }}
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+      # Clean Artifacts Folder
+      - name: Clean Artifacts Folder
+        run: |
+          sudo rm -rf -f ./artifacts/
+          mkdir -p artifacts
+
+      # Download Beta Artifacts
+      - name: Download Beta Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: "${{ needs.archiveAndExport.outputs.artifacts_name_beta }}"
+          path: artifacts
+
+      # Publish Beta to TestFlight
+      - name: Publish Beta to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with: 
+          app-path: ${{ needs.archiveAndExport.outputs.appPathBeta }}
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
   bumpProjectVersion:
     name: Bump Project Version
-    needs: archiveAndPublish
+    needs: publish
     runs-on: macos-latest
     env:
       GITHUB_SECRET: ${{ 'TBD' }}
