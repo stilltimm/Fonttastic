@@ -36,11 +36,17 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        xcConfig: ['Beta', 'Release']
-        xcArchivePath: ['./artifacts/Fonttastic-Beta.xcarchive', './artifacts/Fonttastic-Release.xcarchive']
-        xcExportPath: ['./artifacts/Fonttastic-Beta', './artifacts/Fonttastic-Release']
-        appPath: ['./artifacts/Fonttastic-Beta/Fonttastic.ipa', './artifacts/Fonttastic-Release/Fonttastic.ipa']
-        projectVersionSuffix: ['.9.41', '']
+        include:
+          - xcConfig: 'Beta'
+            xcArchivePath: './artifacts/Fonttastic-Beta.xcarchive'
+            xcExportPath: './artifacts/Fonttastic-Beta'
+            appPath: './artifacts/Fonttastic-Beta/Fonttastic.ipa'
+            projectVersionSuffix: '.9.41'
+          - xcConfig: 'Release'
+            xcArchivePath: './artifacts/Fonttastic-Release.xcarchive'
+            xcExportPath: './artifacts/Fonttastic-Release'
+            appPath: './artifacts/Fonttastic-Release/Fonttastic.ipa'
+            projectVersionSuffix: ''
     env:
       # XC Setup
       XC_CONFIG: ${{ matrix.xcConfig }}
