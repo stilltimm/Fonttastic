@@ -390,17 +390,8 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
         }
 
         let targeSize: CGSize = fonttasticKeyboardView.canvasWithSettingsView.targetBackgroundImageSize
-        if false {
-            loadImageWithNSItemProvider(from: result, targetSize: targeSize) { [weak self] image, error in
-                if let error = error {
-                    logger.error("Failed to load item with NSItemProvider", error: error)
-                }
-                self?.applyImageAndClearResources(image)
-            }
-        } else {
-            loadImageWithPHImageManager(from: result, targetSize: targeSize) { [weak self] image in
-                self?.applyImageAndClearResources(image)
-            }
+        loadImageWithPHImageManager(from: result, targetSize: targeSize) { [weak self] image in
+            self?.applyImageAndClearResources(image)
         }
     }
 
@@ -486,66 +477,6 @@ extension KeyboardViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     completion(image)
                 }
-            }
-        }
-    }
-
-    private func loadImageWithNSItemProvider(
-        from pickerResult: PHPickerResult,
-        targetSize: CGSize,
-        _ completion: @escaping (UIImage?, Error?) -> Void
-    ) {
-        guard pickerResult.itemProvider.canLoadObject(ofClass: UIImage.self) else {
-            completion(nil, nil)
-            return
-        }
-
-        pickerResult.itemProvider.loadDataRepresentation(
-            forTypeIdentifier: pickerResult.itemProvider.registeredTypeIdentifiers.first!
-        ) { data, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    logger.error("Failed to load image via ItemProvider", error: error)
-                    completion(nil, error)
-                    return
-                }
-
-                guard let image = data.map(UIImage.init(data:)) else {
-                    completion(nil, nil)
-                    return
-                }
-
-                completion(image, nil)
-            }
-        }
-    }
-
-    private func loadImageWithNSItemProvider2(
-        from pickerResult: PHPickerResult,
-        targetSize: CGSize,
-        _ completion: @escaping (UIImage?, Error?) -> Void
-    ) {
-        guard pickerResult.itemProvider.canLoadObject(ofClass: UIImage.self) else {
-            completion(nil, nil)
-            return
-        }
-
-        pickerResult.itemProvider.loadDataRepresentation(
-            forTypeIdentifier: pickerResult.itemProvider.registeredTypeIdentifiers.first!
-        ) { data, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    logger.error("Failed to load image via ItemProvider", error: error)
-                    completion(nil, error)
-                    return
-                }
-
-                guard let image = data.map(UIImage.init(data:)) else {
-                    completion(nil, nil)
-                    return
-                }
-
-                completion(image, nil)
             }
         }
     }
