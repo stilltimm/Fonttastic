@@ -44,8 +44,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Fetch Dependencies & Generate Project
-      - name: Fetch Dependencies & Generate Project
+      # Bump Project Version
+      - name: Bump Project Version
         run: |
           sudo chmod +x ./bump-project-version.sh
           ./bump-project-version.sh

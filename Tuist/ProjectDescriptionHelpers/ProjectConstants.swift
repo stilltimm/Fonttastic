@@ -13,9 +13,10 @@ public enum ProjectConstants {
     public static let toolsTargetName: String = "FonttasticTools"
     public static let keyboardTargetName: String = "FonttasticKeyboard"
 
-    public static let currentProjectVersion: String = Environment[
-        dynamicMember: "projectVersion"
-    ].getString(default: "1")
+    public static let currentProjectVersion: String = {
+        let versionString = Environment[dynamicMember: "projectVersion"].getString(default: "1")
+        return versionString.trimmingCharacters(in: .whitespacesAndNewlines)
+    }()
 
     public static let appBundleIdentifier: String = "\(organizationName).fonttastic"
     public static let toolsBundleIdentifier: String = "\(organizationName).fonttasticTools"
