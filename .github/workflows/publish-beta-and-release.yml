@@ -31,6 +31,39 @@ env:
 
 # Jobs
 jobs:
+  bumpProjectVersion:
+    name: Bump Project Version
+    # needs: publish
+    runs-on: macos-latest
+    steps:
+      # Select latest Xcode
+      - name: Select latest Xcode
+        run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
+
+      # Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Fetch Dependencies & Generate Project
+      - name: Fetch Dependencies & Generate Project
+        run: |
+          sudo chmod +x ./bump-project-version.sh
+          ./bump-project-version.sh
+
+      # Get Bumped Version
+      - name: Get Bumped Version
+        id: version
+        run: |
+          echo "::set-output name=PROJECT_VERSION::$( cat $CURRENT_PROJECT_VERSION_PATH )"
+
+      # Add & Commit Changes
+      - name: Commit Changes
+        run: |
+          git config --global user.name 'Fonttastic Bot'
+          git config --global user.email 'fonttastic-bot@users.noreply.github.com'
+          git add $CURRENT_PROJECT_VERSION_PATH
+          git commit -m "Bumped current project version to ${{ steps.version.outputs.PROJECT_VERSION }}"
+          git push
   # archiveAndExport:
   #   name: Archive and Publish
   #   runs-on: macos-latest
@@ -220,37 +253,3 @@ jobs:
   #         issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
   #         api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
   #         api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
-
-  bumpProjectVersion:
-    name: Bump Project Version
-    needs: publish
-    runs-on: macos-latest
-    steps:
-      # Select latest Xcode
-      - name: Select latest Xcode
-        run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
-
-      # Checkout repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      # Fetch Dependencies & Generate Project
-      - name: Fetch Dependencies & Generate Project
-        run: |
-          sudo chmod +x ./bump-project-version.sh
-          ./bump-project-version.sh
-
-      # Get Bumped Version
-      - name: Get Bumped Version
-        id: version
-        run: |
-          echo "::set-output name=PROJECT_VERSION::$( cat $CURRENT_PROJECT_VERSION_PATH )"
-
-      # Add & Commit Changes
-      - name: Commit Changes
-        run: |
-          git config --global user.name 'Fonttastic Bot'
-          git config --global user.email 'fonttastic-bot@users.noreply.github.com'
-          git add $CURRENT_PROJECT_VERSION_PATH
-          git commit -m "Bumped current project version to ${{ steps.version.outputs.PROJECT_VERSION }}"
-          git push
