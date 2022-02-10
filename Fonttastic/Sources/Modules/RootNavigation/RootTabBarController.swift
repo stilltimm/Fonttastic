@@ -12,9 +12,10 @@ class RootTabBarController: UITabBarController {
     // MARK: - Private Properties
 
     let fontListNavigationController = FontListNavigationController()
-//    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
-//    let newFontNavigationController = AddFontNavigationController()
-//    let settingsNavigationController = SettingsNavigationController()
+
+    #if DEBUG
+    let keyboardTestNavigationController = KeyboardViewTestNavigationController()
+    #endif
 
     // MARK: - Initializers
 
@@ -42,12 +43,17 @@ class RootTabBarController: UITabBarController {
     // MARK: - Private Methods
 
     private func setupRootControllers() {
-        let rootViewControllers: [UIViewController] = [
-            fontListNavigationController
-//            keyboardTestNavigationController
-//            newFontNavigationController
-//            settingsNavigationController
+        let rootViewControllers: [UIViewController]
+        #if DEBUG
+        rootViewControllers = [
+            fontListNavigationController,
+            keyboardTestNavigationController
         ]
+        #else
+        rootViewControllers = [
+            fontListNavigationController
+        ]
+        #endif
         self.setViewControllers(rootViewControllers, animated: false)
     }
 
@@ -57,21 +63,13 @@ class RootTabBarController: UITabBarController {
             image: UIImage(systemName: Constants.fontListTabBarItemIconName),
             selectedImage: UIImage(systemName: Constants.fontListTabBarItemSelectedIconName)
         )
-//        keyboardTestNavigationController.tabBarItem = UITabBarItem(
-//            title: Constants.keyboardTabBarItemTitle,
-//            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
-//            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
-//        )
-//        newFontNavigationController.tabBarItem = UITabBarItem(
-//            title: Constants.newFontTabBarItemTitle,
-//            image: UIImage(systemName: Constants.newFontTabBarItemIconName),
-//            selectedImage: UIImage(systemName: Constants.newFontTabBarItemSelectedIconName)
-//        )
-//        settingsNavigationController.tabBarItem = UITabBarItem(
-//            title: Constants.settingsTabBarItemTitle,
-//            image: UIImage(systemName: Constants.settingsTabBarItemIconName),
-//            selectedImage: UIImage(systemName: Constants.settingsTabBarItemSelectedIconName)
-//        )
+        #if DEBUG
+        keyboardTestNavigationController.tabBarItem = UITabBarItem(
+            title: Constants.keyboardTabBarItemTitle,
+            image: UIImage(systemName: Constants.keyboardTabBarItemIconName),
+            selectedImage: UIImage(systemName: Constants.keyboardTabBarItemSelectedIconName)
+        )
+        #endif
     }
 }
 
@@ -84,12 +82,4 @@ private enum Constants {
     static let keyboardTabBarItemTitle = "Клавиатура"
     static let keyboardTabBarItemIconName = "keyboard"
     static let keyboardTabBarItemSelectedIconName = "keyboard.fill"
-
-    static let newFontTabBarItemTitle = "Добавить"
-    static let newFontTabBarItemIconName = "plus.circle"
-    static let newFontTabBarItemSelectedIconName = "plus.circle.fill"
-
-    static let settingsTabBarItemTitle = "Настройки"
-    static let settingsTabBarItemIconName = "gearshape"
-    static let settingsTabBarItemSelectedIconName = "gearshape.fill"
 }
