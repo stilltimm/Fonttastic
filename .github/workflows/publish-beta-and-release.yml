@@ -9,23 +9,6 @@ on:
 env:
   # XC setup
   XC_VERSION: ${{ '13.2.1' }}
-  XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
-  XC_SCHEME: ${{ 'Fonttastic' }}
-  XC_EXPORT_OPTIONS_FILE_PATH: ${{ './CI/ExportOptions.plist' }}
-  # Version Formats
-  MARKETING_VERSION_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
-  PROJECT_VERSION_FORMAT: ${{ '[0-9\.]{1,}' }}
-  # Keychain
-  KEYCHAIN: ${{ 'fonttastic-ios.keychain' }}
-  # Certificates
-  ENCRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12.gpg' }}
-  DECRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12' }}
-  CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
-  CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
-  # Provisioning Profiles
-  ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
-  DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
-  PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
   # Project Versioning
   CURRENT_PROJECT_VERSION_PATH: ${{ './.current-project-version' }}
 
@@ -49,9 +32,26 @@ jobs:
             projectVersionSuffix: '.9.41'
     env:
       # XC Setup
+      XC_WORKSPACE: ${{ 'Fonttastic.xcworkspace' }}
+      XC_SCHEME: ${{ 'Fonttastic' }}
+      XC_EXPORT_OPTIONS_FILE_PATH: ${{ './CI/ExportOptions.plist' }}
       XC_CONFIG: ${{ matrix.xcConfig }}
       XC_ARCHIVE_PATH: ${{ matrix.xcArchivePath }}
       XC_EXPORT_PATH: ${{ matrix.xcExportPath }}
+      # Version Formats
+      MARKETING_VERSION_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
+      PROJECT_VERSION_FORMAT: ${{ '[0-9\.]{1,}' }}
+      # Keychain
+      KEYCHAIN: ${{ 'fonttastic-ios.keychain' }}
+      # Certificates
+      ENCRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12.gpg' }}
+      DECRYPTED_CERTS_FILE_PATH: ${{ './CI/certs.p12' }}
+      CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+      CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
+      # Provisioning Profiles
+      ENCRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz.gpg' }}
+      DECRYPTED_PROVISION_FILE_PATH: ${{ './CI/provisioning.tar.gz' }}
+      PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
       # Versioning
       PROJECT_VERSION_SUFFIX: ${{ matrix.projectVersionSuffix }}
     steps:
@@ -158,7 +158,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: "Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
+          name: "Fonttastic-${{ matrix.xcConfig }}"
           path: artifacts/
           retention-days: 3
 
@@ -169,17 +169,16 @@ jobs:
     steps:
       # Debug Needs Outputs
       - name: Debug Needs Outputs
-        run: echo "${{ needs.archiveAndExport.outputs }}"
-      
+        run: echo ${{ needs.archiveAndExport.outputs }}
+
       # Make Artifacts Directory
       - name: Make Artifacts Directory
         run: mkdir -p artifacts
 
-      # Download Release Artifacts
-      - name: Download Release Artifacts
+      # Download Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: ${{ needs.archiveAndExport.outputs.artifactsNameRelease }}
           path: artifacts
 
       # Debug Downloaded Release Artifacts
@@ -190,33 +189,16 @@ jobs:
       - name: Publish Release to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: ${{ needs.archiveAndExport.outputs.appPathRelease }}
+          app-path: ./artifacts/Fonttastic-Release/Fonttastic-Release/Fonttastic.ipa
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
-
-      # Clean Artifacts Folder
-      - name: Clean Artifacts Folder
-        run: |
-          sudo rm -rf -f ./artifacts/
-          mkdir -p artifacts
-
-      # Download Beta Artifacts
-      - name: Download Beta Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ needs.archiveAndExport.outputs.artifacts_name_beta }}
-          path: artifacts
-
-      # Debug Downloaded Beta Artifacts
-      - name: Debug Downloaded Beta Artifacts
-        run: ls -R
 
       # Publish Beta to TestFlight
       - name: Publish Beta to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: ${{ needs.archiveAndExport.outputs.appPathBeta }}
+          app-path: ./artifacts/Fonttastic-Beta/Fonttastic-Beta/Fonttastic.ipa
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
