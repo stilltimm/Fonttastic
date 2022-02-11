@@ -179,13 +179,13 @@ jobs:
           name: Fonttastic-Beta-App
           path: artifacts
 
-      - name: Debug Downloaded Release Artifacts
+      - name: Debug Downloaded Artifacts
         run: ls -R
 
       - name: Publish Release to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: ./artifacts/Fonttastic-Release/Fonttastic.ipa
+          app-path: ./artifacts/Fonttastic-Release-App/Fonttastic.ipa
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
@@ -193,7 +193,7 @@ jobs:
       - name: Publish Beta to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
-          app-path: ./artifacts/Fonttastic-Beta/Fonttastic.ipa
+          app-path: ./artifacts/Fonttastic-Beta-App/Fonttastic.ipa
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
