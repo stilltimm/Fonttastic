@@ -165,19 +165,19 @@ jobs:
     needs: archiveAndExport
     steps:
       - name: Make Artifacts Directory
-        run: mkdir -p artifacts
+        run: mkdir -p ./artifacts/Fonttastic-Release-App ./artifacts/Fonttastic-Beta-App
 
       - name: Download Release IPA
         uses: actions/download-artifact@v2
         with:
-          name: Fonttastic-Release-App
+          name: ./artifacts/Fonttastic-Release-App
           path: artifacts
 
       - name: Download Beta IPA
         uses: actions/download-artifact@v2
         with:
           name: Fonttastic-Beta-App
-          path: artifacts
+          path: ./artifacts/Fonttastic-Beta-App
 
       - name: Debug Downloaded Artifacts
         run: ls -R
