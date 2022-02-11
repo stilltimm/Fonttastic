@@ -38,6 +38,8 @@ jobs:
       XC_CONFIG: ${{ matrix.xcConfig }}
       XC_ARCHIVE_PATH: ${{ matrix.xcArchivePath }}
       XC_EXPORT_PATH: ${{ matrix.xcExportPath }}
+      # Environment setup
+      ENVIRONMENT_FILE_CONTENTS: ${{ secrets.ENVIRONMENT_FILE_CONTENTS }}
       # Version Formats
       MARKETING_VERSION_FORMAT: ${{ '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?' }}
       PROJECT_VERSION_FORMAT: ${{ '[0-9\.]{1,}' }}
@@ -55,38 +57,34 @@ jobs:
       # Versioning
       PROJECT_VERSION_SUFFIX: ${{ matrix.projectVersionSuffix }}
     steps:
-      # Echo Run
       - name: Echo Run
         run: echo "Running job with '$XC_CONFIG' configuration"
 
-      # Select latest Xcode
       - name: Select latest Xcode
         run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
 
-      # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           lfs: true
 
-      # Checkout LFS objects
       - name: Checkout LFS objects
         run: git lfs checkout
 
-      # Add Project Version Suffix If Needed
       - name: Add Project Version Suffix If Needed
         run: |
           echo "$CURRENT_PROJECT_VERSION_PATH contents is '$(cat $CURRENT_PROJECT_VERSION_PATH)', will append '$PROJECT_VERSION_SUFFIX'"
           echo "$PROJECT_VERSION_SUFFIX" >> $CURRENT_PROJECT_VERSION_PATH
           echo "$CURRENT_PROJECT_VERSION_PATH contents is now '$(cat $CURRENT_PROJECT_VERSION_PATH)'"
 
-      # Fetch Dependencies & Generate Project
+      - name: Create Environment File
+        run: echo $ENVIRONMENT_FILE_CONTENTS > ./FonttasticTools/Resources/Environment.plist
+
       - name: Fetch Dependencies & Generate Project
         run: |
           sudo chmod +x ./generate-project.sh
           ./generate-project.sh
 
-      # Get Version Numbers
       - name: Get Version Numbers
         id: versions
         run: |
@@ -99,12 +97,10 @@ jobs:
           /usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1
           echo "::set-output name=PROJECT_VERSION::$(/usr/bin/xcrun agvtool what-version | grep -Eo "$PROJECT_VERSION_FORMAT" | head -1)"
 
-      # Print App Version
       - name: Print App Version
         run: |
           echo "App version would be ${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
 
-      # Configure Keychain
       - name: Configure Keychain
         run: |
           security delete-keychain "$KEYCHAIN" || true
@@ -114,19 +110,16 @@ jobs:
           security unlock-keychain -p "" "$KEYCHAIN"
           security set-keychain-settings
 
-      # Decrypt Certificates and Provisioning Profiles
       - name: Decrypt Certificates and Provisioning Profiles
         run: |
           gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERTS_ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
           gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISION_ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH"
 
-      # Import Cetificates to Keychain
       - name: Import Cetificates to Keychain
         run: |
           security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$CERTS_EXPORT_PWD" -A
           security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
 
-      # Install Provisioning Profiles
       - name: Install Provisioning Profiles
         run: |
           tar xzvf $DECRYPTED_PROVISION_FILE_PATH
@@ -137,13 +130,11 @@ jobs:
             cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
           done
 
-      # Archive Project
       - name: Archive Project
         run: |
           mkdir -p artifacts
           /usr/bin/xcodebuild archive -workspace "$XC_WORKSPACE" -scheme "$XC_SCHEME" -configuration "$XC_CONFIGURATION" -archivePath "$XC_ARCHIVE_PATH" "OTHER_CODE_SIGN_FLAGS=--keychain '$KEYCHAIN'"
 
-      # Export Archive
       - name: Export Archive
         run: |
           /usr/bin/xcodebuild -exportArchive -exportOptionsPlist "$XC_EXPORT_OPTIONS_FILE_PATH" -archivePath "$XC_ARCHIVE_PATH" -exportPath "$XC_EXPORT_PATH"
@@ -154,7 +145,6 @@ jobs:
           echo "::set-output name=artifactsName${{ matrix.xcConfig }}::Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
           echo "::set-output name=appPath${{ matrix.xcConfig }}::${{ matrix.appPath }}"
 
-      # Upload Artifacts
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -167,25 +157,20 @@ jobs:
     runs-on: macos-latest
     needs: archiveAndExport
     steps:
-      # Debug Needs Outputs
       - name: Debug Needs Outputs
         run: echo ${{ needs.archiveAndExport.outputs }}
 
-      # Make Artifacts Directory
       - name: Make Artifacts Directory
         run: mkdir -p artifacts
 
-      # Download Artifacts
       - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
           path: artifacts
 
-      # Debug Downloaded Release Artifacts
       - name: Debug Downloaded Release Artifacts
         run: ls -R
 
-      # Publish Release to TestFlight
       - name: Publish Release to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
@@ -194,7 +179,6 @@ jobs:
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
 
-      # Publish Beta to TestFlight
       - name: Publish Beta to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with: 
@@ -208,27 +192,22 @@ jobs:
     needs: publish
     runs-on: macos-latest
     steps:
-      # Select latest Xcode
       - name: Select latest Xcode
         run: "sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app"
 
-      # Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Bump Project Version
       - name: Bump Project Version
         run: |
           sudo chmod +x ./bump-project-version.sh
           ./bump-project-version.sh
 
-      # Get Bumped Version
       - name: Get Bumped Version
         id: version
         run: |
           echo "::set-output name=PROJECT_VERSION::$( cat $CURRENT_PROJECT_VERSION_PATH )"
 
-      # Add & Commit Changes
       - name: Commit Changes
         run: |
           git config --global user.name 'Fonttastic Bot'
