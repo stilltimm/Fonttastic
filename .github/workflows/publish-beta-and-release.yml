@@ -145,14 +145,14 @@ jobs:
           echo "::set-output name=artifactsName${{ matrix.xcConfig }}::Fonttastic-${{ matrix.xcConfig }}-${{ steps.versions.outputs.MARKETING_VERSION }}(${{ steps.versions.outputs.PROJECT_VERSION }})"
           echo "::set-output name=appPath${{ matrix.xcConfig }}::${{ matrix.appPath }}"
 
-      - name: Upload XCArchive
+      - name: Upload dSYMs Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Fonttastic-${{ matrix.xcConfig }}-XCArchive
-          path: artifacts/Fonttastic-${{ matrix.xcConfig }}.xcarchive
+          name: Fonttastic-${{ matrix.xcConfig }}-dSYMs
+          path: artifacts/Fonttastic-${{ matrix.xcConfig }}.xcarchive/dSYMs/
           retention-days: 3
 
-      - name: Upload IPA
+      - name: Upload IPA Artifact
         uses: actions/upload-artifact@v2
         with:
           name: Fonttastic-${{ matrix.xcConfig }}-App
