@@ -1,0 +1,62 @@
+/* 
+  Localizable.strings
+  Fonttastic
+
+  Created by Timofey Surkov on 21.11.2021.
+  
+*/
+
+// MARK: - Keyboard
+
+"keyboard.canvas.copied.title" = "✅ Copied";
+"keyboard.lockedState.title" = "Keyboard is locked";
+"keyboard.lockedState.noSubscriptionInfo.message" = "To use keyboard, please open app and purchase subscription";
+"keyboard.lockedState.noSubscriptionInfo.actionTitle" = "Open App";
+"keyboard.lockedState.limitedAccess.message" = "To use keyboard, please open settings and enable keyboard full access";
+"keyboard.lockedState.limitedAccess.actionTitle" = "Open Settings";
+
+// MARK: - Font Selection
+
+"fontSelection.title" = "Font";
+"fontSelection.prompt.latinFonts" = "Latin fonts";
+"fontSelection.prompt.cyrillicFonts" = "Cyrillic fonts";
+
+// MARK: - Font List Collection
+
+"fontListCollection.sectionHeader.systemFonts" = "System fonts";
+"fontListCollection.sectionHeader.customFonts" = "Custom fonts";
+"fontListCollection.bannerTitle.keyboardInstall" = "Tap here to add\nFonttastic keyboard to iOS ⌨️";
+"fontListCollection.bannerTitle.subscriptionPurchase" = "Tap here\nto get Premium 🦹‍♂️";
+
+// MARK: - Subscription
+
+"subscription.header.title.default" = "Get Premium access to Fonttastic Keyboard";
+"subscription.header.title.trial" = "Start Premium access free trial";
+"subscription.header.subtitle" = "And start using custom fonts anywhere";
+
+"subscription.item.subtitle.trial.days.3" = "First 3 days free";
+
+"subscription.button.title.default" = "Subscribe";
+"subscription.button.title.trial" = "Start free trial";
+
+"subscription.period.weekly" = "Weekly";
+"subscription.period.monthly" = "Monthly";
+"subscription.period.twoMonths" = "2 Months";
+"subscription.period.threeMonths" = "3 Months";
+"subscription.period.sixMonths" = "6 Months";
+"subscription.period.annual" = "Annual";
+"subscription.period.lifetime" = "Lifetime";
+
+"subscription.info.active.solo.title" = "Your are a Premium member 😎";
+"subscription.info.active.familyShared.title" = "You have a family shared Premium membership 😎";
+"subscription.info.active.freeTrial.withExpirationDate" = " with free trial until %@";
+"subscription.info.active.freeTrial.withoutExpirationDate" = " with free trial.";
+"subscription.info.active.since" = " since %@";
+"subscription.info.active.renewDate" = " Subscription will renew at %@";
+"subscription.info.active.expirationDate" = " Subscription will expire at %@";
+
+"subscription.info.inactive.solo.title" = "Your Premium membership has expired";
+"subscription.info.inactive.familyShared.title" = "Your family shared Premium membership has expired";
+"subscription.info.inactive.titleEnding.withExpirationDate" = " at %@ 😔.";
+"subscription.info.inactive.titleEnding.noExpirationDate" = " 😔.";
+"subscription.info.inactive.callToAction" = " Please renew your subscription in order to use Fonttastic Keyboard.";

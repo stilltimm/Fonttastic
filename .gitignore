@@ -34,14 +34,6 @@ DerivedData/
 timeline.xctimeline
 playground.xcworkspace
 
-# Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
-# Package.resolved
-# *.xcodeproj
-#
 # Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
 # hence it is not needed unless you have added a package configuration file to your project
 # .swiftpm
@@ -55,9 +47,6 @@ playground.xcworkspace
 # https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
 #
 Pods/
-#
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-*.xcworkspace
 
 # Carthage
 #
@@ -88,3 +77,17 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Environmental Variables
+FonttasticTools/Resources/Environment.plist
+
+# Xcode Project and Workspace
+*.xcodeproj
+*.xcworkspace
+
+# Tuist
+Tuist/Dependencies/SwiftPackageManager
+Derived/
+
+# CI
+artifacts/
