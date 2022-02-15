@@ -17,7 +17,7 @@ open ./Fonttastic.xcworkspace
 It will clone the repo to your working directory, install dependencies, setup Xcode project and open it.
 
 ### 2. Add Environment Configuration
-Secondly, in order for app to work, you should setup [RevenueCat](https://www.revenuecat.com)), [Amplitude](https://amplitude.com) and [Bugsnag](https://www.bugsnag.com) accounts, get API keys from them and then add the configuration file `Environment.plist` at path `./FonttasticTools/Resources/Environment.plist` (it is ignored by git for security reasons). The contents of the file should be this:
+Secondly, in order for app to work, you should setup [RevenueCat](https://www.revenuecat.com), [Amplitude](https://amplitude.com) and [Bugsnag](https://www.bugsnag.com) accounts, get API keys from them and then add the configuration file `Environment.plist` at path `./FonttasticTools/Resources/Environment.plist` (it is ignored by git for security reasons). The contents of the file should be this:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
